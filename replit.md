@@ -1,44 +1,61 @@
-# [Project name]
+# Trends Landing
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+Investment landing page for the Trends Telegram Mini App — a Reels-style video feed built inside Telegram.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm --filter @workspace/trends-landing run dev` — run the landing page (port 22520)
+- `pnpm --filter @workspace/api-server run dev` — run the API server (port 8080)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
+- Frontend: React + Vite + Tailwind CSS v4 + shadcn/ui + framer-motion
 - API: Express 5
 - DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
 - Build: esbuild (CJS bundle)
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/trends-landing/src/pages/Landing.tsx` — main landing page (hero, sections, FAQ, roadmap)
+- `artifacts/trends-landing/src/pages/Cabinet.tsx` — investor personal cabinet
+- `artifacts/trends-landing/src/pages/not-found.tsx` — 404 page
+- `artifacts/trends-landing/src/components/InvestmentModal.tsx` — investment package modal
+- `artifacts/trends-landing/src/components/SceneBackground.tsx` — animated background
+- `artifacts/trends-landing/src/index.css` — CSS variables, themes, styles
+- `attached_assets/` — images (logo, app screenshots)
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Presentation-first landing page — no backend API calls needed, all content is static
+- Images imported via `@assets` alias → resolves to `attached_assets/`
+- Primary color: cyan `#00D4FF`, secondary: purple `#7B5EFF`
+- Framer Motion used for scroll-triggered animations throughout
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+Trends is described as "the first Reels inside Telegram" — an algorithmic video feed for Telegram's 1 billion users. The landing page targets Pre-Seed investors with a $1M target raise. Investment packages: Starter $100, Genesis $1000, Growth $10000, Whale $50000.
+
+## GitHub
+
+- Repo: https://github.com/darcynj757-svg/trends-landing
+- Secret: `GITHUB_PERSONAL_ACCESS_TOKEN` (stored as Replit secret)
+- Push script: `bash scripts/push-github.sh` — pushes current HEAD to GitHub main
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- Редактировать только `artifacts/trends-landing/src/` и `attached_assets/`
+- Не трогать `.replit-artifact/artifact.toml`
+- После каждого изменения — git push в main (через `bash scripts/push-github.sh`)
+- Цвета: primary cyan `#00D4FF`, secondary purple `#7B5EFF`
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- `@assets` alias in vite.config.ts resolves to `/home/runner/workspace/attached_assets/`
+- Push to GitHub via `bash scripts/push-github.sh` (uses GITHUB_PERSONAL_ACCESS_TOKEN secret)
+- Railway config in `vite.config.railway.ts` is for production builds
 
 ## Pointers
 
