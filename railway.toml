@@ -1,0 +1,8 @@
+[build]
+builder = "NIXPACKS"
+buildCommand = "pnpm --filter @workspace/trends-landing run build:railway"
+
+[deploy]
+startCommand = "pnpm --filter @workspace/trends-landing run serve:railway"
+healthcheckPath = "/"
+restartPolicyType = "ON_FAILURE"
