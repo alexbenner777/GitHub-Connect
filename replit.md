@@ -7,56 +7,85 @@ Investment landing page for the Trends Telegram Mini App — a Reels-style video
 - `pnpm --filter @workspace/trends-landing run dev` — run the landing page (port 22520)
 - `pnpm --filter @workspace/api-server run dev` — run the API server (port 8080)
 - `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
+- `pnpm run typecheck:libs` — build lib/db declarations (run before api-server typecheck)
+- `pnpm --filter @workspace/db run push` — push DB schema changes to PostgreSQL
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
 - Frontend: React + Vite + Tailwind CSS v4 + shadcn/ui + framer-motion
-- API: Express 5
+- API: Express 5 + JWT auth (jsonwebtoken) + bcryptjs
 - DB: PostgreSQL + Drizzle ORM
 - Build: esbuild (CJS bundle)
 
 ## Where things live
 
-- `artifacts/trends-landing/src/pages/Landing.tsx` — main landing page (hero, sections, FAQ, roadmap)
-- `artifacts/trends-landing/src/pages/Cabinet.tsx` — investor personal cabinet
-- `artifacts/trends-landing/src/pages/not-found.tsx` — 404 page
-- `artifacts/trends-landing/src/components/InvestmentModal.tsx` — investment package modal
-- `artifacts/trends-landing/src/components/SceneBackground.tsx` — animated background
-- `artifacts/trends-landing/src/index.css` — CSS variables, themes, styles
+### Frontend (`artifacts/trends-landing/src/`)
+- `pages/Landing.tsx` — main landing page (hero, sections, FAQ, roadmap)
+- `pages/Cabinet.tsx` — investor personal cabinet (investments, MLM stats, wallet settings)
+- `pages/Login.tsx` — login page
+- `pages/Register.tsx` — registration page with referral code support
+- `pages/Admin.tsx` — admin panel (confirm investments)
+- `pages/not-found.tsx` — 404 page
+- `components/InvestmentModal.tsx` — investment package modal
+- `components/SceneBackground.tsx` — animated background
+- `hooks/useAuth.tsx` — auth context (JWT stored in localStorage)
+- `lib/api.ts` — typed API client (all fetch calls)
+- `index.css` — CSS variables, themes, styles
 - `attached_assets/` — images (logo, app screenshots)
 
-## Architecture decisions
+### Backend (`artifacts/api-server/src/`)
+- `routes/auth.ts` — POST /api/auth/register, POST /api/auth/login
+- `routes/cabinet.ts` — GET /api/cabinet/me, GET /api/cabinet/referrals, PATCH /api/cabinet/wallet
+- `routes/investments.ts` — POST /api/investments, GET /api/investments, admin confirm endpoint
+- `middlewares/auth.ts` — requireAuth / requireAdmin JWT middleware
+- `lib/jwt.ts` — signToken / verifyToken (uses SESSION_SECRET env var)
+- `lib/referral.ts` — MLM bonus calculation (5 levels: 10%, 5%, 3%, 1%, 1%)
 
-- Presentation-first landing page — no backend API calls needed, all content is static
-- Images imported via `@assets` alias → resolves to `attached_assets/`
+### Database (`lib/db/src/schema/`)
+- `users.ts` — users table (email, passwordHash, referralCode, referredById, isAdmin, walletAddress)
+- `investments.ts` — investments table (userId, packageId, amount, shares, status, txHash)
+- `transactions.ts` — transactions table (userId, type, amount, description, referenceId)
+- `referrals.ts` — referral_bonuses table (beneficiaryId, fromUserId, investmentId, level, percent, amount)
+
+## Architecture
+
+- JWT auth: token stored in localStorage, sent as `Authorization: Bearer <token>`
+- MLM system: 5-level referral bonuses triggered when admin confirms an investment
+  - Level 1: 10%, Level 2: 5%, Level 3: 3%, Level 4-5: 1% each
+- Investment packages: founder1 ($100), founder2 ($250), founder3 ($1000), founder4 ($5000), founder5 ($25000), founder6 ($100000)
+- Images imported via `@assets` alias → resolves to `/home/runner/workspace/attached_assets/`
 - Primary color: cyan `#00D4FF`, secondary: purple `#7B5EFF`
 - Framer Motion used for scroll-triggered animations throughout
 
 ## Product
 
-Trends is described as "the first Reels inside Telegram" — an algorithmic video feed for Telegram's 1 billion users. The landing page targets Pre-Seed investors with a $1M target raise. Investment packages: Starter $100, Genesis $1000, Growth $10000, Whale $50000.
+Trends is described as "the first Reels inside Telegram" — an algorithmic video feed for Telegram's 1 billion users. The landing page targets Pre-Seed investors with a $1M target raise.
 
-## GitHub
+## GitHub & Deploy
 
-- Repo: https://github.com/darcynj757-svg/trends-landing
+- Repo: `https://github.com/darcynj757-svg/trends-landing`
 - Secret: `GITHUB_PERSONAL_ACCESS_TOKEN` (stored as Replit secret)
-- Push script: `bash scripts/push-github.sh` — pushes current HEAD to GitHub main
+- Push: use Replit Git panel (Commit & Push) — `bash scripts/push-github.sh` may fail if token is expired
+- Railway auto-deploys from GitHub main branch
+- Railway build: `pnpm install --no-frozen-lockfile --ignore-scripts && pnpm --filter @workspace/trends-landing run build:railway`
+- Railway start: `pnpm --filter @workspace/trends-landing run serve:railway`
+
+## Environment variables
+
+- `DATABASE_URL` — PostgreSQL connection string (provisioned by Replit)
+- `SESSION_SECRET` — JWT signing secret (stored as Replit secret)
 
 ## User preferences
 
-- Редактировать только `artifacts/trends-landing/src/` и `attached_assets/`
+- Редактировать только `artifacts/trends-landing/src/`, `artifacts/api-server/src/`, `lib/db/src/` и `attached_assets/`
 - Не трогать `.replit-artifact/artifact.toml`
-- После каждого изменения — git push в main (через `bash scripts/push-github.sh`)
+- После каждого изменения — git push в main (через Replit Git panel)
 - Цвета: primary cyan `#00D4FF`, secondary purple `#7B5EFF`
 
 ## Gotchas
 
 - `@assets` alias in vite.config.ts resolves to `/home/runner/workspace/attached_assets/`
-- Push to GitHub via `bash scripts/push-github.sh` (uses GITHUB_PERSONAL_ACCESS_TOKEN secret)
+- After adding new tables to `lib/db/src/schema/`, run `pnpm run typecheck:libs` then `pnpm --filter @workspace/db run push`
 - Railway config in `vite.config.railway.ts` is for production builds
-
-## Pointers
-
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+- `scripts/push-github.sh` uses GITHUB_PERSONAL_ACCESS_TOKEN — if it times out, use Replit Git panel instead
