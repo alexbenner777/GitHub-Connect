@@ -514,7 +514,7 @@ export default function Landing() {
               alt="Trends App"
               animate={{ y: [0, -14, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="relative z-10 max-h-[55vh] sm:max-h-[60vh] lg:max-h-[85vh] w-full object-contain drop-shadow-2xl"
+              className="relative z-10 max-h-[65vh] sm:max-h-[68vh] lg:max-h-[85vh] w-full object-contain drop-shadow-2xl"
             />
           </motion.div>
         </div>
@@ -604,7 +604,7 @@ export default function Landing() {
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div className="w-48 h-48 lg:w-64 lg:h-64 rounded-full bg-secondary/20 blur-[80px]" />
               </div>
-              <img src={screenAppPath} alt="Trends App" className="relative z-10 max-h-[400px] lg:max-h-[620px] w-auto object-contain drop-shadow-2xl" />
+              <img src={screenAppPath} alt="Trends App" className="relative z-10 max-h-[480px] lg:max-h-[620px] w-auto object-contain drop-shadow-2xl" />
             </motion.div>
           </div>
         </div>
@@ -1002,7 +1002,7 @@ export default function Landing() {
       </section>
 
       {/* ROADMAP */}
-      <section id="roadmap" className="py-14 md:py-24 overflow-hidden">
+      <section id="roadmap" className="py-14 md:py-24 overflow-x-hidden">
         <div className="container mx-auto px-4">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">Roadmap</h2>
@@ -1024,8 +1024,8 @@ export default function Landing() {
                 { phase: "2027 — 10M", title: "Листинг $TRND", desc: "При 10M пользователей — листинг токена. Ранние инвесторы получают максимальную аллокацию.", highlight: true },
                 { phase: "2027+", title: "Global Expansion", desc: "Выход на мировые рынки, e-commerce, подготовка к Exit или Series A." },
               ].map((step, i) => (
-                <motion.div key={i} initial="hidden" whileInView="visible" viewport={{ once: true }}
-                  variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: i * 0.1 } } }}
+                <motion.div key={i} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }}
+                  variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: i * 0.08 } } }}
                   className="flex flex-col items-center md:items-start text-center md:text-left">
 
                   {/* numbered circle */}
@@ -1107,7 +1107,7 @@ export default function Landing() {
                 textColor: "text-yellow-400"
               },
             ].map((member, i) => (
-              <motion.div key={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn}
+              <motion.div key={i} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeIn}
                 className="glass-card p-7 rounded-3xl border border-white/10 hover:border-primary/25 transition-all">
                 <div className={`w-16 h-16 ${member.avatarColor} rounded-2xl border-2 flex items-center justify-center mb-5`}>
                   <span className={`text-2xl font-black ${member.textColor}`}>{member.initials}</span>
@@ -1234,27 +1234,6 @@ export default function Landing() {
                 </li>
               </ul>
 
-              <div className="border-t border-white/8 pt-4 space-y-3">
-                <h5 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Раунд</h5>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-muted-foreground">Тип раунда</span>
-                    <span className="font-bold text-primary">Pre-Seed</span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-muted-foreground">Цель</span>
-                    <span className="font-bold text-foreground">$1 000 000</span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-muted-foreground">RevShare пул</span>
-                    <span className="font-bold text-green-400">20%</span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-muted-foreground">Exit потенциал</span>
-                    <span className="font-bold text-yellow-400">× 20 – × 30</span>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
