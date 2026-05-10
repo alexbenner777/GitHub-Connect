@@ -387,7 +387,7 @@ export default function Landing() {
         </div>
 
         <div className="container mx-auto grid lg:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10">
-          <motion.div initial="hidden" animate="visible" variants={fadeIn} className="space-y-6 lg:space-y-8 order-1 lg:order-1">
+          <motion.div initial="hidden" animate="visible" variants={fadeIn} className="space-y-6 lg:space-y-8 order-2 lg:order-1">
             <div className="hidden lg:flex flex-wrap gap-3">
               <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">Pre-Seed</div>
               <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-muted-foreground text-sm">$1 000 000 целевой объём</div>
@@ -499,7 +499,7 @@ export default function Landing() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 1, ease: EASE, delay: 0.2 }}
             style={{ y: heroY }}
-            className="relative flex items-center justify-center order-2 lg:order-2"
+            className="relative flex items-center justify-center order-1 lg:order-2"
           >
             {/* Glowing halo behind phone */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -514,14 +514,14 @@ export default function Landing() {
               alt="Trends App"
               animate={{ y: [0, -14, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="relative z-10 max-h-[45vh] sm:max-h-[55vh] lg:max-h-[85vh] w-full object-contain drop-shadow-2xl"
+              className="relative z-10 max-h-[55vh] sm:max-h-[60vh] lg:max-h-[85vh] w-full object-contain drop-shadow-2xl"
             />
           </motion.div>
         </div>
       </section>
 
       {/* SOCIAL PROOF STRIP */}
-      <section className="py-12 border-y border-white/8">
+      <section className="hidden md:block py-12 border-y border-white/8">
         <div className="container mx-auto px-4">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerFast}
             className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -546,7 +546,7 @@ export default function Landing() {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center max-w-6xl mx-auto">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerChildren}
-              className="space-y-6 order-1 lg:order-1">
+              className="space-y-6 order-2 lg:order-1">
               <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-black">
                 Что такое <span className="text-gradient">Trends</span>?
               </motion.h2>
@@ -600,11 +600,11 @@ export default function Landing() {
               </motion.div>
             </motion.div>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeRight}
-              className="relative flex justify-center order-2 lg:order-2">
+              className="relative flex justify-center order-1 lg:order-2">
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div className="w-48 h-48 lg:w-64 lg:h-64 rounded-full bg-secondary/20 blur-[80px]" />
               </div>
-              <img src={screenAppPath} alt="Trends App" className="relative z-10 max-h-[320px] lg:max-h-[620px] w-auto object-contain drop-shadow-2xl" />
+              <img src={screenAppPath} alt="Trends App" className="relative z-10 max-h-[400px] lg:max-h-[620px] w-auto object-contain drop-shadow-2xl" />
             </motion.div>
           </div>
         </div>
@@ -675,11 +675,11 @@ export default function Landing() {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeLeft}
-              className="relative flex justify-center order-2 lg:order-1">
-              <img src={screen3Path} alt="Trends MVP" className="relative z-10 max-h-[320px] lg:max-h-[620px] object-contain drop-shadow-2xl" />
+              className="relative flex justify-center order-1 lg:order-1">
+              <img src={screen3Path} alt="Trends MVP" className="relative z-10 max-h-[400px] lg:max-h-[620px] object-contain drop-shadow-2xl" />
             </motion.div>
 
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerChildren} className="space-y-6 lg:space-y-8 order-1 lg:order-2">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerChildren} className="space-y-6 lg:space-y-8 order-2 lg:order-2">
               <motion.div variants={fadeRight} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 text-green-400 border border-green-500/20 font-bold tracking-wide">
                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                 ПРОДУКТ УЖЕ РАБОТАЕТ
