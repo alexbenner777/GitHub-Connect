@@ -1,5 +1,5 @@
 [build]
-buildCommand = "npm install -g pnpm@10 && pnpm install --no-frozen-lockfile --ignore-scripts && pnpm --filter @workspace/trends-landing run build:railway"
+buildCommand = "pnpm install --no-frozen-lockfile --ignore-scripts && pnpm --filter @workspace/trends-landing run build:railway"
 
 [deploy]
 startCommand = "pnpm --filter @workspace/trends-landing run serve:railway"
