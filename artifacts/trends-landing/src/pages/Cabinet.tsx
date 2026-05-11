@@ -24,7 +24,7 @@ export default function Cabinet() {
   const [referrals, setReferrals] = useState<Record<number, { count: number; earned: number }>>({});
   const [loadingData, setLoadingData] = useState(true);
   const [walletAddr, setWalletAddr] = useState("");
-  const [walletNet, setWalletNet] = useState("USDT TRC-20");
+  const [walletNet, setWalletNet] = useState("TON");
   const [savingWallet, setSavingWallet] = useState(false);
   const [activeTab, setActiveTab] = useState<"overview" | "investments" | "mlm" | "settings">("overview");
 
@@ -295,9 +295,9 @@ export default function Cabinet() {
                   <label className="text-sm font-medium mb-1.5 block">Сеть</label>
                   <select value={walletNet} onChange={e => setWalletNet(e.target.value)}
                     className="w-full h-11 px-3 rounded-xl bg-background/50 border border-white/10 text-foreground text-sm">
+                    <option>TON</option>
                     <option>USDT TRC-20</option>
                     <option>USDT ERC-20</option>
-                    <option>TON</option>
                     <option>BTC</option>
                   </select>
                 </div>

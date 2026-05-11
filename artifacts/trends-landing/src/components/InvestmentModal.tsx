@@ -18,8 +18,8 @@ export const PACKAGES = [
   { id: "founder6", name: "Основателей 6", price: 100000, monthly: 2000, shares: 250, exit: "2,000,000–4,500,000" },
 ];
 
-const PAYMENT_WALLET = "TYourCryptoWalletAddressHere";
-const PAYMENT_NETWORK = "USDT TRC-20";
+const PAYMENT_WALLET = "UQCG4jJ5BHZhV0qAOwYxMNemhgcdtMBJv5cDXs0O5K3LNAgt";
+const PAYMENT_NETWORK = "TON";
 
 export function InvestmentModal({ isOpen, onClose, defaultPackage = "founder3" }: {
   isOpen: boolean;
@@ -129,7 +129,7 @@ export function InvestmentModal({ isOpen, onClose, defaultPackage = "founder3" }
               </div>
 
               <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-3 text-xs text-yellow-400">
-                Переводите только USDT в сети TRC-20. После перевода нажмите «Я оплатил» и ваша заявка будет проверена администратором.
+                Переводите только TON на указанный адрес. После перевода нажмите «Я оплатил» и ваша заявка будет проверена администратором.
               </div>
             </div>
 
