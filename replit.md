@@ -7,10 +7,8 @@ Investment landing page for the Trends Telegram Mini App (Reels inside Telegram)
 - `pnpm --filter @workspace/trends-landing run dev` — run the landing page (port 22520)
 - `pnpm --filter @workspace/api-server run dev` — run the API server (port 8080)
 - `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- `pnpm run typecheck:libs` — build lib/db declarations (run before api-server typecheck)
+- `pnpm --filter @workspace/db run push` — push DB schema changes to PostgreSQL
 
 ## Stack
 
@@ -18,8 +16,6 @@ Investment landing page for the Trends Telegram Mini App (Reels inside Telegram)
 - Frontend: React + Vite + Tailwind CSS + shadcn/ui + framer-motion
 - API: Express 5
 - DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
 - Build: esbuild (CJS bundle)
 
 ## Where things live
@@ -33,7 +29,13 @@ Investment landing page for the Trends Telegram Mini App (Reels inside Telegram)
 - `lib/db/src/schema/` — DB schema (users, investments, transactions, referrals)
 - `lib/api-spec/openapi.yaml` — OpenAPI contract (source of truth)
 
-## Architecture decisions
+### Backend (`artifacts/api-server/src/`)
+- `routes/auth.ts` — POST /api/auth/register, POST /api/auth/login
+- `routes/cabinet.ts` — GET /api/cabinet/me, GET /api/cabinet/referrals, PATCH /api/cabinet/wallet
+- `routes/investments.ts` — POST /api/investments, GET /api/investments, admin confirm endpoint
+- `middlewares/auth.ts` — requireAuth / requireAdmin JWT middleware
+- `lib/jwt.ts` — signToken / verifyToken (uses SESSION_SECRET env var)
+- `lib/referral.ts` — MLM bonus calculation (5 levels: 10%, 5%, 3%, 1%, 1%)
 
 - Frontend-only landing with no required backend for the core investment CTA flow
 - Images imported via `@assets` alias → resolves to `attached_assets/` folder
