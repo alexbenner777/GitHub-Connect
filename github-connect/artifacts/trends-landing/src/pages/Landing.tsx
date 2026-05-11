@@ -19,6 +19,7 @@ import screen2Path from '@assets/скрин_2_1777969066507.png';
 import screen3Path from '@assets/скрин_3_1777969064666.png';
 import screenAppPath from '@assets/111_1778425377815.png';
 import trendsVideoPath from '@assets/ScreenRecording_05-11-2026_10-42-13_1_1778519635888.mov';
+import iphoneFramePath from '@assets/iphone_фронт_прозрачный__1778519752863.png';
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -642,14 +643,34 @@ export default function Landing() {
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div className="w-48 h-48 lg:w-64 lg:h-64 rounded-full bg-secondary/20 blur-[80px]" />
               </div>
-              <video
-                src={trendsVideoPath}
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="relative z-10 max-h-[320px] lg:max-h-[620px] w-auto object-contain drop-shadow-2xl rounded-3xl"
-              />
+              {/* iPhone mockup: video inside, frame on top */}
+              <div className="relative inline-block max-h-[340px] lg:max-h-[640px]"
+                style={{ width: "min(260px, 90vw)" }}>
+                {/* Video clipped to screen area */}
+                <div className="absolute overflow-hidden"
+                  style={{
+                    top: "6.5%",
+                    left: "5.8%",
+                    right: "5.8%",
+                    bottom: "4.5%",
+                    borderRadius: "9%",
+                  }}>
+                  <video
+                    src={trendsVideoPath}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                {/* iPhone frame on top */}
+                <img
+                  src={iphoneFramePath}
+                  alt="iPhone"
+                  className="relative z-10 w-full h-auto pointer-events-none select-none drop-shadow-2xl"
+                />
+              </div>
             </motion.div>
           </div>
         </div>
