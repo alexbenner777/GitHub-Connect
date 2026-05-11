@@ -111,33 +111,62 @@ function AdvantagesGrid({ openInvest: _openInvest }: { openInvest: (pkg?: string
   const first = ADVANTAGES[0];
   const { Icon: Icon0 } = first;
   return (
-    <div className="max-w-6xl mx-auto space-y-5">
+    <div className="max-w-6xl mx-auto space-y-4 md:space-y-5">
       {/* Item 1 — full width */}
       <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={slideUp}
         whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
-        className="glass-card rounded-[2rem] overflow-hidden group cursor-default relative">
+        className="glass-card rounded-[1.5rem] md:rounded-[2rem] overflow-hidden group cursor-default relative">
         <div className={`absolute inset-0 bg-gradient-to-br ${first.gradFrom} ${first.gradTo} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-        <div className="relative z-10 p-5 md:p-10 lg:p-14 flex flex-col md:flex-row gap-6 md:gap-8 items-start md:items-center">
-          <div className="w-16 h-16 md:w-20 md:h-20 rounded-3xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
-            <Icon0 className={`w-8 h-8 md:w-10 md:h-10 ${first.color}`} />
+        <div className="relative z-10 p-5 md:p-10 lg:p-14 flex flex-col md:flex-row gap-4 md:gap-8 items-start md:items-center">
+          <div className="w-14 h-14 md:w-20 md:h-20 rounded-2xl md:rounded-3xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
+            <Icon0 className={`w-7 h-7 md:w-10 md:h-10 ${first.color}`} />
           </div>
           <div className="flex-1">
-            <div className={`text-xs font-black tracking-widest uppercase mb-3 ${first.color}`}>{first.label}</div>
-            <h3 className="text-2xl md:text-3xl lg:text-4xl font-black mb-3 md:mb-4">{first.title}</h3>
-            <p className="text-base md:text-xl text-muted-foreground leading-relaxed">{first.desc}</p>
+            <div className={`text-xs font-black tracking-widest uppercase mb-2 md:mb-3 ${first.color}`}>{first.label}</div>
+            <h3 className="text-xl md:text-3xl lg:text-4xl font-black mb-2 md:mb-4">{first.title}</h3>
+            <p className="text-sm md:text-xl text-muted-foreground leading-relaxed">{first.desc}</p>
           </div>
-          <div className={`text-[120px] font-black ${first.color} opacity-[0.06] group-hover:opacity-[0.15] transition-opacity duration-500 shrink-0 hidden lg:block leading-none`}>01</div>
+          <div className={`text-[80px] md:text-[120px] font-black ${first.color} opacity-[0.06] group-hover:opacity-[0.15] transition-opacity duration-500 shrink-0 hidden lg:block leading-none`}>01</div>
         </div>
       </motion.div>
 
-      {/* Items 2 & 3 — two columns */}
-      <div className="grid md:grid-cols-2 gap-5">
+      {/* Mobile: horizontal scroll strip for items 2-5 */}
+      <div className="md:hidden -mx-4 px-4">
+        <div className="flex gap-3 overflow-x-auto pb-3 snap-x snap-mandatory scrollbar-hide" style={{ scrollbarWidth: "none" }}>
+          {ADVANTAGES.slice(1).map((item, idx) => {
+            const { Icon } = item;
+            return (
+              <motion.div key={idx} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+                className="glass-card rounded-2xl overflow-hidden group cursor-default relative flex-shrink-0 snap-start w-72">
+                <div className={`absolute inset-0 bg-gradient-to-br ${item.gradFrom} ${item.gradTo} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                <div className="relative z-10 p-5 flex flex-col h-full">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+                      <Icon className={`w-5 h-5 ${item.color}`} />
+                    </div>
+                    <div className={`text-4xl font-black ${item.color} opacity-10 leading-none`}>{idx + 2}</div>
+                  </div>
+                  <div className={`text-[10px] font-black tracking-widest uppercase mb-2 ${item.color}`}>{`0${idx + 2}`}</div>
+                  <h3 className="text-base font-black mb-2">{item.title}</h3>
+                  <p className="text-muted-foreground text-xs leading-relaxed">{item.desc}</p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+        <div className="flex justify-center gap-1 mt-1">
+          {ADVANTAGES.slice(1).map((_, i) => (
+            <div key={i} className={`w-1.5 h-1.5 rounded-full ${i === 0 ? 'bg-primary' : 'bg-white/20'}`} />
+          ))}
+        </div>
+      </div>
+
+      {/* Desktop: two columns grid */}
+      <div className="hidden md:grid md:grid-cols-2 gap-5">
         <AdvantageCard item={ADVANTAGES[1]} index={1} variants={fadeLeft} />
         <AdvantageCard item={ADVANTAGES[2]} index={2} variants={fadeRight} />
       </div>
-
-      {/* Items 4 & 5 — two columns */}
-      <div className="grid md:grid-cols-2 gap-5">
+      <div className="hidden md:grid md:grid-cols-2 gap-5">
         <AdvantageCard item={ADVANTAGES[3]} index={3} variants={fadeLeft} />
         <AdvantageCard item={ADVANTAGES[4]} index={4} variants={fadeRight} />
       </div>
@@ -294,7 +323,7 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground overflow-x-hidden">
+    <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground overflow-x-hidden pb-16 md:pb-0">
 
       <SceneBackground />
 
@@ -376,8 +405,16 @@ export default function Landing() {
         </AnimatePresence>
       </nav>
 
+      {/* MOBILE STICKY CTA */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 p-3 safe-area-bottom"
+        style={{ background: "rgba(5, 8, 18, 0.92)", backdropFilter: "blur(24px)", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+        <Button onClick={() => openInvest()} className="w-full h-12 btn-grad btn-3d font-bold rounded-xl text-base">
+          Инвестировать <ArrowRight className="ml-2 w-4 h-4" />
+        </Button>
+      </div>
+
       {/* HERO */}
-      <section className="pt-24 pb-10 lg:pt-44 lg:pb-28 px-4 relative">
+      <section className="pt-24 pb-16 lg:pt-44 lg:pb-28 px-4 relative">
         <div className="container mx-auto relative z-10 flex flex-wrap gap-3 mb-4 lg:hidden">
           <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">Pre-Seed</div>
           <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-muted-foreground text-sm">$1 000 000 целевой объём</div>
@@ -816,7 +853,7 @@ export default function Landing() {
             <p className="text-lg text-muted-foreground">Выберите свой уровень участия. Все пакеты включают RevShare, токены $TRND и партнёрскую программу.</p>
           </motion.div>
 
-          <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 max-w-7xl mx-auto">
             {PACKAGES_DATA.map((pkg, i) => (
               <motion.div key={pkg.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn}
                 whileHover={{ y: pkg.recommended ? -6 : -4, transition: { duration: 0.25 } }}
@@ -1127,7 +1164,7 @@ export default function Landing() {
       </section>
 
       {/* FAQ */}
-      <section className="py-24">
+      <section id="faq" className="py-24">
         <div className="container mx-auto px-4 max-w-3xl">
           <h2 className="text-4xl font-black text-center mb-12">Вопросы и ответы</h2>
           <Accordion type="single" collapsible className="w-full space-y-4">

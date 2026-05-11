@@ -69,27 +69,27 @@
 }
 
 :root {
-  --background: 220 40% 20%;
+  --background: 222 47% 5%;
   --foreground: 210 40% 98%;
-  --card: 220 35% 24%;
+  --card: 222 42% 8%;
   --card-foreground: 210 40% 98%;
-  --card-border: 220 30% 20%;
-  --border: 220 30% 18%;
+  --card-border: 222 35% 12%;
+  --border: 222 35% 11%;
   --primary: 192 100% 50%;
   --primary-foreground: 220 50% 8%;
   --secondary: 257 100% 68%;
   --secondary-foreground: 210 40% 98%;
-  --muted: 220 40% 14%;
-  --muted-foreground: 215 20% 76%;
+  --muted: 222 45% 10%;
+  --muted-foreground: 215 20% 65%;
   --accent: 192 100% 50%;
   --accent-foreground: 220 50% 8%;
   --destructive: 0 80% 60%;
   --destructive-foreground: 210 40% 98%;
-  --input: 220 30% 20%;
+  --input: 222 38% 12%;
   --ring: 192 100% 50%;
-  --popover: 220 40% 10%;
+  --popover: 222 50% 5%;
   --popover-foreground: 210 40% 98%;
-  --popover-border: 220 30% 20%;
+  --popover-border: 222 35% 12%;
   
   --chart-1: 192 100% 50%;
   --chart-2: 257 100% 68%;
@@ -113,27 +113,27 @@
 }
 
 .dark {
-  --background: 220 40% 20%;
+  --background: 222 47% 5%;
   --foreground: 210 40% 98%;
-  --card: 220 35% 24%;
+  --card: 222 42% 8%;
   --card-foreground: 210 40% 98%;
-  --card-border: 220 30% 20%;
-  --border: 220 30% 18%;
+  --card-border: 222 35% 12%;
+  --border: 222 35% 11%;
   --primary: 192 100% 50%;
   --primary-foreground: 220 50% 8%;
   --secondary: 257 100% 68%;
   --secondary-foreground: 210 40% 98%;
-  --muted: 220 40% 14%;
-  --muted-foreground: 215 20% 76%;
+  --muted: 222 45% 10%;
+  --muted-foreground: 215 20% 65%;
   --accent: 192 100% 50%;
   --accent-foreground: 220 50% 8%;
   --destructive: 0 80% 60%;
   --destructive-foreground: 210 40% 98%;
-  --input: 220 30% 20%;
+  --input: 222 38% 12%;
   --ring: 192 100% 50%;
-  --popover: 220 40% 10%;
+  --popover: 222 50% 5%;
   --popover-foreground: 210 40% 98%;
-  --popover-border: 220 30% 20%;
+  --popover-border: 222 35% 12%;
   
   --chart-1: 192 100% 50%;
   --chart-2: 257 100% 68%;
@@ -165,13 +165,13 @@
 
 /* ── Liquid Glass base ─────────────────────────────────────────────── */
 .glass-card {
-  background: rgba(255, 255, 255, 0.045);
+  background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(20px) saturate(160%);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
-    0 2px 12px rgba(0,0,0,0.10),
-    inset 0 1px 0 rgba(255,255,255,0.08);
+    0 2px 16px rgba(0,0,0,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.07);
   position: relative;
   isolation: isolate;
 }
@@ -354,4 +354,23 @@
   10%  { opacity: 1; }
   90%  { opacity: 0.6; }
   100% { transform: translateY(-900px) translateX(var(--sway, 0px)); opacity: 0; }
+}
+
+/* ── Hide scrollbar ─────────────────────────────────────────────────── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Safe area for mobile sticky CTA ───────────────────────────────── */
+.safe-area-bottom {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+/* ── Smooth section transitions ─────────────────────────────────────── */
+section {
+  scroll-margin-top: 5rem;
 }
