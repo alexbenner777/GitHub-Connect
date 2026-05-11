@@ -1,10 +1,11 @@
-# [Project name]
+# Trends Landing
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+Investment landing page for the Trends Telegram Mini App (Reels inside Telegram). Allows investors to learn about the project and select investment packages.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm --filter @workspace/trends-landing run dev` — run the landing page (port 22520)
+- `pnpm --filter @workspace/api-server run dev` — run the API server (port 8080)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
@@ -14,6 +15,7 @@ _Replace the heading above with the project's name, and this line with one sente
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
+- Frontend: React + Vite + Tailwind CSS + shadcn/ui + framer-motion
 - API: Express 5
 - DB: PostgreSQL + Drizzle ORM
 - Validation: Zod (`zod/v4`), `drizzle-zod`
@@ -22,23 +24,39 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/trends-landing/src/pages/Landing.tsx` — main landing page (hero, sections, FAQ, roadmap)
+- `artifacts/trends-landing/src/pages/Cabinet.tsx` — investor personal cabinet
+- `artifacts/trends-landing/src/pages/not-found.tsx` — 404 page
+- `artifacts/trends-landing/src/components/InvestmentModal.tsx` — investment package selection modal
+- `artifacts/trends-landing/src/index.css` — CSS variables, themes, styles
+- `attached_assets/` — images (logo, app screenshots, etc.)
+- `lib/db/src/schema/` — DB schema (users, investments, transactions, referrals)
+- `lib/api-spec/openapi.yaml` — OpenAPI contract (source of truth)
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Frontend-only landing with no required backend for the core investment CTA flow
+- Images imported via `@assets` alias → resolves to `attached_assets/` folder
+- Colors: primary cyan `#00D4FF`, secondary purple `#7B5EFF` (defined in `index.css`)
+- Railway CI/CD: every git push to `main` triggers an automatic rebuild on Railway prod
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+Investment landing page for Trends — the first Reels platform inside Telegram. Features hero section, monetization pitch, investor packages (Starter $100, Genesis $1000, Growth $10000, Whale $50000), roadmap, and FAQ.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- Edit only `artifacts/trends-landing/src/` and `attached_assets/`
+- Do not touch `.replit-artifact/artifact.toml`
+- After each change, push to GitHub main → Railway auto-deploys
+- Colors: primary cyan #00D4FF, secondary purple #7B5EFF
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- Images must be imported via `@assets` alias (resolves to `attached_assets/`)
+- GitHub remote: `https://github.com/darcynj757-svg/trends-landing.git`
+- Railway prod: `https://trends-landing-production.up.railway.app`
+- Git push must be done after every file change for Railway to pick it up
 
 ## Pointers
 

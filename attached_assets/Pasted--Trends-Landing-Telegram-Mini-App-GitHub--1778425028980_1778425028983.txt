@@ -1,0 +1,79 @@
+Ты работаешь с сайтом Trends Landing — инвестиционный лендинг для Telegram Mini App.
+
+GitHub репозиторий: https://github.com/darcynj757-svg/trends-landing
+Прод: https://trends-landing-production.up.railway.app
+GitHub Token: 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
+
+Стек: React + Vite + TypeScript + Tailwind CSS + shadcn/ui + framer-motion
+Монорепо: pnpm workspaces, Node.js 24
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ЗАДАЧА 1 — ПЕРВИЧНАЯ НАСТРОЙКА (делается один раз)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Сохрани токен как секрет GITHUB_TOKEN через requestEnvVar.
+
+2. Клонируй репозиторий:
+   git clone https://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@github.com/darcynj757-svg/trends-landing.git /tmp/repo
+
+3. Скопируй файлы в workspace:
+   cp -r /tmp/repo/artifacts/trends-landing artifacts/trends-landing
+   mkdir -p attached_assets && cp /tmp/repo/attached_assets/* attached_assets/
+   cp /tmp/repo/lib lib/ (если нужна lib)
+   cp /tmp/repo/pnpm-workspace.yaml .
+   cp /tmp/repo/tsconfig.base.json .
+   cp /tmp/repo/package.json .
+   cp /tmp/repo/pnpm-lock.yaml .
+
+4. Создай артефакт через createArtifact:
+   { artifactType: "react-vite", slug: "trends-landing", previewPath: "/", title: "Trends Landing" }
+   Если директория уже существует — удали её и создай заново.
+
+5. Установи зависимости:
+   pnpm install
+
+6. Настрой git для push обратно в GitHub:
+   git remote set-url origin https://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@github.com/darcynj757-svg/trends-landing.git
+   git config user.email "agent@replit.com"
+   git config user.name "Replit Agent"
+
+7. Запусти воркфлоу "artifacts/trends-landing: web".
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ЗАДАЧА 2 — ВНЕСЕНИЕ ПРАВОК И ПУБЛИКАЦИЯ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+После любого изменения файлов — сразу делай push в GitHub:
+
+  git add -A
+  git commit -m "edit: <краткое описание>"
+  git push origin main
+
+Railway автоматически пересобирает и деплоит сайт после каждого push.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+СТРУКТУРА САЙТА
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+artifacts/trends-landing/src/
+  pages/
+    Landing.tsx          — главная (hero, секции, FAQ, roadmap)
+    Cabinet.tsx          — личный кабинет инвестора
+    not-found.tsx        — 404
+  components/
+    InvestmentModal.tsx  — модальное окно выбора пакета инвестиций
+    ui/                  — shadcn компоненты
+  index.css              — CSS переменные, темы, стили
+
+attached_assets/         — изображения (логотип, скрины приложения)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ПРАВИЛА РЕДАКТИРОВАНИЯ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- Редактируй только artifacts/trends-landing/src/ и attached_assets/
+- Не трогай .replit-artifact/artifact.toml
+- После каждого изменения — git push в main
+- Изображения импортируются через @assets (→ attached_assets/)
+- Цвета: primary cyan #00D4FF, secondary purple #7B5EFF (в index.css)
+- Пакеты инвестиций в InvestmentModal.tsx: Starter $100, Genesis $1000, Growth $10000, Whale $50000
