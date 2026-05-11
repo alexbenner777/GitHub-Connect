@@ -18,7 +18,7 @@ import screen1Path from '@assets/скрин_1_1777968001895.png';
 import screen2Path from '@assets/скрин_2_1777969066507.png';
 import screen3Path from '@assets/скрин_3_1777969064666.png';
 import screenAppPath from '@assets/111_1778425377815.png';
-import iphonePath from '@assets/iphone_front_transparent.png';
+import iphonePath from '@assets/iphone_фронт_1778532530856.png';
 import videoPath from '@assets/trends_demo_video.mov';
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
@@ -617,7 +617,7 @@ export default function Landing() {
               <div className="relative inline-flex justify-center items-center" style={{ height: 'clamp(480px, 85vw, 580px)' }}>
                 {/* Video clipped to phone screen area */}
                 <div className="absolute z-0 overflow-hidden rounded-[9%]"
-                  style={{ top: '4.5%', bottom: '4.5%', left: '10.5%', right: '10.5%' }}>
+                  style={{ top: '3%', bottom: '3%', left: '4%', right: '4%' }}>
                   <video
                     autoPlay muted loop playsInline
                     className="w-full h-full object-cover"
