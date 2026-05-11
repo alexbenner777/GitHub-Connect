@@ -18,7 +18,7 @@ import screen1Path from '@assets/скрин_1_1777968001895.png';
 import screen2Path from '@assets/скрин_2_1777969066507.png';
 import screen3Path from '@assets/скрин_3_1777969064666.png';
 import screenAppPath from '@assets/111_1778425377815.png';
-const trendsVideoPath = '/trends_demo_video.mov';
+const trendsVideoPath = '/trends_demo_video.mp4';
 const iphoneFramePath = '/iphone_frame_transparent.png';
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
