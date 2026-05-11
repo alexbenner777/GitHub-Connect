@@ -296,7 +296,7 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground overflow-x-hidden">
+    <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground [overflow-x:clip]">
 
       <SceneBackground />
 
@@ -617,7 +617,7 @@ export default function Landing() {
               <div className="relative inline-flex justify-center items-center" style={{ height: 'clamp(480px, 85vw, 580px)' }}>
                 {/* Video clipped to phone screen area */}
                 <div className="absolute z-0 overflow-hidden rounded-[9%]"
-                  style={{ top: '5.5%', bottom: '4%', left: '10%', right: '10%' }}>
+                  style={{ top: '3%', bottom: '6%', left: '10%', right: '10%' }}>
                   <video
                     autoPlay muted loop playsInline
                     className="w-full h-full object-cover"
@@ -696,7 +696,7 @@ export default function Landing() {
       </section>
 
       {/* MVP */}
-      <section className="py-14 md:py-24 relative overflow-x-hidden">
+      <section className="py-14 md:py-24 relative [overflow-x:clip]">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeLeft}
@@ -821,7 +821,7 @@ export default function Landing() {
       </section>
 
       {/* 5 INVESTOR ADVANTAGES */}
-      <section id="investors" className="py-16 md:py-24 lg:py-32 relative overflow-x-hidden scroll-mt-20">
+      <section id="investors" className="py-16 md:py-24 lg:py-32 relative [overflow-x:clip] scroll-mt-20">
         <div className="container mx-auto px-4 relative z-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeIn}
             className="text-center max-w-4xl mx-auto mb-10 md:mb-16 lg:mb-20">
@@ -922,7 +922,7 @@ export default function Landing() {
       </section>
 
       {/* MLM */}
-      <section className="py-14 md:py-24 relative overflow-hidden">
+      <section className="py-14 md:py-24 relative [overflow-x:clip]">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-green-500/8 blur-[120px] rounded-full pointer-events-none" />
         <div className="container mx-auto px-4 relative z-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeIn}
@@ -1027,7 +1027,7 @@ export default function Landing() {
       </section>
 
       {/* ROADMAP */}
-      <section id="roadmap" className="py-14 md:py-24 overflow-x-hidden scroll-mt-20">
+      <section id="roadmap" className="py-14 md:py-24 [overflow-x:clip] scroll-mt-20">
         <div className="container mx-auto px-4">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeIn} className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">Roadmap</h2>
