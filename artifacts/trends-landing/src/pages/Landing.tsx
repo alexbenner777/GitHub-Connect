@@ -18,6 +18,8 @@ import screen1Path from '@assets/скрин_1_1777968001895.png';
 import screen2Path from '@assets/скрин_2_1777969066507.png';
 import screen3Path from '@assets/скрин_3_1777969064666.png';
 import screenAppPath from '@assets/111_1778425377815.png';
+import iphonePath from '@assets/iphone_front_transparent.png';
+import videoPath from '@assets/trends_demo_video.mov';
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -378,16 +380,44 @@ export default function Landing() {
 
       {/* HERO */}
       <section className="pt-24 pb-10 lg:pt-44 lg:pb-28 px-4 relative">
-        <div className="container mx-auto relative z-10 flex flex-wrap gap-3 mb-4 lg:hidden">
-          <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">Pre-Seed</div>
-          <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-muted-foreground text-sm">$1 000 000 целевой объём</div>
-          <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold flex items-center gap-1">
-            <CheckCircle2 className="w-4 h-4" /> MVP готов
-          </div>
-        </div>
+        <div className="container mx-auto relative z-10">
+        <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
 
-        <div className="container mx-auto grid lg:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10">
-          <motion.div initial="hidden" animate="visible" variants={fadeIn} className="space-y-6 lg:space-y-8 order-1 lg:order-1">
+          {/* IMAGE — first on mobile, second on desktop */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85, y: 40 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 1, ease: EASE, delay: 0.2 }}
+            style={{ y: heroY }}
+            className="relative flex items-center justify-center order-1 lg:order-2 mb-2 lg:mb-0"
+          >
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <motion.div
+                animate={{ scale: [1, 1.12, 1], opacity: [0.3, 0.55, 0.3] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="w-48 h-48 lg:w-64 lg:h-64 rounded-full bg-primary blur-[80px]"
+              />
+            </div>
+            <motion.img
+              src={screen1Path}
+              alt="Trends App"
+              animate={{ y: [0, -14, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              className="relative z-10 max-h-[38vh] sm:max-h-[55vh] lg:max-h-[85vh] w-full object-contain drop-shadow-2xl"
+            />
+          </motion.div>
+
+          {/* MOBILE BADGES — between image and text */}
+          <div className="flex flex-wrap gap-3 my-4 lg:hidden order-2">
+            <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">Pre-Seed</div>
+            <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-muted-foreground text-sm">$1 000 000 целевой объём</div>
+            <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold flex items-center gap-1">
+              <CheckCircle2 className="w-4 h-4" /> MVP готов
+            </div>
+          </div>
+
+          {/* TEXT — third on mobile, first on desktop */}
+          <motion.div initial="hidden" animate="visible" variants={fadeIn} className="space-y-6 lg:space-y-8 order-3 lg:order-1">
             <div className="hidden lg:flex flex-wrap gap-3">
               <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">Pre-Seed</div>
               <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-muted-foreground text-sm">$1 000 000 целевой объём</div>
@@ -494,50 +524,27 @@ export default function Landing() {
             </div>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.85, y: 40 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 1, ease: EASE, delay: 0.2 }}
-            style={{ y: heroY }}
-            className="relative flex items-center justify-center order-2 lg:order-2"
-          >
-            {/* Glowing halo behind phone */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <motion.div
-                animate={{ scale: [1, 1.12, 1], opacity: [0.3, 0.55, 0.3] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="w-48 h-48 lg:w-64 lg:h-64 rounded-full bg-primary blur-[80px]"
-              />
-            </div>
-            <motion.img
-              src={screen1Path}
-              alt="Trends App"
-              animate={{ y: [0, -14, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="relative z-10 max-h-[45vh] sm:max-h-[55vh] lg:max-h-[85vh] w-full object-contain drop-shadow-2xl"
-            />
-          </motion.div>
+        </div>
         </div>
       </section>
 
       {/* SOCIAL PROOF STRIP */}
-      <section className="py-12 border-y border-white/8">
+      <section className="py-12 border-y border-white/8 relative z-10">
         <div className="container mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerFast}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
               { value: "1B+", label: "Пользователей Telegram", sub: "целевой рынок", color: "text-primary" },
               { value: "$75K", label: "Собрано инвесторами", sub: "Pre-Seed раунд", color: "text-green-400" },
               { value: "13", label: "Ранних инвесторов", sub: "уже в проекте", color: "text-secondary" },
               { value: "MVP ✓", label: "Продукт работает", sub: "запущен сейчас", color: "text-yellow-400" },
             ].map((stat, i) => (
-              <motion.div key={i} variants={fadeScale} className="text-center py-2">
+              <motion.div key={i} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeScale} className="text-center py-2 relative z-10">
                 <div className={`text-3xl md:text-4xl font-black mb-1 ${stat.color}`}>{stat.value}</div>
                 <div className="text-sm font-semibold text-foreground">{stat.label}</div>
                 <div className="text-xs text-muted-foreground mt-0.5">{stat.sub}</div>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -545,8 +552,8 @@ export default function Landing() {
       <section className="py-14 md:py-24 relative">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center max-w-6xl mx-auto">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerChildren}
-              className="space-y-6 order-1 lg:order-1">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={staggerChildren}
+              className="space-y-6 order-2 lg:order-1">
               <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-black">
                 Что такое <span className="text-gradient">Trends</span>?
               </motion.h2>
@@ -599,12 +606,24 @@ export default function Landing() {
                 </MagneticButton>
               </motion.div>
             </motion.div>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeRight}
-              className="relative flex justify-center order-2 lg:order-2">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeRight}
+              className="relative flex justify-center items-center order-1 lg:order-2 mb-6 lg:mb-0 min-h-[320px] lg:min-h-[500px] rounded-3xl overflow-hidden">
+              {/* Video background */}
+              <video
+                autoPlay muted loop playsInline
+                className="absolute inset-0 w-full h-full object-cover opacity-80"
+              >
+                <source src={videoPath} type="video/mp4" />
+                <source src={videoPath} type="video/quicktime" />
+              </video>
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-background/30" />
+              {/* Glow */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-48 h-48 lg:w-64 lg:h-64 rounded-full bg-secondary/20 blur-[80px]" />
+                <div className="w-40 h-40 lg:w-56 lg:h-56 rounded-full bg-secondary/30 blur-[60px]" />
               </div>
-              <img src={screenAppPath} alt="Trends App" className="relative z-10 max-h-[320px] lg:max-h-[620px] w-auto object-contain drop-shadow-2xl" />
+              {/* iPhone PNG overlay */}
+              <img src={iphonePath} alt="Trends App" className="relative z-10 max-h-[300px] lg:max-h-[560px] w-auto object-contain drop-shadow-2xl" />
             </motion.div>
           </div>
         </div>
@@ -674,12 +693,12 @@ export default function Landing() {
       <section className="py-14 md:py-24 relative overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeLeft}
-              className="relative flex justify-center order-2 lg:order-1">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeLeft}
+              className="relative flex justify-center order-1 lg:order-1">
               <img src={screen3Path} alt="Trends MVP" className="relative z-10 max-h-[320px] lg:max-h-[620px] object-contain drop-shadow-2xl" />
             </motion.div>
 
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerChildren} className="space-y-6 lg:space-y-8 order-1 lg:order-2">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={staggerChildren} className="space-y-6 lg:space-y-8 order-2 lg:order-2">
               <motion.div variants={fadeRight} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 text-green-400 border border-green-500/20 font-bold tracking-wide">
                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                 ПРОДУКТ УЖЕ РАБОТАЕТ
@@ -811,7 +830,7 @@ export default function Landing() {
       {/* INVESTMENT PACKAGES */}
       <section className="py-14 md:py-24">
         <div className="container mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="text-center mb-16">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeIn} className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">Инвестиционные пакеты</h2>
             <p className="text-lg text-muted-foreground">Выберите свой уровень участия. Все пакеты включают RevShare, токены $TRND и партнёрскую программу.</p>
           </motion.div>
@@ -1004,7 +1023,7 @@ export default function Landing() {
       {/* ROADMAP */}
       <section id="roadmap" className="py-14 md:py-24 overflow-hidden">
         <div className="container mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="text-center mb-16">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeIn} className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">Roadmap</h2>
             <p className="text-lg text-muted-foreground">Запуск в 2026 — путь к глобальному масштабу</p>
           </motion.div>
@@ -1075,7 +1094,7 @@ export default function Landing() {
       {/* TEAM — 3 members */}
       <section className="py-24">
         <div className="container mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="text-center mb-16">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeIn} className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">Команда</h2>
             <p className="text-lg text-muted-foreground">Опытные специалисты с глубокой экспертизой в Telegram, IT и продукте</p>
           </motion.div>
@@ -1234,27 +1253,6 @@ export default function Landing() {
                 </li>
               </ul>
 
-              <div className="border-t border-white/8 pt-4 space-y-3">
-                <h5 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Раунд</h5>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-muted-foreground">Тип раунда</span>
-                    <span className="font-bold text-primary">Pre-Seed</span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-muted-foreground">Цель</span>
-                    <span className="font-bold text-foreground">$1 000 000</span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-muted-foreground">RevShare пул</span>
-                    <span className="font-bold text-green-400">20%</span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-muted-foreground">Exit потенциал</span>
-                    <span className="font-bold text-yellow-400">× 20 – × 30</span>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
