@@ -18,6 +18,7 @@ import screen1Path from '@assets/скрин_1_1777968001895.png';
 import screen2Path from '@assets/скрин_2_1777969066507.png';
 import screen3Path from '@assets/скрин_3_1777969064666.png';
 import screenAppPath from '@assets/111_1778425377815.png';
+import trendsVideoPath from '@assets/ScreenRecording_05-11-2026_10-42-13_1_1778519635888.mov';
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -641,7 +642,14 @@ export default function Landing() {
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div className="w-48 h-48 lg:w-64 lg:h-64 rounded-full bg-secondary/20 blur-[80px]" />
               </div>
-              <img src={screenAppPath} alt="Trends App" className="relative z-10 max-h-[320px] lg:max-h-[620px] w-auto object-contain drop-shadow-2xl" />
+              <video
+                src={trendsVideoPath}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="relative z-10 max-h-[320px] lg:max-h-[620px] w-auto object-contain drop-shadow-2xl rounded-3xl"
+              />
             </motion.div>
           </div>
         </div>
