@@ -643,17 +643,25 @@ export default function Landing() {
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div className="w-48 h-48 lg:w-64 lg:h-64 rounded-full bg-secondary/20 blur-[80px]" />
               </div>
-              {/* iPhone mockup: video inside, frame on top */}
-              <div className="relative inline-block max-h-[340px] lg:max-h-[640px]"
-                style={{ width: "min(260px, 90vw)" }}>
-                {/* Video clipped to screen area */}
+              {/* iPhone mockup: video below, transparent frame on top */}
+              <div className="relative inline-block"
+                style={{ width: "min(240px, 82vw)" }}>
+                {/* 1. Invisible spacer image to set the container height */}
+                <img
+                  src={iphoneFramePath}
+                  alt=""
+                  aria-hidden
+                  className="w-full h-auto invisible select-none pointer-events-none"
+                />
+                {/* 2. Video fills the screen area (below the frame) */}
                 <div className="absolute overflow-hidden"
                   style={{
-                    top: "6.5%",
-                    left: "5.8%",
-                    right: "5.8%",
-                    bottom: "4.5%",
-                    borderRadius: "9%",
+                    top: "8%",
+                    left: "6.2%",
+                    right: "6.2%",
+                    bottom: "5%",
+                    borderRadius: "8%",
+                    zIndex: 1,
                   }}>
                   <video
                     src={trendsVideoPath}
@@ -661,14 +669,15 @@ export default function Landing() {
                     loop
                     muted
                     playsInline
-                    className="w-full h-full object-cover"
+                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
                   />
                 </div>
-                {/* iPhone frame on top */}
+                {/* 3. iPhone transparent frame on top to mask video edges */}
                 <img
                   src={iphoneFramePath}
                   alt="iPhone"
-                  className="relative z-10 w-full h-auto pointer-events-none select-none drop-shadow-2xl"
+                  className="absolute inset-0 w-full h-full pointer-events-none select-none drop-shadow-2xl"
+                  style={{ zIndex: 2 }}
                 />
               </div>
             </motion.div>
