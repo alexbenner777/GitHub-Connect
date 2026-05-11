@@ -617,7 +617,7 @@ export default function Landing() {
               <div className="relative inline-flex justify-center items-center" style={{ height: 'clamp(480px, 85vw, 580px)' }}>
                 {/* Video clipped to phone screen area */}
                 <div className="absolute z-0 overflow-hidden rounded-[9%]"
-                  style={{ top: '1%', bottom: '1%', left: '7%', right: '7%' }}>
+                  style={{ top: '1%', bottom: '1%', left: '8%', right: '8%' }}>
                   <video
                     autoPlay muted loop playsInline
                     className="w-full h-full object-cover"
@@ -629,7 +629,7 @@ export default function Landing() {
                 {/* iPhone frame on top */}
                 <img src={iphonePath} alt="Trends App"
                   className="relative z-10 h-full w-auto object-contain drop-shadow-2xl"
-                  style={{ mixBlendMode: 'multiply', transform: 'scaleY(1.08) translateY(-3.7%)', transformOrigin: 'top center' }} />
+                  style={{ mixBlendMode: 'multiply', transform: 'scaleY(1.08) translateY(-3.5%)', transformOrigin: 'top center' }} />
               </div>
             </motion.div>
           </div>
