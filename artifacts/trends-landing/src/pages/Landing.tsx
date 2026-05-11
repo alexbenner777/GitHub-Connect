@@ -617,7 +617,7 @@ export default function Landing() {
               <div className="relative inline-flex justify-center items-center" style={{ height: 'clamp(480px, 85vw, 580px)' }}>
                 {/* Video clipped to phone screen area */}
                 <div className="absolute z-0 overflow-hidden rounded-[9%]"
-                  style={{ top: '3%', bottom: '3%', left: '4%', right: '4%' }}>
+                  style={{ top: '5%', bottom: '5%', left: '8%', right: '8%' }}>
                   <video
                     autoPlay muted loop playsInline
                     className="w-full h-full object-cover"
