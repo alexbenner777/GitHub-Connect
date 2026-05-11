@@ -629,7 +629,7 @@ export default function Landing() {
                 {/* iPhone frame on top */}
                 <img src={iphonePath} alt="Trends App"
                   className="relative z-10 h-full w-auto object-contain drop-shadow-2xl"
-                  style={{ mixBlendMode: 'multiply' }} />
+                  style={{ mixBlendMode: 'multiply', transform: 'scaleY(1.08)', transformOrigin: 'top center' }} />
               </div>
             </motion.div>
           </div>
