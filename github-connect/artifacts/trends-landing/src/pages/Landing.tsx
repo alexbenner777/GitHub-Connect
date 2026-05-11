@@ -13,11 +13,11 @@ import {
   Mail, Globe, FileText, Lock
 } from "lucide-react";
 
-import logoPath from '@assets/logo_trends_1777962710178.png';
-import screen1Path from '@assets/скрин_1_1777968001895.png';
-import screen2Path from '@assets/скрин_2_1777969066507.png';
-import screen3Path from '@assets/скрин_3_1777969064666.png';
-import screenAppPath from '@assets/111_1778425377815.png';
+const logoPath = '/logo.png';
+const screen1Path = '/screen1.png';
+const screen2Path = '/screen2.png';
+const screen3Path = '/screen3.png';
+const screenAppPath = '/screen_app.png';
 const trendsVideoPath = '/trends_demo_video.mp4';
 const iphoneFramePath = '/iphone_frame_transparent.png';
 
