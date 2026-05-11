@@ -1,0 +1,52 @@
+Ты работаешь с сайтом Trends Landing — инвестиционный лендинг для Telegram Mini App.
+
+GitHub репозиторий: https://github.com/darcynj757-svg/GitHub-Connect (ПУБЛИЧНЫЙ)
+Прод: https://trends-landing-production.up.railway.app
+
+Стек: React + Vite + TypeScript + Tailwind CSS + shadcn/ui + framer-motion
+Монорепо: pnpm workspaces, Node.js 24
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ЗАДАЧА 1 — ПЕРВИЧНАЯ НАСТРОЙКА (делается один раз)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Клонируй репозиторий (токен не нужен, репо публичное):
+   git clone --depth=1 https://github.com/darcynj757-svg/GitHub-Connect /home/runner/workspace/github-connect
+
+2. Установи зависимости:
+   cd /home/runner/workspace/github-connect && pnpm install
+
+3. Настрой воркфлоу через configureWorkflow:
+   {
+     name: "Start application",
+     command: "cd /home/runner/workspace/github-connect && PORT=3000 BASE_PATH=/ pnpm --filter @workspace/trends-landing run dev",
+     waitForPort: 3000,
+     outputType: "webview"
+   }
+   Затем перезапусти воркфлоу.
+
+4. Настрой git для push обратно в GitHub:
+   - Попроси пользователя добавить GitHub Personal Access Token (scope: repo, No expiration)
+     ЧЕРЕЗ ИНТЕРФЕЙС REPLIT SECRETS (иконка замка в левой панели) с именем GITHUB_TOKEN.
+     НИКОГДА не вставляй токен в чат — GitHub автоматически отзовёт его.
+   - После того как пользователь добавил секрет, выполни:
+     cd /home/runner/workspace/github-connect
+     git remote set-url origin https://${GITHUB_TOKEN}@github.com/darcynj757-svg/GitHub-Connect.git
+     git config user.email "agent@replit.com"
+     git config user.name "Replit Agent"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ЗАДАЧА 2 — ВНЕСЕНИЕ ПРАВОК И ПУБЛИКАЦИЯ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Все файлы сайта находятся в:
+  /home/runner/workspace/github-connect/artifacts/trends-landing/src/
+
+После любого изменения файлов — сразу делай push в GitHub:
+
+  cd /home/runner/workspace/github-connect
+  git add -A
+  git commit -m "edit: <краткое описание>"
+  git push origin main
+
+Railway автоматически пересобирает и деплоит сайт после каждого push.
