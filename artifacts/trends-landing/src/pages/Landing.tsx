@@ -412,7 +412,7 @@ export default function Landing() {
               alt="Trends App"
               animate={{ y: [0, -14, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="relative z-10 max-h-[38vh] sm:max-h-[55vh] lg:max-h-[85vh] w-full object-contain drop-shadow-2xl"
+              className="relative z-10 max-h-[62vh] sm:max-h-[65vh] lg:max-h-[85vh] w-full object-contain drop-shadow-2xl"
             />
           </motion.div>
 
@@ -611,10 +611,10 @@ export default function Landing() {
               className="relative flex justify-center items-center order-1 lg:order-2 mb-6 lg:mb-0">
               {/* Glow behind phone */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-40 h-40 lg:w-56 lg:h-56 rounded-full bg-secondary/30 blur-[80px]" />
+                <div className="w-64 h-64 lg:w-56 lg:h-56 rounded-full bg-secondary/30 blur-[80px]" />
               </div>
               {/* iPhone + video composite */}
-              <div className="relative inline-flex justify-center items-center max-h-[360px] lg:max-h-[580px]">
+              <div className="relative inline-flex justify-center items-center" style={{ height: 'clamp(480px, 85vw, 580px)' }}>
                 {/* Video clipped to phone screen area */}
                 <div className="absolute z-0 overflow-hidden rounded-[9%]"
                   style={{ top: '5.5%', bottom: '4%', left: '10%', right: '10%' }}>
@@ -628,7 +628,7 @@ export default function Landing() {
                 </div>
                 {/* iPhone frame on top */}
                 <img src={iphonePath} alt="Trends App"
-                  className="relative z-10 max-h-[360px] lg:max-h-[580px] w-auto object-contain drop-shadow-2xl" />
+                  className="relative z-10 h-full w-auto object-contain drop-shadow-2xl" />
               </div>
             </motion.div>
           </div>
@@ -636,7 +636,7 @@ export default function Landing() {
       </section>
 
       {/* PROBLEM → SOLUTION */}
-      <section id="problem" className="py-14 md:py-24 relative">
+      <section id="problem" className="py-14 md:py-24 relative scroll-mt-20">
         <div className="container mx-auto px-4">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeUp}
             className="text-center max-w-3xl mx-auto mb-16">
@@ -696,12 +696,12 @@ export default function Landing() {
       </section>
 
       {/* MVP */}
-      <section className="py-14 md:py-24 relative overflow-hidden">
+      <section className="py-14 md:py-24 relative overflow-x-hidden">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeLeft}
               className="relative flex justify-center order-1 lg:order-1">
-              <img src={screen3Path} alt="Trends MVP" className="relative z-10 max-h-[320px] lg:max-h-[620px] object-contain drop-shadow-2xl" />
+              <img src={screen3Path} alt="Trends MVP" className="relative z-10 max-h-[480px] lg:max-h-[620px] w-full object-contain drop-shadow-2xl" />
             </motion.div>
 
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={staggerChildren} className="space-y-6 lg:space-y-8 order-2 lg:order-2">
@@ -766,7 +766,7 @@ export default function Landing() {
       </section>
 
       {/* MONETIZATION */}
-      <section id="monetization" className="py-14 md:py-24 relative">
+      <section id="monetization" className="py-14 md:py-24 relative scroll-mt-20">
         <div className="container mx-auto px-4">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeUp}
             className="text-center max-w-3xl mx-auto mb-16">
@@ -821,7 +821,7 @@ export default function Landing() {
       </section>
 
       {/* 5 INVESTOR ADVANTAGES */}
-      <section id="investors" className="py-16 md:py-24 lg:py-32 relative overflow-hidden">
+      <section id="investors" className="py-16 md:py-24 lg:py-32 relative overflow-x-hidden scroll-mt-20">
         <div className="container mx-auto px-4 relative z-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeIn}
             className="text-center max-w-4xl mx-auto mb-10 md:mb-16 lg:mb-20">
@@ -1027,7 +1027,7 @@ export default function Landing() {
       </section>
 
       {/* ROADMAP */}
-      <section id="roadmap" className="py-14 md:py-24 overflow-hidden">
+      <section id="roadmap" className="py-14 md:py-24 overflow-x-hidden scroll-mt-20">
         <div className="container mx-auto px-4">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeIn} className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">Roadmap</h2>
