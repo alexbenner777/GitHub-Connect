@@ -1,0 +1,155 @@
+Ты работаешь над проектом Trends — крауд-лендинг для первой Reels-платформы внутри Telegram.
+
+## GITHUB РЕПОЗИТОРИЙ
+Репозиторий проекта: https://github.com/darcynj757-svg/trends-landing
+Основная ветка: main
+
+Первым делом подключись к GitHub:
+1. Нажми иконку Git в левой панели Replit
+2. Connect to GitHub → авторизуйся
+3. Выбери репозиторий trends-landing
+4. Pull — получи последнюю версию кода
+
+## ЧТО ЭТО ЗА ПРОЕКТ
+
+Trends — первая Reels-платформа (вертикальное видео) внутри Telegram Mini App.
+Лендинг — одностраничный инвестиционный сайт для привлечения Pre-Seed инвесторов.
+Цель сбора: $1 000 000 на маркетинг и инфраструктуру платформы.
+
+Живой MVP в Telegram: https://t.me/Trends_ibot?startapp
+
+## СТЕК И АРХИТЕКТУРА
+
+- Монорепо: pnpm workspaces
+- Фронтенд: React + Vite + TypeScript (artifacts/trends-landing/)
+- Стили: Tailwind CSS v4
+- Анимации: framer-motion
+- Роутинг: wouter (/ — лендинг, /cabinet — личный кабинет)
+- Состояние: localStorage (бэкенда нет, всё на фронтенде)
+- Иконки: lucide-react
+- Компоненты UI: shadcn/ui (в src/components/ui/)
+
+## КЛЮЧЕВЫЕ ФАЙЛЫ
+
+artifacts/trends-landing/
+├── src/
+│   ├── pages/
+│   │   ├── Landing.tsx       ← ГЛАВНЫЙ ФАЙЛ — весь лендинг
+│   │   └── Cabinet.tsx       ← Личный кабинет инвестора
+│   ├── components/
+│   │   ├── InvestmentModal.tsx ← Модал инвестирования (3 шага)
+│   │   └── ui/               ← shadcn компоненты (не трогать)
+│   ├── index.css             ← Тема цветов + шрифты
+│   └── App.tsx               ← Роутинг
+├── vite.config.ts            ← Конфиг для Replit (dev)
+└── vite.config.railway.ts    ← Конфиг для Railway (prod)
+
+attached_assets/              ← Все изображения проекта (в корне монорепо)
+
+## ЦВЕТОВАЯ ПАЛИТРА (нельзя менять)
+
+- Фон: #0A1428 (deep navy)
+- Основной акцент: #00D4FF (electric cyan)
+- Второстепенный: #7B5EFF (purple)
+- Шрифт заголовков: Manrope
+- Шрифт текста: Inter
+- Текст "Trends" везде: белый (text-white), шрифт Manrope Bold
+
+## CSS КЛАССЫ ПРОЕКТА
+
+.glass-card     — стеклянная карточка (backdrop-blur + rgba фон)
+.neon-glow      — неоновое свечение кнопки (box-shadow cyan)
+.text-gradient  — градиентный текст (cyan → purple)
+
+## СТРУКТУРА ЛЕНДИНГА (блоки по порядку)
+
+1. Навигация (fixed) — логотип + ссылки + кнопки CTA
+2. Hero (100vh) — заголовок + живые счётчики + прогресс-бар сбора + изображение телефонов
+3. Проблема → Решение — Telegram без видеоленты vs Trends решает
+4. MVP готов — скриншот + чеклист + кнопка в Telegram
+5. Продукт Trends — сетка телефонов на всю ширину + кнопка "Открыть MVP"
+6. 7 источников монетизации — 1 большая карточка + 6 в сетке
+7. 5 преимуществ инвестора — 5 карточек (RevShare, трафик, MLM, токены, Exit)
+8. Инвестиционные пакеты — Starter/Genesis/Growth/Whale
+9. MLM программа — схема 5 уровней + пример расчёта
+10. Roadmap — старт июль 2026, листинг при 10M аудитории
+11. Команда — Поляков Михаил / Долгов Николай / Чаунный Владимир
+12. FAQ — аккордеон 6 вопросов
+13. Футер
+
+## КОМАНДА ПРОЕКТА
+
+- Поляков Михаил — Основатель / CEO (10+ лет в IT, Telegram-сети)
+- Долгов Николай — Co-Founder / PdM (продуктовая стратегия)
+- Чаунный Владимир — Backend Developer (Senior/FullStack, 10+ лет в IT)
+
+## ИНВЕСТИЦИОННЫЕ ПАКЕТЫ (PACKAGES в InvestmentModal.tsx)
+
+- Starter: $100 / ~$30/мес / $2,000–6,000 при Exit
+- Genesis: $1,000 / ~$300/мес / $20,000–60,000 при Exit
+- Growth: $10,000 / ~$3,000/мес / $200,000–600,000 при Exit ← рекомендуемый
+- Whale: $50,000 / ~$15,000/мес / $1,000,000–3,000,000 при Exit
+
+## ИЗОБРАЖЕНИЯ (импорт через @assets/)
+
+import logoPath    from '@assets/logo_trends_1777962710178.png'       // логотип
+import screen1Path from '@assets/скрин_1_1777968001895.png'            // Hero: два iPhone
+import screen2Path from '@assets/скрин_2_1777969066507.png'            // Продукт: сетка телефонов
+import screen3Path from '@assets/скрин_3_1777969064666.png'            // MVP: Дудь боком
+
+## ПРАВИЛА РАЗРАБОТКИ
+
+- Язык интерфейса — только русский
+- Без эмодзи в коде (только иконки lucide-react)
+- Не импортировать React явно (JSX трансформер делает это сам)
+- Хуки (useState, useEffect, useRef) — импортировать из "react"
+- Все стейты — через localStorage, без API вызовов
+- Анимации — framer-motion (motion.div + whileInView + variants)
+- Для добавления новых иконок — проверить что они экспортируются из lucide-react
+- Стили хранятся в index.css — НЕ менять CSS переменные :root
+
+## КАК ЗАПУСКАТЬ ЛОКАЛЬНО (Replit)
+
+Проект запускается автоматически через workflow "artifacts/trends-landing: web"
+Он доступен в превью-панели Replit.
+
+## КАК ДЕПЛОИТЬ НА RAILWAY
+
+1. Запушь изменения в GitHub: Git → Commit → Push
+2. Railway автоматически подхватит изменения (если настроен auto-deploy)
+3. Или вручную: railway.app → твой проект → Deploy
+
+Переменные на Railway:
+  BASE_PATH = /
+
+## ТИПИЧНЫЕ ПРАВКИ И КАК ИХ ДЕЛАТЬ
+
+### Изменить текст в любом блоке
+→ Открой artifacts/trends-landing/src/pages/Landing.tsx
+→ Найди нужный текст (Ctrl+F) и поменяй
+
+### Добавить нового члена команды
+→ В Landing.tsx найди массив с командой (секция "BLOCK 7: КОМАНДА")
+→ Добавь объект: { initials, name, role, roleColor, desc, tags, avatarColor, textColor }
+
+### Изменить инвестиционный пакет
+→ Открой artifacts/trends-landing/src/components/InvestmentModal.tsx
+→ Найди массив PACKAGES и измени нужные поля
+
+### Добавить новое изображение
+→ Загрузи файл в attached_assets/ (перетащи в Replit)
+→ Импортируй: import myImg from '@assets/имя_файла.png'
+→ Используй: <img src={myImg} />
+
+### Поменять ссылку на Telegram бот
+→ В Landing.tsx найди href="https://t.me/Trends_ibot?startapp"
+
+### Изменить цвет акцента
+→ В src/index.css найди --primary и измени HSL значение
+→ Текущее: 192 100% 50% (cyan #00D4FF)
+
+## ВАЖНО: ПОСЛЕ ПРАВОК
+
+1. Убедись что нет TypeScript ошибок (workflow не покажет ошибки сразу)
+2. Проверь в превью-панели Replit
+3. Git → Commit с описанием правки → Push → Railway задеплоит автоматически

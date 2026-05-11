@@ -1,0 +1,7 @@
+[build]
+buildCommand = "pnpm install --no-frozen-lockfile --ignore-scripts && pnpm --filter @workspace/trends-landing run build:railway"
+
+[deploy]
+startCommand = "pnpm --filter @workspace/trends-landing run serve:railway"
+healthcheckPath = "/"
+restartPolicyType = "ON_FAILURE"

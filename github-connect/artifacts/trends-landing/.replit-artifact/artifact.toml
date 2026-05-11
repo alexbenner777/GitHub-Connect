@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Trends Landing"
+version = "1.0.0"
+id = "artifacts/trends-landing"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22520
+
+[services.development]
+run = "pnpm --filter @workspace/trends-landing run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/trends-landing", "run", "build" ]
+publicDir = "artifacts/trends-landing/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22520"
+BASE_PATH = "/"
