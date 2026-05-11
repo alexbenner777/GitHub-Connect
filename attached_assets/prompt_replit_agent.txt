@@ -1,0 +1,92 @@
+Ты работаешь с сайтом Trends Landing — инвестиционный лендинг для Telegram Mini App.
+
+GitHub репозиторий: https://github.com/darcynj757-svg/GitHub-Connect (ПУБЛИЧНЫЙ)
+Прод: https://trends-landing-production.up.railway.app
+
+Стек: React + Vite + TypeScript + Tailwind CSS + shadcn/ui + framer-motion
+Монорепо: pnpm workspaces, Node.js 24
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ЗАДАЧА 1 — ПЕРВИЧНАЯ НАСТРОЙКА (делается один раз)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Клонируй репозиторий (токен не нужен, репо публичное):
+   git clone --depth=1 https://github.com/darcynj757-svg/GitHub-Connect /home/runner/workspace/github-connect
+
+2. Установи зависимости:
+   cd /home/runner/workspace/github-connect && pnpm install
+
+3. Настрой воркфлоу через configureWorkflow:
+   {
+     name: "Start application",
+     command: "cd /home/runner/workspace/github-connect && PORT=3000 BASE_PATH=/ pnpm --filter @workspace/trends-landing run dev",
+     waitForPort: 3000,
+     outputType: "webview"
+   }
+   Затем перезапусти воркфлоу.
+
+4. Настрой git для push обратно в GitHub:
+   - Попроси пользователя добавить GitHub Personal Access Token (scope: repo, No expiration)
+     ЧЕРЕЗ ИНТЕРФЕЙС REPLIT SECRETS (иконка замка в левой панели) с именем GITHUB_TOKEN.
+     НИКОГДА не вставляй токен в чат — GitHub автоматически отзовёт его.
+   - После того как пользователь добавил секрет, выполни:
+     cd /home/runner/workspace/github-connect
+     git remote set-url origin https://${GITHUB_TOKEN}@github.com/darcynj757-svg/GitHub-Connect.git
+     git config user.email "agent@replit.com"
+     git config user.name "Replit Agent"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ЗАДАЧА 2 — ВНЕСЕНИЕ ПРАВОК И ПУБЛИКАЦИЯ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Все файлы сайта находятся в:
+  /home/runner/workspace/github-connect/artifacts/trends-landing/src/
+
+После любого изменения файлов — сразу делай push в GitHub:
+
+  cd /home/runner/workspace/github-connect
+  git add -A
+  git commit -m "edit: <краткое описание>"
+  git push origin main
+
+Railway автоматически пересобирает и деплоит сайт после каждого push.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+СТРУКТУРА САЙТА
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+/home/runner/workspace/github-connect/
+  artifacts/trends-landing/src/
+    pages/
+      Landing.tsx          — главная (hero, секции, FAQ, roadmap)
+      Cabinet.tsx          — личный кабинет инвестора
+      Admin.tsx            — админ панель
+      Login.tsx            — страница входа
+      Register.tsx         — страница регистрации
+      not-found.tsx        — 404
+    components/
+      InvestmentModal.tsx  — модальное окно выбора пакета инвестиций
+      ui/                  — shadcn компоненты
+    index.css              — CSS переменные, темы, стили
+
+  attached_assets/         — изображения (логотип, скрины приложения)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ПРАВИЛА РЕДАКТИРОВАНИЯ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- Редактируй только artifacts/trends-landing/src/ и attached_assets/
+- Не трогай .replit-artifact/artifact.toml
+- После каждого изменения — git push в main
+- Изображения импортируются через @assets (→ attached_assets/)
+- Цвета: primary cyan #00D4FF, secondary purple #7B5EFF (в index.css)
+- Пакеты инвестиций в InvestmentModal.tsx: Starter $100, Genesis $1000, Growth $10000, Whale $50000
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ВАЖНО — ПОЧЕМУ НЕЛЬЗЯ ВСТАВЛЯТЬ ТОКЕН В ЧАТ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+GitHub партнёрится с Replit и автоматически сканирует все сообщения чата.
+Любой токен, вставленный в чат, немедленно отзывается.
+Токен нужно добавлять ТОЛЬКО через Replit Secrets (иконка замка в левой панели),
+тогда он хранится зашифрованно и GitHub его не увидит.

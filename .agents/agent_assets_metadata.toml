@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "iLlVWBGk9MczBXzZrWBTk"
+uri = "file://attached_assets/prompt_replit_agent.txt"
+type = "text"
+title = "Обновлённый промт для Replit Agent"
