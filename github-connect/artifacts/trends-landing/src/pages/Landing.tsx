@@ -18,8 +18,8 @@ import screen1Path from '@assets/скрин_1_1777968001895.png';
 import screen2Path from '@assets/скрин_2_1777969066507.png';
 import screen3Path from '@assets/скрин_3_1777969064666.png';
 import screenAppPath from '@assets/111_1778425377815.png';
-import trendsVideoPath from '@assets/ScreenRecording_05-11-2026_10-42-13_1_1778519635888.mov';
-import iphoneFramePath from '@assets/iphone_фронт_прозрачный__1778519752863.png';
+import trendsVideoPath from '@assets/trends_demo_video.mov';
+import iphoneFramePath from '@assets/iphone_frame_transparent.png';
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
