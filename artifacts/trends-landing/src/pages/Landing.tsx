@@ -379,7 +379,7 @@ export default function Landing() {
       </nav>
 
       {/* HERO */}
-      <section className="pt-24 pb-10 lg:pt-44 lg:pb-28 px-4 relative">
+      <section className="pt-24 pb-10 lg:pt-44 lg:pb-28 px-4 relative z-10">
         <div className="container mx-auto relative z-10">
         <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
 
@@ -550,7 +550,7 @@ export default function Landing() {
       </section>
 
       {/* WHAT IS TRENDS */}
-      <section className="py-14 md:py-24 relative">
+      <section className="py-14 md:py-24 relative z-10">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center max-w-6xl mx-auto">
             <div className="space-y-6 order-2 lg:order-1">
@@ -636,7 +636,7 @@ export default function Landing() {
       </section>
 
       {/* PROBLEM → SOLUTION */}
-      <section id="problem" className="py-14 md:py-24 relative scroll-mt-20">
+      <section id="problem" className="py-14 md:py-24 relative z-10 scroll-mt-20">
         <div className="container mx-auto px-4">
           <motion.div initial="visible" animate="visible" variants={fadeUp}
             className="text-center max-w-3xl mx-auto mb-16">
@@ -695,7 +695,7 @@ export default function Landing() {
       </section>
 
       {/* MVP */}
-      <section className="py-14 md:py-24 relative [overflow-x:clip]">
+      <section className="py-14 md:py-24 relative z-10 [overflow-x:clip]">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <motion.div initial="visible" animate="visible" variants={fadeLeft}
@@ -737,7 +737,7 @@ export default function Landing() {
       </section>
 
       {/* PRODUCT FULL */}
-      <section className="py-16">
+      <section className="py-16 relative z-10">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">Продукт <span className="text-gradient">Trends</span></h2>
@@ -765,7 +765,7 @@ export default function Landing() {
       </section>
 
       {/* MONETIZATION */}
-      <section id="monetization" className="py-14 md:py-24 relative scroll-mt-20">
+      <section id="monetization" className="py-14 md:py-24 relative z-10 scroll-mt-20">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">7 источников монетизации</h2>
@@ -818,7 +818,7 @@ export default function Landing() {
       </section>
 
       {/* 5 INVESTOR ADVANTAGES */}
-      <section id="investors" className="py-16 md:py-24 lg:py-32 relative [overflow-x:clip] scroll-mt-20">
+      <section id="investors" className="py-16 md:py-24 lg:py-32 relative z-10 [overflow-x:clip] scroll-mt-20">
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-4xl mx-auto mb-10 md:mb-16 lg:mb-20">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6">5 преимуществ инвестора</h2>
@@ -918,7 +918,7 @@ export default function Landing() {
       </section>
 
       {/* MLM */}
-      <section className="py-14 md:py-24 relative [overflow-x:clip]">
+      <section className="py-14 md:py-24 relative z-10 [overflow-x:clip]">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-green-500/8 blur-[120px] rounded-full pointer-events-none" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-3xl mx-auto mb-16">
