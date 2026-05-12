@@ -10,7 +10,7 @@ import {
   BarChart3, Target, ShoppingBag, Gift, Wallet, ExternalLink,
   Network, Coins, ChevronRight, DollarSign, UserPlus, Users2,
   Menu, X, Send, MessageCircle, Star, Shield, Zap, Crown,
-  Mail, Globe, FileText, Lock
+  Mail, Globe, FileText, Lock, Code2, Megaphone, Server
 } from "lucide-react";
 
 import logoPath from '@assets/logo_trends_1777962710178.png';
@@ -545,6 +545,123 @@ export default function Landing() {
                 <div className="text-xs text-muted-foreground mt-0.5">{stat.sub}</div>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FUNDRAISING PROGRESS */}
+      <section className="py-14 md:py-20 relative z-10">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-10">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 font-bold text-sm mb-5">
+                <DollarSign className="w-4 h-4" />
+                Прозрачность финансирования
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">
+                Куда идут <span className="text-gradient">деньги</span>
+              </h2>
+              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                Мы уже вложили $75 000 в разработку продукта. Инвестиции раунда направляются на масштабирование.
+              </p>
+            </div>
+
+            {/* Progress bar */}
+            <div className="rounded-2xl border border-white/10 bg-white/3 backdrop-blur-sm p-6 md:p-8 mb-6">
+              <div className="flex items-end justify-between mb-3">
+                <div>
+                  <div className="text-3xl md:text-4xl font-black text-green-400">$75 000</div>
+                  <div className="text-sm text-muted-foreground mt-1">уже потрачено на разработку</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl md:text-4xl font-black text-foreground">$1 000 000</div>
+                  <div className="text-sm text-muted-foreground mt-1">целевой объём Pre-Seed</div>
+                </div>
+              </div>
+
+              {/* Bar */}
+              <div className="relative h-4 rounded-full bg-white/8 overflow-hidden mb-3">
+                <motion.div
+                  className="absolute inset-y-0 left-0 rounded-full"
+                  style={{ background: "linear-gradient(90deg, #00D4FF, #7B5EFF)" }}
+                  initial={{ width: 0 }}
+                  whileInView={{ width: "7.5%" }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.2, ease: "easeOut" }}
+                />
+                {/* Marker at 7.5% */}
+                <div className="absolute inset-y-0 left-[7.5%] flex items-center">
+                  <div className="w-3 h-3 rounded-full bg-white border-2 border-primary shadow-lg shadow-primary/50 -translate-x-1/2" />
+                </div>
+              </div>
+
+              <div className="flex justify-between text-xs text-muted-foreground">
+                <span>7.5% собрано</span>
+                <span>осталось собрать: $925 000</span>
+              </div>
+            </div>
+
+            {/* Spend breakdown */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                {
+                  icon: Code2,
+                  label: "Разработка MVP",
+                  amount: "$75 000",
+                  note: "уже потрачено",
+                  color: "text-green-400",
+                  bg: "bg-green-500/10 border-green-500/20",
+                  iconBg: "bg-green-500/15 text-green-400",
+                  badge: "Выполнено",
+                  badgeColor: "bg-green-500/20 text-green-400",
+                },
+                {
+                  icon: Megaphone,
+                  label: "Маркетинг",
+                  amount: "$400 000",
+                  note: "привлечение аудитории",
+                  color: "text-primary",
+                  bg: "bg-primary/5 border-primary/20",
+                  iconBg: "bg-primary/15 text-primary",
+                  badge: "Pre-Seed",
+                  badgeColor: "bg-primary/20 text-primary",
+                },
+                {
+                  icon: Server,
+                  label: "Инфраструктура",
+                  amount: "$300 000",
+                  note: "серверы и безопасность",
+                  color: "text-secondary",
+                  bg: "bg-secondary/5 border-secondary/20",
+                  iconBg: "bg-secondary/15 text-secondary",
+                  badge: "Pre-Seed",
+                  badgeColor: "bg-secondary/20 text-secondary",
+                },
+                {
+                  icon: Users,
+                  label: "Команда",
+                  amount: "$225 000",
+                  note: "расширение штата",
+                  color: "text-yellow-400",
+                  bg: "bg-yellow-500/5 border-yellow-500/20",
+                  iconBg: "bg-yellow-500/15 text-yellow-400",
+                  badge: "Pre-Seed",
+                  badgeColor: "bg-yellow-500/20 text-yellow-400",
+                },
+              ].map(({ icon: Icon, label, amount, note, color, bg, iconBg, badge, badgeColor }) => (
+                <div key={label} className={`rounded-xl border p-5 ${bg}`}>
+                  <div className="flex items-start justify-between mb-3">
+                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${iconBg}`}>
+                      <Icon className="w-4 h-4" />
+                    </div>
+                    <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${badgeColor}`}>{badge}</span>
+                  </div>
+                  <div className={`text-xl font-black mb-0.5 ${color}`}>{amount}</div>
+                  <div className="text-sm font-semibold text-foreground mb-0.5">{label}</div>
+                  <div className="text-xs text-muted-foreground">{note}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
