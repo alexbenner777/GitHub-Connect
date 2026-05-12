@@ -486,12 +486,12 @@ export default function Landing() {
             <div className="rounded-2xl border border-white/10 bg-white/3 backdrop-blur-sm p-6 md:p-8 mb-6">
               <div className="flex items-end justify-between mb-3">
                 <div>
-                  <div className="text-3xl md:text-4xl font-black text-green-400">$75 000</div>
-                  <div className="text-sm text-muted-foreground mt-1">уже потрачено на разработку</div>
+                  <div className="text-xl sm:text-3xl md:text-4xl font-black text-green-400 whitespace-nowrap">$75 000</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground mt-1 whitespace-nowrap">уже потрачено на разработку</div>
                 </div>
                 <div className="text-right">
-                  <div className="text-3xl md:text-4xl font-black text-foreground">$1 000 000</div>
-                  <div className="text-sm text-muted-foreground mt-1">целевой объём Pre-Seed</div>
+                  <div className="text-xl sm:text-3xl md:text-4xl font-black text-foreground whitespace-nowrap">$1 000 000</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground mt-1 whitespace-nowrap">целевой объём Pre-Seed</div>
                 </div>
               </div>
 
