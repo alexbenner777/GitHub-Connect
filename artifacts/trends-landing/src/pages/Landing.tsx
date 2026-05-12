@@ -476,7 +476,7 @@ export default function Landing() {
                 Дорожная карта финансирования
               </div>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">
-                Инвестиционный <span className="text-gradient">спринт</span> к глобальному масштабу
+                Инвестиционный <span className="text-gradient">спринт</span>
               </h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
                 Два чётких раунда — два окна входа. Раунд 1 выгоднее на 30%.
