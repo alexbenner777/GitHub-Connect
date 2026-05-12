@@ -208,10 +208,15 @@ export function DauCalculator({
                   initial={{ opacity: 0.5, scale: 0.97 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.2 }}
-                  className="text-3xl md:text-4xl font-black tabular-nums"
+                  className="flex flex-wrap items-baseline gap-2"
                 >
-                  ${fmt(revsharePoolMonthlyUsd, 0)}
-                  <span className="text-muted-foreground text-base font-normal ml-1">/ мес</span>
+                  <span className="text-3xl md:text-4xl font-black tabular-nums">
+                    {fmtM(monthlyRub * REVSHARE_PCT)} ₽
+                  </span>
+                  <span className="text-xl md:text-2xl font-bold tabular-nums text-muted-foreground">
+                    / ${fmt(revsharePoolMonthlyUsd, 0)}
+                  </span>
+                  <span className="text-muted-foreground text-base font-normal">/ мес</span>
                 </motion.div>
               </div>
               <p className="text-xs text-muted-foreground max-w-[260px]">
