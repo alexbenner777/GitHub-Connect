@@ -98,7 +98,10 @@ export function DauCalculator({
               Инвестиционные пакеты
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Выберите свой уровень участия. Двигайте ползунок — суммы RevShare в карточках обновляются в реальном времени.
+              Беспрецедентные условия для тех, кто заходит на стадии Pre-Seed. Инвестор зарабатывает вместе с платформой каждый месяц.
+            </p>
+            <p className="text-sm text-muted-foreground/60 max-w-xl mx-auto mt-2">
+              Двигайте ползунок — суммы RevShare в карточках обновляются в реальном времени.
             </p>
           </div>
 
