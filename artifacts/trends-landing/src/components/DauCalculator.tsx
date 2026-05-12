@@ -2,7 +2,6 @@ import React, { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import {
   TrendingUp, Users, DollarSign, ChevronRight, CheckCircle2,
-  Zap, Star, Shield, Crown, Network
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -11,13 +10,6 @@ const SHOWS_PER_DAY = 2;
 const REVSHARE_PCT = 0.20;
 const RUB_TO_USD = 91;
 const TOTAL_SHARES = 326.6;
-
-const REVSHARE_PACKAGES = [
-  { name: "Основателей 2", price: 250,   shares: 0.26,  color: "text-secondary",    bg: "bg-secondary/10 border-secondary/20" },
-  { name: "Основателей 3", price: 1000,  shares: 1.3,   color: "text-primary",      bg: "bg-primary/10 border-primary/20",    recommended: true },
-  { name: "Основателей 4", price: 5000,  shares: 10.04, color: "text-yellow-400",   bg: "bg-yellow-500/10 border-yellow-500/20" },
-  { name: "Основателей 5", price: 25000, shares: 65,    color: "text-orange-400",   bg: "bg-orange-500/10 border-orange-500/20" },
-];
 
 export type FullPackage = {
   id: string;
@@ -85,6 +77,14 @@ export function DauCalculator({
     setSliderVal(Number(e.target.value));
   }, []);
 
+  function calcRevShare(sharesStr: string) {
+    const sharesNum = parseFloat(sharesStr);
+    if (!sharesNum || sharesNum === 0) return null;
+    const monthlyUsd = (sharesNum / TOTAL_SHARES) * revsharePoolMonthlyUsd;
+    const annualUsd = monthlyUsd * 12;
+    return { monthlyUsd, annualUsd };
+  }
+
   return (
     <section className="py-14 md:py-24 relative z-10" id="packages">
       <div className="container mx-auto px-4">
@@ -96,7 +96,7 @@ export function DauCalculator({
               Инвестиционные пакеты
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Выберите свой уровень участия. Двигайте ползунок — смотрите, как растёт ваш RevShare при масштабировании платформы.
+              Выберите свой уровень участия. Двигайте ползунок — суммы RevShare в карточках обновляются в реальном времени.
             </p>
           </div>
 
@@ -196,74 +196,26 @@ export function DauCalculator({
               </div>
             </div>
 
-            {/* RevShare per package */}
-            <div className="rounded-2xl border border-white/10 bg-white/3 backdrop-blur-sm p-6 md:p-8">
-              <div className="flex items-center justify-between mb-5 flex-wrap gap-3">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <DollarSign className="w-4 h-4 text-green-400" />
-                    <span className="text-sm font-bold text-green-400">RevShare пул инвесторов (20% выручки)</span>
-                  </div>
-                  <div className="text-2xl md:text-3xl font-black tabular-nums">
-                    ${fmt(revsharePoolMonthlyUsd, 0)}
-                    <span className="text-muted-foreground text-base font-normal ml-1">/ мес</span>
-                  </div>
+            {/* RevShare pool total */}
+            <div className="rounded-2xl border border-green-500/20 bg-green-500/3 backdrop-blur-sm p-5 md:p-6 flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <DollarSign className="w-4 h-4 text-green-400" />
+                  <span className="text-sm font-bold text-green-400">RevShare пул инвесторов (20% выручки)</span>
                 </div>
-                <div className="text-right text-xs text-muted-foreground max-w-[200px]">
-                  Ваша доля зависит от выбранного пакета. Выплаты — ежемесячно в USDT.
-                </div>
+                <motion.div
+                  key={Math.round(revsharePoolMonthlyUsd)}
+                  initial={{ opacity: 0.5, scale: 0.97 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-3xl md:text-4xl font-black tabular-nums"
+                >
+                  ${fmt(revsharePoolMonthlyUsd, 0)}
+                  <span className="text-muted-foreground text-base font-normal ml-1">/ мес</span>
+                </motion.div>
               </div>
-
-              <div className="space-y-3">
-                {REVSHARE_PACKAGES.map((pkg) => {
-                  const monthlyUsd = (pkg.shares / TOTAL_SHARES) * revsharePoolMonthlyUsd;
-                  const annualUsd = monthlyUsd * 12;
-                  const roiPct = (annualUsd / pkg.price) * 100;
-                  return (
-                    <motion.div
-                      key={pkg.name}
-                      className={`rounded-xl border p-4 flex flex-wrap items-center justify-between gap-3 ${pkg.bg} ${pkg.recommended ? "ring-1 ring-primary/40" : ""}`}
-                      initial={false}
-                      animate={{ opacity: 1 }}
-                    >
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div>
-                          <div className={`text-sm font-bold ${pkg.color} flex items-center gap-1.5`}>
-                            {pkg.name}
-                            {pkg.recommended && (
-                              <span className="text-[10px] bg-primary/20 text-primary px-1.5 py-0.5 rounded-full font-bold">HOT</span>
-                            )}
-                          </div>
-                          <div className="text-xs text-muted-foreground">${fmt(pkg.price)} вход · {pkg.shares} долей</div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-4 flex-wrap">
-                        <div className="text-right">
-                          <motion.div
-                            key={Math.round(monthlyUsd)}
-                            initial={{ opacity: 0.4 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.2 }}
-                            className={`text-lg md:text-xl font-black tabular-nums ${pkg.color}`}
-                          >
-                            ~${fmt(monthlyUsd, 0)}<span className="text-xs font-normal text-muted-foreground">/мес</span>
-                          </motion.div>
-                          <div className="text-xs text-muted-foreground tabular-nums">~${fmt(annualUsd, 0)}/год · ROI {roiPct.toFixed(0)}%</div>
-                        </div>
-                        <button
-                          onClick={onInvest}
-                          className={`hidden sm:flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-lg border transition-all ${pkg.recommended ? "bg-primary/20 border-primary/30 text-primary hover:bg-primary/30" : "bg-white/5 border-white/15 text-muted-foreground hover:text-foreground hover:border-white/25"}`}
-                        >
-                          Выбрать <ChevronRight className="w-3 h-3" />
-                        </button>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-
-              <p className="text-xs text-muted-foreground mt-4 leading-relaxed">
-                * Расчёт ориентировочный при текущих CPM. Доля в пуле зависит от суммарного количества проданных долей. Для сравнения: Hamster Combat набрал 200M пользователей внутри Telegram Mini App — Trends строит монетизированную платформу на той же инфраструктуре.
+              <p className="text-xs text-muted-foreground max-w-[260px]">
+                Ваша доля из этого пула зависит от пакета — суммы показаны в карточках ниже. Выплаты ежемесячно в USDT.
               </p>
             </div>
           </div>
@@ -272,86 +224,120 @@ export function DauCalculator({
           {fullPackages && fullPackages.length > 0 && (
             <div>
               <div className="text-center mb-8">
-                <p className="text-muted-foreground text-base">Все пакеты включают RevShare, токены $TRND и партнёрскую программу.</p>
+                <p className="text-muted-foreground text-sm">
+                  * Суммы RevShare рассчитаны для текущего положения ползунка DAU. Изменяйте ползунок — цифры в карточках обновятся.
+                </p>
               </div>
               <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
-                {fullPackages.map((pkg) => (
-                  <motion.div
-                    key={pkg.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.1 }}
-                    transition={{ duration: 0.5 }}
-                    whileHover={{ y: pkg.recommended ? -6 : -4, transition: { duration: 0.25 } }}
-                    className={`relative flex flex-col rounded-3xl border transition-colors ${
-                      pkg.recommended
-                        ? `glass-pkg-active xl:-translate-y-4 ${pkg.border} ${pkg.glow}`
-                        : `glass-card ${pkg.border}`
-                    }`}
-                  >
-                    <div className="p-7 flex flex-col flex-1">
-                      {pkg.recommended && (
-                        <div className="flex justify-center mb-5 -mt-1">
-                          <motion.div
-                            animate={{ boxShadow: ["0 4px 20px rgba(0,212,255,0.35)", "0 4px 30px rgba(123,94,255,0.55)", "0 4px 20px rgba(0,212,255,0.35)"] }}
-                            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                            className="bg-gradient-to-r from-primary to-secondary text-background text-xs font-black px-5 py-1.5 rounded-full uppercase tracking-widest whitespace-nowrap"
+                {fullPackages.map((pkg) => {
+                  const rev = calcRevShare(pkg.shares);
+                  const monthlyRevUsd = rev?.monthlyUsd ?? 0;
+                  const annualRevUsd = rev?.annualUsd ?? 0;
+                  const roiPct = pkg.price > 0 && annualRevUsd > 0 ? (annualRevUsd / pkg.price) * 100 : null;
+
+                  return (
+                    <motion.div
+                      key={pkg.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.1 }}
+                      transition={{ duration: 0.5 }}
+                      whileHover={{ y: pkg.recommended ? -6 : -4, transition: { duration: 0.25 } }}
+                      className={`relative flex flex-col rounded-3xl border transition-colors ${
+                        pkg.recommended
+                          ? `glass-pkg-active xl:-translate-y-4 ${pkg.border} ${pkg.glow}`
+                          : `glass-card ${pkg.border}`
+                      }`}
+                    >
+                      <div className="p-7 flex flex-col flex-1">
+                        {pkg.recommended && (
+                          <div className="flex justify-center mb-5 -mt-1">
+                            <motion.div
+                              animate={{ boxShadow: ["0 4px 20px rgba(0,212,255,0.35)", "0 4px 30px rgba(123,94,255,0.55)", "0 4px 20px rgba(0,212,255,0.35)"] }}
+                              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                              className="bg-gradient-to-r from-primary to-secondary text-background text-xs font-black px-5 py-1.5 rounded-full uppercase tracking-widest whitespace-nowrap"
+                            >
+                              ★ РЕКОМЕНДУЕМ ★
+                            </motion.div>
+                          </div>
+                        )}
+
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${pkg.recommended ? 'bg-primary/20' : 'bg-white/5'}`}>
+                            <pkg.icon className={`w-5 h-5 ${pkg.color}`} />
+                          </div>
+                          <h3 className="text-xl font-bold">{pkg.name}</h3>
+                        </div>
+                        <p className="text-sm text-muted-foreground mb-5">{pkg.tagline}</p>
+
+                        <div className="mb-6">
+                          <div className={`text-4xl font-black ${pkg.recommended ? 'text-primary' : 'text-foreground'}`}>
+                            ${pkg.price.toLocaleString()}
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-1">единовременная инвестиция</div>
+                        </div>
+
+                        <ul className="space-y-3 flex-1 mb-7">
+                          {pkg.features.map((f, fi) => (
+                            <li key={fi} className="flex items-start gap-2.5">
+                              <CheckCircle2 className={`w-4 h-4 mt-0.5 shrink-0 ${pkg.color}`} />
+                              <span className="text-sm text-muted-foreground leading-snug">{f}</span>
+                            </li>
+                          ))}
+                        </ul>
+
+                        {/* Dynamic metrics */}
+                        <div className="grid grid-cols-2 gap-2 mb-6 p-3 rounded-xl bg-white/3 border border-white/8">
+                          {/* RevShare — dynamic from slider */}
+                          <div className="text-center">
+                            {rev ? (
+                              <>
+                                <motion.div
+                                  key={Math.round(monthlyRevUsd)}
+                                  initial={{ opacity: 0.4 }}
+                                  animate={{ opacity: 1 }}
+                                  transition={{ duration: 0.2 }}
+                                  className={`text-sm font-black tabular-nums ${pkg.color}`}
+                                >
+                                  ~${fmt(monthlyRevUsd, 0)}
+                                </motion.div>
+                                <div className="text-[10px] text-muted-foreground">RevShare/мес</div>
+                                {roiPct !== null && (
+                                  <div className={`text-[10px] font-semibold mt-0.5 tabular-nums ${pkg.color}`}>
+                                    ROI {roiPct.toFixed(0)}%/год
+                                  </div>
+                                )}
+                              </>
+                            ) : (
+                              <>
+                                <div className="text-sm font-black text-muted-foreground">–</div>
+                                <div className="text-[10px] text-muted-foreground">RevShare/мес</div>
+                              </>
+                            )}
+                          </div>
+                          {/* Exit */}
+                          <div className="text-center border-l border-white/8">
+                            <div className="text-sm font-black text-green-400">{pkg.exit}</div>
+                            <div className="text-[10px] text-muted-foreground">Exit потенциал</div>
+                          </div>
+                        </div>
+
+                        <motion.div whileTap={{ scale: 0.95 }} whileHover={{ scale: 1.02 }}>
+                          <Button
+                            onClick={() => (onSelectPackage ? onSelectPackage(pkg.id) : onInvest())}
+                            className={`w-full h-12 text-base font-bold rounded-xl btn-3d ${
+                              pkg.recommended
+                                ? 'btn-grad'
+                                : `bg-transparent border-2 ${pkg.border} ${pkg.color} hover:bg-white/5`
+                            }`}
                           >
-                            ★ РЕКОМЕНДУЕМ ★
-                          </motion.div>
-                        </div>
-                      )}
-
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${pkg.recommended ? 'bg-primary/20' : 'bg-white/5'}`}>
-                          <pkg.icon className={`w-5 h-5 ${pkg.color}`} />
-                        </div>
-                        <h3 className="text-xl font-bold">{pkg.name}</h3>
+                            Инвестировать
+                          </Button>
+                        </motion.div>
                       </div>
-                      <p className="text-sm text-muted-foreground mb-5">{pkg.tagline}</p>
-
-                      <div className="mb-6">
-                        <div className={`text-4xl font-black ${pkg.recommended ? 'text-primary' : 'text-foreground'}`}>
-                          ${pkg.price.toLocaleString()}
-                        </div>
-                        <div className="text-xs text-muted-foreground mt-1">единовременная инвестиция</div>
-                      </div>
-
-                      <ul className="space-y-3 flex-1 mb-7">
-                        {pkg.features.map((f, fi) => (
-                          <li key={fi} className="flex items-start gap-2.5">
-                            <CheckCircle2 className={`w-4 h-4 mt-0.5 shrink-0 ${pkg.color}`} />
-                            <span className="text-sm text-muted-foreground leading-snug">{f}</span>
-                          </li>
-                        ))}
-                      </ul>
-
-                      <div className="grid grid-cols-2 gap-2 mb-6 p-3 rounded-xl bg-white/3 border border-white/8">
-                        <div className="text-center">
-                          <div className={`text-sm font-black ${pkg.color}`}>~${pkg.monthly.toLocaleString()}</div>
-                          <div className="text-[10px] text-muted-foreground">RevShare/мес</div>
-                        </div>
-                        <div className="text-center border-l border-white/8">
-                          <div className="text-sm font-black text-green-400">{pkg.exit}</div>
-                          <div className="text-[10px] text-muted-foreground">Exit потенциал</div>
-                        </div>
-                      </div>
-
-                      <motion.div whileTap={{ scale: 0.95 }} whileHover={{ scale: 1.02 }}>
-                        <Button
-                          onClick={() => (onSelectPackage ? onSelectPackage(pkg.id) : onInvest())}
-                          className={`w-full h-12 text-base font-bold rounded-xl btn-3d ${
-                            pkg.recommended
-                              ? 'btn-grad'
-                              : `bg-transparent border-2 ${pkg.border} ${pkg.color} hover:bg-white/5`
-                          }`}
-                        >
-                          Инвестировать
-                        </Button>
-                      </motion.div>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
           )}
