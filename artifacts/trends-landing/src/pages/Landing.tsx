@@ -177,8 +177,8 @@ function useCountUp(target: number, duration = 2000, delay = 400) {
 
 const PACKAGES_DATA = [
   {
-    id: "founder1", name: "Основателей 1", price: 100, monthly: 0,
-    exit: "–", tokens: "100", shares: "0.17",
+    id: "founder1", name: "Основателей 1", price: 100, monthly: 1,
+    exit: "–", tokens: "100", shares: "0.25",
     tagline: "Войди в экосистему",
     icon: Zap,
     color: "text-sky-400", border: "border-sky-400/20", glow: "",
@@ -190,8 +190,8 @@ const PACKAGES_DATA = [
     ],
   },
   {
-    id: "founder2", name: "Основателей 2", price: 250, monthly: 2,
-    exit: "$4K – $10K", tokens: "250", shares: "0.42",
+    id: "founder2", name: "Основателей 2", price: 250, monthly: 4,
+    exit: "$1.3K – $3K", tokens: "250", shares: "0.63",
     tagline: "Первые доли RevShare",
     icon: Star,
     color: "text-secondary", border: "border-secondary/30", glow: "",
@@ -203,8 +203,8 @@ const PACKAGES_DATA = [
     ],
   },
   {
-    id: "founder3", name: "Основателей 3", price: 1000, monthly: 10,
-    exit: "$17K – $40K", tokens: "1,000", shares: "1.67",
+    id: "founder3", name: "Основателей 3", price: 1000, monthly: 15,
+    exit: "$5K – $12K", tokens: "1,000", shares: "2.5",
     tagline: "Лучший вход на стадии Alpha",
     icon: Shield,
     recommended: true,
@@ -217,8 +217,8 @@ const PACKAGES_DATA = [
     ],
   },
   {
-    id: "founder4", name: "Основателей 4", price: 5000, monthly: 49,
-    exit: "$83K – $200K", tokens: "5,000", shares: "8.33",
+    id: "founder4", name: "Основателей 4", price: 5000, monthly: 74,
+    exit: "$25K – $60K", tokens: "5,000", shares: "12.5",
     tagline: "Alpha-Bonus доля",
     icon: Crown,
     color: "text-yellow-400", border: "border-yellow-400/20", glow: "shadow-[0_0_30px_rgba(250,204,21,0.12)]",
@@ -230,8 +230,8 @@ const PACKAGES_DATA = [
     ],
   },
   {
-    id: "founder5", name: "Основателей 5", price: 25000, monthly: 247,
-    exit: "$420K – $1M", tokens: "25,000", shares: "41.67",
+    id: "founder5", name: "Основателей 5", price: 25000, monthly: 371,
+    exit: "$125K – $300K", tokens: "25,000", shares: "62.5",
     tagline: "Стратегический узел",
     icon: TrendingUp,
     color: "text-orange-400", border: "border-orange-400/20", glow: "shadow-[0_0_30px_rgba(251,146,60,0.10)]",
@@ -243,8 +243,8 @@ const PACKAGES_DATA = [
     ],
   },
   {
-    id: "founder6", name: "Основателей 6", price: 100000, monthly: 989,
-    exit: "$1.7M – $4M", tokens: "100,000", shares: "166.67",
+    id: "founder6", name: "Основателей 6", price: 100000, monthly: 1484,
+    exit: "$500K – $1.2M", tokens: "100,000", shares: "250",
     tagline: "Legendary статус",
     icon: Network,
     color: "text-amber-400", border: "border-amber-400/20", glow: "shadow-[0_0_40px_rgba(251,191,36,0.12)]",
@@ -387,7 +387,7 @@ export default function Landing() {
           {/* MOBILE BADGES — above image on mobile */}
           <div className="flex flex-wrap gap-3 mt-2 mb-3 lg:hidden order-1">
             <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">Pre-Seed</div>
-            <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-muted-foreground text-sm">$3 000 000 целевой объём</div>
+            <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-muted-foreground text-sm">$2 000 000 целевой объём</div>
             <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold flex items-center gap-1">
               <CheckCircle2 className="w-4 h-4" /> MVP готов
             </div>
@@ -422,7 +422,7 @@ export default function Landing() {
           <motion.div initial="hidden" animate="visible" variants={fadeIn} className="space-y-6 lg:space-y-8 order-3 lg:order-1">
             <div className="hidden lg:flex flex-wrap gap-3">
               <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">Pre-Seed</div>
-              <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-muted-foreground text-sm">$3 000 000 целевой объём</div>
+              <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-muted-foreground text-sm">$2 000 000 целевой объём</div>
               <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold flex items-center gap-1">
                 <CheckCircle2 className="w-4 h-4" /> MVP готов
               </div>
@@ -479,7 +479,7 @@ export default function Landing() {
                 Куда идут <span className="text-gradient">деньги</span>
               </h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                Мы уже вложили $75 000 в разработку продукта. Инвестиции раунда направляются на масштабирование.
+                Мы уже вложили $100 000 в разработку продукта. Инвестиции раунда направляются на масштабирование.
               </p>
             </div>
 
@@ -487,11 +487,11 @@ export default function Landing() {
             <div className="rounded-2xl border border-white/10 bg-white/3 backdrop-blur-sm p-6 md:p-8 mb-6">
               <div className="flex items-end justify-between mb-3">
                 <div>
-                  <div className="text-xl sm:text-3xl md:text-4xl font-black text-green-400 whitespace-nowrap">$75 000</div>
+                  <div className="text-xl sm:text-3xl md:text-4xl font-black text-green-400 whitespace-nowrap">$100 000</div>
                   <div className="text-xs sm:text-sm text-muted-foreground mt-1 whitespace-nowrap">уже потрачено на разработку</div>
                 </div>
                 <div className="text-right">
-                  <div className="text-xl sm:text-3xl md:text-4xl font-black text-foreground whitespace-nowrap">$3 000 000</div>
+                  <div className="text-xl sm:text-3xl md:text-4xl font-black text-foreground whitespace-nowrap">$2 000 000</div>
                   <div className="text-xs sm:text-sm text-muted-foreground mt-1 whitespace-nowrap">целевой объём Pre-Seed</div>
                 </div>
               </div>
@@ -524,7 +524,7 @@ export default function Landing() {
                 {
                   icon: Code2,
                   label: "Разработка MVP",
-                  amount: "$75 000",
+                  amount: "$100 000",
                   note: "уже потрачено",
                   color: "text-green-400",
                   bg: "bg-green-500/10 border-green-500/20",
@@ -534,8 +534,8 @@ export default function Landing() {
                 },
                 {
                   icon: Server,
-                  label: "Инфраструктура",
-                  amount: "$200 000",
+                  label: "Доработка и инфраструктура",
+                  amount: "$250 000",
                   note: "серверы и безопасность",
                   color: "text-secondary",
                   bg: "bg-secondary/5 border-secondary/20",
@@ -546,7 +546,7 @@ export default function Landing() {
                 {
                   icon: Megaphone,
                   label: "Маркетинг",
-                  amount: "$600 000",
+                  amount: "$1 400 000",
                   note: "привлечение аудитории",
                   color: "text-primary",
                   bg: "bg-primary/5 border-primary/20",
@@ -557,7 +557,7 @@ export default function Landing() {
                 {
                   icon: Users,
                   label: "Команда",
-                  amount: "$125 000",
+                  amount: "$250 000",
                   note: "расширение штата",
                   color: "text-yellow-400",
                   bg: "bg-yellow-500/5 border-yellow-500/20",

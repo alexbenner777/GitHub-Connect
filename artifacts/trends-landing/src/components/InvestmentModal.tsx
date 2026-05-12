@@ -10,12 +10,12 @@ import { api } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 
 export const PACKAGES = [
-  { id: "founder1", name: "Основателей 1", price: 100, monthly: 1, shares: 0.17, exit: "–" },
-  { id: "founder2", name: "Основателей 2", price: 250, monthly: 2, shares: 0.42, exit: "4,000–10,000" },
-  { id: "founder3", name: "Основателей 3", price: 1000, monthly: 10, shares: 1.67, exit: "17,000–40,000", recommended: true },
-  { id: "founder4", name: "Основателей 4", price: 5000, monthly: 49, shares: 8.33, exit: "83,000–200,000" },
-  { id: "founder5", name: "Основателей 5", price: 25000, monthly: 247, shares: 41.67, exit: "420,000–1,000,000" },
-  { id: "founder6", name: "Основателей 6", price: 100000, monthly: 989, shares: 166.67, exit: "1,700,000–4,000,000" },
+  { id: "founder1", name: "Основателей 1", price: 100, monthly: 1, shares: 0.25, exit: "–" },
+  { id: "founder2", name: "Основателей 2", price: 250, monthly: 4, shares: 0.63, exit: "1,300–3,000" },
+  { id: "founder3", name: "Основателей 3", price: 1000, monthly: 15, shares: 2.5, exit: "5,000–12,000", recommended: true },
+  { id: "founder4", name: "Основателей 4", price: 5000, monthly: 74, shares: 12.5, exit: "25,000–60,000" },
+  { id: "founder5", name: "Основателей 5", price: 25000, monthly: 371, shares: 62.5, exit: "125,000–300,000" },
+  { id: "founder6", name: "Основателей 6", price: 100000, monthly: 1484, shares: 250, exit: "500,000–1,200,000" },
 ];
 
 const PAYMENT_WALLET = "UQCG4jJ5BHZhV0qAOwYxMNemhgcdtMBJv5cDXs0O5K3LNAgt";
