@@ -262,6 +262,7 @@
   border: none !important;
   position: relative;
   overflow: hidden;
+  isolation: isolate;
 }
 
 .btn-grad::before {
@@ -271,6 +272,7 @@
   background: linear-gradient(135deg, #33ddff 0%, #9b7eff 100%);
   opacity: 0;
   transition: opacity 0.2s ease;
+  z-index: -1;
 }
 
 .btn-grad:hover::before {
