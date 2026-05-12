@@ -9,7 +9,7 @@ const CPM_RUB = 225;
 const SHOWS_PER_DAY = 2;
 const REVSHARE_PCT = 0.20;
 const RUB_TO_USD = 91;
-const TOTAL_SHARES = 326.6;
+const TOTAL_SHARES = 5000;
 
 export type FullPackage = {
   id: string;
