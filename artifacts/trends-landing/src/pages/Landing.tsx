@@ -89,7 +89,7 @@ const ADVANTAGES = [
 function AdvantageCard({ item, index, variants }: { item: typeof ADVANTAGES[0]; index: number; variants: Variants }) {
   const { Icon } = item;
   return (
-    <motion.div initial="visible" whileInView="visible" viewport={{ once: true, amount: 0 }}
+    <motion.div animate="visible"
       variants={variants}
       whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
       className="glass-card rounded-[2rem] overflow-hidden group cursor-default relative">
@@ -115,7 +115,7 @@ function AdvantagesGrid({ openInvest: _openInvest }: { openInvest: (pkg?: string
   return (
     <div className="max-w-6xl mx-auto space-y-5">
       {/* Item 1 — full width */}
-      <motion.div initial="visible" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={slideUp}
+      <motion.div animate="visible" variants={slideUp}
         whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
         className="glass-card rounded-[2rem] overflow-hidden group cursor-default relative">
         <div className={`absolute inset-0 bg-gradient-to-br ${first.gradFrom} ${first.gradTo} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
@@ -539,7 +539,7 @@ export default function Landing() {
               { value: "13", label: "Ранних инвесторов", sub: "уже в проекте", color: "text-secondary" },
               { value: "MVP ✓", label: "Продукт работает", sub: "запущен сейчас", color: "text-yellow-400" },
             ].map((stat, i) => (
-              <motion.div key={i} initial="visible" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeScale} className="text-center py-2 relative z-10">
+              <motion.div key={i} animate="visible" variants={fadeScale} className="text-center py-2 relative z-10">
                 <div className={`text-3xl md:text-4xl font-black mb-1 ${stat.color}`}>{stat.value}</div>
                 <div className="text-sm font-semibold text-foreground">{stat.label}</div>
                 <div className="text-xs text-muted-foreground mt-0.5">{stat.sub}</div>
@@ -553,7 +553,7 @@ export default function Landing() {
       <section className="py-14 md:py-24 relative">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center max-w-6xl mx-auto">
-            <motion.div initial="visible" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={staggerChildren}
+            <motion.div animate="visible" variants={staggerChildren}
               className="space-y-6 order-2 lg:order-1">
               <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-black">
                 Что такое <span className="text-gradient">Trends</span>?
@@ -607,7 +607,7 @@ export default function Landing() {
                 </MagneticButton>
               </motion.div>
             </motion.div>
-            <motion.div initial="visible" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeRight}
+            <motion.div animate="visible" variants={fadeRight}
               className="relative flex justify-center items-center order-1 lg:order-2 mb-6 lg:mb-0">
               {/* Glow behind phone */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -639,14 +639,14 @@ export default function Landing() {
       {/* PROBLEM → SOLUTION */}
       <section id="problem" className="py-14 md:py-24 relative scroll-mt-20">
         <div className="container mx-auto px-4">
-          <motion.div initial="visible" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeUp}
+          <motion.div animate="visible" variants={fadeUp}
             className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">Огромный рынок пуст</h2>
             <p className="text-lg text-muted-foreground">Telegram вырос до 1 миллиарда пользователей, но в нём до сих пор нет главного формата потребления контента — бесконечной ленты коротких видео.</p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            <motion.div initial="visible" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeLeft}
+            <motion.div animate="visible" variants={fadeLeft}
               className="glass-card p-8 rounded-3xl">
               <h3 className="text-2xl font-bold mb-8">Telegram сейчас</h3>
               <ul className="space-y-6">
@@ -663,7 +663,7 @@ export default function Landing() {
               </ul>
             </motion.div>
 
-            <motion.div initial="visible" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeRight}
+            <motion.div animate="visible" variants={fadeRight}
               className="glass-card p-8 rounded-3xl">
               <h3 className="text-2xl font-bold mb-8 text-primary">Trends решает</h3>
               <ul className="space-y-6">
@@ -681,7 +681,7 @@ export default function Landing() {
             </motion.div>
           </div>
 
-          <motion.div initial="visible" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={staggerFast}
+          <motion.div animate="visible" variants={staggerFast}
             className="mt-16 flex flex-wrap justify-center gap-8 text-center">
             <motion.div variants={fadeScale}>
               <div className="text-5xl font-black text-gradient mb-2">1B+</div>
@@ -700,12 +700,12 @@ export default function Landing() {
       <section className="py-14 md:py-24 relative [overflow-x:clip]">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            <motion.div initial="visible" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeLeft}
+            <motion.div animate="visible" variants={fadeLeft}
               className="relative flex justify-center order-1 lg:order-1">
               <img src={screen3Path} alt="Trends MVP" className="relative z-10 max-h-[480px] lg:max-h-[620px] w-full object-contain drop-shadow-2xl" />
             </motion.div>
 
-            <motion.div initial="visible" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={staggerChildren} className="space-y-6 lg:space-y-8 order-2 lg:order-2">
+            <motion.div animate="visible" variants={staggerChildren} className="space-y-6 lg:space-y-8 order-2 lg:order-2">
               <motion.div variants={fadeRight} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 text-green-400 border border-green-500/20 font-bold tracking-wide">
                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                 ПРОДУКТ УЖЕ РАБОТАЕТ
@@ -746,7 +746,7 @@ export default function Landing() {
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Полноценная лента вертикальных видео прямо внутри Telegram — контент от тысяч авторов, персонализированная выдача.</p>
           </div>
 
-          <motion.div initial="visible" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeScale}>
+          <motion.div animate="visible" variants={fadeScale}>
             <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_60px_rgba(0,212,255,0.08)]">
               <img src={screen2Path} alt="Продукт Trends" className="w-full object-cover" />
             </div>
@@ -774,7 +774,7 @@ export default function Landing() {
             <p className="text-lg text-muted-foreground">Диверсифицированная бизнес-модель — рост любого источника усиливает общую экономику платформы.</p>
           </div>
 
-          <motion.div initial="visible" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeScale} className="mb-6">
+          <motion.div animate="visible" variants={fadeScale} className="mb-6">
             <div className="glass-card p-8 md:p-10 rounded-3xl relative overflow-hidden">
               <div className="absolute top-6 right-8 text-8xl font-black text-primary/6 select-none">01</div>
               <div className="flex flex-col md:flex-row gap-8 items-start md:items-center">
@@ -797,7 +797,7 @@ export default function Landing() {
             </div>
           </motion.div>
 
-          <motion.div initial="visible" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={staggerChildren}
+          <motion.div animate="visible" variants={staggerChildren}
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
               { icon: TrendingUp, num: "02", title: "Boost-продвижение", desc: "Платное усиление охватов для авторов и брендов — приоритет в ленте" },
@@ -842,7 +842,7 @@ export default function Landing() {
 
           <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 max-w-7xl mx-auto">
             {PACKAGES_DATA.map((pkg, i) => (
-              <motion.div key={pkg.id} initial="visible" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeIn}
+              <motion.div key={pkg.id} animate="visible" variants={fadeIn}
                 whileHover={{ y: pkg.recommended ? -6 : -4, transition: { duration: 0.25 } }}
                 className={`relative flex flex-col rounded-3xl border transition-colors ${pkg.recommended
                   ? `glass-pkg-active xl:-translate-y-4 ${pkg.border} ${pkg.glow}`
@@ -942,7 +942,7 @@ export default function Landing() {
                 { level: "Уровень 4", pct: "1%", desc: "Четвёртое звено", color: "from-cyan-400 to-cyan-400/70", textColor: "text-cyan-400", w: "40%" },
                 { level: "Уровень 5", pct: "1%", desc: "Пятое звено", color: "from-teal-400 to-teal-400/70", textColor: "text-teal-400", w: "25%" },
               ].map((lvl, i) => (
-                <motion.div key={i} initial="visible" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeIn}
+                <motion.div key={i} animate="visible" variants={fadeIn}
                   className="glass-card p-5 rounded-2xl flex items-center gap-5">
                   <div className={`text-2xl font-black ${lvl.textColor} w-14 shrink-0`}>{lvl.pct}</div>
                   <div className="flex-1">
@@ -962,7 +962,7 @@ export default function Landing() {
           </div>
 
           {/* MLM Example — simplified */}
-          <motion.div initial="visible" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeIn}
+          <motion.div animate="visible" variants={fadeIn}
             className="glass-card p-8 md:p-10 rounded-3xl border border-green-500/20 max-w-4xl mx-auto">
             <div className="flex items-center gap-3 mb-8">
               <div className="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center text-green-400">
@@ -1047,7 +1047,7 @@ export default function Landing() {
                 { phase: "2027 — 10M", title: "Листинг $TRND", desc: "При 10M пользователей — листинг токена. Ранние инвесторы получают максимальную аллокацию.", highlight: true },
                 { phase: "2027+", title: "Global Expansion", desc: "Выход на мировые рынки, e-commerce, подготовка к Exit или Series A." },
               ].map((step, i) => (
-                <motion.div key={i} initial="visible" whileInView="visible" viewport={{ once: true, amount: 0 }}
+                <motion.div key={i} animate="visible"
                   variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: i * 0.1 } } }}
                   className="flex flex-col items-center md:items-start text-center md:text-left">
 
@@ -1130,7 +1130,7 @@ export default function Landing() {
                 textColor: "text-yellow-400"
               },
             ].map((member, i) => (
-              <motion.div key={i} initial="visible" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeIn}
+              <motion.div key={i} animate="visible" variants={fadeIn}
                 className="glass-card p-7 rounded-3xl border border-white/10 hover:border-primary/25 transition-all">
                 <div className={`w-16 h-16 ${member.avatarColor} rounded-2xl border-2 flex items-center justify-center mb-5`}>
                   <span className={`text-2xl font-black ${member.textColor}`}>{member.initials}</span>
