@@ -307,6 +307,15 @@ export function DauCalculator({
                                   ~${fmt(monthlyRevUsd, 0)}
                                 </motion.div>
                                 <div className="text-[10px] text-muted-foreground">RevShare/мес</div>
+                                <motion.div
+                                  key={dau}
+                                  initial={{ opacity: 0.4 }}
+                                  animate={{ opacity: 1 }}
+                                  transition={{ duration: 0.2 }}
+                                  className="text-[10px] text-muted-foreground/60 mt-0.5 tabular-nums"
+                                >
+                                  при {dau >= 1_000_000 ? (dau / 1_000_000).toFixed(dau % 1_000_000 === 0 ? 0 : 1) + "M" : fmt(dau / 1000, 0) + "K"} DAU
+                                </motion.div>
                                 {roiPct !== null && (
                                   <div className={`text-[10px] font-semibold mt-0.5 tabular-nums ${pkg.color}`}>
                                     ROI {roiPct.toFixed(0)}%/год
