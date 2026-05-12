@@ -38,7 +38,7 @@ function fmtM(n: number) {
 }
 
 const DAU_MIN = 500_000;
-const DAU_MAX = 25_000_000;
+const DAU_MAX = 50_000_000;
 const STEPS = 10000;
 
 function dauFromSlider(v: number) {
@@ -54,6 +54,7 @@ const PRESETS = [
   { label: "5M",   dau: 5_000_000 },
   { label: "10M",  dau: 10_000_000 },
   { label: "25M",  dau: 25_000_000 },
+  { label: "50M",  dau: 50_000_000 },
 ];
 
 export function DauCalculator({
