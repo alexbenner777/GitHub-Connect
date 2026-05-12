@@ -529,26 +529,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* SOCIAL PROOF STRIP */}
-      <section className="py-12 border-y border-white/8 relative z-10">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { value: "1B+", label: "Пользователей Telegram", sub: "целевой рынок", color: "text-primary" },
-              { value: "$75K", label: "Собрано инвесторами", sub: "Pre-Seed раунд", color: "text-green-400" },
-              { value: "13", label: "Ранних инвесторов", sub: "уже в проекте", color: "text-secondary" },
-              { value: "MVP ✓", label: "Продукт работает", sub: "запущен сейчас", color: "text-yellow-400" },
-            ].map((stat, i) => (
-              <motion.div key={i} initial="visible" animate="visible" variants={fadeScale} className="text-center py-2 relative z-10">
-                <div className={`text-3xl md:text-4xl font-black mb-1 ${stat.color}`}>{stat.value}</div>
-                <div className="text-sm font-semibold text-foreground">{stat.label}</div>
-                <div className="text-xs text-muted-foreground mt-0.5">{stat.sub}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* FUNDRAISING PROGRESS */}
       <section className="py-14 md:py-20 relative z-10">
         <div className="container mx-auto px-4">
@@ -616,20 +596,9 @@ export default function Landing() {
                   badgeColor: "bg-green-500/20 text-green-400",
                 },
                 {
-                  icon: Megaphone,
-                  label: "Маркетинг",
-                  amount: "$400 000",
-                  note: "привлечение аудитории",
-                  color: "text-primary",
-                  bg: "bg-primary/5 border-primary/20",
-                  iconBg: "bg-primary/15 text-primary",
-                  badge: "Pre-Seed",
-                  badgeColor: "bg-primary/20 text-primary",
-                },
-                {
                   icon: Server,
                   label: "Инфраструктура",
-                  amount: "$300 000",
+                  amount: "$200 000",
                   note: "серверы и безопасность",
                   color: "text-secondary",
                   bg: "bg-secondary/5 border-secondary/20",
@@ -638,9 +607,20 @@ export default function Landing() {
                   badgeColor: "bg-secondary/20 text-secondary",
                 },
                 {
+                  icon: Megaphone,
+                  label: "Маркетинг",
+                  amount: "$600 000",
+                  note: "привлечение аудитории",
+                  color: "text-primary",
+                  bg: "bg-primary/5 border-primary/20",
+                  iconBg: "bg-primary/15 text-primary",
+                  badge: "Pre-Seed",
+                  badgeColor: "bg-primary/20 text-primary",
+                },
+                {
                   icon: Users,
                   label: "Команда",
-                  amount: "$225 000",
+                  amount: "$125 000",
                   note: "расширение штата",
                   color: "text-yellow-400",
                   bg: "bg-yellow-500/5 border-yellow-500/20",
