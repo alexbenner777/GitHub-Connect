@@ -830,7 +830,7 @@ export default function Landing() {
       </section>
 
       {/* INVESTMENT PACKAGES */}
-      <section className="py-14 md:py-24">
+      <section className="py-14 md:py-24 relative z-10">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">Инвестиционные пакеты</h2>
@@ -1022,7 +1022,7 @@ export default function Landing() {
       </section>
 
       {/* ROADMAP */}
-      <section id="roadmap" className="py-14 md:py-24 [overflow-x:clip] scroll-mt-20">
+      <section id="roadmap" className="py-14 md:py-24 [overflow-x:clip] scroll-mt-20 relative z-10">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">Roadmap</h2>
@@ -1092,7 +1092,7 @@ export default function Landing() {
       </section>
 
       {/* TEAM — 3 members */}
-      <section className="py-24">
+      <section className="py-24 relative z-10">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">Команда</h2>
@@ -1146,7 +1146,7 @@ export default function Landing() {
       </section>
 
       {/* FAQ */}
-      <section className="py-24">
+      <section className="py-24 relative z-10">
         <div className="container mx-auto px-4 max-w-3xl">
           <h2 className="text-4xl font-black text-center mb-12">Вопросы и ответы</h2>
           <Accordion type="single" collapsible className="w-full space-y-4">
@@ -1168,7 +1168,7 @@ export default function Landing() {
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-white/8 pt-20 pb-8 relative overflow-hidden">
+      <footer className="border-t border-white/8 pt-20 pb-8 relative overflow-hidden z-10">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
 
 
