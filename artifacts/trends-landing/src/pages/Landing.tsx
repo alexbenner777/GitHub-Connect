@@ -837,10 +837,10 @@ export default function Landing() {
       {/* INVESTMENT PACKAGES */}
       <section className="py-14 md:py-24">
         <div className="container mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeIn} className="text-center mb-16">
+          <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">Инвестиционные пакеты</h2>
             <p className="text-lg text-muted-foreground">Выберите свой уровень участия. Все пакеты включают RevShare, токены $TRND и партнёрскую программу.</p>
-          </motion.div>
+          </div>
 
           <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 max-w-7xl mx-auto">
             {PACKAGES_DATA.map((pkg, i) => (
