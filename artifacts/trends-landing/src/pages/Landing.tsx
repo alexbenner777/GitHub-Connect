@@ -178,7 +178,7 @@ function useCountUp(target: number, duration = 2000, delay = 400) {
 const PACKAGES_DATA = [
   {
     id: "founder1", name: "Основателей 1", price: 100, monthly: 1,
-    exit: "–", tokens: "100", shares: "0.25",
+    exit: "–", tokens: "100", shares: "0",
     tagline: "Войди в экосистему",
     icon: Zap,
     color: "text-sky-400", border: "border-sky-400/20", glow: "",
@@ -413,7 +413,7 @@ export default function Landing() {
               alt="Trends App"
               animate={{ y: [0, -14, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="relative z-10 max-h-[62vh] sm:max-h-[65vh] lg:max-h-[85vh] w-full object-contain drop-shadow-2xl"
+              className="relative z-10 max-h-[80vh] sm:max-h-[75vh] lg:max-h-[85vh] w-full object-contain drop-shadow-2xl"
             />
           </motion.div>
 
@@ -627,7 +627,7 @@ export default function Landing() {
                   {
                     icon: Server,
                     label: "Доработка и инфраструктура",
-                    amount: "$250 000",
+                    amount: "$200 000",
                     note: "серверы и безопасность",
                     color: "text-secondary",
                     bg: "bg-secondary/5 border-secondary/20",
@@ -638,7 +638,7 @@ export default function Landing() {
                   {
                     icon: Megaphone,
                     label: "Маркетинг",
-                    amount: "$1 400 000",
+                    amount: "$1 500 000",
                     note: "привлечение аудитории",
                     color: "text-primary",
                     bg: "bg-primary/5 border-primary/20",
@@ -649,7 +649,7 @@ export default function Landing() {
                   {
                     icon: Users,
                     label: "Команда",
-                    amount: "$250 000",
+                    amount: "$200 000",
                     note: "расширение штата",
                     color: "text-yellow-400",
                     bg: "bg-yellow-500/5 border-yellow-500/20",
@@ -741,7 +741,7 @@ export default function Landing() {
                 <div className="w-64 h-64 lg:w-56 lg:h-56 rounded-full bg-secondary/30 blur-[80px]" />
               </div>
               {/* iPhone + video composite */}
-              <div className="relative inline-flex justify-center items-center" style={{ height: 'clamp(480px, 85vw, 580px)' }}>
+              <div className="relative inline-flex justify-center items-center" style={{ height: 'clamp(520px, 95vw, 580px)' }}>
                 {/* Video clipped to phone screen area */}
                 <div className="absolute z-0 overflow-hidden rounded-[9%]"
                   style={{ top: '1%', bottom: '1%', left: '8%', right: '8%' }}>

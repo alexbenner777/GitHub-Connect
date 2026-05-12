@@ -121,7 +121,7 @@ export function DauCalculator({
               <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
                 <div className="flex items-center gap-2">
                   <Users className="w-5 h-5 text-primary" />
-                  <span className="text-sm text-muted-foreground font-medium">Ежедневная аудитория (DAU)</span>
+                  <span className="text-sm text-muted-foreground font-medium">DAU <span className="text-muted-foreground/60">(пользователей)</span></span>
                 </div>
                 <motion.div
                   key={dau}
@@ -202,31 +202,40 @@ export function DauCalculator({
             </div>
 
             {/* RevShare pool total */}
-            <div className="rounded-2xl border border-green-500/20 bg-green-500/3 backdrop-blur-sm p-5 md:p-6 flex flex-wrap items-center justify-between gap-4">
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <DollarSign className="w-4 h-4 text-green-400" />
-                  <span className="text-sm font-bold text-green-400">RevShare пул инвесторов (20% выручки)</span>
+            <div className="rounded-2xl border border-green-500/20 bg-green-500/3 backdrop-blur-sm p-5 md:p-6 space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <DollarSign className="w-4 h-4 text-green-400" />
+                    <span className="text-sm font-bold text-green-400">RevShare <span className="text-green-400/70">(доля)</span> инвесторов — 20% выручки</span>
+                  </div>
+                  <motion.div
+                    key={Math.round(revsharePoolMonthlyUsd)}
+                    initial={{ opacity: 0.5, scale: 0.97 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.2 }}
+                    className="flex flex-wrap items-baseline gap-2"
+                  >
+                    <span className="text-3xl md:text-4xl font-black tabular-nums">
+                      {fmtM(monthlyRub * REVSHARE_PCT)} ₽
+                    </span>
+                    <span className="text-xl md:text-2xl font-bold tabular-nums text-muted-foreground">
+                      / ${fmt(revsharePoolMonthlyUsd, 0)}
+                    </span>
+                    <span className="text-muted-foreground text-base font-normal">/ мес</span>
+                  </motion.div>
                 </div>
-                <motion.div
-                  key={Math.round(revsharePoolMonthlyUsd)}
-                  initial={{ opacity: 0.5, scale: 0.97 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.2 }}
-                  className="flex flex-wrap items-baseline gap-2"
-                >
-                  <span className="text-3xl md:text-4xl font-black tabular-nums">
-                    {fmtM(monthlyRub * REVSHARE_PCT)} ₽
-                  </span>
-                  <span className="text-xl md:text-2xl font-bold tabular-nums text-muted-foreground">
-                    / ${fmt(revsharePoolMonthlyUsd, 0)}
-                  </span>
-                  <span className="text-muted-foreground text-base font-normal">/ мес</span>
-                </motion.div>
+                <p className="text-xs text-muted-foreground max-w-[260px]">
+                  Ваша доля из этого пула зависит от пакета — суммы показаны в карточках ниже. Выплаты ежемесячно в USDT.
+                </p>
               </div>
-              <p className="text-xs text-muted-foreground max-w-[260px]">
-                Ваша доля из этого пула зависит от пакета — суммы показаны в карточках ниже. Выплаты ежемесячно в USDT.
-              </p>
+              {/* Hamster Combat reference */}
+              <div className="flex items-start gap-3 rounded-xl border border-yellow-500/20 bg-yellow-500/5 p-3">
+                <div className="w-7 h-7 rounded-lg bg-yellow-500/15 flex items-center justify-center shrink-0 mt-0.5 text-sm">🐹</div>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  <span className="text-yellow-400 font-bold">Пример роста:</span> Hamster Combat собрал <span className="text-foreground font-semibold">200 млн пользователей</span> за несколько месяцев внутри Telegram. Trends строит постоянную монетизируемую аудиторию — <span className="text-foreground font-semibold">каждый DAU прямо увеличивает ваш RevShare.</span>
+                </p>
+              </div>
             </div>
           </div>
 
