@@ -4,6 +4,7 @@ import { motion, useInView, useScroll, useTransform, AnimatePresence, useMotionV
 import { Button } from "@/components/ui/button";
 import { InvestmentModal } from "@/components/InvestmentModal";
 import { SceneBackground } from "@/components/SceneBackground";
+import { DauCalculator } from "@/components/DauCalculator";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import {
   ArrowRight, CheckCircle2, PlaySquare, TrendingUp, Users, Smartphone,
@@ -861,6 +862,9 @@ export default function Landing() {
           <AdvantagesGrid openInvest={openInvest} />
         </div>
       </section>
+
+      {/* DAU CALCULATOR */}
+      <DauCalculator onInvest={openInvest} />
 
       {/* INVESTMENT PACKAGES */}
       <section className="py-14 md:py-24 relative z-10">
