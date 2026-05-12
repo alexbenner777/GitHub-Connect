@@ -5,7 +5,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const CPM_RUB = 225;
+const CPM_RUB = 190;
 const SHOWS_PER_DAY = 2;
 const REVSHARE_PCT = 0.20;
 const RUB_TO_USD = 91;
@@ -109,7 +109,7 @@ export function DauCalculator({
                 Рост DAU = прямой рост выручки
               </div>
               <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto mt-3">
-                2 рекламных показа в день на пользователя при CPM $2.5 (≈ 225 ₽). Двигайте ползунок и смотрите, как растёт ваш RevShare.
+                2 рекламных показа в день на пользователя при CPM ≈ 190 ₽. Двигайте ползунок и смотрите, как растёт ваш RevShare.
               </p>
             </div>
 
@@ -191,7 +191,7 @@ export function DauCalculator({
 
               <div className="mt-4 pt-4 border-t border-white/8 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
                 <span className="font-mono bg-white/5 px-3 py-1.5 rounded-lg border border-white/8">
-                  (DAU × 2 показа × CPM 225 ₽) ÷ 1000 = выручка в день
+                  (DAU × 2 показа × CPM 190 ₽) ÷ 1000 = выручка в день
                 </span>
                 <span className="text-green-400 font-semibold">+токен $TRND снижает CAC</span>
               </div>
