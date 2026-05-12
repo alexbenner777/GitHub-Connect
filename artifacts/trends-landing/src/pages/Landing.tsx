@@ -741,10 +741,10 @@ export default function Landing() {
       {/* PRODUCT FULL */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeUp} className="text-center mb-12">
+          <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">Продукт <span className="text-gradient">Trends</span></h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Полноценная лента вертикальных видео прямо внутри Telegram — контент от тысяч авторов, персонализированная выдача.</p>
-          </motion.div>
+          </div>
 
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeScale}>
             <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_60px_rgba(0,212,255,0.08)]">
@@ -769,11 +769,10 @@ export default function Landing() {
       {/* MONETIZATION */}
       <section id="monetization" className="py-14 md:py-24 relative scroll-mt-20">
         <div className="container mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeUp}
-            className="text-center max-w-3xl mx-auto mb-16">
+          <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">7 источников монетизации</h2>
             <p className="text-lg text-muted-foreground">Диверсифицированная бизнес-модель — рост любого источника усиливает общую экономику платформы.</p>
-          </motion.div>
+          </div>
 
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeScale} className="mb-6">
             <div className="glass-card p-8 md:p-10 rounded-3xl relative overflow-hidden">
@@ -824,11 +823,10 @@ export default function Landing() {
       {/* 5 INVESTOR ADVANTAGES */}
       <section id="investors" className="py-16 md:py-24 lg:py-32 relative [overflow-x:clip] scroll-mt-20">
         <div className="container mx-auto px-4 relative z-10">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeIn}
-            className="text-center max-w-4xl mx-auto mb-10 md:mb-16 lg:mb-20">
+          <div className="text-center max-w-4xl mx-auto mb-10 md:mb-16 lg:mb-20">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6">5 преимуществ инвестора</h2>
             <p className="text-base md:text-xl text-muted-foreground">Беспрецедентные условия для тех, кто заходит на стадии Pre-Seed. Инвестор зарабатывает вместе с платформой каждый день.</p>
-          </motion.div>
+          </div>
 
           <AdvantagesGrid openInvest={openInvest} />
         </div>
@@ -926,15 +924,14 @@ export default function Landing() {
       <section className="py-14 md:py-24 relative [overflow-x:clip]">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-green-500/8 blur-[120px] rounded-full pointer-events-none" />
         <div className="container mx-auto px-4 relative z-10">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeIn}
-            className="text-center max-w-3xl mx-auto mb-16">
+          <div className="text-center max-w-3xl mx-auto mb-16">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 font-bold text-sm mb-6">
               <Network className="w-4 h-4" />
               ПАРТНЁРСКАЯ ПРОГРАММА
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-6">Партнёрская программа — зарабатывай на привлечении</h2>
             <p className="text-lg text-muted-foreground">Приглашайте новых инвесторов и получайте процент от их вложений на 5 уровней вглубь.</p>
-          </motion.div>
+          </div>
 
           <div className="max-w-4xl mx-auto mb-16">
             <div className="space-y-3">
@@ -1030,10 +1027,10 @@ export default function Landing() {
       {/* ROADMAP */}
       <section id="roadmap" className="py-14 md:py-24 [overflow-x:clip] scroll-mt-20">
         <div className="container mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeIn} className="text-center mb-16">
+          <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">Roadmap</h2>
             <p className="text-lg text-muted-foreground">Запуск в 2026 — путь к глобальному масштабу</p>
-          </motion.div>
+          </div>
 
           {/* Horizontal timeline */}
           <div className="relative">
@@ -1101,10 +1098,10 @@ export default function Landing() {
       {/* TEAM — 3 members */}
       <section className="py-24">
         <div className="container mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0 }} variants={fadeIn} className="text-center mb-16">
+          <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">Команда</h2>
             <p className="text-lg text-muted-foreground">Опытные специалисты с глубокой экспертизой в Telegram, IT и продукте</p>
-          </motion.div>
+          </div>
 
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
