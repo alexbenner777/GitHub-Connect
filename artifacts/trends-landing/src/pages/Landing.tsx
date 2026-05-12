@@ -611,23 +611,65 @@ export default function Landing() {
                   </div>
                 ))}
               </div>
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div className="rounded-xl border border-primary/30 bg-primary/8 p-4 flex items-center gap-4">
-                  <div className="text-3xl font-black text-primary shrink-0">$307</div>
-                  <div>
-                    <div className="text-sm font-bold text-foreground">Цена доли в Раунде 1</div>
-                    <div className="text-xs text-primary font-semibold">Бонус +30% к долям</div>
-                    <div className="text-xs text-muted-foreground mt-0.5">Экономия $93 на каждой доле vs Раунд 2</div>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {[
+                  {
+                    icon: Code2,
+                    label: "Разработка MVP",
+                    amount: "$100 000",
+                    note: "уже потрачено",
+                    color: "text-green-400",
+                    bg: "bg-green-500/10 border-green-500/20",
+                    iconBg: "bg-green-500/15 text-green-400",
+                    badge: "Выполнено",
+                    badgeColor: "bg-green-500/20 text-green-400",
+                  },
+                  {
+                    icon: Server,
+                    label: "Доработка и инфраструктура",
+                    amount: "$250 000",
+                    note: "серверы и безопасность",
+                    color: "text-secondary",
+                    bg: "bg-secondary/5 border-secondary/20",
+                    iconBg: "bg-secondary/15 text-secondary",
+                    badge: "Pre-Seed",
+                    badgeColor: "bg-secondary/20 text-secondary",
+                  },
+                  {
+                    icon: Megaphone,
+                    label: "Маркетинг",
+                    amount: "$1 400 000",
+                    note: "привлечение аудитории",
+                    color: "text-primary",
+                    bg: "bg-primary/5 border-primary/20",
+                    iconBg: "bg-primary/15 text-primary",
+                    badge: "Pre-Seed",
+                    badgeColor: "bg-primary/20 text-primary",
+                  },
+                  {
+                    icon: Users,
+                    label: "Команда",
+                    amount: "$250 000",
+                    note: "расширение штата",
+                    color: "text-yellow-400",
+                    bg: "bg-yellow-500/5 border-yellow-500/20",
+                    iconBg: "bg-yellow-500/15 text-yellow-400",
+                    badge: "Pre-Seed",
+                    badgeColor: "bg-yellow-500/20 text-yellow-400",
+                  },
+                ].map(({ icon: Icon, label, amount, note, color, bg, iconBg, badge, badgeColor }) => (
+                  <div key={label} className={`rounded-xl border p-5 ${bg}`}>
+                    <div className="flex items-start justify-between mb-3">
+                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${iconBg}`}>
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${badgeColor}`}>{badge}</span>
+                    </div>
+                    <div className={`text-xl font-black mb-0.5 ${color}`}>{amount}</div>
+                    <div className="text-sm font-semibold text-foreground mb-0.5">{label}</div>
+                    <div className="text-xs text-muted-foreground">{note}</div>
                   </div>
-                </div>
-                <div className="rounded-xl border border-white/10 bg-white/3 p-4 flex items-center gap-4">
-                  <div className="text-3xl font-black text-muted-foreground shrink-0">$400</div>
-                  <div>
-                    <div className="text-sm font-bold text-foreground">Цена доли в Раунде 2</div>
-                    <div className="text-xs text-muted-foreground">Без бонуса</div>
-                    <div className="text-xs text-muted-foreground mt-0.5">После — только биржа или OTC</div>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
 
