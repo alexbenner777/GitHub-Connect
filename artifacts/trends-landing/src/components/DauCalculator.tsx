@@ -39,13 +39,13 @@ function fmtM(n: number) {
 
 const DAU_MIN = 500_000;
 const DAU_MAX = 25_000_000;
-const STEPS = 100;
+const STEPS = 10000;
 
 function dauFromSlider(v: number) {
   return Math.round(DAU_MIN + (v / STEPS) * (DAU_MAX - DAU_MIN));
 }
-function sliderFromDau(dau: number) {
-  return Math.round(((dau - DAU_MIN) / (DAU_MAX - DAU_MIN)) * STEPS);
+function sliderPosFromDau(dau: number) {
+  return ((dau - DAU_MIN) / (DAU_MAX - DAU_MIN)) * STEPS;
 }
 
 const PRESETS = [
@@ -65,16 +65,17 @@ export function DauCalculator({
   onSelectPackage?: (id: string) => void;
   fullPackages?: FullPackage[];
 }) {
-  const [sliderVal, setSliderVal] = useState(sliderFromDau(1_000_000));
+  const [dau, setDau] = useState(1_000_000);
 
-  const dau = dauFromSlider(sliderVal);
   const dailyRub = dau * SHOWS_PER_DAY * CPM_RUB / 1000;
   const monthlyRub = dailyRub * 30;
   const annualRub = dailyRub * 365;
   const revsharePoolMonthlyUsd = (monthlyRub / RUB_TO_USD) * REVSHARE_PCT;
 
+  const sliderVal = Math.round(sliderPosFromDau(dau));
+
   const handleSlider = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setSliderVal(Number(e.target.value));
+    setDau(dauFromSlider(Number(e.target.value)));
   }, []);
 
   function calcRevShare(sharesStr: string) {
@@ -149,9 +150,9 @@ export function DauCalculator({
                 {PRESETS.map((p) => (
                   <button
                     key={p.label}
-                    onClick={() => setSliderVal(sliderFromDau(p.dau))}
+                    onClick={() => setDau(p.dau)}
                     className={`flex-1 py-1.5 rounded-lg text-xs font-bold transition-all border ${
-                      Math.abs(dau - p.dau) < (DAU_MAX - DAU_MIN) / STEPS / 2
+                      dau === p.dau
                         ? "bg-primary/20 border-primary/40 text-primary"
                         : "bg-white/5 border-white/10 text-muted-foreground hover:border-white/20 hover:text-foreground"
                     }`}
