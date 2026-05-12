@@ -863,96 +863,12 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* DAU CALCULATOR */}
-      <DauCalculator onInvest={openInvest} />
-
-      {/* INVESTMENT PACKAGES */}
-      <section className="py-14 md:py-24 relative z-10">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">Инвестиционные пакеты</h2>
-            <p className="text-lg text-muted-foreground">Выберите свой уровень участия. Все пакеты включают RevShare, токены $TRND и партнёрскую программу.</p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 max-w-7xl mx-auto">
-            {PACKAGES_DATA.map((pkg, i) => (
-              <motion.div key={pkg.id} initial="visible" animate="visible" variants={fadeIn}
-                whileHover={{ y: pkg.recommended ? -6 : -4, transition: { duration: 0.25 } }}
-                className={`relative flex flex-col rounded-3xl border transition-colors ${pkg.recommended
-                  ? `glass-pkg-active xl:-translate-y-4 ${pkg.border} ${pkg.glow}`
-                  : `glass-card ${pkg.border}`
-                }`}>
-
-                <div className="p-7 flex flex-col flex-1">
-                  {/* RECOMMENDED BADGE — inside card */}
-                  {pkg.recommended && (
-                    <div className="flex justify-center mb-5 -mt-1">
-                      <motion.div
-                        animate={{ boxShadow: ["0 4px 20px rgba(0,212,255,0.35)", "0 4px 30px rgba(123,94,255,0.55)", "0 4px 20px rgba(0,212,255,0.35)"] }}
-                        transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                        className="bg-gradient-to-r from-primary to-secondary text-background text-xs font-black px-5 py-1.5 rounded-full uppercase tracking-widest whitespace-nowrap"
-                      >
-                        ★ РЕКОМЕНДУЕМ ★
-                      </motion.div>
-                    </div>
-                  )}
-
-                  {/* Header */}
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${pkg.recommended ? 'bg-primary/20' : 'bg-white/5'}`}>
-                      <pkg.icon className={`w-5 h-5 ${pkg.color}`} />
-                    </div>
-                    <h3 className="text-xl font-bold">{pkg.name}</h3>
-                  </div>
-                  <p className="text-sm text-muted-foreground mb-5">{pkg.tagline}</p>
-
-                  {/* Price */}
-                  <div className="mb-6">
-                    <div className={`text-4xl font-black ${pkg.recommended ? 'text-primary' : 'text-foreground'}`}>
-                      ${pkg.price.toLocaleString()}
-                    </div>
-                    <div className="text-xs text-muted-foreground mt-1">единовременная инвестиция</div>
-                  </div>
-
-                  {/* Features */}
-                  <ul className="space-y-3 flex-1 mb-7">
-                    {pkg.features.map((f, fi) => (
-                      <li key={fi} className="flex items-start gap-2.5">
-                        <CheckCircle2 className={`w-4 h-4 mt-0.5 shrink-0 ${pkg.color}`} />
-                        <span className="text-sm text-muted-foreground leading-snug">{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* Key metrics */}
-                  <div className="grid grid-cols-2 gap-2 mb-6 p-3 rounded-xl bg-white/3 border border-white/8">
-                    <div className="text-center">
-                      <div className={`text-sm font-black ${pkg.color}`}>~${pkg.monthly.toLocaleString()}</div>
-                      <div className="text-[10px] text-muted-foreground">RevShare/мес</div>
-                    </div>
-                    <div className="text-center border-l border-white/8">
-                      <div className="text-sm font-black text-green-400">{pkg.exit}</div>
-                      <div className="text-[10px] text-muted-foreground">Exit потенциал</div>
-                    </div>
-                  </div>
-
-                  <motion.div whileTap={{ scale: 0.95 }} whileHover={{ scale: 1.02 }}>
-                    <Button
-                      onClick={() => openInvest(pkg.id)}
-                      className={`w-full h-12 text-base font-bold rounded-xl btn-3d ${pkg.recommended
-                        ? 'btn-grad'
-                        : `bg-transparent border-2 ${pkg.border} ${pkg.color} hover:bg-white/5`
-                      }`}
-                    >
-                      Инвестировать
-                    </Button>
-                  </motion.div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* DAU CALCULATOR + INVESTMENT PACKAGES (merged) */}
+      <DauCalculator
+        onInvest={openInvest}
+        onSelectPackage={openInvest}
+        fullPackages={PACKAGES_DATA}
+      />
 
       {/* MLM */}
       <section className="py-14 md:py-24 relative z-10 [overflow-x:clip]">
