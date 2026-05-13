@@ -278,6 +278,71 @@ export default function Cabinet() {
                   </div>
                 )}
 
+                {/* DAU Profitability Infographic */}
+                {data.stats.totalShares > 0 && (() => {
+                  const CPM_RUB = 190, SHOWS = 2, REVSHARE = 0.20, RUB_USD = 91, TOTAL_SHARES = 5000;
+                  const milestones = [
+                    { label: "500K", dau: 500_000 },
+                    { label: "1M",   dau: 1_000_000 },
+                    { label: "5M",   dau: 5_000_000 },
+                    { label: "10M",  dau: 10_000_000 },
+                    { label: "25M",  dau: 25_000_000 },
+                    { label: "50M",  dau: 50_000_000 },
+                  ];
+                  const earnings = milestones.map(m => {
+                    const pool = (m.dau * SHOWS * CPM_RUB / 1000 * 30 / RUB_USD) * REVSHARE;
+                    return Math.round((data.stats.totalShares / TOTAL_SHARES) * pool);
+                  });
+                  const maxEarning = Math.max(...earnings);
+                  const barColors = ["bg-primary/40", "bg-primary/55", "bg-secondary/60", "bg-secondary/75", "bg-green-400/70", "bg-green-400"];
+                  const textColors = ["text-primary/70", "text-primary/85", "text-secondary/80", "text-secondary", "text-green-400/85", "text-green-400"];
+                  return (
+                    <div className="glass-card rounded-2xl p-6 border border-white/10 bg-gradient-to-br from-green-500/5 to-transparent">
+                      <div className="text-sm font-bold mb-1 flex items-center gap-2">
+                        <TrendingUp className="w-4 h-4 text-green-400" /> Ваш RevShare при разных DAU
+                      </div>
+                      <div className="text-xs text-muted-foreground mb-5">
+                        {data.stats.totalShares.toFixed(2)} долей · формула идентична калькулятору
+                      </div>
+                      {/* Bar chart */}
+                      <div className="flex items-end gap-2 h-32 mb-3">
+                        {earnings.map((earn, i) => {
+                          const pct = maxEarning > 0 ? (earn / maxEarning) * 100 : 0;
+                          return (
+                            <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                              <div className={`text-[10px] font-bold ${textColors[i]}`}>
+                                ${earn >= 1000 ? (earn / 1000).toFixed(1) + "K" : earn}
+                              </div>
+                              <div className="w-full flex items-end" style={{ height: "96px" }}>
+                                <motion.div
+                                  initial={{ height: 0 }}
+                                  animate={{ height: `${pct}%` }}
+                                  transition={{ duration: 0.7, delay: i * 0.08, ease: "easeOut" }}
+                                  className={`w-full rounded-t-lg ${barColors[i]}`}
+                                />
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      {/* X-axis labels */}
+                      <div className="flex gap-2">
+                        {milestones.map((m, i) => (
+                          <div key={i} className="flex-1 text-center text-[10px] text-muted-foreground font-medium">
+                            {m.label}
+                          </div>
+                        ))}
+                      </div>
+                      <div className="text-[10px] text-muted-foreground text-center mt-1">DAU (ежедневная аудитория)</div>
+                      {/* Highlight max */}
+                      <div className="mt-4 pt-4 border-t border-white/8 flex justify-between items-center">
+                        <span className="text-xs text-muted-foreground">При 50M DAU (пик) / в месяц</span>
+                        <span className="text-green-400 font-black text-lg">${earnings[5].toLocaleString()}</span>
+                      </div>
+                    </div>
+                  );
+                })()}
+
                 {/* Transactions */}
                 <div className="glass-card rounded-2xl p-6 border border-white/10">
                   <div className="flex items-center justify-between mb-4">
