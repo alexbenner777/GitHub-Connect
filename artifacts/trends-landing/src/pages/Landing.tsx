@@ -965,35 +965,31 @@ export default function Landing() {
           </div>
 
           <div className="max-w-4xl mx-auto mb-16">
-            {/* Single-line 5-level referral bar */}
-            <div className="glass-card px-6 py-5 rounded-2xl">
-              {/* Segmented bar — proportional */}
-              <div className="flex h-3 rounded-full overflow-hidden mb-5 gap-0.5">
-                <motion.div initial={{ flex: 0 }} whileInView={{ flex: 10 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0 }} className="bg-primary rounded-l-full" />
-                <motion.div initial={{ flex: 0 }} whileInView={{ flex: 5 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }} className="bg-secondary" />
-                <motion.div initial={{ flex: 0 }} whileInView={{ flex: 3 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }} className="bg-blue-400" />
-                <motion.div initial={{ flex: 0 }} whileInView={{ flex: 1 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 }} className="bg-cyan-400" />
-                <motion.div initial={{ flex: 0 }} whileInView={{ flex: 1 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.4 }} className="bg-teal-400 rounded-r-full" />
-              </div>
-              {/* Labels — equal width, no overlap */}
-              <div className="grid grid-cols-5 gap-2">
-                {[
-                  { lvl: "Уровень 1", pct: "10%", desc: "Прямые приглашённые", dot: "bg-primary", text: "text-primary" },
-                  { lvl: "Уровень 2", pct: "5%",  desc: "Их партнёры",          dot: "bg-secondary", text: "text-secondary" },
-                  { lvl: "Уровень 3", pct: "3%",  desc: "3-е звено сети",       dot: "bg-blue-400", text: "text-blue-400" },
-                  { lvl: "Уровень 4", pct: "1%",  desc: "4-е звено",            dot: "bg-cyan-400", text: "text-cyan-400" },
-                  { lvl: "Уровень 5", pct: "1%",  desc: "5-е звено",            dot: "bg-teal-400", text: "text-teal-400" },
-                ].map((lvl, i) => (
-                  <div key={i} className="flex flex-col gap-0.5">
-                    <div className="flex items-center gap-1.5">
-                      <div className={`w-2 h-2 rounded-full shrink-0 ${lvl.dot}`} />
-                      <span className={`text-[10px] font-semibold ${lvl.text} leading-none`}>{lvl.lvl}</span>
-                    </div>
-                    <div className={`text-2xl font-black ${lvl.text} leading-none mt-1`}>{lvl.pct}</div>
-                    <div className="text-[10px] text-muted-foreground leading-tight mt-0.5">{lvl.desc}</div>
+            <div className="glass-card px-6 py-4 rounded-2xl space-y-2">
+              {[
+                { n: 1, pct: "10%", desc: "Прямые приглашённые вами", bar: 100, grad: "from-primary to-primary/60", badge: "bg-primary/20 text-primary border-primary/30" },
+                { n: 2, pct: "5%",  desc: "Партнёры ваших партнёров", bar: 70,  grad: "from-secondary to-secondary/60", badge: "bg-secondary/20 text-secondary border-secondary/30" },
+                { n: 3, pct: "3%",  desc: "Третье звено сети",        bar: 48,  grad: "from-blue-400 to-blue-400/60", badge: "bg-blue-400/20 text-blue-400 border-blue-400/30" },
+                { n: 4, pct: "1%",  desc: "Четвёртое звено",          bar: 28,  grad: "from-cyan-400 to-cyan-400/60", badge: "bg-cyan-400/20 text-cyan-400 border-cyan-400/30" },
+                { n: 5, pct: "1%",  desc: "Пятое звено",              bar: 18,  grad: "from-teal-400 to-teal-400/60", badge: "bg-teal-400/20 text-teal-400 border-teal-400/30" },
+              ].map((row, i) => (
+                <div key={i} className="flex items-center gap-4">
+                  <div className={`shrink-0 text-xs font-black px-2.5 py-1 rounded-lg border ${row.badge}`}>L{row.n}</div>
+                  <div className="shrink-0 w-10 text-right">
+                    <span className={`text-lg font-black ${row.badge.split(' ')[1]}`}>{row.pct}</span>
                   </div>
-                ))}
-              </div>
+                  <div className="flex-1 relative h-2 bg-white/5 rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${row.bar}%` }}
+                      viewport={{ once: true, amount: 0.5 }}
+                      transition={{ duration: 0.7, delay: i * 0.08 }}
+                      className={`absolute left-0 top-0 h-full rounded-full bg-gradient-to-r ${row.grad}`}
+                    />
+                  </div>
+                  <div className="shrink-0 text-sm text-muted-foreground w-48 text-right hidden md:block">{row.desc}</div>
+                </div>
+              ))}
             </div>
           </div>
 
