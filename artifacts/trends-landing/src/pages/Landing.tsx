@@ -1005,87 +1005,137 @@ export default function Landing() {
               </div>
             </div>
 
-            {/* Visual referral tree */}
+            {/* Visual referral tree — chaotic */}
             <div className="mb-8 p-5 rounded-2xl bg-white/3 border border-white/8 overflow-x-auto">
-              <div className="min-w-[360px]">
-                {/* You */}
-                <div className="flex justify-center mb-3">
+              <div className="min-w-[420px]">
+                {/* YOU */}
+                <div className="flex justify-center mb-2">
                   <div className="flex flex-col items-center">
                     <div className="w-12 h-12 rounded-2xl bg-primary/20 border-2 border-primary/50 flex items-center justify-center text-primary font-black text-sm">ВЫ</div>
                     <div className="text-[10px] text-primary font-bold mt-1">$5 000</div>
                   </div>
                 </div>
-                {/* L1 connector */}
-                <div className="flex justify-center mb-1"><div className="w-px h-4 bg-primary/40" /></div>
-                <div className="flex justify-center gap-1 mb-1">
-                  <div className="flex-1 h-px bg-primary/20 self-center" />
-                  <div className="w-px h-4 bg-primary/40" />
-                  <div className="flex-1 h-px bg-primary/20 self-center" />
+                {/* L1 connector line */}
+                <div className="flex justify-center mb-1"><div className="w-px h-3 bg-primary/40" /></div>
+                <div className="relative flex justify-center mb-1">
+                  <div className="absolute top-0 left-[15%] right-[15%] h-px bg-primary/25" />
+                  <div className="w-px h-3 bg-primary/40" />
                 </div>
-                {/* L1 nodes — 5 friends */}
-                <div className="flex justify-between gap-1 mb-1 px-1">
-                  {["А", "Б", "В", "Г", "Д"].map((l, i) => (
+                {/* L1 — 6 chaotic invites */}
+                <div className="flex justify-between gap-1 mb-2 px-0">
+                  {[
+                    { l: "А", amt: "$25K", bonus: "+$2 500", color: "bg-yellow-400/20 border-yellow-400/50 text-yellow-300" },
+                    { l: "Б", amt: "$25K", bonus: "+$2 500", color: "bg-yellow-400/20 border-yellow-400/50 text-yellow-300" },
+                    { l: "В", amt: "$100K", bonus: "+$10 000", color: "bg-orange-400/25 border-orange-400/60 text-orange-300" },
+                    { l: "Г", amt: "$5K", bonus: "+$500", color: "bg-secondary/20 border-secondary/40 text-secondary" },
+                    { l: "Д", amt: "$5K", bonus: "+$500", color: "bg-secondary/20 border-secondary/40 text-secondary" },
+                    { l: "Е", amt: "$5K", bonus: "+$500", color: "bg-secondary/20 border-secondary/40 text-secondary" },
+                  ].map(({ l, amt, bonus, color }, i) => (
                     <div key={i} className="flex flex-col items-center flex-1">
-                      <div className="w-9 h-9 rounded-xl bg-secondary/20 border border-secondary/40 flex items-center justify-center text-secondary font-bold text-xs">{l}</div>
-                      <div className="text-[8px] text-secondary mt-0.5">$5 000</div>
-                      <div className="text-[8px] text-green-400 font-bold">+$500</div>
+                      <div className={`w-9 h-9 rounded-xl border flex items-center justify-center font-bold text-xs ${color}`}>{l}</div>
+                      <div className="text-[7px] text-muted-foreground mt-0.5">{amt}</div>
+                      <div className="text-[7px] text-green-400 font-bold">{bonus}</div>
                     </div>
                   ))}
                 </div>
                 {/* L2 connectors */}
-                <div className="flex justify-between gap-1 mb-1 px-1">
-                  {[0,1,2,3,4].map(i => (
-                    <div key={i} className="flex-1 flex justify-center"><div className="w-px h-3 bg-secondary/30" /></div>
+                <div className="flex justify-between gap-1 mb-1 px-0">
+                  {[0,1,2,3,4,5].map(i => (
+                    <div key={i} className="flex-1 flex justify-center"><div className="w-px h-2 bg-white/20" /></div>
                   ))}
                 </div>
-                {/* L2 nodes — 3 per L1 = 15 total, show 10 */}
-                <div className="flex justify-between gap-0.5 px-0.5 mb-2">
-                  {["1","2","3","4","5","6","7","8","9","10"].map((l, i) => (
+                {/* L2 — chaotic, different amounts */}
+                <div className="flex justify-between gap-0.5 px-0 mb-1">
+                  {[
+                    { amt: "$10K", bonus: "+$500" },
+                    { amt: "$1K",  bonus: "+$50" },
+                    { amt: "$5K",  bonus: "+$250" },
+                    { amt: "$25K", bonus: "+$1 250" },
+                    { amt: "$1K",  bonus: "+$50" },
+                    { amt: "$5K",  bonus: "+$250" },
+                    { amt: "$1K",  bonus: "+$50" },
+                    { amt: "$10K", bonus: "+$500" },
+                  ].map(({ amt, bonus }, i) => (
                     <div key={i} className="flex flex-col items-center flex-1">
-                      <div className="w-6 h-6 rounded-lg bg-blue-400/15 border border-blue-400/30 flex items-center justify-center text-blue-400 font-bold text-[9px]">{l}</div>
-                      <div className="text-[7px] text-green-400 font-bold mt-0.5">+$50</div>
+                      <div className="w-7 h-7 rounded-lg bg-blue-400/15 border border-blue-400/30 flex items-center justify-center text-blue-400 font-bold text-[8px]">
+                        {String.fromCharCode(49 + i)}
+                      </div>
+                      <div className="text-[6px] text-muted-foreground mt-0.5">{amt}</div>
+                      <div className="text-[6px] text-green-400 font-bold">{bonus}</div>
                     </div>
                   ))}
                 </div>
-                <div className="text-center text-[10px] text-muted-foreground">+ ещё 5 человек L2 и уровни 3–5...</div>
+                {/* L3+ hint */}
+                <div className="flex justify-between gap-0.5 px-0 mb-1">
+                  {[0,1,2,3,4,5,6,7].map(i => (
+                    <div key={i} className="flex-1 flex justify-center"><div className="w-px h-2 bg-white/10" /></div>
+                  ))}
+                </div>
+                <div className="flex justify-between gap-0.5 px-0 mb-2">
+                  {Array.from({ length: 12 }).map((_, i) => (
+                    <div key={i} className="flex-1 flex justify-center">
+                      <div className="w-4 h-4 rounded bg-teal-400/10 border border-teal-400/20 flex items-center justify-center">
+                        <div className="w-1 h-1 rounded-full bg-teal-400/50" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="text-center text-[10px] text-muted-foreground">уровни 3–5 продолжают расти...</div>
               </div>
             </div>
 
-            <div className="space-y-4 mb-8">
+            {/* Chaotic breakdown rows */}
+            <div className="space-y-3 mb-8">
+              <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">Уровень 1 — ваши прямые партнёры</div>
               {[
-                {
-                  step: "01", icon: UserPlus, color: "text-primary", bg: "bg-primary/10",
-                  action: "Вы пригласили 5 друзей", detail: "Каждый вложил по $5 000",
-                  calc: "5 × $5 000 × 10%", result: "+$2 500", resultColor: "text-primary"
-                },
-                {
-                  step: "02", icon: Users2, color: "text-secondary", bg: "bg-secondary/10",
-                  action: "Каждый из них привёл ещё 3 человека", detail: "Каждый вложил по $1 000",
-                  calc: "15 × $1 000 × 5%", result: "+$750", resultColor: "text-secondary"
-                },
-                {
-                  step: "03", icon: Network, color: "text-blue-400", bg: "bg-blue-400/10",
-                  action: "Сеть продолжает расти сама", detail: "3-й, 4-й и 5-й уровни — пассивно",
-                  calc: "уровни 3–5 × 3%–1%–1%", result: "+$500", resultColor: "text-blue-400"
-                },
+                { icon: UserPlus, color: "text-yellow-400", bg: "bg-yellow-400/10", action: "2 партнёра вложили по $25 000", calc: "2 × $25 000 × 10%", result: "+$5 000", resultColor: "text-yellow-400" },
+                { icon: Crown, color: "text-orange-400", bg: "bg-orange-400/10", action: "1 партнёр вложил $100 000", calc: "1 × $100 000 × 10%", result: "+$10 000", resultColor: "text-orange-400" },
+                { icon: Users2, color: "text-secondary", bg: "bg-secondary/10", action: "3 партнёра вложили по $5 000", calc: "3 × $5 000 × 10%", result: "+$1 500", resultColor: "text-secondary" },
               ].map((row, i) => (
-                <div key={i} className="glass-card p-5 rounded-2xl flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-                  <div className={`w-10 h-10 rounded-xl ${row.bg} flex items-center justify-center shrink-0`}>
-                    <row.icon className={`w-5 h-5 ${row.color}`} />
+                <div key={i} className="glass-card px-4 py-3 rounded-xl flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                  <div className={`w-9 h-9 rounded-xl ${row.bg} flex items-center justify-center shrink-0`}>
+                    <row.icon className={`w-4 h-4 ${row.color}`} />
                   </div>
                   <div className="flex-1">
-                    <div className="font-semibold">{row.action}</div>
-                    <div className="text-sm text-muted-foreground">{row.detail} · <span className="font-mono">{row.calc}</span></div>
+                    <div className="font-semibold text-sm">{row.action}</div>
+                    <div className="text-xs text-muted-foreground font-mono">{row.calc}</div>
                   </div>
-                  <div className={`text-2xl font-black ${row.resultColor} shrink-0`}>{row.result}</div>
+                  <div className={`text-xl font-black ${row.resultColor} shrink-0`}>{row.result}</div>
                 </div>
               ))}
+              <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest mt-4 mb-2">Уровень 2 — хаотично</div>
+              {[
+                { icon: Users2, color: "text-blue-400", bg: "bg-blue-400/10", action: "$10K + $5K + $25K + $10K вложили партнёры L2", calc: "($10K+$5K+$25K+$10K) × 5%", result: "+$2 500", resultColor: "text-blue-400" },
+                { icon: Network, color: "text-teal-400", bg: "bg-teal-400/10", action: "$1K + $1K + $1K + $5K — более мелкие участники", calc: "($1K+$1K+$1K+$5K) × 5%", result: "+$400", resultColor: "text-teal-400" },
+              ].map((row, i) => (
+                <div key={i} className="glass-card px-4 py-3 rounded-xl flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                  <div className={`w-9 h-9 rounded-xl ${row.bg} flex items-center justify-center shrink-0`}>
+                    <row.icon className={`w-4 h-4 ${row.color}`} />
+                  </div>
+                  <div className="flex-1">
+                    <div className="font-semibold text-sm">{row.action}</div>
+                    <div className="text-xs text-muted-foreground font-mono">{row.calc}</div>
+                  </div>
+                  <div className={`text-xl font-black ${row.resultColor} shrink-0`}>{row.result}</div>
+                </div>
+              ))}
+              <div className="glass-card px-4 py-3 rounded-xl flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                <div className="w-9 h-9 rounded-xl bg-purple-400/10 flex items-center justify-center shrink-0">
+                  <Network className="w-4 h-4 text-purple-400" />
+                </div>
+                <div className="flex-1">
+                  <div className="font-semibold text-sm">Уровни 3–5 — пассивный доход сети</div>
+                  <div className="text-xs text-muted-foreground font-mono">множество участников × 3%–1%–1%</div>
+                </div>
+                <div className="text-xl font-black text-purple-400 shrink-0">+$1 200</div>
+              </div>
             </div>
 
             <div className="flex flex-col md:flex-row items-center gap-6 p-6 rounded-2xl glass-card">
               <div className="flex-1 text-center md:text-left">
                 <div className="text-sm text-muted-foreground mb-1">Итого от партнёрской сети</div>
-                <div className="text-5xl font-black text-green-400">$3 750</div>
+                <div className="text-5xl font-black text-green-400">$20 600</div>
+                <div className="text-xs text-muted-foreground mt-1">L1: $16 500 · L2: $2 900 · L3–5: $1 200</div>
               </div>
               <div className="w-px h-12 bg-white/10 hidden md:block" />
               <div className="text-center md:text-left">
