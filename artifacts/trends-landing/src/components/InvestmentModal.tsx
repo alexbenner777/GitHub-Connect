@@ -206,9 +206,6 @@ export function InvestmentModal({ isOpen, onClose, defaultPackage = "founder3" }
 
               </div>
 
-              <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-3 text-xs text-yellow-400">
-                После оплаты в приложении ваша заявка будет проверена в течение 24 часов.
-              </div>
             </motion.div>
           )}
 
@@ -266,12 +263,8 @@ export function InvestmentModal({ isOpen, onClose, defaultPackage = "founder3" }
               </div>
               <h2 className="text-3xl font-black text-gradient">Заявка принята!</h2>
               <p className="text-muted-foreground">
-                Ваша заявка на пакет <strong>{pkg.name}</strong> отправлена.
-                После подтверждения оплаты инвестиция будет активирована и начнут начисляться MLM-бонусы.
+                Пакет <strong>{pkg.name}</strong> активирован. Инвестиция подтверждена, MLM-бонусы уже начисляются.
               </p>
-              <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-3 text-sm text-yellow-400">
-                Подтверждение занимает до 24 часов
-              </div>
               <a
                 href={`https://tonviewer.com/${PAYMENT_WALLET}`}
                 target="_blank"

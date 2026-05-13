@@ -28,9 +28,21 @@ router.post("/investments", requireAuth, async (req, res) => {
     packageName: pkg.name,
     amount: String(pkg.price),
     shares: String(pkg.shares),
-    status: "pending",
+    status: "confirmed",
+    confirmedAt: new Date(),
     walletFrom: walletFrom ?? null,
   }).returning();
+
+  await db.insert(transactionsTable).values({
+    userId,
+    type: "investment",
+    amount: String(pkg.price),
+    description: `Инвестиция подтверждена: ${pkg.name}`,
+    status: "completed",
+    referenceId: investment.id,
+  });
+
+  await processReferralBonuses(investment.id, userId, pkg.price);
 
   res.json({ investment });
 });
