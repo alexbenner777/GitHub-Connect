@@ -668,7 +668,7 @@ export default function Landing() {
       <section className="py-14 md:py-24 relative z-10">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center max-w-6xl mx-auto">
-            <div className="space-y-6 order-2 lg:order-1">
+            <div className="space-y-6 order-2 lg:order-1 lg:pl-10">
               <h2 className="text-4xl md:text-5xl font-black">
                 Что такое <span className="text-gradient">Trends</span>?
               </h2>
