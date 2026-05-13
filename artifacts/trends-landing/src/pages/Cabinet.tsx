@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link, useLocation } from "wouter";
+import { SceneBackground } from "@/components/SceneBackground";
 import {
   Copy, Wallet, ArrowLeft, LogOut, CheckCircle2, Clock, XCircle,
   RefreshCw, Settings, TrendingUp, Users, DollarSign, BarChart3,
@@ -130,6 +131,7 @@ export default function Cabinet() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <SceneBackground />
       {/* Navbar */}
       <nav className="fixed top-0 w-full z-50 glass-nav">
         <div className="max-w-screen-xl mx-auto px-4 h-16 flex items-center justify-between">
