@@ -317,25 +317,25 @@ export default function Landing() {
             <span style={{ fontFamily: "'Manrope', sans-serif", fontWeight: 800, letterSpacing: '-0.02em' }} className="text-2xl text-white">Trends</span>
           </div>
 
-          <div className="hidden md:flex gap-8 text-sm font-medium text-muted-foreground">
+          <div className="hidden lg:flex gap-6 text-sm font-medium text-muted-foreground">
             {NAV_LINKS.map(link => (
-              <a key={link.href} href={link.href} className="hover:text-primary transition-colors">{link.label}</a>
+              <a key={link.href} href={link.href} className="hover:text-primary transition-colors whitespace-nowrap">{link.label}</a>
             ))}
           </div>
 
-          <div className="hidden md:flex gap-3">
+          <div className="hidden lg:flex gap-3">
             <Link href="/cabinet">
-              <Button variant="ghost" className="hover:bg-primary/10 hover:text-primary font-semibold">Войти в кабинет</Button>
+              <Button variant="ghost" className="hover:bg-primary/10 hover:text-primary font-semibold whitespace-nowrap">Войти в кабинет</Button>
             </Link>
             <motion.div whileTap={{ scale: 0.93 }} whileHover={{ scale: 1.04 }}>
-              <Button onClick={() => openInvest()} className="btn-grad btn-3d text-background font-bold rounded-xl">
+              <Button onClick={() => openInvest()} className="btn-grad btn-3d text-background font-bold rounded-xl whitespace-nowrap">
                 Инвестировать
               </Button>
             </motion.div>
           </div>
 
           <button
-            className="md:hidden p-2 rounded-xl hover:bg-white/10 transition-colors text-white"
+            className="lg:hidden p-2 rounded-xl hover:bg-white/10 transition-colors text-white"
             onClick={() => setMobileMenuOpen(v => !v)}
           >
             <AnimatePresence mode="wait" initial={false}>
@@ -354,7 +354,7 @@ export default function Landing() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.25, ease: EASE }}
-              className="md:hidden overflow-hidden border-t border-white/10"
+              className="lg:hidden overflow-hidden border-t border-white/10"
               style={{ background: "rgba(6, 9, 20, 0.97)", backdropFilter: "blur(28px)" }}
             >
               <div className="px-4 py-4 flex flex-col gap-1">
