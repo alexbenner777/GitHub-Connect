@@ -839,13 +839,6 @@ export default function Landing() {
                 ))}
               </div>
 
-              <div>
-                <MagneticButton onClick={() => openInvest()}>
-                  <Button className="mt-4 btn-grad btn-3d h-14 px-8 text-lg font-bold rounded-xl pointer-events-none">
-                    Стать инвестором проекта
-                  </Button>
-                </MagneticButton>
-              </div>
             </div>
           </div>
         </div>
