@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link, useLocation } from "wouter";
-import { Copy, Wallet, ArrowLeft, LogOut, CheckCircle2, Clock, XCircle, RefreshCw, Settings } from "lucide-react";
+import {
+  Copy, Wallet, ArrowLeft, LogOut, CheckCircle2, Clock, XCircle,
+  RefreshCw, Settings, TrendingUp, Users, DollarSign, BarChart3,
+  Network, Star, ChevronRight, Shield
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -10,10 +14,31 @@ import { useAuth } from "@/hooks/useAuth";
 import { api, type CabinetData } from "@/lib/api";
 
 function StatusBadge({ status }: { status: string }) {
-  if (status === "confirmed") return <span className="bg-green-500/10 text-green-400 px-2 py-1 rounded text-xs font-medium flex items-center gap-1 w-fit"><CheckCircle2 className="w-3 h-3" />Подтверждено</span>;
-  if (status === "pending") return <span className="bg-yellow-500/10 text-yellow-400 px-2 py-1 rounded text-xs font-medium flex items-center gap-1 w-fit"><Clock className="w-3 h-3" />Ожидает</span>;
-  return <span className="bg-red-500/10 text-red-400 px-2 py-1 rounded text-xs font-medium flex items-center gap-1 w-fit"><XCircle className="w-3 h-3" />{status}</span>;
+  if (status === "confirmed") return (
+    <span className="inline-flex items-center gap-1 bg-green-500/15 text-green-400 px-2.5 py-1 rounded-lg text-xs font-bold border border-green-500/20">
+      <CheckCircle2 className="w-3 h-3" />Подтверждено
+    </span>
+  );
+  if (status === "pending") return (
+    <span className="inline-flex items-center gap-1 bg-yellow-500/15 text-yellow-400 px-2.5 py-1 rounded-lg text-xs font-bold border border-yellow-500/20">
+      <Clock className="w-3 h-3" />Ожидает
+    </span>
+  );
+  return (
+    <span className="inline-flex items-center gap-1 bg-red-500/15 text-red-400 px-2.5 py-1 rounded-lg text-xs font-bold border border-red-500/20">
+      <XCircle className="w-3 h-3" />{status}
+    </span>
+  );
 }
+
+const LEVEL_COLORS = [
+  { text: "text-primary", bar: "bg-primary", badge: "bg-primary/20 border-primary/30 text-primary" },
+  { text: "text-secondary", bar: "bg-secondary", badge: "bg-secondary/20 border-secondary/30 text-secondary" },
+  { text: "text-blue-400", bar: "bg-blue-400", badge: "bg-blue-400/20 border-blue-400/30 text-blue-400" },
+  { text: "text-cyan-400", bar: "bg-cyan-400", badge: "bg-cyan-400/20 border-cyan-400/30 text-cyan-400" },
+  { text: "text-teal-400", bar: "bg-teal-400", badge: "bg-teal-400/20 border-teal-400/30 text-teal-400" },
+];
+const LEVEL_PCTS = [10, 5, 3, 1, 1];
 
 export default function Cabinet() {
   const { user, loading: authLoading, logout } = useAuth();
@@ -52,8 +77,7 @@ export default function Cabinet() {
 
   const copyRef = () => {
     if (!data) return;
-    const url = `${window.location.origin}/register?ref=${data.user.referralCode}`;
-    navigator.clipboard.writeText(url);
+    navigator.clipboard.writeText(`${window.location.origin}/register?ref=${data.user.referralCode}`);
     toast({ title: "Реферальная ссылка скопирована!" });
   };
 
@@ -77,7 +101,7 @@ export default function Cabinet() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <RefreshCw className="w-8 h-8 text-primary animate-spin" />
-          <p className="text-muted-foreground">Загрузка...</p>
+          <p className="text-muted-foreground">Загрузка кабинета...</p>
         </div>
       </div>
     );
@@ -85,277 +109,449 @@ export default function Cabinet() {
 
   if (!user || !data) return null;
 
-  const confirmedInvestments = data.investments.filter(i => i.status === "confirmed");
   const totalMLM = Object.values(referrals).reduce((s, l) => s + l.earned, 0);
   const totalMLMRefs = Object.values(referrals).reduce((s, l) => s + l.count, 0);
+  const confirmedInvs = data.investments.filter(i => i.status === "confirmed");
+  const pendingInvs = data.investments.filter(i => i.status === "pending");
 
   const tabs = [
-    { id: "overview", label: "Обзор" },
-    { id: "investments", label: "Инвестиции" },
-    { id: "mlm", label: "Партнёры" },
-    { id: "settings", label: "Настройки" },
+    { id: "overview", label: "Обзор", icon: BarChart3 },
+    { id: "investments", label: "Инвестиции", icon: TrendingUp },
+    { id: "mlm", label: "Партнёры", icon: Network },
+    { id: "settings", label: "Настройки", icon: Settings },
   ] as const;
 
+  const statCards = [
+    { label: "Инвестировано", value: `$${data.stats.totalInvested.toLocaleString()}`, icon: DollarSign, color: "text-primary", bg: "from-primary/20 to-primary/5", border: "border-primary/20" },
+    { label: "Доля в пуле", value: data.stats.totalShares.toFixed(2), icon: Star, color: "text-secondary", bg: "from-secondary/20 to-secondary/5", border: "border-secondary/20" },
+    { label: "MLM бонусы", value: `$${totalMLM.toFixed(0)}`, icon: TrendingUp, color: "text-green-400", bg: "from-green-500/20 to-green-500/5", border: "border-green-500/20" },
+    { label: "Партнёров", value: String(totalMLMRefs), icon: Users, color: "text-yellow-400", bg: "from-yellow-500/20 to-yellow-500/5", border: "border-yellow-500/20" },
+  ];
+
   return (
-    <div className="min-h-screen bg-background text-foreground pb-20">
+    <div className="min-h-screen bg-background text-foreground">
+      {/* Navbar */}
       <nav className="fixed top-0 w-full z-50 glass-nav">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-              <ArrowLeft className="w-5 h-5 text-muted-foreground" />
-              <span className="font-black text-xl text-gradient">Trends</span>
-            </Link>
-          </div>
+        <div className="max-w-screen-xl mx-auto px-4 h-16 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <ArrowLeft className="w-4 h-4 text-muted-foreground" />
+            <span className="font-black text-xl text-gradient">Trends</span>
+          </Link>
           <div className="flex items-center gap-3">
             <div className="hidden md:flex items-center gap-2 bg-white/5 px-4 py-1.5 rounded-full border border-white/10">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-sm font-medium">{user.name}</span>
+              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+              <span className="text-sm font-semibold">{user.name}</span>
             </div>
-            <Button variant="ghost" size="icon" onClick={handleLogout} className="hover:bg-white/10">
+            <button onClick={handleLogout} className="p-2 rounded-xl hover:bg-white/10 transition-colors text-muted-foreground hover:text-foreground">
               <LogOut className="w-4 h-4" />
-            </Button>
+            </button>
           </div>
         </div>
       </nav>
 
-      <main className="container mx-auto px-4 pt-24 space-y-6">
-        <div className="flex items-start justify-between flex-wrap gap-4">
-          <div>
-            <h1 className="text-3xl font-black mb-1">Добро пожаловать, {user.name.split(" ")[0]}!</h1>
-            <p className="text-muted-foreground">Панель управления инвестора</p>
-          </div>
-          <Button onClick={() => setIsInvestOpen(true)} className="btn-grad btn-3d font-bold rounded-xl h-11 px-6">
-            + Инвестировать
-          </Button>
-        </div>
+      <div className="max-w-screen-xl mx-auto px-4 pt-24 pb-16">
+        <div className="flex flex-col lg:flex-row gap-6">
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="glass-card p-5 rounded-2xl">
-            <div className="text-xs text-muted-foreground mb-1">Инвестировано</div>
-            <div className="text-2xl font-black text-primary">${data.stats.totalInvested.toLocaleString()}</div>
-          </div>
-          <div className="glass-card p-5 rounded-2xl">
-            <div className="text-xs text-muted-foreground mb-1">Доля в пуле</div>
-            <div className="text-2xl font-black text-secondary">{data.stats.totalShares.toFixed(2)}</div>
-          </div>
-          <div className="glass-card p-5 rounded-2xl">
-            <div className="text-xs text-muted-foreground mb-1">MLM бонусы</div>
-            <div className="text-2xl font-black text-green-400">${totalMLM.toFixed(2)}</div>
-          </div>
-          <div className="glass-card p-5 rounded-2xl">
-            <div className="text-xs text-muted-foreground mb-1">Партнёров</div>
-            <div className="text-2xl font-black text-yellow-400">{totalMLMRefs}</div>
-          </div>
-        </div>
+          {/* ═══════════════ LEFT SIDEBAR ═══════════════ */}
+          <aside className="lg:w-72 shrink-0 space-y-4">
 
-        {/* Tabs */}
-        <div className="flex gap-1 p-1 glass-card rounded-xl w-fit">
-          {tabs.map(t => (
-            <button key={t.id} onClick={() => setActiveTab(t.id)}
-              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === t.id ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>
-              {t.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Overview Tab */}
-        {activeTab === "overview" && (
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-            {/* Pending investments notice */}
-            {data.investments.filter(i => i.status === "pending").length > 0 && (
-              <div className="glass-card p-5 rounded-2xl border border-yellow-500/30 bg-yellow-500/5">
-                <div className="flex items-start gap-3">
-                  <Clock className="w-5 h-5 text-yellow-400 shrink-0 mt-0.5" />
-                  <div>
-                    <div className="font-bold text-yellow-400 mb-1">Ожидается подтверждение инвестиции</div>
-                    <p className="text-sm text-muted-foreground">Ваша заявка получена. После подтверждения оплаты администратором ваши инвестиции будут активированы.</p>
-                  </div>
+            {/* Profile card */}
+            <div className="glass-card rounded-2xl p-6 border border-white/10 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 pointer-events-none" />
+              <div className="relative">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-2xl font-black text-white mb-4 shadow-lg">
+                  {user.name[0].toUpperCase()}
+                </div>
+                <div className="font-black text-lg leading-tight">{user.name}</div>
+                <div className="text-sm text-muted-foreground mt-0.5">{user.email}</div>
+                <div className="flex items-center gap-1.5 mt-3">
+                  <Shield className="w-3 h-3 text-green-400" />
+                  <span className="text-xs text-green-400 font-semibold">Верифицирован</span>
+                </div>
+                <div className="mt-3 pt-3 border-t border-white/8 text-xs text-muted-foreground">
+                  С нами с {new Date(data.user.createdAt).toLocaleDateString("ru", { month: "long", year: "numeric" })}
                 </div>
               </div>
-            )}
+            </div>
 
-            {/* Transactions */}
-            <div className="glass-card rounded-2xl p-6">
-              <h2 className="text-xl font-bold mb-5 flex items-center justify-between">
-                История операций
-                <button onClick={loadData} className="text-muted-foreground hover:text-primary transition-colors">
-                  <RefreshCw className="w-4 h-4" />
+            {/* Ref link */}
+            <div className="glass-card rounded-2xl p-5 border border-white/10">
+              <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-3">Реферальная ссылка</div>
+              <div className="bg-white/5 rounded-xl p-3 border border-white/8 mb-2">
+                <div className="text-xs font-mono text-muted-foreground truncate">
+                  {window.location.origin}/reg?ref=<span className="text-primary font-bold">{data.user.referralCode}</span>
+                </div>
+              </div>
+              <button onClick={copyRef}
+                className="w-full flex items-center justify-center gap-2 py-2 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary text-sm font-semibold transition-colors border border-primary/20">
+                <Copy className="w-3.5 h-3.5" /> Скопировать ссылку
+              </button>
+            </div>
+
+            {/* Nav tabs */}
+            <div className="glass-card rounded-2xl p-2 border border-white/10">
+              {tabs.map(t => (
+                <button key={t.id} onClick={() => setActiveTab(t.id)}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all text-left ${
+                    activeTab === t.id
+                      ? "bg-primary/15 text-primary border border-primary/20"
+                      : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                  }`}>
+                  <t.icon className="w-4 h-4 shrink-0" />
+                  {t.label}
+                  {activeTab === t.id && <ChevronRight className="w-4 h-4 ml-auto" />}
                 </button>
-              </h2>
-              {data.transactions.length === 0 ? (
-                <p className="text-muted-foreground text-center py-8">Операций пока нет</p>
-              ) : (
-                <div className="space-y-3">
-                  {data.transactions.slice(0, 10).map((tx, i) => (
-                    <div key={i} className="flex items-center justify-between p-3 rounded-xl bg-white/3 border border-white/6">
-                      <div>
-                        <div className="font-medium text-sm">{tx.description}</div>
-                        <div className="text-xs text-muted-foreground">{new Date(tx.createdAt).toLocaleDateString("ru")}</div>
-                      </div>
-                      <div className="text-green-400 font-black">+${parseFloat(tx.amount).toFixed(2)}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
+              ))}
             </div>
-          </motion.div>
-        )}
 
-        {/* Investments Tab */}
-        {activeTab === "investments" && (
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
-            {data.investments.length === 0 ? (
-              <div className="glass-card p-10 rounded-2xl text-center">
-                <p className="text-muted-foreground mb-4">У вас пока нет инвестиций</p>
-                <Button onClick={() => setIsInvestOpen(true)} className="btn-grad font-bold rounded-xl">Инвестировать сейчас</Button>
-              </div>
-            ) : (
-              data.investments.map(inv => (
-                <div key={inv.id} className="glass-card p-6 rounded-2xl flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-                  <div className="space-y-1">
-                    <div className="font-bold text-lg">{inv.packageName}</div>
-                    <div className="text-primary font-black text-xl">${parseFloat(inv.amount).toLocaleString()}</div>
-                    <div className="text-xs text-muted-foreground">{new Date(inv.createdAt).toLocaleDateString("ru")}</div>
-                    {inv.txHash && <div className="text-xs text-muted-foreground font-mono">TX: {inv.txHash}</div>}
+            {/* Invest button */}
+            <button onClick={() => setIsInvestOpen(true)}
+              className="w-full btn-grad btn-3d h-12 rounded-xl font-bold text-sm">
+              + Новая инвестиция
+            </button>
+          </aside>
+
+          {/* ═══════════════ RIGHT MAIN CONTENT ═══════════════ */}
+          <main className="flex-1 min-w-0 space-y-5">
+
+            {/* Stat cards row */}
+            <div className="grid grid-cols-2 xl:grid-cols-4 gap-3">
+              {statCards.map((s, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.07 }}
+                  className={`glass-card rounded-2xl p-5 border ${s.border} bg-gradient-to-br ${s.bg} relative overflow-hidden`}>
+                  <div className="absolute top-3 right-3 opacity-20">
+                    <s.icon className="w-8 h-8" />
                   </div>
-                  <div className="flex flex-col items-start sm:items-end gap-2">
-                    <StatusBadge status={inv.status} />
-                    {inv.status === "confirmed" && (
-                      <div className="text-xs text-secondary">Доля: {parseFloat(inv.shares).toFixed(2)} в пуле</div>
-                    )}
-                  </div>
+                  <div className="text-xs text-muted-foreground mb-2">{s.label}</div>
+                  <div className={`text-2xl font-black ${s.color}`}>{s.value}</div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Pending notice */}
+            {pendingInvs.length > 0 && (
+              <div className="flex items-start gap-3 p-4 rounded-2xl bg-yellow-500/8 border border-yellow-500/25">
+                <Clock className="w-5 h-5 text-yellow-400 shrink-0 mt-0.5" />
+                <div>
+                  <div className="font-bold text-yellow-400 text-sm">Ожидается подтверждение ({pendingInvs.length})</div>
+                  <p className="text-xs text-muted-foreground mt-0.5">Заявка получена. Администратор подтвердит после проверки оплаты.</p>
                 </div>
-              ))
+              </div>
             )}
-          </motion.div>
-        )}
 
-        {/* MLM Tab */}
-        {activeTab === "mlm" && (
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-            <div className="glass-card p-6 rounded-2xl">
-              <h2 className="text-xl font-bold mb-4">Ваша реферальная ссылка</h2>
-              <div className="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/10">
-                <span className="text-sm font-mono text-muted-foreground flex-1 truncate">
-                  {window.location.origin}/register?ref={data.user.referralCode}
-                </span>
-                <Button variant="ghost" size="icon" onClick={copyRef} className="shrink-0">
-                  <Copy className="w-4 h-4" />
-                </Button>
-              </div>
-              <p className="text-xs text-muted-foreground mt-2">Ваш код: <span className="text-primary font-mono font-bold">{data.user.referralCode}</span></p>
-            </div>
-
-            <div className="glass-card p-6 rounded-2xl">
-              <h2 className="text-xl font-bold mb-5">Структура партнёров</h2>
-              {Object.keys(referrals).length === 0 ? (
-                <p className="text-muted-foreground text-center py-6">Пока нет привлечённых партнёров</p>
-              ) : (
-                <div className="space-y-3">
-                  {[1, 2, 3, 4, 5].map(level => {
-                    const lvl = referrals[level];
-                    const pcts = [10, 5, 3, 1, 1];
-                    if (!lvl) return (
-                      <div key={level} className="flex items-center gap-4 p-3 rounded-xl bg-white/3 opacity-40">
-                        <div className="text-muted-foreground font-bold w-24">Уровень {level} ({pcts[level-1]}%)</div>
-                        <div className="text-sm text-muted-foreground">нет партнёров</div>
-                      </div>
-                    );
-                    return (
-                      <div key={level} className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/10">
-                        <div className="text-primary font-black w-24">Ур. {level} ({pcts[level-1]}%)</div>
-                        <div className="flex-1">
-                          <div className="font-semibold">{lvl.count} партнёров</div>
-                        </div>
-                        <div className="text-green-400 font-black">+${lvl.earned.toFixed(2)}</div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-              <div className="mt-4 pt-4 border-t border-white/10 flex justify-between items-center">
-                <span className="text-muted-foreground">Итого MLM бонусы</span>
-                <span className="text-green-400 font-black text-xl">${totalMLM.toFixed(2)}</span>
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* Settings Tab */}
-        {activeTab === "settings" && (
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-            <div className="glass-card p-6 rounded-2xl">
-              <h2 className="text-xl font-bold mb-5 flex items-center gap-2">
-                <Wallet className="w-5 h-5 text-primary" /> Кошелёк для выплат
-              </h2>
-              <p className="text-sm text-muted-foreground mb-5">Укажите адрес кошелька, на который будут приходить RevShare и MLM-выплаты.</p>
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium mb-1.5 block">Сеть</label>
-                  <select value={walletNet} onChange={e => setWalletNet(e.target.value)}
-                    className="w-full h-11 px-3 rounded-xl bg-background/50 border border-white/10 text-foreground text-sm">
-                    <option>TON</option>
-                    <option>USDT TRC-20</option>
-                    <option>USDT ERC-20</option>
-                    <option>BTC</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="text-sm font-medium mb-1.5 block">Адрес кошелька</label>
-                  <Input placeholder="0x... или TU... или UQ..." value={walletAddr}
-                    onChange={e => setWalletAddr(e.target.value)}
-                    className="bg-background/50 border-white/10 h-11 font-mono" />
-                </div>
-                <Button onClick={saveWallet} disabled={savingWallet || !walletAddr}
-                  className="btn-grad font-bold rounded-xl h-11 px-6">
-                  {savingWallet ? "Сохраняю..." : "Сохранить кошелёк"}
-                </Button>
-              </div>
-              {data.user.walletAddress && (
-                <div className="mt-4 p-3 rounded-xl bg-green-500/10 border border-green-500/20">
-                  <div className="text-xs text-green-400 font-semibold mb-1">Текущий кошелёк:</div>
-                  <div className="text-sm font-mono text-foreground">{data.user.walletAddress}</div>
-                  <div className="text-xs text-muted-foreground">{data.user.walletNetwork}</div>
-                </div>
-              )}
-            </div>
-
-            <div className="glass-card p-6 rounded-2xl">
-              <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                <Settings className="w-5 h-5 text-muted-foreground" /> Аккаунт
-              </h2>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between py-2 border-b border-white/8">
-                  <span className="text-muted-foreground">Имя</span>
-                  <span className="font-semibold">{data.user.name}</span>
-                </div>
-                <div className="flex justify-between py-2 border-b border-white/8">
-                  <span className="text-muted-foreground">Email</span>
-                  <span className="font-semibold">{data.user.email}</span>
-                </div>
-                {data.user.telegramUsername && (
-                  <div className="flex justify-between py-2 border-b border-white/8">
-                    <span className="text-muted-foreground">Telegram</span>
-                    <span className="font-semibold">{data.user.telegramUsername}</span>
+            {/* ─── OVERVIEW ─── */}
+            {activeTab === "overview" && (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
+                {/* Portfolio infographic */}
+                {confirmedInvs.length > 0 && (
+                  <div className="glass-card rounded-2xl p-6 border border-white/10">
+                    <div className="text-sm font-bold mb-4 flex items-center gap-2">
+                      <BarChart3 className="w-4 h-4 text-primary" /> Портфель инвестиций
+                    </div>
+                    <div className="space-y-3">
+                      {confirmedInvs.map((inv, i) => {
+                        const amt = parseFloat(inv.amount);
+                        const pct = data.stats.totalInvested > 0 ? (amt / data.stats.totalInvested) * 100 : 100;
+                        const colors = ["bg-primary", "bg-secondary", "bg-blue-400", "bg-teal-400"];
+                        return (
+                          <div key={i}>
+                            <div className="flex justify-between text-xs mb-1">
+                              <span className="text-muted-foreground">{inv.packageName}</span>
+                              <span className="font-bold">${amt.toLocaleString()} · {pct.toFixed(0)}%</span>
+                            </div>
+                            <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                              <motion.div initial={{ width: 0 }} animate={{ width: `${pct}%` }}
+                                transition={{ duration: 0.8, delay: i * 0.1 }}
+                                className={`h-full rounded-full ${colors[i % colors.length]}`} />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div className="mt-4 pt-4 border-t border-white/8 flex justify-between items-center">
+                      <span className="text-xs text-muted-foreground">Итого подтверждено</span>
+                      <span className="text-primary font-black">${confirmedInvs.reduce((s, i) => s + parseFloat(i.amount), 0).toLocaleString()}</span>
+                    </div>
                   </div>
                 )}
-                <div className="flex justify-between py-2 border-b border-white/8">
-                  <span className="text-muted-foreground">Реферальный код</span>
-                  <span className="font-mono text-primary font-bold">{data.user.referralCode}</span>
+
+                {/* Transactions */}
+                <div className="glass-card rounded-2xl p-6 border border-white/10">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-sm font-bold flex items-center gap-2"><TrendingUp className="w-4 h-4 text-green-400" /> История операций</span>
+                    <button onClick={loadData} className="text-muted-foreground hover:text-primary transition-colors p-1">
+                      <RefreshCw className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                  {data.transactions.length === 0 ? (
+                    <p className="text-muted-foreground text-center py-8 text-sm">Операций пока нет</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {data.transactions.slice(0, 10).map((tx, i) => (
+                        <div key={i} className="flex items-center justify-between p-3 rounded-xl bg-white/3 border border-white/6 hover:bg-white/5 transition-colors">
+                          <div>
+                            <div className="font-medium text-sm">{tx.description}</div>
+                            <div className="text-xs text-muted-foreground">{new Date(tx.createdAt).toLocaleDateString("ru")}</div>
+                          </div>
+                          <div className="text-green-400 font-black text-sm">+${parseFloat(tx.amount).toFixed(2)}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                <div className="flex justify-between py-2">
-                  <span className="text-muted-foreground">Дата регистрации</span>
-                  <span>{new Date(data.user.createdAt).toLocaleDateString("ru")}</span>
+              </motion.div>
+            )}
+
+            {/* ─── INVESTMENTS (RIGHT SIDE) ─── */}
+            {activeTab === "investments" && (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Ваши вклады</span>
+                  <button onClick={() => setIsInvestOpen(true)}
+                    className="flex items-center gap-1.5 text-xs text-primary font-semibold hover:underline">
+                    + Добавить вклад
+                  </button>
                 </div>
-              </div>
-              <Button variant="outline" onClick={handleLogout} className="mt-5 border-destructive/30 text-destructive hover:bg-destructive/10">
-                <LogOut className="w-4 h-4 mr-2" /> Выйти из аккаунта
-              </Button>
-            </div>
-          </motion.div>
-        )}
-      </main>
+
+                {data.investments.length === 0 ? (
+                  <div className="glass-card p-12 rounded-2xl text-center border border-white/10">
+                    <DollarSign className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
+                    <p className="text-muted-foreground mb-4">У вас пока нет инвестиций</p>
+                    <Button onClick={() => setIsInvestOpen(true)} className="btn-grad font-bold rounded-xl">Инвестировать сейчас</Button>
+                  </div>
+                ) : (
+                  <div className="grid gap-4">
+                    {data.investments.map((inv, i) => {
+                      const gradients = [
+                        "from-primary/20 via-primary/5 to-transparent border-primary/25",
+                        "from-secondary/20 via-secondary/5 to-transparent border-secondary/25",
+                        "from-blue-400/20 via-blue-400/5 to-transparent border-blue-400/25",
+                        "from-teal-400/20 via-teal-400/5 to-transparent border-teal-400/25",
+                      ];
+                      const textColors = ["text-primary", "text-secondary", "text-blue-400", "text-teal-400"];
+                      return (
+                        <motion.div key={inv.id} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.08 }}
+                          className={`glass-card rounded-2xl border bg-gradient-to-r ${gradients[i % gradients.length]} overflow-hidden`}>
+                          <div className="p-6">
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                              {/* Left: package info */}
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-2">
+                                  <div className={`w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center`}>
+                                    <Star className={`w-4 h-4 ${textColors[i % textColors.length]}`} />
+                                  </div>
+                                  <span className="font-black text-base">{inv.packageName}</span>
+                                </div>
+                                <div className="text-xs text-muted-foreground">
+                                  Дата: {new Date(inv.createdAt).toLocaleDateString("ru", { day: "numeric", month: "long", year: "numeric" })}
+                                </div>
+                                {inv.txHash && (
+                                  <div className="text-xs text-muted-foreground font-mono mt-0.5 truncate">TX: {inv.txHash}</div>
+                                )}
+                              </div>
+
+                              {/* Right: amount + status + shares */}
+                              <div className="flex flex-col items-start sm:items-end gap-2">
+                                <div className={`text-2xl font-black ${textColors[i % textColors.length]}`}>
+                                  ${parseFloat(inv.amount).toLocaleString()}
+                                </div>
+                                <StatusBadge status={inv.status} />
+                                {inv.status === "confirmed" && (
+                                  <div className="text-xs text-muted-foreground">
+                                    Доля в пуле: <span className="text-secondary font-bold">{parseFloat(inv.shares).toFixed(2)}</span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Progress bar accent */}
+                            {inv.status === "confirmed" && (
+                              <div className="mt-4 h-1 bg-white/5 rounded-full overflow-hidden">
+                                <motion.div initial={{ width: 0 }} animate={{ width: "100%" }}
+                                  transition={{ duration: 1, delay: i * 0.1 }}
+                                  className={`h-full rounded-full ${["bg-primary", "bg-secondary", "bg-blue-400", "bg-teal-400"][i % 4]}`} />
+                              </div>
+                            )}
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Summary block */}
+                {data.investments.length > 0 && (
+                  <div className="glass-card rounded-2xl p-5 border border-white/10 bg-gradient-to-r from-green-500/10 to-transparent">
+                    <div className="flex flex-wrap gap-6 justify-between items-center">
+                      <div>
+                        <div className="text-xs text-muted-foreground mb-1">Всего вложено</div>
+                        <div className="text-3xl font-black text-primary">${data.stats.totalInvested.toLocaleString()}</div>
+                      </div>
+                      <div>
+                        <div className="text-xs text-muted-foreground mb-1">Доля в RevShare пуле</div>
+                        <div className="text-3xl font-black text-secondary">{data.stats.totalShares.toFixed(2)}</div>
+                      </div>
+                      <div>
+                        <div className="text-xs text-muted-foreground mb-1">Подтверждено</div>
+                        <div className="text-3xl font-black text-green-400">{confirmedInvs.length}</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+            )}
+
+            {/* ─── PARTNERS / MLM ─── */}
+            {activeTab === "mlm" && (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
+                {/* Ref link */}
+                <div className="glass-card rounded-2xl p-6 border border-white/10">
+                  <div className="text-sm font-bold mb-4 flex items-center gap-2">
+                    <Network className="w-4 h-4 text-primary" /> Реферальная ссылка
+                  </div>
+                  <div className="flex items-center gap-3 bg-white/5 p-4 rounded-xl border border-white/10 mb-3">
+                    <span className="text-sm font-mono text-muted-foreground flex-1 truncate">
+                      {window.location.origin}/register?ref=<span className="text-primary font-bold">{data.user.referralCode}</span>
+                    </span>
+                    <button onClick={copyRef} className="shrink-0 p-2 rounded-lg hover:bg-white/10 transition-colors text-muted-foreground hover:text-primary">
+                      <Copy className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    Ваш код: <span className="text-primary font-mono font-bold">{data.user.referralCode}</span>
+                  </div>
+                </div>
+
+                {/* Level infographic */}
+                <div className="glass-card rounded-2xl p-6 border border-white/10">
+                  <div className="text-sm font-bold mb-5 flex items-center gap-2">
+                    <BarChart3 className="w-4 h-4 text-secondary" /> Структура доходов по уровням
+                  </div>
+                  <div className="space-y-3">
+                    {[1, 2, 3, 4, 5].map(level => {
+                      const lvl = referrals[level];
+                      const c = LEVEL_COLORS[level - 1];
+                      const pct = LEVEL_PCTS[level - 1];
+                      const barW = [100, 70, 48, 28, 18][level - 1];
+                      return (
+                        <div key={level} className="flex items-center gap-4">
+                          <div className={`shrink-0 text-xs font-black px-2.5 py-1 rounded-lg border ${c.badge}`}>L{level}</div>
+                          <div className="shrink-0 w-10 text-right">
+                            <span className={`text-sm font-black ${c.text}`}>{pct}%</span>
+                          </div>
+                          <div className="flex-1 relative h-2 bg-white/5 rounded-full overflow-hidden">
+                            <motion.div
+                              initial={{ width: 0 }}
+                              animate={{ width: `${barW}%` }}
+                              transition={{ duration: 0.7, delay: (level - 1) * 0.08 }}
+                              className={`absolute left-0 top-0 h-full rounded-full ${c.bar}`}
+                            />
+                          </div>
+                          <div className="shrink-0 w-32 text-right">
+                            {lvl ? (
+                              <span className="text-xs">
+                                <span className="text-foreground font-semibold">{lvl.count} чел.</span>
+                                <span className="text-green-400 font-bold ml-2">+${lvl.earned.toFixed(0)}</span>
+                              </span>
+                            ) : (
+                              <span className="text-xs text-muted-foreground/40">нет партнёров</span>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="mt-5 pt-4 border-t border-white/8 flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">Всего MLM бонусов</span>
+                    <span className="text-green-400 font-black text-2xl">${totalMLM.toFixed(0)}</span>
+                  </div>
+                </div>
+
+                {/* Partner count summary */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="glass-card rounded-2xl p-5 border border-white/10 bg-gradient-to-br from-primary/10 to-transparent">
+                    <div className="text-xs text-muted-foreground mb-1">Всего партнёров</div>
+                    <div className="text-3xl font-black text-primary">{totalMLMRefs}</div>
+                  </div>
+                  <div className="glass-card rounded-2xl p-5 border border-white/10 bg-gradient-to-br from-green-500/10 to-transparent">
+                    <div className="text-xs text-muted-foreground mb-1">Ваш заработок</div>
+                    <div className="text-3xl font-black text-green-400">${totalMLM.toFixed(0)}</div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* ─── SETTINGS ─── */}
+            {activeTab === "settings" && (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
+                {/* Wallet */}
+                <div className="glass-card rounded-2xl p-6 border border-white/10">
+                  <div className="text-sm font-bold mb-1 flex items-center gap-2">
+                    <Wallet className="w-4 h-4 text-primary" /> Кошелёк для выплат
+                  </div>
+                  <p className="text-xs text-muted-foreground mb-5">Адрес для получения RevShare и MLM-выплат</p>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-xs font-semibold mb-1.5 block text-muted-foreground uppercase tracking-wide">Сеть</label>
+                      <select value={walletNet} onChange={e => setWalletNet(e.target.value)}
+                        className="w-full h-11 px-3 rounded-xl bg-background/50 border border-white/10 text-foreground text-sm focus:outline-none focus:border-primary/40">
+                        <option>TON</option>
+                        <option>USDT TRC-20</option>
+                        <option>USDT ERC-20</option>
+                        <option>BTC</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-xs font-semibold mb-1.5 block text-muted-foreground uppercase tracking-wide">Адрес кошелька</label>
+                      <Input placeholder="0x... или TU... или UQ..." value={walletAddr}
+                        onChange={e => setWalletAddr(e.target.value)}
+                        className="bg-background/50 border-white/10 h-11 font-mono text-sm" />
+                    </div>
+                    <Button onClick={saveWallet} disabled={savingWallet || !walletAddr}
+                      className="btn-grad font-bold rounded-xl h-11 px-6">
+                      {savingWallet ? "Сохраняю..." : "Сохранить кошелёк"}
+                    </Button>
+                  </div>
+                  {data.user.walletAddress && (
+                    <div className="mt-4 p-4 rounded-xl bg-green-500/8 border border-green-500/20">
+                      <div className="text-xs text-green-400 font-bold mb-1">Текущий кошелёк</div>
+                      <div className="text-sm font-mono">{data.user.walletAddress}</div>
+                      <div className="text-xs text-muted-foreground mt-0.5">{data.user.walletNetwork}</div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Account info */}
+                <div className="glass-card rounded-2xl p-6 border border-white/10">
+                  <div className="text-sm font-bold mb-5 flex items-center gap-2">
+                    <Settings className="w-4 h-4 text-muted-foreground" /> Данные аккаунта
+                  </div>
+                  <div className="space-y-0 divide-y divide-white/8">
+                    {[
+                      { label: "Имя", value: data.user.name },
+                      { label: "Email", value: data.user.email },
+                      ...(data.user.telegramUsername ? [{ label: "Telegram", value: data.user.telegramUsername }] : []),
+                      { label: "Реферальный код", value: data.user.referralCode, mono: true, primary: true },
+                      { label: "Дата регистрации", value: new Date(data.user.createdAt).toLocaleDateString("ru") },
+                    ].map((row, i) => (
+                      <div key={i} className="flex justify-between items-center py-3">
+                        <span className="text-sm text-muted-foreground">{row.label}</span>
+                        <span className={`text-sm font-semibold ${row.mono ? "font-mono" : ""} ${row.primary ? "text-primary" : ""}`}>{row.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <Button variant="outline" onClick={handleLogout}
+                    className="mt-5 border-red-500/20 text-red-400 hover:bg-red-500/10 hover:border-red-500/30 w-full sm:w-auto">
+                    <LogOut className="w-4 h-4 mr-2" /> Выйти из аккаунта
+                  </Button>
+                </div>
+              </motion.div>
+            )}
+          </main>
+        </div>
+      </div>
 
       <InvestmentModal isOpen={isInvestOpen} onClose={() => { setIsInvestOpen(false); loadData(); }} />
     </div>
