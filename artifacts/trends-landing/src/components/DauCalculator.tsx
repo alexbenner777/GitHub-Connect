@@ -242,39 +242,6 @@ export function DauCalculator({
           {/* ── Full Investment Package Cards ── */}
           {fullPackages && fullPackages.length > 0 && (
             <div>
-              {/* Round 1 advantage banner */}
-              <div className="relative rounded-2xl border border-primary/40 bg-gradient-to-r from-primary/10 via-primary/5 to-secondary/10 p-5 md:p-6 mb-8 overflow-hidden">
-                <div className="absolute inset-0 pointer-events-none">
-                  <div className="absolute top-0 left-1/4 w-40 h-40 bg-primary/15 blur-[60px] rounded-full" />
-                  <div className="absolute bottom-0 right-1/4 w-32 h-32 bg-secondary/15 blur-[50px] rounded-full" />
-                </div>
-                <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/20 border border-green-500/30 text-green-400 text-xs font-black uppercase tracking-wider shrink-0">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse inline-block" />
-                    Раунд 1 Активен
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-bold text-foreground">
-                      Сейчас доля стоит <span className="text-primary">$307</span> — на 30% дешевле, чем в Раунде 2 ($400).
-                    </p>
-                    <p className="text-sm text-muted-foreground mt-0.5">
-                      Инвесторы Раунда 1 получают бонус +30% к долям. После закрытия $500K — цена вырастет навсегда.
-                    </p>
-                  </div>
-                  <div className="flex gap-3 shrink-0 text-center">
-                    <div className="px-4 py-2 rounded-xl bg-primary/15 border border-primary/30">
-                      <div className="text-xl font-black text-primary">$307</div>
-                      <div className="text-[10px] text-primary/80 font-semibold">Раунд 1</div>
-                    </div>
-                    <div className="flex items-center text-muted-foreground text-sm font-bold">→</div>
-                    <div className="px-4 py-2 rounded-xl bg-white/5 border border-white/10">
-                      <div className="text-xl font-black text-muted-foreground">$400</div>
-                      <div className="text-[10px] text-muted-foreground font-semibold">Раунд 2</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
               <div className="text-center mb-8">
                 <p className="text-muted-foreground text-sm">
                   * Суммы RevShare рассчитаны для текущего положения ползунка DAU. Изменяйте ползунок — цифры в карточках обновятся.
