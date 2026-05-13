@@ -1161,7 +1161,7 @@ export default function Landing() {
 
             <div className="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-4 items-stretch">
               {[
-                { phase: "Июль 2026", title: "Public Launch", desc: "Публичный запуск MVP, онбординг первых 1,000 криэйторов, старт монетизации.", active: true },
+                { phase: "Июль 2026", title: "Public Launch", desc: "Публичный запуск MVP, онбординг первых 1,000 криейторов, старт монетизации.", active: true },
                 { phase: "Q3 2026", title: "Growth Phase", desc: "Запуск рекламного кабинета, интеграция с TON, активация RevShare для инвесторов." },
                 { phase: "Q4 2026", title: "Scale", desc: "Агрессивный маркетинг, масштабирование аудитории, выход на международные рынки." },
                 { phase: "2027 — 10M", title: "Листинг $TRND", desc: "При 10M пользователей — листинг токена. Ранние инвесторы получают максимальную аллокацию.", highlight: true },
