@@ -965,29 +965,20 @@ export default function Landing() {
           </div>
 
           <div className="max-w-4xl mx-auto mb-16">
-            <div className="space-y-3">
+            <div className="glass-card p-4 rounded-2xl flex items-stretch gap-0 overflow-hidden">
               {[
-                { level: "Уровень 1", pct: "10%", desc: "Прямые приглашённые вами", color: "from-primary to-primary/70", textColor: "text-primary", w: "100%" },
-                { level: "Уровень 2", pct: "5%", desc: "Их партнёры", color: "from-secondary to-secondary/70", textColor: "text-secondary", w: "80%" },
-                { level: "Уровень 3", pct: "3%", desc: "Третье звено сети", color: "from-blue-400 to-blue-400/70", textColor: "text-blue-400", w: "60%" },
-                { level: "Уровень 4", pct: "1%", desc: "Четвёртое звено", color: "from-cyan-400 to-cyan-400/70", textColor: "text-cyan-400", w: "40%" },
-                { level: "Уровень 5", pct: "1%", desc: "Пятое звено", color: "from-teal-400 to-teal-400/70", textColor: "text-teal-400", w: "25%" },
+                { lvl: "L1", pct: "10%", desc: "Прямые", bar: "bg-primary", border: "border-primary/30", text: "text-primary", flex: "flex-[10]" },
+                { lvl: "L2", pct: "5%",  desc: "2-е звено", bar: "bg-secondary", border: "border-secondary/30", text: "text-secondary", flex: "flex-[5]" },
+                { lvl: "L3", pct: "3%",  desc: "3-е звено", bar: "bg-blue-400", border: "border-blue-400/30", text: "text-blue-400", flex: "flex-[3]" },
+                { lvl: "L4", pct: "1%",  desc: "4-е звено", bar: "bg-cyan-400", border: "border-cyan-400/30", text: "text-cyan-400", flex: "flex-[1]" },
+                { lvl: "L5", pct: "1%",  desc: "5-е звено", bar: "bg-teal-400", border: "border-teal-400/30", text: "text-teal-400", flex: "flex-[1]" },
               ].map((lvl, i) => (
-                <motion.div key={i} initial="visible" animate="visible" variants={fadeIn}
-                  className="glass-card p-5 rounded-2xl flex items-center gap-5">
-                  <div className={`text-2xl font-black ${lvl.textColor} w-14 shrink-0`}>{lvl.pct}</div>
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-semibold">{lvl.level}</span>
-                      <span className="text-sm text-muted-foreground hidden sm:block">{lvl.desc}</span>
-                    </div>
-                    <div className="h-2 bg-white/5 rounded-full overflow-hidden">
-                      <motion.div initial={{ width: 0 }} whileInView={{ width: lvl.w }} viewport={{ once: true, amount: 0 }}
-                        transition={{ duration: 0.8, delay: i * 0.1 }}
-                        className={`h-full rounded-full bg-gradient-to-r ${lvl.color}`} />
-                    </div>
-                  </div>
-                </motion.div>
+                <div key={i} className={`${lvl.flex} flex flex-col items-center gap-1.5 px-2 py-2 border-r last:border-r-0 ${lvl.border} min-w-0`}>
+                  <div className={`text-xl font-black ${lvl.text}`}>{lvl.pct}</div>
+                  <div className="text-[11px] font-bold text-white/80">{lvl.lvl}</div>
+                  <div className={`w-full h-1.5 rounded-full ${lvl.bar} opacity-80`} />
+                  <div className="text-[9px] text-muted-foreground text-center leading-tight hidden sm:block">{lvl.desc}</div>
+                </div>
               ))}
             </div>
           </div>
