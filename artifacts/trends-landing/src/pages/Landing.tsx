@@ -1029,7 +1029,6 @@ export default function Landing() {
                     { l: "В", amt: "$100K", bonus: "+$10 000", color: "bg-orange-400/25 border-orange-400/60 text-orange-300" },
                     { l: "Г", amt: "$5K", bonus: "+$500", color: "bg-secondary/20 border-secondary/40 text-secondary" },
                     { l: "Д", amt: "$5K", bonus: "+$500", color: "bg-secondary/20 border-secondary/40 text-secondary" },
-                    { l: "Е", amt: "$5K", bonus: "+$500", color: "bg-secondary/20 border-secondary/40 text-secondary" },
                   ].map(({ l, amt, bonus, color }, i) => (
                     <div key={i} className="flex flex-col items-center flex-1">
                       <div className={`w-9 h-9 rounded-xl border flex items-center justify-center font-bold text-xs ${color}`}>{l}</div>
@@ -1090,7 +1089,7 @@ export default function Landing() {
               {[
                 { icon: UserPlus, color: "text-yellow-400", bg: "bg-yellow-400/10", action: "2 партнёра вложили по $25 000", calc: "2 × $25 000 × 10%", result: "+$5 000", resultColor: "text-yellow-400" },
                 { icon: Crown, color: "text-orange-400", bg: "bg-orange-400/10", action: "1 партнёр вложил $100 000", calc: "1 × $100 000 × 10%", result: "+$10 000", resultColor: "text-orange-400" },
-                { icon: Users2, color: "text-secondary", bg: "bg-secondary/10", action: "3 партнёра вложили по $5 000", calc: "3 × $5 000 × 10%", result: "+$1 500", resultColor: "text-secondary" },
+                { icon: Users2, color: "text-secondary", bg: "bg-secondary/10", action: "2 партнёра вложили по $5 000", calc: "2 × $5 000 × 10%", result: "+$1 000", resultColor: "text-secondary" },
               ].map((row, i) => (
                 <div key={i} className="glass-card px-4 py-3 rounded-xl flex flex-col sm:flex-row gap-3 items-start sm:items-center">
                   <div className={`w-9 h-9 rounded-xl ${row.bg} flex items-center justify-center shrink-0`}>
@@ -1134,8 +1133,8 @@ export default function Landing() {
             <div className="flex flex-col md:flex-row items-center gap-6 p-6 rounded-2xl glass-card">
               <div className="flex-1 text-center md:text-left">
                 <div className="text-sm text-muted-foreground mb-1">Итого от партнёрской сети</div>
-                <div className="text-5xl font-black text-green-400">$20 600</div>
-                <div className="text-xs text-muted-foreground mt-1">L1: $16 500 · L2: $2 900 · L3–5: $1 200</div>
+                <div className="text-5xl font-black text-green-400">$20 100</div>
+                <div className="text-xs text-muted-foreground mt-1">L1: $16 000 · L2: $2 900 · L3–5: $1 200</div>
               </div>
               <div className="w-px h-12 bg-white/10 hidden md:block" />
               <div className="text-center md:text-left">
