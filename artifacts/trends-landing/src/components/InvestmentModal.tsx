@@ -10,6 +10,15 @@ import { api } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 import { useTonAddress, useTonConnectModal } from "@tonconnect/ui-react";
 
+export const MONTHLY_PROFIT: Record<string, number> = {
+  founder1: 1,
+  founder2: 4,
+  founder3: 15,
+  founder4: 74,
+  founder5: 371,
+  founder6: 1484,
+};
+
 export const PACKAGES = [
   { id: "founder1", name: "Основателей 1", price: 100, monthly: 1, shares: 0.25, exit: "–" },
   { id: "founder2", name: "Основателей 2", price: 250, monthly: 4, shares: 0.63, exit: "1,300–3,000" },

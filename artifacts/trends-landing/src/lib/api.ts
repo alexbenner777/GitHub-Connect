@@ -89,6 +89,7 @@ export interface CabinetData {
   stats: {
     totalInvested: number;
     totalShares: number;
+    monthlyProfit: number;
     mlmTotalBonus: number;
     mlmReferralsCount: number;
   };

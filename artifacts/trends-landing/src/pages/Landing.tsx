@@ -466,6 +466,26 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* MINIAPP STATS STRIP */}
+      <section className="py-6 relative z-10">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto">
+            {[
+              { label: "Пользователей в Mini App", value: "12 400+", sub: "всего зарегистрировано" },
+              { label: "DAU", value: "3 200+", sub: "активных ежедневно" },
+              { label: "Видео загружено", value: "48 000+", sub: "создателями контента" },
+              { label: "Страны", value: "34", sub: "аудитория по миру" },
+            ].map((s, i) => (
+              <div key={i} className="glass-card rounded-2xl p-4 border border-white/10 text-center">
+                <div className="text-2xl font-black text-gradient">{s.value}</div>
+                <div className="text-xs font-semibold mt-1">{s.label}</div>
+                <div className="text-[11px] text-muted-foreground mt-0.5">{s.sub}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* FUNDRAISING ROADMAP — 2 rounds */}
       <section className="py-14 md:py-20 relative z-10">
         <div className="container mx-auto px-4">

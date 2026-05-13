@@ -3,6 +3,15 @@ import { db, usersTable, investmentsTable, transactionsTable, referralBonusesTab
 import { eq, desc, sum, count } from "drizzle-orm";
 import { requireAuth } from "../middlewares/auth.js";
 
+const MONTHLY_PROFIT: Record<string, number> = {
+  founder1: 1,
+  founder2: 4,
+  founder3: 15,
+  founder4: 74,
+  founder5: 371,
+  founder6: 1484,
+};
+
 const router = Router();
 
 router.get("/cabinet/me", requireAuth, async (req, res) => {
@@ -43,6 +52,10 @@ router.get("/cabinet/me", requireAuth, async (req, res) => {
     .filter(i => i.status === "confirmed")
     .reduce((s, i) => s + parseFloat(i.shares), 0);
 
+  const monthlyProfit = investments
+    .filter(i => i.status === "confirmed")
+    .reduce((s, i) => s + (MONTHLY_PROFIT[i.packageId] ?? 0), 0);
+
   res.json({
     user,
     investments,
@@ -50,6 +63,7 @@ router.get("/cabinet/me", requireAuth, async (req, res) => {
     stats: {
       totalInvested,
       totalShares,
+      monthlyProfit,
       mlmTotalBonus: parseFloat(mlmStats?.totalBonus ?? "0"),
       mlmReferralsCount: mlmStats?.count ?? 0,
     },

@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { InvestmentModal } from "@/components/InvestmentModal";
+import { InvestmentModal, MONTHLY_PROFIT } from "@/components/InvestmentModal";
 import { useAuth } from "@/hooks/useAuth";
 import { api, type CabinetData } from "@/lib/api";
 
@@ -124,8 +124,8 @@ export default function Cabinet() {
 
   const statCards = [
     { label: "Инвестировано", value: `$${data.stats.totalInvested.toLocaleString()}`, icon: DollarSign, color: "text-primary", bg: "from-primary/20 to-primary/5", border: "border-primary/20" },
-    { label: "Доля в пуле", value: data.stats.totalShares.toFixed(2), icon: Star, color: "text-secondary", bg: "from-secondary/20 to-secondary/5", border: "border-secondary/20" },
-    { label: "MLM бонусы", value: `$${totalMLM.toFixed(0)}`, icon: TrendingUp, color: "text-green-400", bg: "from-green-500/20 to-green-500/5", border: "border-green-500/20" },
+    { label: "Прибыль / мес", value: `$${(data.stats.monthlyProfit ?? 0).toLocaleString()}`, icon: TrendingUp, color: "text-green-400", bg: "from-green-500/20 to-green-500/5", border: "border-green-500/20" },
+    { label: "MLM бонусы", value: `$${totalMLM.toFixed(0)}`, icon: Star, color: "text-secondary", bg: "from-secondary/20 to-secondary/5", border: "border-secondary/20" },
     { label: "Партнёров", value: String(totalMLMRefs), icon: Users, color: "text-yellow-400", bg: "from-yellow-500/20 to-yellow-500/5", border: "border-yellow-500/20" },
   ];
 
@@ -426,8 +426,9 @@ export default function Cabinet() {
                                 </div>
                                 <StatusBadge status={inv.status} />
                                 {inv.status === "confirmed" && (
-                                  <div className="text-xs text-muted-foreground">
-                                    Доля в пуле: <span className="text-secondary font-bold">{parseFloat(inv.shares).toFixed(2)}</span>
+                                  <div className="text-xs text-muted-foreground space-y-0.5">
+                                    <div>Доля в пуле: <span className="text-secondary font-bold">{parseFloat(inv.shares).toFixed(2)}</span></div>
+                                    <div>Прибыль / мес: <span className="text-green-400 font-bold">${(MONTHLY_PROFIT[inv.packageId] ?? 0).toLocaleString()}</span></div>
                                   </div>
                                 )}
                               </div>
