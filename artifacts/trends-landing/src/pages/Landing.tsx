@@ -594,22 +594,9 @@ export default function Landing() {
                   <DollarSign className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-black">Математика и капитализация</h3>
-                  <p className="text-sm text-muted-foreground">Прозрачная структура при общем сборе $2 000 000</p>
+                  <h3 className="text-lg font-black">Куда расходуем средства</h3>
+                  <p className="text-sm text-muted-foreground">Прозрачное распределение $2 000 000</p>
                 </div>
-              </div>
-              <div className="grid sm:grid-cols-3 gap-4 mb-6">
-                {[
-                  { label: "Общий сбор", value: "$2 000 000", sub: "Раунд 1 + Раунд 2", color: "text-foreground" },
-                  { label: "Пул долей", value: "5 000", sub: "20% от будущей прибыли", color: "text-primary" },
-                  { label: "Доля уже собрана", value: "$100 000", sub: "в Раунде 1", color: "text-green-400" },
-                ].map(({ label, value, sub, color }) => (
-                  <div key={label} className="text-center p-4 rounded-xl bg-white/5 border border-white/8">
-                    <div className={`text-2xl md:text-3xl font-black ${color}`}>{value}</div>
-                    <div className="text-sm font-semibold text-foreground mt-1">{label}</div>
-                    <div className="text-xs text-muted-foreground mt-0.5">{sub}</div>
-                  </div>
-                ))}
               </div>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
