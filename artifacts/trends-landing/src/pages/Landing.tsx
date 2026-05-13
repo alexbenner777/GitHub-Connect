@@ -1000,19 +1000,19 @@ export default function Landing() {
                 <DollarSign className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-lg md:text-2xl font-bold">Пример: Пакет Genesis — $1 000</h3>
-                <p className="text-sm text-muted-foreground">Вы вложили $1 000 и пригласили партнёров</p>
+                <h3 className="text-lg md:text-2xl font-bold">Пример: Пакет Основателей 4 — $5 000</h3>
+                <p className="text-sm text-muted-foreground">Вы вложили $5 000 и пригласили партнёров</p>
               </div>
             </div>
 
             {/* Visual referral tree */}
             <div className="mb-8 p-5 rounded-2xl bg-white/3 border border-white/8 overflow-x-auto">
-              <div className="min-w-[340px]">
+              <div className="min-w-[360px]">
                 {/* You */}
                 <div className="flex justify-center mb-3">
                   <div className="flex flex-col items-center">
                     <div className="w-12 h-12 rounded-2xl bg-primary/20 border-2 border-primary/50 flex items-center justify-center text-primary font-black text-sm">ВЫ</div>
-                    <div className="text-[10px] text-primary font-bold mt-1">$1 000</div>
+                    <div className="text-[10px] text-primary font-bold mt-1">$5 000</div>
                   </div>
                 </div>
                 {/* L1 connector */}
@@ -1022,32 +1022,32 @@ export default function Landing() {
                   <div className="w-px h-4 bg-primary/40" />
                   <div className="flex-1 h-px bg-primary/20 self-center" />
                 </div>
-                {/* L1 nodes */}
-                <div className="flex justify-between gap-2 mb-1 px-2">
-                  {["А", "Б", "В"].map((l, i) => (
+                {/* L1 nodes — 5 friends */}
+                <div className="flex justify-between gap-1 mb-1 px-1">
+                  {["А", "Б", "В", "Г", "Д"].map((l, i) => (
                     <div key={i} className="flex flex-col items-center flex-1">
                       <div className="w-9 h-9 rounded-xl bg-secondary/20 border border-secondary/40 flex items-center justify-center text-secondary font-bold text-xs">{l}</div>
-                      <div className="text-[9px] text-secondary mt-0.5">$1 000</div>
-                      <div className="text-[9px] text-green-400 font-bold">+$100</div>
+                      <div className="text-[8px] text-secondary mt-0.5">$5 000</div>
+                      <div className="text-[8px] text-green-400 font-bold">+$500</div>
                     </div>
                   ))}
                 </div>
                 {/* L2 connectors */}
-                <div className="flex justify-between gap-2 mb-1 px-2">
-                  {[0,1,2].map(i => (
+                <div className="flex justify-between gap-1 mb-1 px-1">
+                  {[0,1,2,3,4].map(i => (
                     <div key={i} className="flex-1 flex justify-center"><div className="w-px h-3 bg-secondary/30" /></div>
                   ))}
                 </div>
-                {/* L2 nodes */}
-                <div className="flex justify-between gap-1 px-1 mb-2">
-                  {["1","2","3","4","5","6"].map((l, i) => (
+                {/* L2 nodes — 3 per L1 = 15 total, show 10 */}
+                <div className="flex justify-between gap-0.5 px-0.5 mb-2">
+                  {["1","2","3","4","5","6","7","8","9","10"].map((l, i) => (
                     <div key={i} className="flex flex-col items-center flex-1">
-                      <div className="w-7 h-7 rounded-lg bg-blue-400/15 border border-blue-400/30 flex items-center justify-center text-blue-400 font-bold text-[10px]">{l}</div>
-                      <div className="text-[8px] text-green-400 font-bold mt-0.5">+$25</div>
+                      <div className="w-6 h-6 rounded-lg bg-blue-400/15 border border-blue-400/30 flex items-center justify-center text-blue-400 font-bold text-[9px]">{l}</div>
+                      <div className="text-[7px] text-green-400 font-bold mt-0.5">+$50</div>
                     </div>
                   ))}
                 </div>
-                <div className="text-center text-[10px] text-muted-foreground">и так до 5 уровней...</div>
+                <div className="text-center text-[10px] text-muted-foreground">+ ещё 5 человек L2 и уровни 3–5...</div>
               </div>
             </div>
 
@@ -1055,18 +1055,18 @@ export default function Landing() {
               {[
                 {
                   step: "01", icon: UserPlus, color: "text-primary", bg: "bg-primary/10",
-                  action: "Вы пригласили 3 друга", detail: "Каждый вложил по $1 000",
-                  calc: "3 × $1 000 × 10%", result: "+$300", resultColor: "text-primary"
+                  action: "Вы пригласили 5 друзей", detail: "Каждый вложил по $5 000",
+                  calc: "5 × $5 000 × 10%", result: "+$2 500", resultColor: "text-primary"
                 },
                 {
                   step: "02", icon: Users2, color: "text-secondary", bg: "bg-secondary/10",
-                  action: "Каждый из них привёл ещё 2 человека", detail: "Каждый вложил по $500",
-                  calc: "6 × $500 × 5%", result: "+$150", resultColor: "text-secondary"
+                  action: "Каждый из них привёл ещё 3 человека", detail: "Каждый вложил по $1 000",
+                  calc: "15 × $1 000 × 5%", result: "+$750", resultColor: "text-secondary"
                 },
                 {
                   step: "03", icon: Network, color: "text-blue-400", bg: "bg-blue-400/10",
                   action: "Сеть продолжает расти сама", detail: "3-й, 4-й и 5-й уровни — пассивно",
-                  calc: "уровни 3–5 × 3%–1%–1%", result: "+$80", resultColor: "text-blue-400"
+                  calc: "уровни 3–5 × 3%–1%–1%", result: "+$500", resultColor: "text-blue-400"
                 },
               ].map((row, i) => (
                 <div key={i} className="glass-card p-5 rounded-2xl flex flex-col sm:flex-row gap-4 items-start sm:items-center">
@@ -1085,12 +1085,12 @@ export default function Landing() {
             <div className="flex flex-col md:flex-row items-center gap-6 p-6 rounded-2xl glass-card">
               <div className="flex-1 text-center md:text-left">
                 <div className="text-sm text-muted-foreground mb-1">Итого от партнёрской сети</div>
-                <div className="text-5xl font-black text-green-400">$18,750</div>
+                <div className="text-5xl font-black text-green-400">$3 750</div>
               </div>
               <div className="w-px h-12 bg-white/10 hidden md:block" />
               <div className="text-center md:text-left">
                 <div className="text-sm text-muted-foreground mb-1">Плюс ваш RevShare каждый месяц</div>
-                <div className="text-3xl font-black text-primary">+$500 / мес</div>
+                <div className="text-3xl font-black text-primary">+$370 / мес</div>
               </div>
             </div>
 
