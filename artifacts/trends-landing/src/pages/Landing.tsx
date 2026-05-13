@@ -992,7 +992,7 @@ export default function Landing() {
             </div>
           </div>
 
-          {/* MLM Example — simplified */}
+          {/* MLM Example */}
           <motion.div initial="visible" animate="visible" variants={fadeIn}
             className="glass-card p-8 md:p-10 rounded-3xl border border-green-500/20 max-w-4xl mx-auto">
             <div className="flex items-center gap-3 mb-8">
@@ -1000,8 +1000,54 @@ export default function Landing() {
                 <DollarSign className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-lg md:text-2xl font-bold">Пример: Пакет Основателей 5 — $25,000</h3>
-                <p className="text-sm text-muted-foreground">Вы вложили $25,000 и начали приглашать партнёров</p>
+                <h3 className="text-lg md:text-2xl font-bold">Пример: Пакет Genesis — $1 000</h3>
+                <p className="text-sm text-muted-foreground">Вы вложили $1 000 и пригласили партнёров</p>
+              </div>
+            </div>
+
+            {/* Visual referral tree */}
+            <div className="mb-8 p-5 rounded-2xl bg-white/3 border border-white/8 overflow-x-auto">
+              <div className="min-w-[340px]">
+                {/* You */}
+                <div className="flex justify-center mb-3">
+                  <div className="flex flex-col items-center">
+                    <div className="w-12 h-12 rounded-2xl bg-primary/20 border-2 border-primary/50 flex items-center justify-center text-primary font-black text-sm">ВЫ</div>
+                    <div className="text-[10px] text-primary font-bold mt-1">$1 000</div>
+                  </div>
+                </div>
+                {/* L1 connector */}
+                <div className="flex justify-center mb-1"><div className="w-px h-4 bg-primary/40" /></div>
+                <div className="flex justify-center gap-1 mb-1">
+                  <div className="flex-1 h-px bg-primary/20 self-center" />
+                  <div className="w-px h-4 bg-primary/40" />
+                  <div className="flex-1 h-px bg-primary/20 self-center" />
+                </div>
+                {/* L1 nodes */}
+                <div className="flex justify-between gap-2 mb-1 px-2">
+                  {["А", "Б", "В"].map((l, i) => (
+                    <div key={i} className="flex flex-col items-center flex-1">
+                      <div className="w-9 h-9 rounded-xl bg-secondary/20 border border-secondary/40 flex items-center justify-center text-secondary font-bold text-xs">{l}</div>
+                      <div className="text-[9px] text-secondary mt-0.5">$1 000</div>
+                      <div className="text-[9px] text-green-400 font-bold">+$100</div>
+                    </div>
+                  ))}
+                </div>
+                {/* L2 connectors */}
+                <div className="flex justify-between gap-2 mb-1 px-2">
+                  {[0,1,2].map(i => (
+                    <div key={i} className="flex-1 flex justify-center"><div className="w-px h-3 bg-secondary/30" /></div>
+                  ))}
+                </div>
+                {/* L2 nodes */}
+                <div className="flex justify-between gap-1 px-1 mb-2">
+                  {["1","2","3","4","5","6"].map((l, i) => (
+                    <div key={i} className="flex flex-col items-center flex-1">
+                      <div className="w-7 h-7 rounded-lg bg-blue-400/15 border border-blue-400/30 flex items-center justify-center text-blue-400 font-bold text-[10px]">{l}</div>
+                      <div className="text-[8px] text-green-400 font-bold mt-0.5">+$25</div>
+                    </div>
+                  ))}
+                </div>
+                <div className="text-center text-[10px] text-muted-foreground">и так до 5 уровней...</div>
               </div>
             </div>
 
@@ -1009,18 +1055,18 @@ export default function Landing() {
               {[
                 {
                   step: "01", icon: UserPlus, color: "text-primary", bg: "bg-primary/10",
-                  action: "Вы пригласили 5 друзей", detail: "Каждый вложил по $25,000",
-                  calc: "5 × $25,000 × 10%", result: "+$12,500", resultColor: "text-primary"
+                  action: "Вы пригласили 3 друга", detail: "Каждый вложил по $1 000",
+                  calc: "3 × $1 000 × 10%", result: "+$300", resultColor: "text-primary"
                 },
                 {
                   step: "02", icon: Users2, color: "text-secondary", bg: "bg-secondary/10",
-                  action: "Каждый из них привёл ещё 3 человека", detail: "Каждый вложил по $5,000",
-                  calc: "15 × $5,000 × 5%", result: "+$3,750", resultColor: "text-secondary"
+                  action: "Каждый из них привёл ещё 2 человека", detail: "Каждый вложил по $500",
+                  calc: "6 × $500 × 5%", result: "+$150", resultColor: "text-secondary"
                 },
                 {
                   step: "03", icon: Network, color: "text-blue-400", bg: "bg-blue-400/10",
-                  action: "3-й, 4-й и 5-й уровни растут сами", detail: "Небольшой % с каждого участника вашей сети",
-                  calc: "уровни 3–5 × 3%–1%–1%", result: "+$2,500", resultColor: "text-blue-400"
+                  action: "Сеть продолжает расти сама", detail: "3-й, 4-й и 5-й уровни — пассивно",
+                  calc: "уровни 3–5 × 3%–1%–1%", result: "+$80", resultColor: "text-blue-400"
                 },
               ].map((row, i) => (
                 <div key={i} className="glass-card p-5 rounded-2xl flex flex-col sm:flex-row gap-4 items-start sm:items-center">
@@ -1125,59 +1171,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* TEAM — 3 members */}
-      <section className="py-24 relative z-10">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">Команда</h2>
-            <p className="text-lg text-muted-foreground">Опытные специалисты с глубокой экспертизой в Telegram, IT и продукте</p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {[
-              {
-                initials: "П", name: "Поляков Михаил", role: "Основатель / CEO",
-                roleColor: "text-primary",
-                desc: "10+ лет в IT, основатель студии разработки и бывший владелец сети Telegram-каналов. Глубоко понимает экосистему Telegram, механику органического роста и монетизацию контента.",
-                tags: ["10+ лет в IT", "Telegram-сети", "Mini Apps"],
-                avatarColor: "bg-primary/15 border-primary/40",
-                textColor: "text-primary"
-              },
-              {
-                initials: "Д", name: "Долгов Николай", role: "Co-Founder / PdM",
-                roleColor: "text-secondary",
-                desc: "Продуктовая стратегия и развитие. Отвечает за видение продукта, roadmap платформы и взаимодействие с инвесторами.",
-                tags: ["Product", "Strategy", "Investor Relations"],
-                avatarColor: "bg-secondary/15 border-secondary/40",
-                textColor: "text-secondary"
-              },
-              {
-                initials: "Ч", name: "Чаунный Владимир", role: "Backend Developer",
-                roleColor: "text-yellow-400",
-                desc: "Senior/FullStack-разработчик, 5+ лет в IT и банковском секторе. Отвечает за надёжность и масштабируемость инфраструктуры.",
-                tags: ["Backend", "Infrastructure", "5+ лет в IT"],
-                avatarColor: "bg-yellow-500/15 border-yellow-500/40",
-                textColor: "text-yellow-400"
-              },
-            ].map((member, i) => (
-              <motion.div key={i} initial="visible" animate="visible" variants={fadeIn}
-                className="glass-card p-7 rounded-3xl border border-white/10 hover:border-primary/25 transition-all">
-                <div className={`w-16 h-16 ${member.avatarColor} rounded-2xl border-2 flex items-center justify-center mb-5`}>
-                  <span className={`text-2xl font-black ${member.textColor}`}>{member.initials}</span>
-                </div>
-                <h3 className="text-xl font-bold mb-1">{member.name}</h3>
-                <p className={`${member.roleColor} font-semibold text-sm mb-4`}>{member.role}</p>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-5">{member.desc}</p>
-                <div className="flex flex-wrap gap-2">
-                  {member.tags.map(tag => (
-                    <span key={tag} className="px-2 py-1 rounded-lg bg-white/5 text-muted-foreground text-xs font-medium border border-white/10">{tag}</span>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* FAQ */}
       <section className="py-24 relative z-10">
@@ -1234,17 +1227,6 @@ export default function Landing() {
                   className="w-10 h-10 rounded-xl glass-card border border-white/10 flex items-center justify-center text-muted-foreground hover:border-white/25 transition-colors">
                   <Globe className="w-4 h-4" />
                 </motion.a>
-              </div>
-              {/* Key stats */}
-              <div className="grid grid-cols-2 gap-3 pt-2">
-                <div className="glass-card p-3 rounded-xl text-center">
-                  <div className="text-lg font-black text-primary">$75K</div>
-                  <div className="text-[10px] text-muted-foreground">Собрано</div>
-                </div>
-                <div className="glass-card p-3 rounded-xl text-center">
-                  <div className="text-lg font-black text-green-400">13</div>
-                  <div className="text-[10px] text-muted-foreground">Инвесторов</div>
-                </div>
               </div>
             </div>
 
