@@ -1039,7 +1039,7 @@ export default function Landing() {
                 </div>
                 {/* L2 connectors */}
                 <div className="flex justify-between gap-1 mb-1 px-0">
-                  {[0,1,2,3,4,5].map(i => (
+                  {[0,1,2,3,4].map(i => (
                     <div key={i} className="flex-1 flex justify-center"><div className="w-px h-2 bg-white/20" /></div>
                   ))}
                 </div>
