@@ -965,21 +965,35 @@ export default function Landing() {
           </div>
 
           <div className="max-w-4xl mx-auto mb-16">
-            <div className="glass-card p-4 rounded-2xl flex items-stretch gap-0 overflow-hidden">
-              {[
-                { lvl: "L1", pct: "10%", desc: "Прямые", bar: "bg-primary", border: "border-primary/30", text: "text-primary", flex: "flex-[10]" },
-                { lvl: "L2", pct: "5%",  desc: "2-е звено", bar: "bg-secondary", border: "border-secondary/30", text: "text-secondary", flex: "flex-[5]" },
-                { lvl: "L3", pct: "3%",  desc: "3-е звено", bar: "bg-blue-400", border: "border-blue-400/30", text: "text-blue-400", flex: "flex-[3]" },
-                { lvl: "L4", pct: "1%",  desc: "4-е звено", bar: "bg-cyan-400", border: "border-cyan-400/30", text: "text-cyan-400", flex: "flex-[1]" },
-                { lvl: "L5", pct: "1%",  desc: "5-е звено", bar: "bg-teal-400", border: "border-teal-400/30", text: "text-teal-400", flex: "flex-[1]" },
-              ].map((lvl, i) => (
-                <div key={i} className={`${lvl.flex} flex flex-col items-center gap-1.5 px-2 py-2 border-r last:border-r-0 ${lvl.border} min-w-0`}>
-                  <div className={`text-xl font-black ${lvl.text}`}>{lvl.pct}</div>
-                  <div className="text-[11px] font-bold text-white/80">{lvl.lvl}</div>
-                  <div className={`w-full h-1.5 rounded-full ${lvl.bar} opacity-80`} />
-                  <div className="text-[9px] text-muted-foreground text-center leading-tight hidden sm:block">{lvl.desc}</div>
-                </div>
-              ))}
+            {/* Single-line 5-level referral bar */}
+            <div className="glass-card px-6 py-5 rounded-2xl">
+              {/* Segmented bar */}
+              <div className="flex h-3 rounded-full overflow-hidden mb-4 gap-0.5">
+                <motion.div initial={{ flex: 0 }} whileInView={{ flex: 10 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0 }} className="bg-primary rounded-l-full" />
+                <motion.div initial={{ flex: 0 }} whileInView={{ flex: 5 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }} className="bg-secondary" />
+                <motion.div initial={{ flex: 0 }} whileInView={{ flex: 3 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }} className="bg-blue-400" />
+                <motion.div initial={{ flex: 0 }} whileInView={{ flex: 1 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 }} className="bg-cyan-400" />
+                <motion.div initial={{ flex: 0 }} whileInView={{ flex: 1 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.4 }} className="bg-teal-400 rounded-r-full" />
+              </div>
+              {/* Labels row */}
+              <div className="flex items-start">
+                {[
+                  { lvl: "Уровень 1", pct: "10%", desc: "Прямые приглашённые", dot: "bg-primary", text: "text-primary", flex: "flex-[10]", align: "items-start" },
+                  { lvl: "Уровень 2", pct: "5%",  desc: "Их партнёры",          dot: "bg-secondary", text: "text-secondary", flex: "flex-[5]", align: "items-center" },
+                  { lvl: "Уровень 3", pct: "3%",  desc: "3-е звено",            dot: "bg-blue-400", text: "text-blue-400", flex: "flex-[3]", align: "items-center" },
+                  { lvl: "Уровень 4", pct: "1%",  desc: "4-е звено",            dot: "bg-cyan-400", text: "text-cyan-400", flex: "flex-[1]", align: "items-center" },
+                  { lvl: "Уровень 5", pct: "1%",  desc: "5-е звено",            dot: "bg-teal-400", text: "text-teal-400", flex: "flex-[1]", align: "items-end" },
+                ].map((lvl, i) => (
+                  <div key={i} className={`${lvl.flex} flex flex-col ${lvl.align} min-w-0`}>
+                    <div className="flex items-center gap-1 mb-0.5">
+                      <div className={`w-2 h-2 rounded-full shrink-0 ${lvl.dot}`} />
+                      <span className={`text-[10px] font-bold ${lvl.text} truncate`}>{lvl.lvl}</span>
+                    </div>
+                    <div className={`text-lg sm:text-xl font-black ${lvl.text}`}>{lvl.pct}</div>
+                    <div className="text-[9px] text-muted-foreground hidden sm:block truncate">{lvl.desc}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
