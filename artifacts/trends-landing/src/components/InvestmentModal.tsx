@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CheckCircle2, Loader2, Copy, ArrowLeft, Wallet, ExternalLink, Smartphone } from "lucide-react";
+import { CheckCircle2, Loader2, ArrowLeft, Wallet, ExternalLink, Smartphone } from "lucide-react";
 import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
@@ -204,30 +204,11 @@ export function InvestmentModal({ isOpen, onClose, defaultPackage = "founder3" }
                   <ExternalLink className="w-4 h-4 text-muted-foreground" />
                 </button>
 
-                <div className="relative flex items-center gap-3">
-                  <div className="flex-1 border-t border-white/10" />
-                  <span className="text-xs text-muted-foreground">или вручную</span>
-                  <div className="flex-1 border-t border-white/10" />
-                </div>
-
-                <div className="bg-white/5 rounded-xl p-4 border border-white/10 space-y-2">
-                  <p className="text-xs text-muted-foreground">Переведите USDT (TON) на адрес:</p>
-                  <div className="flex items-center gap-2 bg-background/50 p-2.5 rounded-lg border border-white/10">
-                    <span className="text-xs font-mono flex-1 break-all text-muted-foreground">{PAYMENT_WALLET}</span>
-                    <Button variant="ghost" size="icon" onClick={copyWallet} className="shrink-0 h-7 w-7">
-                      <Copy className="w-3.5 h-3.5" />
-                    </Button>
-                  </div>
-                </div>
               </div>
 
               <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-3 text-xs text-yellow-400">
-                После перевода нажмите «Я оплатил» — ваша заявка будет проверена в течение 24 часов.
+                После оплаты в приложении ваша заявка будет проверена в течение 24 часов.
               </div>
-
-              <Button className="w-full btn-grad btn-3d font-bold rounded-xl h-12" onClick={() => setStep(3)}>
-                Я оплатил →
-              </Button>
             </motion.div>
           )}
 
