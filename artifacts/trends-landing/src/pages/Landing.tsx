@@ -1084,51 +1084,25 @@ export default function Landing() {
               </div>
             </div>
 
-            {/* Chaotic breakdown rows */}
-            <div className="space-y-2 mb-6 md:mb-8">
-              <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">Уровень 1 — ваши прямые партнёры</div>
+            {/* Breakdown — single card with rows */}
+            <div className="glass-card rounded-2xl overflow-hidden mb-6 md:mb-8">
               {[
-                { icon: UserPlus, color: "text-yellow-400", bg: "bg-yellow-400/10", action: "2 партнёра вложили по $25 000", calc: "2 × $25K × 10%", result: "+$5 000", resultColor: "text-yellow-400" },
-                { icon: Crown, color: "text-orange-400", bg: "bg-orange-400/10", action: "1 партнёр вложил $100 000", calc: "1 × $100K × 10%", result: "+$10 000", resultColor: "text-orange-400" },
-                { icon: Users2, color: "text-secondary", bg: "bg-secondary/10", action: "2 партнёра вложили по $5 000", calc: "2 × $5K × 10%", result: "+$1 000", resultColor: "text-secondary" },
-              ].map((row, i) => (
-                <div key={i} className="glass-card px-3 py-2.5 rounded-xl flex flex-row gap-2.5 items-center">
-                  <div className={`w-8 h-8 rounded-xl ${row.bg} flex items-center justify-center shrink-0`}>
+                { label: "L1 · 10%", icon: UserPlus,  bg: "bg-yellow-400/10",  color: "text-yellow-400",  desc: "2 × $25K",   result: "+$5 000",  resultColor: "text-yellow-400" },
+                { label: "L1 · 10%", icon: Crown,     bg: "bg-orange-400/10", color: "text-orange-400", desc: "1 × $100K",  result: "+$10 000", resultColor: "text-orange-400" },
+                { label: "L1 · 10%", icon: Users2,    bg: "bg-secondary/10",  color: "text-secondary",  desc: "2 × $5K",    result: "+$1 000",  resultColor: "text-secondary" },
+                { label: "L2 · 5%",  icon: Users2,    bg: "bg-blue-400/10",   color: "text-blue-400",   desc: "$50K сети",  result: "+$2 500",  resultColor: "text-blue-400" },
+                { label: "L2 · 5%",  icon: Network,   bg: "bg-teal-400/10",   color: "text-teal-400",   desc: "$8K сети",   result: "+$400",    resultColor: "text-teal-400" },
+                { label: "L3–5",     icon: Network,   bg: "bg-purple-400/10", color: "text-purple-400", desc: "сеть глубже", result: "+$1 200", resultColor: "text-purple-400" },
+              ].map((row, i, arr) => (
+                <div key={i} className={`flex items-center gap-3 px-4 py-3 ${i < arr.length - 1 ? "border-b border-white/6" : ""}`}>
+                  <div className={`w-7 h-7 rounded-lg ${row.bg} flex items-center justify-center shrink-0`}>
                     <row.icon className={`w-3.5 h-3.5 ${row.color}`} />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-xs sm:text-sm leading-snug">{row.action}</div>
-                    <div className="text-[10px] sm:text-xs text-muted-foreground font-mono">{row.calc}</div>
-                  </div>
-                  <div className={`text-base sm:text-xl font-black ${row.resultColor} shrink-0`}>{row.result}</div>
+                  <div className={`text-[10px] font-bold uppercase tracking-wider ${row.color} shrink-0 w-14`}>{row.label}</div>
+                  <div className="flex-1 min-w-0 text-xs text-muted-foreground truncate">{row.desc}</div>
+                  <div className={`text-sm sm:text-base font-black ${row.resultColor} shrink-0`}>{row.result}</div>
                 </div>
               ))}
-              <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest mt-3 mb-2">Уровень 2 — хаотично</div>
-              {[
-                { icon: Users2, color: "text-blue-400", bg: "bg-blue-400/10", action: "$10K+$5K+$25K+$10K — партнёры L2", calc: "($50K) × 5%", result: "+$2 500", resultColor: "text-blue-400" },
-                { icon: Network, color: "text-teal-400", bg: "bg-teal-400/10", action: "$1K+$1K+$1K+$5K — мелкие участники", calc: "($8K) × 5%", result: "+$400", resultColor: "text-teal-400" },
-              ].map((row, i) => (
-                <div key={i} className="glass-card px-3 py-2.5 rounded-xl flex flex-row gap-2.5 items-center">
-                  <div className={`w-8 h-8 rounded-xl ${row.bg} flex items-center justify-center shrink-0`}>
-                    <row.icon className={`w-3.5 h-3.5 ${row.color}`} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-xs sm:text-sm leading-snug">{row.action}</div>
-                    <div className="text-[10px] sm:text-xs text-muted-foreground font-mono">{row.calc}</div>
-                  </div>
-                  <div className={`text-base sm:text-xl font-black ${row.resultColor} shrink-0`}>{row.result}</div>
-                </div>
-              ))}
-              <div className="glass-card px-3 py-2.5 rounded-xl flex flex-row gap-2.5 items-center">
-                <div className="w-8 h-8 rounded-xl bg-purple-400/10 flex items-center justify-center shrink-0">
-                  <Network className="w-3.5 h-3.5 text-purple-400" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-xs sm:text-sm leading-snug">Уровни 3–5 — пассивный доход сети</div>
-                  <div className="text-[10px] sm:text-xs text-muted-foreground font-mono">множество участников × 3%–1%–1%</div>
-                </div>
-                <div className="text-base sm:text-xl font-black text-purple-400 shrink-0">+$1 200</div>
-              </div>
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 p-4 sm:p-6 rounded-2xl glass-card">
