@@ -374,7 +374,7 @@ export default function Landing() {
           {/* MOBILE BADGES — above image on mobile */}
           <div className="flex flex-wrap gap-3 mt-2 mb-3 lg:hidden order-1">
             <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">Pre-Seed</div>
-            <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-muted-foreground text-sm">$2 000 000 целевой объём</div>
+            <div className="px-3 py-1 rounded-full bg-secondary/15 border border-secondary/40 text-secondary text-sm">$2 000 000 целевой объём</div>
             <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold flex items-center gap-1">
               <CheckCircle2 className="w-4 h-4" /> MVP готов
             </div>
@@ -409,7 +409,7 @@ export default function Landing() {
           <motion.div initial="hidden" animate="visible" variants={fadeIn} className="space-y-6 lg:space-y-8 order-3 lg:order-1">
             <div className="hidden lg:flex flex-wrap gap-3">
               <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">Pre-Seed</div>
-              <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-muted-foreground text-sm">$2 000 000 целевой объём</div>
+              <div className="px-3 py-1 rounded-full bg-secondary/15 border border-secondary/40 text-secondary text-sm">$2 000 000 целевой объём</div>
               <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold flex items-center gap-1">
                 <CheckCircle2 className="w-4 h-4" /> MVP готов
               </div>
