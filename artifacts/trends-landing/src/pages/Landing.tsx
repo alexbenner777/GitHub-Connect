@@ -177,19 +177,6 @@ function useCountUp(target: number, duration = 2000, delay = 400) {
 
 const PACKAGES_DATA = [
   {
-    id: "founder1", name: "Основателей 1", price: 100, monthly: 1,
-    exit: "–", tokens: "100", shares: "0",
-    tagline: "Войди в экосистему",
-    icon: Zap,
-    color: "text-sky-400", border: "border-sky-400/20", glow: "",
-    features: [
-      "Рекламный буст $200 внутри Trends",
-      "x2 добыча токенов $TRND",
-      "3-уровневая партнёрская программа",
-      "No Ads Forever",
-    ],
-  },
-  {
     id: "founder2", name: "Основателей 2", price: 250, monthly: 4,
     exit: "$1.3K – $3K", tokens: "250", shares: "0.63",
     tagline: "Первые доли RevShare",

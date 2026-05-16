@@ -11,7 +11,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useTonAddress, useTonConnectModal } from "@tonconnect/ui-react";
 
 export const MONTHLY_PROFIT: Record<string, number> = {
-  founder1: 1,
   founder2: 4,
   founder3: 15,
   founder4: 74,
@@ -20,7 +19,6 @@ export const MONTHLY_PROFIT: Record<string, number> = {
 };
 
 export const PACKAGES = [
-  { id: "founder1", name: "Основателей 1", price: 100, monthly: 1, shares: 0.25, exit: "–" },
   { id: "founder2", name: "Основателей 2", price: 250, monthly: 4, shares: 0.63, exit: "1,300–3,000" },
   { id: "founder3", name: "Основателей 3", price: 1000, monthly: 15, shares: 2.5, exit: "5,000–12,000", recommended: true },
   { id: "founder4", name: "Основателей 4", price: 5000, monthly: 74, shares: 12.5, exit: "25,000–60,000" },
