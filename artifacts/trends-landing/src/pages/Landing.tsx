@@ -995,20 +995,20 @@ export default function Landing() {
 
           {/* MLM Example */}
           <motion.div initial="visible" animate="visible" variants={fadeIn}
-            className="glass-card p-8 md:p-10 rounded-3xl border border-green-500/20 max-w-4xl mx-auto">
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center text-green-400">
-                <DollarSign className="w-5 h-5" />
+            className="glass-card p-4 sm:p-8 md:p-10 rounded-3xl border border-green-500/20 max-w-4xl mx-auto">
+            <div className="flex items-start gap-3 mb-6 md:mb-8">
+              <div className="w-9 h-9 shrink-0 bg-green-500/20 rounded-xl flex items-center justify-center text-green-400">
+                <DollarSign className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-lg md:text-2xl font-bold">Пример: Пакет Основателей 3 — $5 000</h3>
-                <p className="text-sm text-muted-foreground">Вы вложили $5 000 и пригласили партнёров</p>
+                <h3 className="text-base sm:text-lg md:text-2xl font-bold leading-snug">Пример: Пакет Основателей 3 — $5 000</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">Вы вложили $5 000 и пригласили партнёров</p>
               </div>
             </div>
 
             {/* Visual referral tree — chaotic */}
-            <div className="mb-8 p-5 rounded-2xl bg-white/3 border border-white/8 overflow-x-auto">
-              <div className="min-w-[420px]">
+            <div className="mb-6 md:mb-8 p-3 sm:p-5 rounded-2xl bg-white/3 border border-white/8 overflow-x-auto">
+              <div className="min-w-[300px]">
                 {/* YOU */}
                 <div className="flex justify-center mb-2">
                   <div className="flex flex-col items-center">
@@ -1085,62 +1085,62 @@ export default function Landing() {
             </div>
 
             {/* Chaotic breakdown rows */}
-            <div className="space-y-3 mb-8">
+            <div className="space-y-2 mb-6 md:mb-8">
               <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">Уровень 1 — ваши прямые партнёры</div>
               {[
-                { icon: UserPlus, color: "text-yellow-400", bg: "bg-yellow-400/10", action: "2 партнёра вложили по $25 000", calc: "2 × $25 000 × 10%", result: "+$5 000", resultColor: "text-yellow-400" },
-                { icon: Crown, color: "text-orange-400", bg: "bg-orange-400/10", action: "1 партнёр вложил $100 000", calc: "1 × $100 000 × 10%", result: "+$10 000", resultColor: "text-orange-400" },
-                { icon: Users2, color: "text-secondary", bg: "bg-secondary/10", action: "2 партнёра вложили по $5 000", calc: "2 × $5 000 × 10%", result: "+$1 000", resultColor: "text-secondary" },
+                { icon: UserPlus, color: "text-yellow-400", bg: "bg-yellow-400/10", action: "2 партнёра вложили по $25 000", calc: "2 × $25K × 10%", result: "+$5 000", resultColor: "text-yellow-400" },
+                { icon: Crown, color: "text-orange-400", bg: "bg-orange-400/10", action: "1 партнёр вложил $100 000", calc: "1 × $100K × 10%", result: "+$10 000", resultColor: "text-orange-400" },
+                { icon: Users2, color: "text-secondary", bg: "bg-secondary/10", action: "2 партнёра вложили по $5 000", calc: "2 × $5K × 10%", result: "+$1 000", resultColor: "text-secondary" },
               ].map((row, i) => (
-                <div key={i} className="glass-card px-4 py-3 rounded-xl flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-                  <div className={`w-9 h-9 rounded-xl ${row.bg} flex items-center justify-center shrink-0`}>
-                    <row.icon className={`w-4 h-4 ${row.color}`} />
+                <div key={i} className="glass-card px-3 py-2.5 rounded-xl flex flex-row gap-2.5 items-center">
+                  <div className={`w-8 h-8 rounded-xl ${row.bg} flex items-center justify-center shrink-0`}>
+                    <row.icon className={`w-3.5 h-3.5 ${row.color}`} />
                   </div>
-                  <div className="flex-1">
-                    <div className="font-semibold text-sm">{row.action}</div>
-                    <div className="text-xs text-muted-foreground font-mono">{row.calc}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-semibold text-xs sm:text-sm leading-snug">{row.action}</div>
+                    <div className="text-[10px] sm:text-xs text-muted-foreground font-mono">{row.calc}</div>
                   </div>
-                  <div className={`text-xl font-black ${row.resultColor} shrink-0`}>{row.result}</div>
+                  <div className={`text-base sm:text-xl font-black ${row.resultColor} shrink-0`}>{row.result}</div>
                 </div>
               ))}
-              <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest mt-4 mb-2">Уровень 2 — хаотично</div>
+              <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest mt-3 mb-2">Уровень 2 — хаотично</div>
               {[
-                { icon: Users2, color: "text-blue-400", bg: "bg-blue-400/10", action: "$10K + $5K + $25K + $10K вложили партнёры L2", calc: "($10K+$5K+$25K+$10K) × 5%", result: "+$2 500", resultColor: "text-blue-400" },
-                { icon: Network, color: "text-teal-400", bg: "bg-teal-400/10", action: "$1K + $1K + $1K + $5K — более мелкие участники", calc: "($1K+$1K+$1K+$5K) × 5%", result: "+$400", resultColor: "text-teal-400" },
+                { icon: Users2, color: "text-blue-400", bg: "bg-blue-400/10", action: "$10K+$5K+$25K+$10K — партнёры L2", calc: "($50K) × 5%", result: "+$2 500", resultColor: "text-blue-400" },
+                { icon: Network, color: "text-teal-400", bg: "bg-teal-400/10", action: "$1K+$1K+$1K+$5K — мелкие участники", calc: "($8K) × 5%", result: "+$400", resultColor: "text-teal-400" },
               ].map((row, i) => (
-                <div key={i} className="glass-card px-4 py-3 rounded-xl flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-                  <div className={`w-9 h-9 rounded-xl ${row.bg} flex items-center justify-center shrink-0`}>
-                    <row.icon className={`w-4 h-4 ${row.color}`} />
+                <div key={i} className="glass-card px-3 py-2.5 rounded-xl flex flex-row gap-2.5 items-center">
+                  <div className={`w-8 h-8 rounded-xl ${row.bg} flex items-center justify-center shrink-0`}>
+                    <row.icon className={`w-3.5 h-3.5 ${row.color}`} />
                   </div>
-                  <div className="flex-1">
-                    <div className="font-semibold text-sm">{row.action}</div>
-                    <div className="text-xs text-muted-foreground font-mono">{row.calc}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-semibold text-xs sm:text-sm leading-snug">{row.action}</div>
+                    <div className="text-[10px] sm:text-xs text-muted-foreground font-mono">{row.calc}</div>
                   </div>
-                  <div className={`text-xl font-black ${row.resultColor} shrink-0`}>{row.result}</div>
+                  <div className={`text-base sm:text-xl font-black ${row.resultColor} shrink-0`}>{row.result}</div>
                 </div>
               ))}
-              <div className="glass-card px-4 py-3 rounded-xl flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-                <div className="w-9 h-9 rounded-xl bg-purple-400/10 flex items-center justify-center shrink-0">
-                  <Network className="w-4 h-4 text-purple-400" />
+              <div className="glass-card px-3 py-2.5 rounded-xl flex flex-row gap-2.5 items-center">
+                <div className="w-8 h-8 rounded-xl bg-purple-400/10 flex items-center justify-center shrink-0">
+                  <Network className="w-3.5 h-3.5 text-purple-400" />
                 </div>
-                <div className="flex-1">
-                  <div className="font-semibold text-sm">Уровни 3–5 — пассивный доход сети</div>
-                  <div className="text-xs text-muted-foreground font-mono">множество участников × 3%–1%–1%</div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-semibold text-xs sm:text-sm leading-snug">Уровни 3–5 — пассивный доход сети</div>
+                  <div className="text-[10px] sm:text-xs text-muted-foreground font-mono">множество участников × 3%–1%–1%</div>
                 </div>
-                <div className="text-xl font-black text-purple-400 shrink-0">+$1 200</div>
+                <div className="text-base sm:text-xl font-black text-purple-400 shrink-0">+$1 200</div>
               </div>
             </div>
 
-            <div className="flex flex-col md:flex-row items-center gap-6 p-6 rounded-2xl glass-card">
-              <div className="flex-1 text-center md:text-left">
+            <div className="flex flex-col sm:flex-row items-center gap-4 p-4 sm:p-6 rounded-2xl glass-card">
+              <div className="flex-1 text-center sm:text-left">
                 <div className="text-sm text-muted-foreground mb-1">Итого от партнёрской сети</div>
-                <div className="text-5xl font-black text-green-400">$20 100</div>
+                <div className="text-4xl sm:text-5xl font-black text-green-400">$20 100</div>
                 <div className="text-xs text-muted-foreground mt-1">L1: $16 000 · L2: $2 900 · L3–5: $1 200</div>
               </div>
-              <div className="w-px h-12 bg-white/10 hidden md:block" />
-              <div className="text-center md:text-left">
+              <div className="w-full h-px sm:w-px sm:h-12 bg-white/10" />
+              <div className="text-center sm:text-left">
                 <div className="text-sm text-muted-foreground mb-1">Плюс ваш RevShare каждый месяц</div>
-                <div className="text-3xl font-black text-primary">+$370 / мес</div>
+                <div className="text-2xl sm:text-3xl font-black text-primary">+$370 / мес</div>
               </div>
             </div>
 
