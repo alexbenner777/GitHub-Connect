@@ -93,18 +93,17 @@ function AdvantageCard({ item, index, variants }: { item: typeof ADVANTAGES[0]; 
     <motion.div initial="visible" animate="visible"
       variants={variants}
       whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-      className="glass-card rounded-[2rem] overflow-hidden group cursor-default relative">
+      className="glass-card rounded-2xl overflow-hidden group cursor-default relative">
       <div className={`absolute inset-0 bg-gradient-to-br ${item.gradFrom} ${item.gradTo} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-      <div className="relative z-10 p-5 md:p-8 lg:p-10 h-full flex flex-col">
-        <div className="flex items-start justify-between mb-5">
-          <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-            <Icon className={`w-6 h-6 md:w-7 md:h-7 ${item.color}`} />
+      <div className="relative z-10 p-4 md:p-6 h-full flex flex-col">
+        <div className="flex items-center justify-between mb-3">
+          <div className="w-9 h-9 md:w-11 md:h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <Icon className={`w-4 h-4 md:w-5 md:h-5 ${item.color}`} />
           </div>
-          <div className={`text-5xl md:text-6xl font-black ${item.color} opacity-10 group-hover:opacity-20 transition-opacity duration-500 leading-none`}>{item.label}</div>
+          <div className={`text-xs font-black tracking-widest uppercase ${item.color}`}>{item.label}</div>
         </div>
-        <div className={`text-xs font-black tracking-widest uppercase mb-3 ${item.color}`}>{item.label}</div>
-        <h3 className="text-xl md:text-2xl font-black mb-3">{item.title}</h3>
-        <p className="text-muted-foreground leading-relaxed flex-1">{item.desc}</p>
+        <h3 className="text-base md:text-lg font-black mb-2">{item.title}</h3>
+        <p className="text-sm text-muted-foreground leading-relaxed flex-1">{item.desc}</p>
       </div>
     </motion.div>
   );
@@ -118,18 +117,18 @@ function AdvantagesGrid({ openInvest: _openInvest }: { openInvest: (pkg?: string
       {/* Item 1 — full width */}
       <motion.div initial="visible" animate="visible" variants={slideUp}
         whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
-        className="glass-card rounded-[2rem] overflow-hidden group cursor-default relative">
+        className="glass-card rounded-2xl overflow-hidden group cursor-default relative">
         <div className={`absolute inset-0 bg-gradient-to-br ${first.gradFrom} ${first.gradTo} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-        <div className="relative z-10 p-5 md:p-10 lg:p-14 flex flex-col md:flex-row gap-6 md:gap-8 items-start md:items-center">
-          <div className="w-16 h-16 md:w-20 md:h-20 rounded-3xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
-            <Icon0 className={`w-8 h-8 md:w-10 md:h-10 ${first.color}`} />
+        <div className="relative z-10 p-4 md:p-7 flex flex-col md:flex-row gap-4 md:gap-6 items-start md:items-center">
+          <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
+            <Icon0 className={`w-6 h-6 md:w-7 md:h-7 ${first.color}`} />
           </div>
           <div className="flex-1">
-            <div className={`text-xs font-black tracking-widest uppercase mb-3 ${first.color}`}>{first.label}</div>
-            <h3 className="text-2xl md:text-3xl lg:text-4xl font-black mb-3 md:mb-4">{first.title}</h3>
-            <p className="text-base md:text-xl text-muted-foreground leading-relaxed">{first.desc}</p>
+            <div className={`text-xs font-black tracking-widest uppercase mb-2 ${first.color}`}>{first.label}</div>
+            <h3 className="text-xl md:text-2xl lg:text-3xl font-black mb-2">{first.title}</h3>
+            <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{first.desc}</p>
           </div>
-          <div className={`text-[120px] font-black ${first.color} opacity-[0.06] group-hover:opacity-[0.15] transition-opacity duration-500 shrink-0 hidden lg:block leading-none`}>01</div>
+          <div className={`text-[80px] font-black ${first.color} opacity-[0.06] group-hover:opacity-[0.12] transition-opacity duration-500 shrink-0 hidden lg:block leading-none`}>01</div>
         </div>
       </motion.div>
 
