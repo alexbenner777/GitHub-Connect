@@ -247,8 +247,9 @@ export function DauCalculator({
                   * Суммы RevShare рассчитаны для текущего положения ползунка DAU. Изменяйте ползунок — цифры в карточках обновятся.
                 </p>
               </div>
-              <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
-                {fullPackages.map((pkg) => {
+              <div className="grid sm:grid-cols-2 gap-4 md:gap-6">
+                {fullPackages.map((pkg, idx) => {
+                  const isLast = idx === fullPackages.length - 1;
                   const rev = calcRevShare(pkg.shares);
                   const monthlyRevUsd = rev?.monthlyUsd ?? 0;
                   const annualRevUsd = rev?.annualUsd ?? 0;
@@ -262,9 +263,9 @@ export function DauCalculator({
                       viewport={{ once: true, amount: 0.1 }}
                       transition={{ duration: 0.5 }}
                       whileHover={{ y: pkg.recommended ? -6 : -4, transition: { duration: 0.25 } }}
-                      className={`relative flex flex-col rounded-3xl border transition-colors ${
+                      className={`relative flex flex-col rounded-3xl border transition-colors ${isLast ? 'sm:col-span-2' : ''} ${
                         pkg.recommended
-                          ? `glass-pkg-active xl:-translate-y-4 ${pkg.border} ${pkg.glow}`
+                          ? `glass-pkg-active ${pkg.border} ${pkg.glow}`
                           : `glass-card ${pkg.border}`
                       }`}
                     >
