@@ -177,7 +177,7 @@ function useCountUp(target: number, duration = 2000, delay = 400) {
 
 const PACKAGES_DATA = [
   {
-    id: "founder2", name: "Основателей 2", price: 250, monthly: 4,
+    id: "founder1", name: "Основателей 1", price: 250, monthly: 4,
     exit: "$1.3K – $3K", tokens: "250", shares: "0.63",
     tagline: "Первые доли RevShare",
     icon: Star,
@@ -190,11 +190,10 @@ const PACKAGES_DATA = [
     ],
   },
   {
-    id: "founder3", name: "Основателей 3", price: 1000, monthly: 15,
+    id: "founder2", name: "Основателей 2", price: 1000, monthly: 15,
     exit: "$5K – $12K", tokens: "1,000", shares: "2.5",
     tagline: "Лучший вход на стадии Alpha",
     icon: Shield,
-    recommended: true,
     color: "text-primary", border: "border-primary/40", glow: "shadow-[0_0_40px_rgba(0,212,255,0.18)]",
     features: [
       "1.3 доли в RevShare пуле",
@@ -204,20 +203,21 @@ const PACKAGES_DATA = [
     ],
   },
   {
-    id: "founder4", name: "Основателей 4", price: 5000, monthly: 74,
+    id: "founder3", name: "Основателей 3", price: 5000, monthly: 74,
     exit: "$25K – $60K", tokens: "5,000", shares: "12.5",
     tagline: "Alpha-Bonus доля",
     icon: Crown,
+    recommended: true,
     color: "text-yellow-400", border: "border-yellow-400/20", glow: "shadow-[0_0_30px_rgba(250,204,21,0.12)]",
     features: [
       "10.04 доли в RevShare пуле",
       "Рекламный буст $10,000",
       "Blue Checkmark: приоритет в алгоритме",
-      "Все привилегии Пакета 3",
+      "Все привилегии Пакета 2",
     ],
   },
   {
-    id: "founder5", name: "Основателей 5", price: 25000, monthly: 371,
+    id: "founder4", name: "Основателей 4", price: 25000, monthly: 371,
     exit: "$125K – $300K", tokens: "25,000", shares: "62.5",
     tagline: "Стратегический узел",
     icon: TrendingUp,
@@ -230,7 +230,7 @@ const PACKAGES_DATA = [
     ],
   },
   {
-    id: "founder6", name: "Основателей 6", price: 100000, monthly: 1484,
+    id: "founder5", name: "Основателей 5", price: 100000, monthly: 1484,
     exit: "$500K – $1.2M", tokens: "100,000", shares: "250",
     tagline: "Legendary статус",
     icon: Network,
@@ -1001,7 +1001,7 @@ export default function Landing() {
                 <DollarSign className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-lg md:text-2xl font-bold">Пример: Пакет Основателей 4 — $5 000</h3>
+                <h3 className="text-lg md:text-2xl font-bold">Пример: Пакет Основателей 3 — $5 000</h3>
                 <p className="text-sm text-muted-foreground">Вы вложили $5 000 и пригласили партнёров</p>
               </div>
             </div>

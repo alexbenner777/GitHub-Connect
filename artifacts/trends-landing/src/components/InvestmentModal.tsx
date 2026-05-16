@@ -11,19 +11,19 @@ import { useToast } from "@/hooks/use-toast";
 import { useTonAddress, useTonConnectModal } from "@tonconnect/ui-react";
 
 export const MONTHLY_PROFIT: Record<string, number> = {
-  founder2: 4,
-  founder3: 15,
-  founder4: 74,
-  founder5: 371,
-  founder6: 1484,
+  founder1: 4,
+  founder2: 15,
+  founder3: 74,
+  founder4: 371,
+  founder5: 1484,
 };
 
 export const PACKAGES = [
-  { id: "founder2", name: "Основателей 2", price: 250, monthly: 4, shares: 0.63, exit: "1,300–3,000" },
-  { id: "founder3", name: "Основателей 3", price: 1000, monthly: 15, shares: 2.5, exit: "5,000–12,000", recommended: true },
-  { id: "founder4", name: "Основателей 4", price: 5000, monthly: 74, shares: 12.5, exit: "25,000–60,000" },
-  { id: "founder5", name: "Основателей 5", price: 25000, monthly: 371, shares: 62.5, exit: "125,000–300,000" },
-  { id: "founder6", name: "Основателей 6", price: 100000, monthly: 1484, shares: 250, exit: "500,000–1,200,000" },
+  { id: "founder1", name: "Основателей 1", price: 250, monthly: 4, shares: 0.63, exit: "1,300–3,000" },
+  { id: "founder2", name: "Основателей 2", price: 1000, monthly: 15, shares: 2.5, exit: "5,000–12,000" },
+  { id: "founder3", name: "Основателей 3", price: 5000, monthly: 74, shares: 12.5, exit: "25,000–60,000", recommended: true },
+  { id: "founder4", name: "Основателей 4", price: 25000, monthly: 371, shares: 62.5, exit: "125,000–300,000" },
+  { id: "founder5", name: "Основателей 5", price: 100000, monthly: 1484, shares: 250, exit: "500,000–1,200,000" },
 ];
 
 const PAYMENT_WALLET = "UQCG4jJ5BHZhV0qAOwYxMNemhgcdtMBJv5cDXs0O5K3LNAgt";

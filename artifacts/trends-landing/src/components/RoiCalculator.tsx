@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button";
 import { TrendingUp, Wallet, Coins, Users2, ArrowRight } from "lucide-react";
 
 const PKG_LIST = [
-  { id: "founder2", name: "Осн. 2", amount: 250, monthly: 5 },
-  { id: "founder3", name: "Осн. 3", amount: 1000, monthly: 20, recommended: true },
-  { id: "founder4", name: "Осн. 4", amount: 5000, monthly: 100 },
-  { id: "founder5", name: "Осн. 5", amount: 25000, monthly: 500 },
-  { id: "founder6", name: "Осн. 6", amount: 100000, monthly: 2000 },
+  { id: "founder1", name: "Осн. 1", amount: 250, monthly: 5 },
+  { id: "founder2", name: "Осн. 2", amount: 1000, monthly: 20 },
+  { id: "founder3", name: "Осн. 3", amount: 5000, monthly: 100, recommended: true },
+  { id: "founder4", name: "Осн. 4", amount: 25000, monthly: 500 },
+  { id: "founder5", name: "Осн. 5", amount: 100000, monthly: 2000 },
 ];
 
 function fmt(n: number) {
