@@ -1268,30 +1268,34 @@ export default function Landing() {
               </div>
               {/* Rows */}
               {[
-                { label: t('pool_row_total'), value: "$50 000", bold: true, valueColor: "" },
-                { label: "Mini Pool (6%)", value: "$30 000", bold: false, valueColor: "text-primary" },
-                { label: "Max Pool (4%)", value: "$20 000", bold: false, valueColor: "text-secondary" },
+                { label: t('pool_row_total'), value: "$250 000", bold: true, valueColor: "" },
+                { label: "Community Pool (10%)", value: "$25 000", bold: false, valueColor: "text-yellow-400" },
+                { label: "Mini Pool (6%)", value: "$15 000", bold: false, valueColor: "text-primary" },
+                { label: "Max Pool (4%)", value: "$10 000", bold: false, valueColor: "text-secondary" },
               ].map((row, i) => (
                 <div key={i} className={`flex items-center justify-between px-5 py-3 border-b border-white/6 ${row.bold ? "bg-white/3" : ""}`}>
                   <span className={`text-sm ${row.bold ? "font-bold" : "text-muted-foreground"}`}>{row.label}</span>
                   <span className={`text-sm font-black ${row.valueColor || ""}`}>{row.value}</span>
                 </div>
               ))}
-              {/* Your share block */}
-              <div className="px-5 py-4 bg-white/2">
-                <p className="text-xs font-bold text-muted-foreground mb-3">
+              {/* Results block */}
+              <div className="px-5 py-4 bg-white/2 space-y-3">
+                <p className="text-xs font-bold text-muted-foreground">
                   {t('pool_share_label')}
                 </p>
-                <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center justify-between rounded-xl bg-secondary/10 border border-secondary/20 px-4 py-3">
                   <div className="flex items-center gap-2">
-                    <div className="w-5 h-5 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center text-primary text-[10px] font-black">3</div>
+                    <div className="w-5 h-5 rounded-full bg-secondary/30 border border-secondary/50 flex items-center justify-center text-secondary text-[10px] font-black">2</div>
                     <span className="text-sm text-muted-foreground">{t('pool_shares_label')}</span>
                   </div>
-                  <span className="text-xs text-muted-foreground">{t('pool_shares_total')}</span>
+                  <span className="text-lg font-black text-secondary">$5 000 / каждому</span>
                 </div>
-                <div className="flex items-center justify-between rounded-xl bg-white/4 px-4 py-3">
-                  <span className="text-sm text-muted-foreground">{t('pool_payout_label')}</span>
-                  <span className="text-lg font-black text-green-400">+$900 / мес</span>
+                <div className="flex items-center justify-between rounded-xl bg-primary/10 border border-primary/20 px-4 py-3">
+                  <div className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-primary/30 border border-primary/50 flex items-center justify-center text-primary text-[10px] font-black">8</div>
+                    <span className="text-sm text-muted-foreground">{t('pool_shares_total')}</span>
+                  </div>
+                  <span className="text-lg font-black text-primary">$1 875 / каждому</span>
                 </div>
               </div>
             </motion.div>
