@@ -1013,6 +1013,7 @@ export default function Landing() {
       {/* 5 INVESTOR ADVANTAGES */}
       <section id="investors" className="py-16 md:py-24 lg:py-32 relative z-10 [overflow-x:clip] scroll-mt-20">
         <div className="container mx-auto px-4 relative z-10">
+          <div className="section-inner">
           <div className="section-header mb-10 md:mb-16 lg:mb-20">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('adv_title')}</h2>
             <p className="text-base md:text-xl text-muted-foreground">{t('adv_desc')}</p>
@@ -1025,6 +1026,7 @@ export default function Landing() {
             { title: t('adv4_title'), desc: t('adv4_desc'), color: "text-yellow-400", gradFrom: "from-yellow-500/20", gradTo: "to-orange-500/5", Icon: Coins, label: t('adv4_label'), extra: [t('adv4_x1'), t('adv4_x2'), t('adv4_x3'), t('adv4_x4'), t('adv4_x5')] },
             { title: t('adv5_title'), desc: t('adv5_desc'), color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-purple-500/10", Icon: Crown, label: t('adv5_label'), extra: [t('adv5_x1'), t('adv5_x2'), t('adv5_x3'), t('adv5_x4'), t('adv5_x5')] },
           ]} />
+          </div>{/* end section-inner */}
         </div>
       </section>
 
@@ -1039,6 +1041,7 @@ export default function Landing() {
       <section className="py-16 md:py-24 lg:py-32 relative z-10 [overflow-x:clip]">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-green-500/8 blur-[120px] rounded-full pointer-events-none" />
         <div className="container mx-auto px-4 relative z-10">
+          <div className="section-inner">
           {/* Section header — static */}
           <div className="section-header mb-10">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 font-bold text-sm mb-6">
@@ -1050,7 +1053,7 @@ export default function Landing() {
           </div>
 
           {/* Accordion 1 — Реф программа */}
-          <div className="max-w-4xl mx-auto mb-3">
+          <div className="mb-3">
             <button
               onClick={() => setRefOpen(o => !o)}
               className="w-full flex items-center justify-between px-6 py-5 glass-card rounded-2xl border border-white/10 hover:border-primary/30 transition-all duration-200 group focus:outline-none"
@@ -1100,7 +1103,7 @@ export default function Landing() {
           </div>
 
           {/* Accordion 2 — Пример */}
-          <div className="max-w-4xl mx-auto mb-3">
+          <div className="mb-3">
             <button
               onClick={() => setExampleOpen(o => !o)}
               className="w-full flex items-center justify-between px-6 py-5 glass-card rounded-2xl border border-white/10 hover:border-green-500/30 transition-all duration-200 group focus:outline-none"
@@ -1252,7 +1255,7 @@ export default function Landing() {
           </div>
 
           {/* Accordion 3 — Community Pool */}
-          <div className="max-w-4xl mx-auto mb-3">
+          <div className="mb-3">
             <button
               onClick={() => setPoolOpen(o => !o)}
               className="w-full flex items-center justify-between px-6 py-5 glass-card rounded-2xl border border-white/10 hover:border-yellow-500/30 transition-all duration-200 group focus:outline-none"
@@ -1386,6 +1389,7 @@ export default function Landing() {
             </AnimatePresence>
           </div>
 
+          </div>{/* end section-inner */}
         </div>
       </section>
 
@@ -1663,7 +1667,7 @@ export default function Landing() {
       {/* FAQ */}
       <section className="py-16 md:py-24 relative z-10">
         <div className="container mx-auto px-4">
-          <div className="section-inner max-w-3xl! mx-auto" style={{ maxWidth: "48rem" }}>
+          <div className="section-inner">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-center mb-12">{t('faq_title')}</h2>
           <Accordion type="single" collapsible className="w-full space-y-4">
             {[
@@ -1688,6 +1692,7 @@ export default function Landing() {
       <footer className="border-t border-white/8 py-10 relative overflow-hidden z-10">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[200px] bg-primary/4 blur-[100px] rounded-full pointer-events-none" />
         <div className="container mx-auto px-4 relative z-10">
+          <div className="section-inner">
 
           {/* Brand row */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-8">
@@ -1762,12 +1767,14 @@ export default function Landing() {
               </ul>
             </div>
           </div>
+          </div>{/* end section-inner */}
         </div>
       </footer>
 
       {/* BOTTOM BAR */}
       <div className="border-t border-white/6" style={{ background: "rgba(4, 6, 14, 0.97)" }}>
-        <div className="container mx-auto px-4 py-5 flex flex-col gap-3 text-xs text-muted-foreground">
+        <div className="container mx-auto px-4 py-5">
+          <div className="section-inner flex flex-col gap-3 text-xs text-muted-foreground">
           {/* Top row: copyright + doc links */}
           <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
             <span>© {new Date().getFullYear()} Trends. {t('footer_copyright')}</span>
@@ -1786,6 +1793,7 @@ export default function Landing() {
           </div>
           {/* Bottom row: disclaimer */}
           <p className="text-center opacity-50 leading-relaxed">{t('footer_disclaimer')}</p>
+          </div>
         </div>
       </div>
 
