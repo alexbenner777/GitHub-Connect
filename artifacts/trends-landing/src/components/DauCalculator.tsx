@@ -333,7 +333,6 @@ export function DauCalculator({
                                 {pkg.categories?.map(cat => (
                                   <div key={cat.id}>
                                     <div className="flex items-center gap-1.5 mb-2">
-                                      <span className="text-base">{CATEGORY_ICON[cat.id] ?? "•"}</span>
                                       <span className={`text-[10px] font-black uppercase tracking-widest ${pkg.color}`}>
                                         {cat.title}
                                       </span>

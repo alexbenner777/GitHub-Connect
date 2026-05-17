@@ -190,18 +190,21 @@ export function InvestmentModal({
                         {pkg.categories.map(cat => (
                           <div key={cat.id}>
                             <div className="flex items-center gap-1.5 mb-1.5">
-                              <span className="text-sm">{CATEGORY_ICON[cat.id] ?? "•"}</span>
                               <span className={`text-[10px] font-black uppercase tracking-widest ${ui.color}`}>
                                 {cat.title}
                               </span>
                             </div>
                             <ul className="space-y-1 pl-1">
-                              {cat.items.map((item, i) => (
-                                <li key={i} className="flex items-start gap-2">
-                                  <CheckCircle2 className={`w-3 h-3 mt-[3px] shrink-0 ${ui.color}`} />
-                                  <span className="text-xs text-muted-foreground leading-relaxed">{item}</span>
-                                </li>
-                              ))}
+                              {cat.items.map((item, i) => {
+                                const emoji = item.match(/^[\u{1F300}-\u{1FFFF}\u{2600}-\u{27BF}\u{1F900}-\u{1FAFF}]/u)?.[0];
+                                const text = emoji ? item.slice(emoji.length).replace(/^[\uFE0F\u20E3]?\s*/, "") : item;
+                                return (
+                                  <li key={i} className="flex items-start gap-2">
+                                    <span className="text-sm leading-none mt-0.5 shrink-0">{emoji ?? "•"}</span>
+                                    <span className="text-xs text-muted-foreground leading-relaxed">{text}</span>
+                                  </li>
+                                );
+                              })}
                             </ul>
                           </div>
                         ))}
