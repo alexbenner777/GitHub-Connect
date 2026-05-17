@@ -265,7 +265,7 @@ export function DauCalculator({
                         <div className="grid grid-cols-2 gap-2 mb-4">
                           <div className="rounded-xl border border-white/8 bg-white/3 p-3">
                             <div className="text-[10px] text-muted-foreground mb-0.5 leading-tight">
-                              RevShare сейчас (калькулятор)
+                              RevShare (калькулятор)
                             </div>
                             <div className={`text-[9px] font-semibold mb-0.5 tabular-nums ${pkg.color}`}>
                               {fmtDau(dau)} DAU
