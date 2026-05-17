@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { InvestmentModal } from "@/components/InvestmentModal";
 import { SceneBackground } from "@/components/SceneBackground";
 import { DauCalculator } from "@/components/DauCalculator";
+import type { FullPackage } from "@/components/DauCalculator";
+import { PACKAGES as PKG_SOURCE, PACKAGE_UI } from "@/lib/packages";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import {
   ArrowRight, CheckCircle2, PlaySquare, TrendingUp, Users, Smartphone,
@@ -175,79 +177,14 @@ function useCountUp(target: number, duration = 2000, delay = 400) {
   return { value, ref };
 }
 
-const PACKAGES_DATA = [
-  {
-    id: "founder1", name: "Старт", price: 250, monthly: 4,
-    exit: "$1.3K – $3K", tokens: "250", shares: "0.63",
-    dau50m: 158,
-    tagline: "Для тех, кто хочет войти и попробовать",
-    icon: Star,
-    color: "text-secondary", border: "border-secondary/30", glow: "",
-    features: [
-      "RevShare доля 0.63 — ежемесячные выплаты USDT",
-      "Реферальная программа: до 3 уровней",
-      "Badge «Investor» на аватаре в приложении",
-      "Ранний бета-доступ к новым фичам",
-    ],
-  },
-  {
-    id: "founder2", name: "Основатель", price: 1000, monthly: 15,
-    exit: "$5K – $12K", tokens: "1,000", shares: "2.5",
-    dau50m: 626,
-    tagline: "Первый ощутимый буст для канала и дохода",
-    icon: Shield,
-    color: "text-primary", border: "border-primary/40", glow: "shadow-[0_0_40px_rgba(0,212,255,0.18)]",
-    features: [
-      "RevShare доля 2.5 — от 7 источников монетизации",
-      "500 бесплатных показов в ленте / мес",
-      "Badge «Founder» — специальный дизайн",
-      "Скидка 20% на рекламные размещения",
-    ],
-  },
-  {
-    id: "founder3", name: "Партнёр", price: 5000, monthly: 74,
-    exit: "$25K – $60K", tokens: "5,000", shares: "12.5",
-    dau50m: 3132,
-    tagline: "Полный пакет роста: доход + продвижение + команда",
-    icon: Crown,
-    recommended: true,
-    color: "text-yellow-400", border: "border-yellow-400/20", glow: "shadow-[0_0_30px_rgba(250,204,21,0.12)]",
-    features: [
-      "RevShare доля 12.5 — все 7 источников монетизации",
-      "3 000 бесплатных показов в ленте / мес",
-      "Badge «Founding Partner» с анимацией",
-      "Закрытый чат с CEO/CTO + дашборд инвестора",
-    ],
-  },
-  {
-    id: "founder4", name: "Стратег", price: 25000, monthly: 371,
-    exit: "$125K – $300K", tokens: "25,000", shares: "62.5",
-    dau50m: 15659,
-    tagline: "Уровень, где ты влияешь на платформу",
-    icon: TrendingUp,
-    color: "text-orange-400", border: "border-orange-400/20", glow: "shadow-[0_0_30px_rgba(251,146,60,0.10)]",
-    features: [
-      "RevShare доля 62.5 — Whitelist на токен TGE",
-      "20 000 бесплатных показов в ленте / мес",
-      "Badge «Strategic Partner» — золотой, анимированный",
-      "Advisory Board + персональный менеджер",
-    ],
-  },
-  {
-    id: "founder5", name: "Genesis Whale", price: 100000, monthly: 1484,
-    exit: "$500K – $1.2M", tokens: "100,000", shares: "250",
-    dau50m: 62637,
-    tagline: "Максимум. Только 10 слотов на всей платформе",
-    icon: Network,
-    color: "text-amber-400", border: "border-amber-400/20", glow: "shadow-[0_0_40px_rgba(251,191,36,0.12)]",
-    features: [
-      "RevShare доля 250 — максимально возможная",
-      "Неограниченные показы + страница Genesis Founders",
-      "Badge «Genesis Whale» — только 10 штук в мире",
-      "NFT-сертификат + equity при Series A",
-    ],
-  },
-];
+// ─── Иконки для маппинга ─────────────────────────────────────────
+const ICON_MAP = { Star, Shield, Crown, TrendingUp, Zap } as const;
+
+// ─── Пакеты для лендинга — берутся из единого packages.ts ────────
+const PACKAGES_DATA: FullPackage[] = PKG_SOURCE.map(p => {
+  const ui = PACKAGE_UI[p.id];
+  return { ...p, icon: ICON_MAP[ui.iconName], color: ui.color, border: ui.border, glow: ui.glow };
+});
 
 const NAV_HREFS = ["#problem", "#monetization", "#investors", "#roadmap"] as const;
 
