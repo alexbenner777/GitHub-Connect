@@ -58,7 +58,7 @@ export const PACKAGES: InvestPackage[] = [
         id: "miniapp",
         title: "В Miniapp Trends",
         items: [
-          "📱 Badge «Partner Trends» на аватаре — виден всем, кто видит твой канал или профиль",
+          "📱 Badge «Partner Trends» на аватаре — виден всем, кто видит твой канал",
         ],
       },
       {
