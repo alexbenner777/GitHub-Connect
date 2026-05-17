@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { translations, type Lang } from "@/lib/translations";
 import { Link } from "wouter";
 import { motion, useInView, useScroll, useTransform, AnimatePresence, useMotionValue, useSpring, type Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -109,8 +110,8 @@ function AdvantageCard({ item, index, variants }: { item: typeof ADVANTAGES[0]; 
   );
 }
 
-function AdvantagesGrid({ openInvest: _openInvest }: { openInvest: (pkg?: string) => void }) {
-  const first = ADVANTAGES[0];
+function AdvantagesGrid({ openInvest: _openInvest, advantages }: { openInvest: (pkg?: string) => void; advantages: typeof ADVANTAGES }) {
+  const first = advantages[0];
   const { Icon: Icon0 } = first;
   return (
     <div className="max-w-6xl mx-auto space-y-5">
@@ -134,14 +135,14 @@ function AdvantagesGrid({ openInvest: _openInvest }: { openInvest: (pkg?: string
 
       {/* Items 2 & 3 — two columns */}
       <div className="grid md:grid-cols-2 gap-5">
-        <AdvantageCard item={ADVANTAGES[1]} index={1} variants={fadeLeft} />
-        <AdvantageCard item={ADVANTAGES[2]} index={2} variants={fadeRight} />
+        <AdvantageCard item={advantages[1]} index={1} variants={fadeLeft} />
+        <AdvantageCard item={advantages[2]} index={2} variants={fadeRight} />
       </div>
 
       {/* Items 4 & 5 — two columns */}
       <div className="grid md:grid-cols-2 gap-5">
-        <AdvantageCard item={ADVANTAGES[3]} index={3} variants={fadeLeft} />
-        <AdvantageCard item={ADVANTAGES[4]} index={4} variants={fadeRight} />
+        <AdvantageCard item={advantages[3]} index={3} variants={fadeLeft} />
+        <AdvantageCard item={advantages[4]} index={4} variants={fadeRight} />
       </div>
     </div>
   );
@@ -243,14 +244,12 @@ const PACKAGES_DATA = [
   },
 ];
 
-const NAV_LINKS = [
-  { href: "#problem", label: "О проекте" },
-  { href: "#monetization", label: "Монетизация" },
-  { href: "#investors", label: "Инвесторам" },
-  { href: "#roadmap", label: "Roadmap" },
-];
+const NAV_HREFS = ["#problem", "#monetization", "#investors", "#roadmap"] as const;
 
 export default function Landing() {
+  const [lang, setLang] = useState<Lang>('ru');
+  const t = (key: keyof typeof translations.ru): string => translations[lang][key] as string;
+
   const [isInvestOpen, setIsInvestOpen] = useState(false);
   const [selectedPkg, setSelectedPkg] = useState("founder3");
   const [users] = useState(7780);
@@ -285,6 +284,13 @@ export default function Landing() {
     setIsInvestOpen(true);
   };
 
+  const NAV_LINKS = [
+    { href: "#problem", label: t('nav_about') },
+    { href: "#monetization", label: t('nav_monetization') },
+    { href: "#investors", label: t('nav_investors') },
+    { href: "#roadmap", label: "Roadmap" },
+  ];
+
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground [overflow-x:clip]">
 
@@ -314,11 +320,11 @@ export default function Landing() {
 
           <div className="hidden lg:flex gap-3">
             <Link href="/cabinet">
-              <Button variant="ghost" className="hover:bg-primary/10 hover:text-primary font-semibold whitespace-nowrap">Войти в кабинет</Button>
+              <Button variant="ghost" className="hover:bg-primary/10 hover:text-primary font-semibold whitespace-nowrap">{t('nav_cabinet')}</Button>
             </Link>
             <motion.div whileTap={{ scale: 0.93 }} whileHover={{ scale: 1.04 }}>
               <Button onClick={() => openInvest()} className="btn-grad btn-3d text-background font-bold rounded-xl whitespace-nowrap">
-                Инвестировать
+                {t('nav_invest')}
               </Button>
             </motion.div>
           </div>
@@ -355,11 +361,11 @@ export default function Landing() {
                 ))}
                 <div className="border-t border-white/10 mt-3 pt-4 flex flex-col gap-3">
                   <Link href="/cabinet" onClick={() => setMobileMenuOpen(false)}>
-                    <Button variant="outline" className="w-full border-primary/40 text-primary hover:bg-primary/10">Войти в кабинет</Button>
+                    <Button variant="outline" className="w-full border-primary/40 text-primary hover:bg-primary/10">{t('nav_cabinet')}</Button>
                   </Link>
                   <Button onClick={() => { openInvest(); setMobileMenuOpen(false); }}
                     className="w-full btn-grad btn-3d font-bold">
-                    Инвестировать
+                    {t('nav_invest')}
                   </Button>
                 </div>
               </div>
@@ -375,10 +381,10 @@ export default function Landing() {
 
           {/* MOBILE BADGES — above image on mobile */}
           <div className="flex flex-wrap gap-3 mt-2 mb-3 lg:hidden order-1">
-            <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">Pre-Seed</div>
-            <div className="px-3 py-1 rounded-full border text-sm font-bold" style={{ background: "rgba(123,94,255,0.25)", borderColor: "#7B5EFF", color: "#c4b0ff", boxShadow: "0 0 14px 2px rgba(123,94,255,0.45)", textShadow: "0 0 8px #7B5EFF" }}>$2 000 000 целевой объём</div>
+            <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">{t('badge_preseed')}</div>
+            <div className="px-3 py-1 rounded-full border text-sm font-bold" style={{ background: "rgba(123,94,255,0.25)", borderColor: "#7B5EFF", color: "#c4b0ff", boxShadow: "0 0 14px 2px rgba(123,94,255,0.45)", textShadow: "0 0 8px #7B5EFF" }}>{t('badge_goal')}</div>
             <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold flex items-center gap-1">
-              <CheckCircle2 className="w-4 h-4" /> MVP готов
+              <CheckCircle2 className="w-4 h-4" /> {t('badge_mvp')}
             </div>
           </div>
 
@@ -410,40 +416,40 @@ export default function Landing() {
           {/* TEXT — third on mobile, first on desktop */}
           <motion.div initial="hidden" animate="visible" variants={fadeIn} className="space-y-6 lg:space-y-8 order-3 lg:order-1">
             <div className="hidden lg:flex flex-wrap gap-3">
-              <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">Pre-Seed</div>
-              <div className="px-3 py-1 rounded-full border text-sm font-bold" style={{ background: "rgba(123,94,255,0.25)", borderColor: "#7B5EFF", color: "#c4b0ff", boxShadow: "0 0 14px 2px rgba(123,94,255,0.45)", textShadow: "0 0 8px #7B5EFF" }}>$2 000 000 целевой объём</div>
+              <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">{t('badge_preseed')}</div>
+              <div className="px-3 py-1 rounded-full border text-sm font-bold" style={{ background: "rgba(123,94,255,0.25)", borderColor: "#7B5EFF", color: "#c4b0ff", boxShadow: "0 0 14px 2px rgba(123,94,255,0.45)", textShadow: "0 0 8px #7B5EFF" }}>{t('badge_goal')}</div>
               <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold flex items-center gap-1">
-                <CheckCircle2 className="w-4 h-4" /> MVP готов
+                <CheckCircle2 className="w-4 h-4" /> {t('badge_mvp')}
               </div>
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black leading-[1.1] tracking-tight">
-              Trends — первый <span className="text-gradient">Reels</span> внутри Telegram
+              {t('hero_title1')} <span className="text-gradient">Reels</span> {t('hero_title2')}
             </h1>
 
             <p className="text-xl text-muted-foreground leading-relaxed max-w-xl">
-              Войдите на стадии Pre-Seed и получите прямой доступ к рынку из 1 миллиарда пользователей Telegram, у которых до сих пор нет алгоритмической видеоленты.
+              {t('hero_subtitle')}
             </p>
 
             <div className="glass-card p-4 rounded-2xl flex items-start gap-3">
               <DollarSign className="w-5 h-5 text-primary mt-0.5 shrink-0" />
               <p className="text-sm text-muted-foreground leading-relaxed">
-                <span className="text-foreground font-semibold">Цель сбора — маркетинг и инфраструктура Trends.</span>{" "}
-                Привлечённые средства направляются на масштабирование платформы: привлечение аудитории, продвижение и развитие серверной инфраструктуры.
+                <span className="text-foreground font-semibold">{t('hero_goal_label')}</span>{" "}
+                {t('hero_goal_desc')}
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-2">
               <MagneticButton onClick={() => openInvest()} className="w-full sm:w-auto">
                 <Button size="lg" className="h-14 px-8 text-lg btn-grad btn-3d font-bold rounded-xl pointer-events-none w-full">
-                  Инвестировать сейчас <ArrowRight className="ml-2 w-5 h-5" />
+                  {t('hero_btn_invest')} <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </MagneticButton>
               <Link href="/cabinet" className="w-full sm:w-auto">
                 <MagneticButton className="w-full">
                   <Button variant="outline" size="lg"
                     className="h-14 px-8 text-lg border-primary/30 hover:bg-primary/10 hover:border-primary/50 rounded-xl w-full btn-3d-outline pointer-events-none">
-                    Войти в кабинет
+                    {t('hero_btn_cabinet')}
                   </Button>
                 </MagneticButton>
               </Link>
@@ -460,10 +466,10 @@ export default function Landing() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto">
             {[
-              { label: "Пользователей в Mini App", value: "12 400+", sub: "всего зарегистрировано" },
-              { label: "DAU", value: "3 200+", sub: "активных ежедневно" },
-              { label: "Видео загружено", value: "48 000+", sub: "создателями контента" },
-              { label: "Страны", value: "34", sub: "аудитория по миру" },
+              { label: t('stats_users_label'), value: "12 400+", sub: t('stats_users_sub') },
+              { label: t('stats_dau_label'), value: "3 200+", sub: t('stats_dau_sub') },
+              { label: t('stats_videos_label'), value: "48 000+", sub: t('stats_videos_sub') },
+              { label: t('stats_countries_label'), value: "34", sub: t('stats_countries_sub') },
             ].map((s, i) => (
               <div key={i} className="glass-card rounded-2xl p-4 border border-white/10 text-center">
                 <div className="text-2xl font-black text-gradient">{s.value}</div>
@@ -482,13 +488,13 @@ export default function Landing() {
             <div className="text-center mb-10">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary font-bold text-sm mb-5">
                 <Target className="w-4 h-4" />
-                Дорожная карта финансирования
+                {t('rounds_badge')}
               </div>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">
-                Инвестиционный <span className="text-gradient">спринт</span>
+                {t('rounds_title')} <span className="text-gradient">{t('rounds_title_grad')}</span>
               </h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                Два чётких раунда — два окна входа. Раунд 1 выгоднее на 30%.
+                {t('rounds_subtitle')}
               </p>
             </div>
 
@@ -500,19 +506,19 @@ export default function Landing() {
                 <div className="absolute top-4 right-4">
                   <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/20 border border-green-500/30 text-green-400 text-xs font-black uppercase tracking-wider">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse inline-block" />
-                    Активен
+                    {t('round1_badge')}
                   </div>
                 </div>
-                <div className="text-xs font-black tracking-widest uppercase text-primary mb-2">Раунд 1</div>
-                <h3 className="text-2xl font-black mb-1">Pre-seed (Alpha)</h3>
+                <div className="text-xs font-black tracking-widest uppercase text-primary mb-2">{t('round1_label')}</div>
+                <h3 className="text-2xl font-black mb-1">{t('round1_name')}</h3>
                 <div className="text-4xl font-black text-primary mb-1">$500 000</div>
-                <p className="text-sm text-muted-foreground mb-5">Запуск MVP, отладка алгоритмов и достижение первых 1,5M MAU.</p>
+                <p className="text-sm text-muted-foreground mb-5">{t('round1_desc')}</p>
 
                 {/* Progress bar for round 1 */}
                 <div className="mb-4">
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="font-bold text-green-400">$100 000 собрано</span>
-                    <span className="text-muted-foreground">цель $500 000</span>
+                    <span className="font-bold text-green-400">{t('round1_raised')}</span>
+                    <span className="text-muted-foreground">{t('round1_goal')}</span>
                   </div>
                   <div className="relative h-3 rounded-full bg-white/8 overflow-hidden">
                     <motion.div
@@ -528,23 +534,23 @@ export default function Landing() {
                     </div>
                   </div>
                   <div className="flex justify-between text-xs text-muted-foreground mt-1.5">
-                    <span>20% собрано</span>
-                    <span>осталось: $400 000</span>
+                    <span>{t('round1_pct')}</span>
+                    <span>{t('round1_remaining')}</span>
                   </div>
                 </div>
 
                 <div className="space-y-2.5">
                   <div className="flex items-center gap-2.5 text-sm">
                     <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
-                    <span><span className="font-bold text-foreground">Цена доли: $307</span> <span className="text-muted-foreground">(с бонусом +30%)</span></span>
+                    <span><span className="font-bold text-foreground">{t('round1_f1')}</span> <span className="text-muted-foreground">{t('round1_f1b')}</span></span>
                   </div>
                   <div className="flex items-center gap-2.5 text-sm">
                     <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
-                    <span className="text-muted-foreground">Вход по минимальной оценке — этап «основателей»</span>
+                    <span className="text-muted-foreground">{t('round1_f2')}</span>
                   </div>
                   <div className="flex items-center gap-2.5 text-sm">
                     <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
-                    <span className="text-muted-foreground">Бонус +30% компенсирует весь риск ранней стадии</span>
+                    <span className="text-muted-foreground">{t('round1_f3')}</span>
                   </div>
                 </div>
               </div>
@@ -553,24 +559,24 @@ export default function Landing() {
               <div className="relative rounded-2xl border border-white/10 bg-white/3 backdrop-blur-sm p-6 md:p-8 overflow-hidden">
                 <div className="absolute top-4 right-4">
                   <div className="px-3 py-1 rounded-full bg-white/10 border border-white/15 text-muted-foreground text-xs font-bold uppercase tracking-wider">
-                    Скоро
+                    {t('round2_badge')}
                   </div>
                 </div>
-                <div className="text-xs font-black tracking-widest uppercase text-secondary mb-2">Раунд 2</div>
-                <h3 className="text-2xl font-black mb-1">Seed (Global Scale)</h3>
+                <div className="text-xs font-black tracking-widest uppercase text-secondary mb-2">{t('round2_label')}</div>
+                <h3 className="text-2xl font-black mb-1">{t('round2_name')}</h3>
                 <div className="text-4xl font-black text-secondary mb-1">$1 500 000</div>
-                <p className="text-sm text-muted-foreground mb-5">Масштабирование от 5M–10M MAU, агрессивный маркетинг, захват рынка Telegram.</p>
+                <p className="text-sm text-muted-foreground mb-5">{t('round2_desc')}</p>
 
                 {/* Progress bar for round 2 */}
                 <div className="mb-4">
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="font-bold text-muted-foreground">$0 собрано</span>
-                    <span className="text-muted-foreground">цель $1 500 000</span>
+                    <span className="font-bold text-muted-foreground">{t('round2_raised')}</span>
+                    <span className="text-muted-foreground">{t('round2_goal')}</span>
                   </div>
                   <div className="relative h-3 rounded-full bg-white/8 overflow-hidden">
                     <div className="absolute inset-y-0 left-0 w-0 rounded-full" style={{ background: "linear-gradient(90deg, #7B5EFF, #00D4FF)" }} />
                   </div>
-                  <div className="text-xs text-muted-foreground mt-1.5">Открывается после закрытия Раунда 1</div>
+                  <div className="text-xs text-muted-foreground mt-1.5">{t('round2_opens')}</div>
                 </div>
 
                 <div className="space-y-2.5">
@@ -578,19 +584,19 @@ export default function Landing() {
                     <div className="w-4 h-4 rounded-full border border-white/20 shrink-0 flex items-center justify-center">
                       <div className="w-1.5 h-1.5 rounded-full bg-white/30" />
                     </div>
-                    <span><span className="font-bold text-foreground">Цена доли: $400</span> <span className="text-muted-foreground">(без бонуса)</span></span>
+                    <span><span className="font-bold text-foreground">{t('round2_f1')}</span> <span className="text-muted-foreground">{t('round2_f1b')}</span></span>
                   </div>
                   <div className="flex items-center gap-2.5 text-sm">
                     <div className="w-4 h-4 rounded-full border border-white/20 shrink-0 flex items-center justify-center">
                       <div className="w-1.5 h-1.5 rounded-full bg-white/30" />
                     </div>
-                    <span className="text-muted-foreground">Последний шанс войти в частный раунд</span>
+                    <span className="text-muted-foreground">{t('round2_f2')}</span>
                   </div>
                   <div className="flex items-center gap-2.5 text-sm">
                     <div className="w-4 h-4 rounded-full border border-white/20 shrink-0 flex items-center justify-center">
                       <div className="w-1.5 h-1.5 rounded-full bg-white/30" />
                     </div>
-                    <span className="text-muted-foreground">После — только токены на бирже или OTC</span>
+                    <span className="text-muted-foreground">{t('round2_f3')}</span>
                   </div>
                 </div>
               </div>
@@ -603,28 +609,28 @@ export default function Landing() {
                   <DollarSign className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-black">Куда расходуем средства</h3>
-                  <p className="text-sm text-muted-foreground">Прозрачное распределение $2 000 000</p>
+                  <h3 className="text-lg font-black">{t('spending_title')}</h3>
+                  <p className="text-sm text-muted-foreground">{t('spending_subtitle')}</p>
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
                   {
                     icon: Code2,
-                    label: "Разработка MVP",
+                    label: t('spending_dev'),
                     amount: "$100 000",
-                    note: "уже потрачено",
+                    note: t('spending_dev_note'),
                     color: "text-green-400",
                     bg: "bg-green-500/10 border-green-500/20",
                     iconBg: "bg-green-500/15 text-green-400",
-                    badge: "Выполнено",
+                    badge: t('badge_done'),
                     badgeColor: "bg-green-500/20 text-green-400",
                   },
                   {
                     icon: Server,
-                    label: "Доработка и инфраструктура",
+                    label: t('spending_infra'),
                     amount: "$200 000",
-                    note: "серверы и безопасность",
+                    note: t('spending_infra_note'),
                     color: "text-secondary",
                     bg: "bg-secondary/5 border-secondary/20",
                     iconBg: "bg-secondary/15 text-secondary",
@@ -633,9 +639,9 @@ export default function Landing() {
                   },
                   {
                     icon: Megaphone,
-                    label: "Маркетинг",
+                    label: t('spending_marketing'),
                     amount: "$1 500 000",
-                    note: "привлечение аудитории",
+                    note: t('spending_marketing_note'),
                     color: "text-primary",
                     bg: "bg-primary/5 border-primary/20",
                     iconBg: "bg-primary/15 text-primary",
@@ -644,9 +650,9 @@ export default function Landing() {
                   },
                   {
                     icon: Users,
-                    label: "Команда",
+                    label: t('spending_team'),
                     amount: "$200 000",
-                    note: "расширение штата",
+                    note: t('spending_team_note'),
                     color: "text-yellow-400",
                     bg: "bg-yellow-500/5 border-yellow-500/20",
                     iconBg: "bg-yellow-500/15 text-yellow-400",
@@ -679,35 +685,35 @@ export default function Landing() {
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center max-w-6xl mx-auto">
             <div className="space-y-6 order-2 lg:order-1 lg:pl-10">
               <h2 className="text-4xl md:text-5xl font-black">
-                Что такое <span className="text-gradient">Trends</span>?
+                {t('what_title')} <span className="text-gradient">Trends</span>?
               </h2>
               <div className="space-y-5 leading-relaxed">
-                <p className="text-foreground font-semibold text-lg">Trends — первая в Telegram платформа коротких видео в формате Reels.</p>
+                <p className="text-foreground font-semibold text-lg">{t('what_lead')}</p>
                 <div className="space-y-3">
                   {[
                     {
-                      label: "Пользователи",
+                      label: t('what_users_label'),
                       icon: Users,
                       accent: "border-l-primary bg-primary/5",
                       iconColor: "text-primary bg-primary/15",
                       labelColor: "text-primary",
-                      text: "смотрят персонализированную ленту коротких видео прямо внутри Telegram и получают токен внимания TRND за вовлечённость и активность.",
+                      text: t('what_users_text'),
                     },
                     {
-                      label: "Авторы",
+                      label: t('what_creators_label'),
                       icon: PlaySquare,
                       accent: "border-l-secondary bg-secondary/5",
                       iconColor: "text-secondary bg-secondary/15",
                       labelColor: "text-secondary",
-                      text: "публикуют контент в ленте, получают органический охват, новую аудиторию и эффективное продвижение своих Telegram-каналов.",
+                      text: t('what_creators_text'),
                     },
                     {
-                      label: "Telegram",
+                      label: t('what_telegram_label'),
                       icon: Send,
                       accent: "border-l-blue-400 bg-blue-400/5",
                       iconColor: "text-blue-400 bg-blue-400/15",
                       labelColor: "text-blue-400",
-                      text: "получает инструмент для развития собственной экосистемы: рекомендации каналов, рост вовлечённости и удержание пользователей внутри платформы.",
+                      text: t('what_telegram_text'),
                     },
                   ].map(({ label, icon: Icon, accent, iconColor, labelColor, text }) => (
                     <div key={label} className={`flex items-start gap-4 pl-4 pr-5 py-4 rounded-xl border-l-2 ${accent}`}>
@@ -764,19 +770,19 @@ export default function Landing() {
         <div className="container mx-auto px-4">
           <motion.div initial="visible" animate="visible" variants={fadeUp}
             className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">Огромный рынок пуст</h2>
-            <p className="text-lg text-muted-foreground">Telegram вырос до 1 миллиарда пользователей, но в нём до сих пор нет главного формата потребления контента — бесконечной ленты коротких видео.</p>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('problem_title')}</h2>
+            <p className="text-lg text-muted-foreground">{t('problem_subtitle')}</p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             <motion.div initial="visible" animate="visible" variants={fadeLeft}
               className="glass-card p-8 rounded-3xl">
-              <h3 className="text-2xl font-bold mb-8">Telegram сейчас</h3>
+              <h3 className="text-2xl font-bold mb-8">{t('problem_now')}</h3>
               <ul className="space-y-6">
                 {[
-                  "Нет алгоритмической ленты рекомендаций",
-                  "Сложно находить новые каналы и авторов",
-                  "Неудобно смотреть видео (нужно переходить в каналы)"
+                  t('problem_p1'),
+                  t('problem_p2'),
+                  t('problem_p3')
                 ].map((text, i) => (
                   <li key={i} className="flex gap-4 items-start">
                     <div className="w-8 h-8 rounded-full bg-destructive/10 flex items-center justify-center shrink-0 text-destructive mt-0.5">✕</div>
@@ -788,12 +794,12 @@ export default function Landing() {
 
             <motion.div initial="visible" animate="visible" variants={fadeRight}
               className="glass-card p-8 rounded-3xl">
-              <h3 className="text-2xl font-bold mb-8 text-primary">Trends решает</h3>
+              <h3 className="text-2xl font-bold mb-8 text-primary">{t('solution_title')}</h3>
               <ul className="space-y-6">
                 {[
-                  "Бесконечная вертикальная лента (Reels/TikTok) прямо в Mini App",
-                  "Умный алгоритм рекомендаций на базе AI",
-                  "Бесшовный переход внутри экосистемы Telegram"
+                  t('solution_s1'),
+                  t('solution_s2'),
+                  t('solution_s3')
                 ].map((text, i) => (
                   <li key={i} className="flex gap-4 items-start">
                     <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center shrink-0 text-primary mt-0.5"><ArrowRight className="w-4 h-4" /></div>
@@ -807,12 +813,12 @@ export default function Landing() {
           <div className="mt-16 flex flex-wrap justify-center gap-8 text-center">
             <div>
               <div className="text-5xl font-black text-gradient mb-2">1B+</div>
-              <div className="text-muted-foreground font-medium uppercase tracking-wider">Пользователей Telegram</div>
+              <div className="text-muted-foreground font-medium uppercase tracking-wider">{t('stat_users')}</div>
             </div>
             <div className="w-px h-16 bg-white/10 hidden md:block" />
             <div>
               <div className="text-5xl font-black text-gradient mb-2">500M+</div>
-              <div className="text-muted-foreground font-medium uppercase tracking-wider">Юзеров Mini Apps</div>
+              <div className="text-muted-foreground font-medium uppercase tracking-wider">{t('stat_miniapps')}</div>
             </div>
           </div>
         </div>
@@ -830,16 +836,16 @@ export default function Landing() {
             <div className="space-y-6 lg:space-y-8 order-2 lg:order-2">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 text-green-400 border border-green-500/20 font-bold tracking-wide">
                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                ПРОДУКТ УЖЕ РАБОТАЕТ
+                {t('mvp_badge')}
               </div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-tight">MVP готов и <span className="text-gradient">запущен</span></h2>
-              <p className="text-base md:text-xl text-muted-foreground">Мы не продаём идею. Мы привлекаем капитал для масштабирования уже работающей инфраструктуры.</p>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-tight">{t('mvp_title1')} <span className="text-gradient">{t('mvp_title2')}</span></h2>
+              <p className="text-base md:text-xl text-muted-foreground">{t('mvp_desc')}</p>
 
               <div className="space-y-4">
                 {[
-                  "Вертикальная лента стабильна и оптимизирована под Mini App",
-                  "Инфраструктура готова к нагрузкам в миллионы DAU",
-                  "Первые авторы уже загружают контент и получают охваты"
+                  t('mvp_f1'),
+                  t('mvp_f2'),
+                  t('mvp_f3')
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-4 glass-card p-4 rounded-2xl">
                     <CheckCircle2 className="w-7 h-7 text-green-400 shrink-0" />
@@ -857,8 +863,8 @@ export default function Landing() {
       <section className="py-16 relative z-10">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">Продукт <span className="text-gradient">Trends</span></h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Полноценная лента вертикальных видео прямо внутри Telegram — контент от тысяч авторов, персонализированная выдача.</p>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">{t('product_title')} <span className="text-gradient">Trends</span></h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t('product_desc')}</p>
           </div>
 
           <motion.div initial="visible" animate="visible" variants={fadeScale}>
@@ -871,7 +877,7 @@ export default function Landing() {
                   <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.93 }}>
                     <Button size="lg" className="h-14 px-10 text-lg btn-grad btn-3d font-bold rounded-xl pointer-events-none">
                       <ExternalLink className="mr-2 w-5 h-5" />
-                      Открыть MVP Trends
+                      {t('product_btn')}
                     </Button>
                   </motion.div>
                 </a>
@@ -885,8 +891,8 @@ export default function Landing() {
       <section id="monetization" className="py-14 md:py-24 relative z-10 scroll-mt-20">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">7 источников монетизации</h2>
-            <p className="text-lg text-muted-foreground">Диверсифицированная бизнес-модель — рост любого источника усиливает общую экономику платформы.</p>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('mono_title')}</h2>
+            <p className="text-lg text-muted-foreground">{t('mono_desc')}</p>
           </div>
 
           <motion.div initial="visible" animate="visible" variants={fadeScale} className="mb-6">
@@ -898,10 +904,10 @@ export default function Landing() {
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-3">
-                    <h3 className="text-2xl md:text-3xl font-bold">Реклама в ленте</h3>
-                    <span className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-bold uppercase tracking-wider">Основной</span>
+                    <h3 className="text-2xl md:text-3xl font-bold">{t('mono1_title')}</h3>
+                    <span className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-bold uppercase tracking-wider">{t('mono1_badge')}</span>
                   </div>
-                  <p className="text-muted-foreground text-lg leading-relaxed mb-4">Проверенная модель монетизации TikTok, Instagram Reels и YouTube Shorts — адаптированная под экосистему Telegram.</p>
+                  <p className="text-muted-foreground text-lg leading-relaxed mb-4">{t('mono1_desc')}</p>
                   <div className="flex flex-wrap gap-3">
                     {["CPM", "CPV", "CPC", "CPA"].map(tag => (
                       <span key={tag} className="px-3 py-1 rounded-lg bg-primary/10 text-primary font-bold text-sm border border-primary/20">{tag}</span>
@@ -914,12 +920,12 @@ export default function Landing() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
-              { icon: TrendingUp, num: "02", title: "Boost-продвижение", desc: "Платное усиление охватов для авторов и брендов — приоритет в ленте" },
-              { icon: Gift, num: "03", title: "Спонсорские интеграции", desc: "Брендированные челленджи, спецпроекты, фиксированные бюджеты" },
-              { icon: Wallet, num: "04", title: "Цифровые донаты", desc: "Комиссия с транзакций между зрителями и авторами" },
-              { icon: BarChart3, num: "05", title: "Аналитика и данные", desc: "B2B-продажа агрегированной аналитики брендам" },
-              { icon: Smartphone, num: "06", title: "Таргет-баннер", desc: "Баннер внизу экрана по интересам — не перекрывает видео" },
-              { icon: ShoppingBag, num: "07", title: "E-commerce в ленте", desc: "Оффер товара + кнопка «Купить» → deep-link на маркетплейс" }
+              { icon: TrendingUp, num: "02", title: t('mono2_title'), desc: t('mono2_desc') },
+              { icon: Gift, num: "03", title: t('mono3_title'), desc: t('mono3_desc') },
+              { icon: Wallet, num: "04", title: t('mono4_title'), desc: t('mono4_desc') },
+              { icon: BarChart3, num: "05", title: t('mono5_title'), desc: t('mono5_desc') },
+              { icon: Smartphone, num: "06", title: t('mono6_title'), desc: t('mono6_desc') },
+              { icon: ShoppingBag, num: "07", title: t('mono7_title'), desc: t('mono7_desc') }
             ].map((item, i) => (
               <div key={i} className="glass-card p-6 rounded-3xl group relative overflow-hidden">
                 <div className="absolute top-4 right-5 text-5xl font-black text-primary/6 select-none group-hover:text-primary/12 transition-colors">{item.num}</div>
@@ -938,11 +944,17 @@ export default function Landing() {
       <section id="investors" className="py-16 md:py-24 lg:py-32 relative z-10 [overflow-x:clip] scroll-mt-20">
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-4xl mx-auto mb-10 md:mb-16 lg:mb-20">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6">5 преимуществ инвестора</h2>
-            <p className="text-base md:text-xl text-muted-foreground">Беспрецедентные условия для тех, кто заходит на стадии Pre-Seed. Инвестор зарабатывает вместе с платформой каждый день.</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6">{t('adv_title')}</h2>
+            <p className="text-base md:text-xl text-muted-foreground">{t('adv_desc')}</p>
           </div>
 
-          <AdvantagesGrid openInvest={openInvest} />
+          <AdvantagesGrid openInvest={openInvest} advantages={[
+            { title: t('adv1_title'), desc: t('adv1_desc'), color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-secondary/10", Icon: DollarSign, label: t('adv1_label') },
+            { title: t('adv2_title'), desc: t('adv2_desc'), color: "text-secondary", gradFrom: "from-secondary/20", gradTo: "to-primary/5", Icon: TrendingUp, label: t('adv2_label') },
+            { title: t('adv3_title'), desc: t('adv3_desc'), color: "text-green-400", gradFrom: "from-green-500/20", gradTo: "to-teal-500/5", Icon: Network, label: t('adv3_label') },
+            { title: t('adv4_title'), desc: t('adv4_desc'), color: "text-yellow-400", gradFrom: "from-yellow-500/20", gradTo: "to-orange-500/5", Icon: Coins, label: t('adv4_label') },
+            { title: t('adv5_title'), desc: t('adv5_desc'), color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-purple-500/10", Icon: Crown, label: t('adv5_label') },
+          ]} />
         </div>
       </section>
 
@@ -961,10 +973,10 @@ export default function Landing() {
           <div className="text-center max-w-3xl mx-auto mb-10">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 font-bold text-sm mb-6">
               <Network className="w-4 h-4" />
-              ПАРТНЁРСКАЯ ПРОГРАММА
+              {t('mlm_badge')}
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4">Партнёрская программа — зарабатывай на привлечении</h2>
-            <p className="text-lg text-muted-foreground">Приглашайте новых инвесторов и получайте процент от их вложений на 5 уровней вглубь.</p>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4">{t('mlm_title')}</h2>
+            <p className="text-lg text-muted-foreground">{t('mlm_desc')}</p>
           </div>
 
           {/* Accordion 1 — Реф программа */}
@@ -977,7 +989,7 @@ export default function Landing() {
                 <div className="w-9 h-9 rounded-xl bg-primary/15 border border-primary/25 flex items-center justify-center shrink-0">
                   <Network className="w-4 h-4 text-primary" />
                 </div>
-                <span className="text-base sm:text-lg font-bold group-hover:text-primary transition-colors">Реферальная программа</span>
+                <span className="text-base sm:text-lg font-bold group-hover:text-primary transition-colors">{t('mlm_acc1')}</span>
               </div>
               <motion.span animate={{ rotate: refOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
                 <ChevronRight className="w-5 h-5 rotate-90 text-muted-foreground" />
@@ -988,11 +1000,11 @@ export default function Landing() {
               <motion.div key="ref-content" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }} style={{ overflow: "hidden" }}>
                 <div className="glass-card px-6 py-5 rounded-2xl mt-2 space-y-2">
                   {[
-                    { n: 1, pct: "10%", desc: "Прямые приглашённые вами", bar: 100, grad: "from-primary to-primary/60", badge: "bg-primary/20 text-primary border-primary/30" },
-                    { n: 2, pct: "5%",  desc: "Партнёры ваших партнёров", bar: 70,  grad: "from-secondary to-secondary/60", badge: "bg-secondary/20 text-secondary border-secondary/30" },
-                    { n: 3, pct: "3%",  desc: "Третье звено сети",        bar: 48,  grad: "from-blue-400 to-blue-400/60", badge: "bg-blue-400/20 text-blue-400 border-blue-400/30" },
-                    { n: 4, pct: "1%",  desc: "Четвёртое звено",          bar: 28,  grad: "from-cyan-400 to-cyan-400/60", badge: "bg-cyan-400/20 text-cyan-400 border-cyan-400/30" },
-                    { n: 5, pct: "1%",  desc: "Пятое звено",              bar: 18,  grad: "from-teal-400 to-teal-400/60", badge: "bg-teal-400/20 text-teal-400 border-teal-400/30" },
+                    { n: 1, pct: "10%", desc: t('mlm_ref_l1'), bar: 100, grad: "from-primary to-primary/60", badge: "bg-primary/20 text-primary border-primary/30" },
+                    { n: 2, pct: "5%",  desc: t('mlm_ref_l2'), bar: 70,  grad: "from-secondary to-secondary/60", badge: "bg-secondary/20 text-secondary border-secondary/30" },
+                    { n: 3, pct: "3%",  desc: t('mlm_ref_l3'), bar: 48,  grad: "from-blue-400 to-blue-400/60", badge: "bg-blue-400/20 text-blue-400 border-blue-400/30" },
+                    { n: 4, pct: "1%",  desc: t('mlm_ref_l4'), bar: 28,  grad: "from-cyan-400 to-cyan-400/60", badge: "bg-cyan-400/20 text-cyan-400 border-cyan-400/30" },
+                    { n: 5, pct: "1%",  desc: t('mlm_ref_l5'), bar: 18,  grad: "from-teal-400 to-teal-400/60", badge: "bg-teal-400/20 text-teal-400 border-teal-400/30" },
                   ].map((row, i) => (
                     <div key={i} className="flex items-center gap-4">
                       <div className={`shrink-0 text-xs font-black px-2.5 py-1 rounded-lg border ${row.badge}`}>L{row.n}</div>
@@ -1027,7 +1039,7 @@ export default function Landing() {
                 <div className="w-9 h-9 rounded-xl bg-green-500/15 border border-green-500/25 flex items-center justify-center shrink-0">
                   <DollarSign className="w-4 h-4 text-green-400" />
                 </div>
-                <span className="text-base sm:text-lg font-bold group-hover:text-green-400 transition-colors">Пример расчёта</span>
+                <span className="text-base sm:text-lg font-bold group-hover:text-green-400 transition-colors">{t('mlm_acc2')}</span>
               </div>
               <motion.span animate={{ rotate: exampleOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
                 <ChevronRight className="w-5 h-5 rotate-90 text-muted-foreground" />
@@ -1042,8 +1054,8 @@ export default function Landing() {
                 <DollarSign className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-base sm:text-lg md:text-2xl font-bold leading-snug">Пример: Пакет Основателей 3 — $5 000</h3>
-                <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">Вы вложили $5 000 и пригласили партнёров</p>
+                <h3 className="text-base sm:text-lg md:text-2xl font-bold leading-snug">{t('mlm_ex_title')}</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">{t('mlm_ex_sub')}</p>
               </div>
             </div>
 
@@ -1053,7 +1065,7 @@ export default function Landing() {
                 {/* YOU */}
                 <div className="flex justify-center mb-2">
                   <div className="flex flex-col items-center">
-                    <div className="w-12 h-12 rounded-2xl bg-primary/20 border-2 border-primary/50 flex items-center justify-center text-primary font-black text-sm">ВЫ</div>
+                    <div className="w-12 h-12 rounded-2xl bg-primary/20 border-2 border-primary/50 flex items-center justify-center text-primary font-black text-sm">{t('mlm_you')}</div>
                     <div className="text-[10px] text-primary font-bold mt-1">$5 000</div>
                   </div>
                 </div>
@@ -1121,7 +1133,7 @@ export default function Landing() {
                     </div>
                   ))}
                 </div>
-                <div className="text-center text-[10px] text-muted-foreground">уровни 3–5 продолжают расти...</div>
+                <div className="text-center text-[10px] text-muted-foreground">{t('mlm_lvls_grow')}</div>
               </div>
             </div>
 
@@ -1131,9 +1143,9 @@ export default function Landing() {
                 { label: "L1 · 10%", icon: UserPlus,  bg: "bg-yellow-400/10",  color: "text-yellow-400",  desc: "2 × $25K",   result: "+$5 000",  resultColor: "text-yellow-400" },
                 { label: "L1 · 10%", icon: Crown,     bg: "bg-orange-400/10", color: "text-orange-400", desc: "1 × $100K",  result: "+$10 000", resultColor: "text-orange-400" },
                 { label: "L1 · 10%", icon: Users2,    bg: "bg-secondary/10",  color: "text-secondary",  desc: "2 × $5K",    result: "+$1 000",  resultColor: "text-secondary" },
-                { label: "L2 · 5%",  icon: Users2,    bg: "bg-blue-400/10",   color: "text-blue-400",   desc: "$50K сети",  result: "+$2 500",  resultColor: "text-blue-400" },
-                { label: "L2 · 5%",  icon: Network,   bg: "bg-teal-400/10",   color: "text-teal-400",   desc: "$8K сети",   result: "+$400",    resultColor: "text-teal-400" },
-                { label: "L3–5",     icon: Network,   bg: "bg-purple-400/10", color: "text-purple-400", desc: "сеть глубже", result: "+$1 200", resultColor: "text-purple-400" },
+                { label: "L2 · 5%",  icon: Users2,    bg: "bg-blue-400/10",   color: "text-blue-400",   desc: t('mlm_net50'),  result: "+$2 500",  resultColor: "text-blue-400" },
+                { label: "L2 · 5%",  icon: Network,   bg: "bg-teal-400/10",   color: "text-teal-400",   desc: t('mlm_net8'),   result: "+$400",    resultColor: "text-teal-400" },
+                { label: "L3–5",     icon: Network,   bg: "bg-purple-400/10", color: "text-purple-400", desc: t('mlm_deeper'), result: "+$1 200", resultColor: "text-purple-400" },
               ].map((row, i, arr) => (
                 <div key={i} className={`flex items-center gap-3 px-4 py-3 ${i < arr.length - 1 ? "border-b border-white/6" : ""}`}>
                   <div className={`w-7 h-7 rounded-lg ${row.bg} flex items-center justify-center shrink-0`}>
@@ -1148,19 +1160,19 @@ export default function Landing() {
 
             <div className="flex flex-col sm:flex-row items-center gap-4 p-4 sm:p-6 rounded-2xl glass-card">
               <div className="flex-1 text-center sm:text-left">
-                <div className="text-sm text-muted-foreground mb-1">Итого от партнёрской сети</div>
+                <div className="text-sm text-muted-foreground mb-1">{t('mlm_ex_total_label')}</div>
                 <div className="text-4xl sm:text-5xl font-black text-green-400">$20 100</div>
                 <div className="text-xs text-muted-foreground mt-1">L1: $16 000 · L2: $2 900 · L3–5: $1 200</div>
               </div>
               <div className="w-full h-px sm:w-px sm:h-12 bg-white/10" />
               <div className="text-center sm:text-left">
-                <div className="text-sm text-muted-foreground mb-1">Плюс ваш RevShare каждый месяц</div>
+                <div className="text-sm text-muted-foreground mb-1">{t('mlm_ex_revshare')}</div>
                 <div className="text-2xl sm:text-3xl font-black text-primary">+$370 / мес</div>
               </div>
             </div>
 
             <p className="text-xs text-muted-foreground text-center mt-4">
-              Реферальная ссылка доступна в личном кабинете. Выплаты в USDT в течение 48 часов.
+              {t('mlm_ex_footnote')}
             </p>
                 </div>
               </motion.div>
@@ -1179,8 +1191,8 @@ export default function Landing() {
                   <Trophy className="w-4 h-4 text-yellow-400" />
                 </div>
                 <div className="text-left">
-                  <span className="text-base sm:text-lg font-bold group-hover:text-yellow-400 transition-colors block">Community Pool</span>
-                  <span className="text-xs text-muted-foreground">10% от месячных инвестиций</span>
+                  <span className="text-base sm:text-lg font-bold group-hover:text-yellow-400 transition-colors block">{t('mlm_acc3')}</span>
+                  <span className="text-xs text-muted-foreground">{t('mlm_pool_sub')}</span>
                 </div>
               </div>
               <motion.span animate={{ rotate: poolOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
@@ -1192,7 +1204,7 @@ export default function Landing() {
               <motion.div key="pool-content" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }} style={{ overflow: "hidden" }}>
                 <div className="mt-2">
                 <p className="text-sm md:text-base text-muted-foreground leading-relaxed px-2 py-3">
-                  Каждый месяц 10% от всех поступивших инвестиций делятся между активными партнёрами через два под-пула. Вы получаете акции пропорционально обороту вашей команды.
+                  {t('mlm_pool_desc')}
                 </p>
 
             {/* Mini Pool + Max Pool */}
@@ -1206,11 +1218,8 @@ export default function Landing() {
                   border: "border-primary/25",
                   bg: "bg-primary/5",
                   badgeBg: "bg-primary/10",
-                  conditions: [
-                    "2 прямых партнёра с депозитом ≥ $1 000",
-                    "Оборот команды ≥ $5 000",
-                  ],
-                  share: "1 акция за каждые $5 000 оборота",
+                  conditions: [t('mini_pool_c1'), t('mini_pool_c2')],
+                  share: t('mini_pool_share'),
                   shareColor: "text-primary",
                 },
                 {
@@ -1220,11 +1229,8 @@ export default function Landing() {
                   border: "border-secondary/25",
                   bg: "bg-secondary/5",
                   badgeBg: "bg-secondary/10",
-                  conditions: [
-                    "4 прямых партнёра с депозитом ≥ $1 000",
-                    "Оборот команды ≥ $50 000",
-                  ],
-                  share: "1 акция за каждые $50 000 оборота",
+                  conditions: [t('max_pool_c1'), t('max_pool_c2')],
+                  share: t('max_pool_share'),
                   shareColor: "text-secondary",
                 },
               ].map((pool, i) => (
@@ -1256,12 +1262,12 @@ export default function Landing() {
               {/* Table header */}
               <div className="px-5 py-3 border-b border-white/8">
                 <span className="text-[11px] font-black tracking-widest uppercase text-muted-foreground">
-                  Пример — месяц с $500 000 инвестиций
+                  {t('pool_table_header')}
                 </span>
               </div>
               {/* Rows */}
               {[
-                { label: "Весь пул (10%)", value: "$50 000", bold: true, valueColor: "" },
+                { label: t('pool_row_total'), value: "$50 000", bold: true, valueColor: "" },
                 { label: "Mini Pool (6%)", value: "$30 000", bold: false, valueColor: "text-primary" },
                 { label: "Max Pool (4%)", value: "$20 000", bold: false, valueColor: "text-secondary" },
               ].map((row, i) => (
@@ -1273,17 +1279,17 @@ export default function Landing() {
               {/* Your share block */}
               <div className="px-5 py-4 bg-white/2">
                 <p className="text-xs font-bold text-muted-foreground mb-3">
-                  Ваша доля из Mini Pool при обороте $15 000:
+                  {t('pool_share_label')}
                 </p>
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <div className="w-5 h-5 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center text-primary text-[10px] font-black">3</div>
-                    <span className="text-sm text-muted-foreground">акции ($15 000 ÷ $5 000)</span>
+                    <span className="text-sm text-muted-foreground">{t('pool_shares_label')}</span>
                   </div>
-                  <span className="text-xs text-muted-foreground">3 из 100 всего в пуле</span>
+                  <span className="text-xs text-muted-foreground">{t('pool_shares_total')}</span>
                 </div>
                 <div className="flex items-center justify-between rounded-xl bg-white/4 px-4 py-3">
-                  <span className="text-sm text-muted-foreground">Выплата (3 ÷ 100 × $30 000)</span>
+                  <span className="text-sm text-muted-foreground">{t('pool_payout_label')}</span>
                   <span className="text-lg font-black text-green-400">+$900 / мес</span>
                 </div>
               </div>
@@ -1292,10 +1298,7 @@ export default function Landing() {
             {/* Footer notes */}
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} variants={fadeIn}
               className="grid sm:grid-cols-2 gap-3 mt-4">
-              {[
-                "Пул работает пока общий объём платформы не достигнет $2 000 000",
-                "Выплаты в USDT в течение 48 часов после закрытия месяца",
-              ].map((note, i) => (
+              {[t('pool_note1'), t('pool_note2')].map((note, i) => (
                 <div key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
                   <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0 text-green-400" />
                   <span>{note}</span>
@@ -1315,8 +1318,8 @@ export default function Landing() {
       <section id="roadmap" className="py-14 md:py-24 [overflow-x:clip] scroll-mt-20 relative z-10">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">Roadmap</h2>
-            <p className="text-lg text-muted-foreground">Запуск в 2026 — путь к глобальному масштабу</p>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">{t('roadmap_title')}</h2>
+            <p className="text-lg text-muted-foreground">{t('roadmap_desc')}</p>
           </div>
 
           {/* Horizontal timeline */}
@@ -1328,11 +1331,11 @@ export default function Landing() {
 
             <div className="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-4 items-stretch">
               {[
-                { phase: "Июль 2026", title: "Public Launch", desc: "Публичный запуск MVP, онбординг первых 1,000 криейторов, старт монетизации.", active: true },
-                { phase: "Q3 2026", title: "Growth Phase", desc: "Запуск рекламного кабинета, интеграция с TON, активация RevShare для инвесторов." },
-                { phase: "Q4 2026", title: "Scale", desc: "Агрессивный маркетинг, масштабирование аудитории, выход на международные рынки." },
-                { phase: "2027 — 10M", title: "Листинг $TRND", desc: "При 10M пользователей — листинг токена. Ранние инвесторы получают максимальную аллокацию.", highlight: true },
-                { phase: "2027+", title: "Global Expansion", desc: "Выход на мировые рынки, e-commerce, подготовка к Exit или Series A." },
+                { phase: t('rm1_phase'), title: t('rm1_title'), desc: t('rm1_desc'), active: true, label: t('rm1_label') },
+                { phase: t('rm2_phase'), title: t('rm2_title'), desc: t('rm2_desc') },
+                { phase: t('rm3_phase'), title: t('rm3_title'), desc: t('rm3_desc') },
+                { phase: t('rm4_phase'), title: t('rm4_title'), desc: t('rm4_desc'), highlight: true, label: t('rm4_label') },
+                { phase: t('rm5_phase'), title: t('rm5_title'), desc: t('rm5_desc') },
               ].map((step, i) => (
                 <div key={i}
                   className="flex flex-col items-center md:items-start text-center md:text-left">
@@ -1364,13 +1367,13 @@ export default function Landing() {
                     {step.highlight && (
                       <div className="mt-3 flex items-center justify-center md:justify-start gap-1.5">
                         <Coins className="w-3.5 h-3.5 text-yellow-400 shrink-0" />
-                        <span className="text-yellow-400 text-xs font-semibold">Ключевой milestone</span>
+                        <span className="text-yellow-400 text-xs font-semibold">{step.label}</span>
                       </div>
                     )}
                     {step.active && (
                       <div className="mt-3 flex items-center justify-center md:justify-start gap-1.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse inline-block" />
-                        <span className="text-green-400 text-xs font-semibold">Текущий этап</span>
+                        <span className="text-green-400 text-xs font-semibold">{step.label}</span>
                       </div>
                     )}
                   </div>
@@ -1385,15 +1388,15 @@ export default function Landing() {
       {/* FAQ */}
       <section className="py-24 relative z-10">
         <div className="container mx-auto px-4 max-w-3xl">
-          <h2 className="text-4xl font-black text-center mb-12">Вопросы и ответы</h2>
+          <h2 className="text-4xl font-black text-center mb-12">{t('faq_title')}</h2>
           <Accordion type="single" collapsible className="w-full space-y-4">
             {[
-              { q: "Как инвестировать?", a: "Выберите подходящий пакет, подключите кошелёк TON или MetaMask в личном кабинете и подтвердите транзакцию. Средства автоматически зачислятся на ваш баланс." },
-              { q: "На что идут привлечённые средства?", a: "100% привлечённого капитала направляется на маркетинг и развитие инфраструктуры Trends: привлечение авторов и аудитории, performance-реклама, серверные мощности и масштабирование платформы." },
-              { q: "Когда начнутся выплаты RevShare?", a: "Выплаты RevShare начнутся в фазе Growth (Q3 2026) после полноценного запуска рекламного кабинета и достижения плановых показателей по DAU." },
-              { q: "Как работает партнёрская программа?", a: "Вы получаете процент от инвестиций привлечённых вами партнёров до 5 уровней в глубину: 10% с первой линии, 5% со второй, 3% с третьей, 1% с четвёртой и 1% с пятой." },
-              { q: "Что такое токены $TRND?", a: "Это utility и governance-токен экосистемы Trends. Инвесторы ранних стадий получают аллокацию токенов, которые будут листиться при достижении 10M аудитории. Встроенный vesting защищает цену от обвала." },
-              { q: "Как осуществляется вывод средств?", a: "Вывод средств доступен в любой момент из личного кабинета при достижении минимальной суммы в $100. Выплаты производятся в USDT на привязанный кошелёк." },
+              { q: t('faq1_q'), a: t('faq1_a') },
+              { q: t('faq2_q'), a: t('faq2_a') },
+              { q: t('faq3_q'), a: t('faq3_a') },
+              { q: t('faq4_q'), a: t('faq4_a') },
+              { q: t('faq5_q'), a: t('faq5_a') },
+              { q: t('faq6_q'), a: t('faq6_a') },
             ].map((faq, i) => (
               <AccordionItem key={i} value={`item-${i}`} className="glass-card border border-white/8 px-6 rounded-xl overflow-hidden">
                 <AccordionTrigger className="text-base font-medium hover:text-primary transition-colors py-4 text-left">{faq.q}</AccordionTrigger>
@@ -1408,8 +1411,28 @@ export default function Landing() {
       <footer className="border-t border-white/8 pt-20 pb-8 relative overflow-hidden z-10">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
 
-
         <div className="container mx-auto px-4 relative z-10">
+
+          {/* Language switcher */}
+          <div className="flex justify-end mb-10">
+            <div className="flex items-center gap-1 p-1 glass-card rounded-xl border border-white/10">
+              <button
+                onClick={() => setLang('ru')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold transition-all ${lang === 'ru' ? 'bg-white/10 text-white' : 'text-muted-foreground hover:text-white'}`}
+              >
+                <span className="text-base leading-none">🇷🇺</span>
+                <span>RU</span>
+              </button>
+              <button
+                onClick={() => setLang('en')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold transition-all ${lang === 'en' ? 'bg-white/10 text-white' : 'text-muted-foreground hover:text-white'}`}
+              >
+                <span className="text-base leading-none">🇺🇸</span>
+                <span>EN</span>
+              </button>
+            </div>
+          </div>
+
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
 
             {/* Brand */}
@@ -1419,7 +1442,7 @@ export default function Landing() {
                 <span style={{ fontFamily: "'Manrope', sans-serif", fontWeight: 800 }} className="text-xl text-white">Trends</span>
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Первый Reels-фид внутри Telegram. Инвестируй в платформу для 1 миллиарда пользователей Telegram.
+                {t('footer_brand_desc')}
               </p>
               <div className="flex gap-3">
                 <motion.a whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}
@@ -1442,15 +1465,9 @@ export default function Landing() {
 
             {/* Navigation */}
             <div className="space-y-5">
-              <h4 className="font-bold text-foreground tracking-wide">Навигация</h4>
+              <h4 className="font-bold text-foreground tracking-wide">{t('footer_nav')}</h4>
               <ul className="space-y-3">
-                {[
-                  { href: "#problem", label: "О проекте" },
-                  { href: "#monetization", label: "Монетизация" },
-                  { href: "#investors", label: "Инвесторам" },
-                  { href: "#roadmap", label: "Roadmap" },
-                  { href: "#faq", label: "FAQ" },
-                ].map(link => (
+                {NAV_LINKS.map(link => (
                   <li key={link.href}>
                     <a href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
                       <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all text-primary" />
@@ -1464,17 +1481,17 @@ export default function Landing() {
 
             {/* Contacts & Legal */}
             <div className="space-y-5 lg:col-start-4">
-              <h4 className="font-bold text-foreground tracking-wide">Контакты</h4>
+              <h4 className="font-bold text-foreground tracking-wide">{t('footer_contacts')}</h4>
               <ul className="space-y-3">
                 <li>
                   <a href="https://t.me/Trends_ibot?startapp" target="_blank" rel="noopener noreferrer"
                     className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">
-                    <ExternalLink className="w-3.5 h-3.5 text-primary" /> Открыть MVP
+                    <ExternalLink className="w-3.5 h-3.5 text-primary" /> {t('footer_open_mvp')}
                   </a>
                 </li>
                 <li>
                   <Link href="/cabinet" className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">
-                    <Wallet className="w-3.5 h-3.5 text-primary" /> Личный кабинет
+                    <Wallet className="w-3.5 h-3.5 text-primary" /> {t('footer_cabinet')}
                   </Link>
                 </li>
               </ul>
@@ -1488,9 +1505,9 @@ export default function Landing() {
       <div className="border-t border-white/6" style={{ background: "rgba(4, 6, 14, 0.97)" }}>
         <div className="container mx-auto px-4 py-5 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
-            <span>© {new Date().getFullYear()} Trends. Все права защищены.</span>
+            <span>© {new Date().getFullYear()} Trends. {t('footer_copyright')}</span>
           </div>
-          <div className="text-center opacity-60 max-w-md">Средства привлекаются на маркетинг и инфраструктуру платформы. Инвестирование сопряжено с рисками. Не является публичной офертой.</div>
+          <div className="text-center opacity-60 max-w-md">{t('footer_disclaimer')}</div>
           <div className="flex gap-5">
             <a href="#" className="hover:text-primary transition-colors flex items-center gap-1">
               <FileText className="w-3 h-3" /> Terms
