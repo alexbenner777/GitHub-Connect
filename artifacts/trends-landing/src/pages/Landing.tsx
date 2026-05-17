@@ -879,52 +879,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* PRODUCT FULL */}
-      <section className="py-16 relative z-10">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">{t('product_title')} <span className="text-gradient">Trends</span></h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t('product_desc')}</p>
-          </div>
-
-          <motion.div initial="visible" animate="visible" variants={fadeScale}>
-            <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_60px_rgba(0,212,255,0.08)]">
-              <img src={screen2Path} alt="Продукт Trends" className="w-full object-cover" />
-            </div>
-            <div className="mt-10 flex justify-center">
-              <MagneticButton className="w-auto">
-                <a href="https://t.me/Trends_ibot?startapp" target="_blank" rel="noopener noreferrer">
-                  <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.93 }}>
-                    <Button size="lg" className="h-14 px-10 text-lg btn-grad btn-3d font-bold rounded-xl pointer-events-none">
-                      <ExternalLink className="mr-2 w-5 h-5" />
-                      {t('product_btn')}
-                    </Button>
-                  </motion.div>
-                </a>
-              </MagneticButton>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* 5 INVESTOR ADVANTAGES */}
-      <section id="investors" className="py-16 md:py-24 lg:py-32 relative z-10 [overflow-x:clip] scroll-mt-20">
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center max-w-4xl mx-auto mb-10 md:mb-16 lg:mb-20">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('adv_title')}</h2>
-            <p className="text-base md:text-xl text-muted-foreground">{t('adv_desc')}</p>
-          </div>
-
-          <AdvantagesGrid openInvest={openInvest} advantages={[
-            { title: t('adv1_title'), desc: t('adv1_desc'), color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-secondary/10", Icon: DollarSign, label: t('adv1_label'), extra: [t('adv1_x1'), t('adv1_x2'), t('adv1_x3'), t('adv1_x4')] },
-            { title: t('adv2_title'), desc: t('adv2_desc'), color: "text-secondary", gradFrom: "from-secondary/20", gradTo: "to-primary/5", Icon: TrendingUp, label: t('adv2_label'), extra: [t('adv2_x1'), t('adv2_x2'), t('adv2_x3'), t('adv2_x4')] },
-            { title: t('adv3_title'), desc: t('adv3_desc'), color: "text-green-400", gradFrom: "from-green-500/20", gradTo: "to-teal-500/5", Icon: Network, label: t('adv3_label'), extra: [t('adv3_x1'), t('adv3_x2'), t('adv3_x3'), t('adv3_x4'), t('adv3_x5')] },
-            { title: t('adv4_title'), desc: t('adv4_desc'), color: "text-yellow-400", gradFrom: "from-yellow-500/20", gradTo: "to-orange-500/5", Icon: Coins, label: t('adv4_label'), extra: [t('adv4_x1'), t('adv4_x2'), t('adv4_x3'), t('adv4_x4'), t('adv4_x5')] },
-            { title: t('adv5_title'), desc: t('adv5_desc'), color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-purple-500/10", Icon: Crown, label: t('adv5_label'), extra: [t('adv5_x1'), t('adv5_x2'), t('adv5_x3'), t('adv5_x4'), t('adv5_x5')] },
-          ]} />
-        </div>
-      </section>
-
       {/* TOKEN ATTENTION ECONOMY */}
       <section className="py-14 md:py-28 relative z-10 overflow-hidden">
         {/* Background glow */}
@@ -1028,6 +982,64 @@ export default function Landing() {
               </div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* MONETIZATION */}
+      <section id="monetization" className="py-14 md:py-24 relative z-10 scroll-mt-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('mono_title')}</h2>
+            <p className="text-lg text-muted-foreground">{t('mono_desc')}</p>
+          </div>
+
+          <MonetizationCards t={t} />
+        </div>
+      </section>
+
+      {/* PRODUCT FULL */}
+      <section className="py-16 relative z-10">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">{t('product_title')} <span className="text-gradient">Trends</span></h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t('product_desc')}</p>
+          </div>
+
+          <motion.div initial="visible" animate="visible" variants={fadeScale}>
+            <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_60px_rgba(0,212,255,0.08)]">
+              <img src={screen2Path} alt="Продукт Trends" className="w-full object-cover" />
+            </div>
+            <div className="mt-10 flex justify-center">
+              <MagneticButton className="w-auto">
+                <a href="https://t.me/Trends_ibot?startapp" target="_blank" rel="noopener noreferrer">
+                  <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.93 }}>
+                    <Button size="lg" className="h-14 px-10 text-lg btn-grad btn-3d font-bold rounded-xl pointer-events-none">
+                      <ExternalLink className="mr-2 w-5 h-5" />
+                      {t('product_btn')}
+                    </Button>
+                  </motion.div>
+                </a>
+              </MagneticButton>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 5 INVESTOR ADVANTAGES */}
+      <section id="investors" className="py-16 md:py-24 lg:py-32 relative z-10 [overflow-x:clip] scroll-mt-20">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center max-w-4xl mx-auto mb-10 md:mb-16 lg:mb-20">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('adv_title')}</h2>
+            <p className="text-base md:text-xl text-muted-foreground">{t('adv_desc')}</p>
+          </div>
+
+          <AdvantagesGrid openInvest={openInvest} advantages={[
+            { title: t('adv1_title'), desc: t('adv1_desc'), color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-secondary/10", Icon: DollarSign, label: t('adv1_label'), extra: [t('adv1_x1'), t('adv1_x2'), t('adv1_x3'), t('adv1_x4')] },
+            { title: t('adv2_title'), desc: t('adv2_desc'), color: "text-secondary", gradFrom: "from-secondary/20", gradTo: "to-primary/5", Icon: TrendingUp, label: t('adv2_label'), extra: [t('adv2_x1'), t('adv2_x2'), t('adv2_x3'), t('adv2_x4')] },
+            { title: t('adv3_title'), desc: t('adv3_desc'), color: "text-green-400", gradFrom: "from-green-500/20", gradTo: "to-teal-500/5", Icon: Network, label: t('adv3_label'), extra: [t('adv3_x1'), t('adv3_x2'), t('adv3_x3'), t('adv3_x4'), t('adv3_x5')] },
+            { title: t('adv4_title'), desc: t('adv4_desc'), color: "text-yellow-400", gradFrom: "from-yellow-500/20", gradTo: "to-orange-500/5", Icon: Coins, label: t('adv4_label'), extra: [t('adv4_x1'), t('adv4_x2'), t('adv4_x3'), t('adv4_x4'), t('adv4_x5')] },
+            { title: t('adv5_title'), desc: t('adv5_desc'), color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-purple-500/10", Icon: Crown, label: t('adv5_label'), extra: [t('adv5_x1'), t('adv5_x2'), t('adv5_x3'), t('adv5_x4'), t('adv5_x5')] },
+          ]} />
         </div>
       </section>
 
