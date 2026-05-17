@@ -1047,7 +1047,9 @@ export default function Landing() {
                 {[
                   t('mvp_f1'),
                   t('mvp_f2'),
-                  t('mvp_f3')
+                  t('mvp_f3'),
+                  t('mvp_f4'),
+                  t('mvp_f5')
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-4 glass-card p-4 rounded-2xl">
                     <CheckCircle2 className="w-7 h-7 text-green-400 shrink-0" />

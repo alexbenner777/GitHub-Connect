@@ -98,6 +98,8 @@ export const translations = {
     mvp_f1: "Вертикальная лента стабильна и оптимизирована под Mini App",
     mvp_f2: "Инфраструктура готова к нагрузкам в миллионы DAU",
     mvp_f3: "Первые авторы уже загружают контент и получают охваты",
+    mvp_f4: "Умная лента, настроенная AI алгоритмами персонализации",
+    mvp_f5: "Умная модерация контента на основе AI",
 
     product_title: "Продукт",
     product_desc: "Полноценная лента вертикальных видео прямо внутри Telegram — контент от тысяч авторов, персонализированная выдача.",
@@ -376,6 +378,8 @@ export const translations = {
     mvp_f1: "Vertical feed is stable and optimized for Mini App",
     mvp_f2: "Infrastructure ready for millions of DAU",
     mvp_f3: "First creators are already uploading content and getting reach",
+    mvp_f4: "Smart feed powered by AI personalization algorithms",
+    mvp_f5: "AI-driven smart content moderation",
 
     product_title: "Product",
     product_desc: "A full vertical video feed right inside Telegram — content from thousands of creators, personalized delivery.",
