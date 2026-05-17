@@ -899,8 +899,8 @@ export default function Landing() {
                 title: t('token_creators_title'), desc: t('token_creators_desc'), num: "02",
               },
               {
-                icon: Network, color: "text-green-400", bg: "bg-green-400/10", border: "border-green-400/20",
-                title: t('token_friends_title'), desc: t('token_friends_desc'), num: "03",
+                icon: TrendingUp, color: "text-green-400", bg: "bg-green-400/10", border: "border-green-400/20",
+                title: t('token_investors_title'), desc: t('token_investors_desc'), num: "03",
               },
             ].map((card, i) => (
               <motion.div
@@ -919,21 +919,41 @@ export default function Landing() {
             ))}
           </div>
 
-          {/* Viral growth block */}
+          {/* Why $TRND block */}
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeUp}
             className="glass-card rounded-3xl p-8 md:p-10 border border-secondary/15 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 via-transparent to-primary/5 pointer-events-none" />
             <div className="relative z-10">
+
+              {/* 4 key stats */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10 pb-10 border-b border-white/8">
+                {([
+                  { val: t('token_stat1_val'), label: t('token_stat1_label'), color: "text-primary" },
+                  { val: t('token_stat2_val'), label: t('token_stat2_label'), color: "text-yellow-400" },
+                  { val: t('token_stat3_val'), label: t('token_stat3_label'), color: "text-green-400" },
+                  { val: t('token_stat4_val'), label: t('token_stat4_label'), color: "text-secondary" },
+                ] as const).map((s, i) => (
+                  <motion.div key={i}
+                    initial="hidden" whileInView="visible" viewport={{ once: true }}
+                    variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.45, delay: i * 0.08, ease: EASE } } }}
+                    className="text-center"
+                  >
+                    <div className={`text-2xl md:text-3xl font-black ${s.color} mb-1`}>{s.val}</div>
+                    <div className="text-xs text-muted-foreground leading-snug">{s.label}</div>
+                  </motion.div>
+                ))}
+              </div>
+
               <div className="flex flex-col md:flex-row gap-8">
                 <div className="flex-1">
-                  <h3 className="text-2xl md:text-3xl font-black mb-3">{t('token_viral_title')}</h3>
-                  <p className="text-muted-foreground mb-6 leading-relaxed">{t('token_viral_desc')}</p>
+                  <h3 className="text-2xl md:text-3xl font-black mb-3">{t('token_why_title')}</h3>
+                  <p className="text-muted-foreground mb-6 leading-relaxed">{t('token_why_desc')}</p>
 
                   <div className="grid sm:grid-cols-2 gap-3">
                     {[
-                      t('token_feature1'), t('token_feature2'),
-                      t('token_feature3'), t('token_feature4'),
-                      t('token_feature5'), t('token_feature6'),
+                      t('token_why1'), t('token_why2'),
+                      t('token_why3'), t('token_why4'),
+                      t('token_why5'), t('token_why6'),
                     ].map((feat, i) => (
                       <div key={i} className="flex items-start gap-2.5">
                         <div className="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center shrink-0 mt-0.5">
@@ -945,7 +965,7 @@ export default function Landing() {
                   </div>
                 </div>
 
-                {/* Compare badge */}
+                {/* Compare + CTA panel */}
                 <div className="flex flex-col items-center justify-center gap-4 md:w-64 shrink-0">
                   <div className="grid grid-cols-3 gap-2 w-full">
                     {["Notcoin", "Catizen", "Hamster"].map((name, i) => (
