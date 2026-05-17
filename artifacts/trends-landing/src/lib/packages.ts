@@ -30,7 +30,7 @@ export const PACKAGES: InvestPackage[] = [
   // ─── СТАРТ $250 ─────────────────────────────────────
   {
     id: "founder1",
-    name: "Старт",
+    name: "Starter",
     tagline: "Войти первым — уже преимущество",
     price: 250,
     shares: 0.63,
@@ -74,7 +74,7 @@ export const PACKAGES: InvestPackage[] = [
   // ─── ОСНОВАТЕЛЬ $1 000 ───────────────────────────────
   {
     id: "founder2",
-    name: "Основатель",
+    name: "Partner",
     tagline: "Реальный буст для канала, дохода и связей",
     price: 1000,
     shares: 2.5,
@@ -126,7 +126,7 @@ export const PACKAGES: InvestPackage[] = [
   // ─── ПАРТНЁР $5 000 ⭐ ───────────────────────────────
   {
     id: "founder3",
-    name: "Партнёр",
+    name: "Insider",
     tagline: "Доход + мощное продвижение + прямой доступ к команде",
     price: 5000,
     shares: 12.5,
@@ -175,7 +175,7 @@ export const PACKAGES: InvestPackage[] = [
   // ─── СТРАТЕГ $25 000 ─────────────────────────────────
   {
     id: "founder4",
-    name: "Стратег",
+    name: "Visionary",
     tagline: "Ты влияешь на платформу — платформа работает на тебя",
     price: 25000,
     shares: 62.5,
@@ -226,7 +226,7 @@ export const PACKAGES: InvestPackage[] = [
   // ─── GENESIS WHALE $100 000 ──────────────────────────
   {
     id: "founder5",
-    name: "Genesis Whale",
+    name: "Co-Investor",
     tagline: "Максимум. Только 10 слотов. Навсегда.",
     price: 100000,
     shares: 250,
