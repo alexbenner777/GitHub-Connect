@@ -1731,19 +1731,25 @@ export default function Landing() {
 
       {/* BOTTOM BAR */}
       <div className="border-t border-white/6" style={{ background: "rgba(4, 6, 14, 0.97)" }}>
-        <div className="container mx-auto px-4 py-5 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-muted-foreground">
-          <div className="flex items-center gap-2">
+        <div className="container mx-auto px-4 py-5 flex flex-col gap-3 text-xs text-muted-foreground">
+          {/* Top row: copyright + doc links */}
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
             <span>© {new Date().getFullYear()} Trends. {t('footer_copyright')}</span>
+            <div className="flex flex-wrap justify-center gap-4">
+              {DOCS.map(doc => (
+                <button
+                  key={doc.id}
+                  onClick={() => setLegalDoc(doc.id)}
+                  className="hover:text-primary transition-colors flex items-center gap-1"
+                >
+                  <doc.icon className="w-3 h-3" />
+                  {lang === 'ru' ? doc.titleRu : doc.titleEn}
+                </button>
+              ))}
+            </div>
           </div>
-          <div className="text-center opacity-60 max-w-md">{t('footer_disclaimer')}</div>
-          <div className="flex gap-5">
-            <a href="#" className="hover:text-primary transition-colors flex items-center gap-1">
-              <FileText className="w-3 h-3" /> Terms
-            </a>
-            <a href="#" className="hover:text-primary transition-colors flex items-center gap-1">
-              <Lock className="w-3 h-3" /> Privacy
-            </a>
-          </div>
+          {/* Bottom row: disclaimer */}
+          <p className="text-center opacity-50 leading-relaxed">{t('footer_disclaimer')}</p>
         </div>
       </div>
 
