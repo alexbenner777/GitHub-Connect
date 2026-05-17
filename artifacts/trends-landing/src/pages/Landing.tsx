@@ -376,7 +376,7 @@ export default function Landing() {
           {/* MOBILE BADGES — above image on mobile */}
           <div className="flex flex-wrap gap-3 mt-2 mb-3 lg:hidden order-1">
             <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">Pre-Seed</div>
-            <div className="px-3 py-1 rounded-full bg-secondary/30 border border-secondary/70 text-secondary text-sm font-semibold" style={{ textShadow: "0 0 12px #7B5EFF88" }}>$2 000 000 целевой объём</div>
+            <div className="px-3 py-1 rounded-full border text-sm font-bold" style={{ background: "rgba(123,94,255,0.25)", borderColor: "#7B5EFF", color: "#c4b0ff", boxShadow: "0 0 14px 2px rgba(123,94,255,0.45)", textShadow: "0 0 8px #7B5EFF" }}>$2 000 000 целевой объём</div>
             <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold flex items-center gap-1">
               <CheckCircle2 className="w-4 h-4" /> MVP готов
             </div>
@@ -411,7 +411,7 @@ export default function Landing() {
           <motion.div initial="hidden" animate="visible" variants={fadeIn} className="space-y-6 lg:space-y-8 order-3 lg:order-1">
             <div className="hidden lg:flex flex-wrap gap-3">
               <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">Pre-Seed</div>
-              <div className="px-3 py-1 rounded-full bg-secondary/30 border border-secondary/70 text-secondary text-sm font-semibold" style={{ textShadow: "0 0 12px #7B5EFF88" }}>$2 000 000 целевой объём</div>
+              <div className="px-3 py-1 rounded-full border text-sm font-bold" style={{ background: "rgba(123,94,255,0.25)", borderColor: "#7B5EFF", color: "#c4b0ff", boxShadow: "0 0 14px 2px rgba(123,94,255,0.45)", textShadow: "0 0 8px #7B5EFF" }}>$2 000 000 целевой объём</div>
               <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold flex items-center gap-1">
                 <CheckCircle2 className="w-4 h-4" /> MVP готов
               </div>
