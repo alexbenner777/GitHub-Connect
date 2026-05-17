@@ -11,7 +11,7 @@ import {
   BarChart3, Target, ShoppingBag, Gift, Wallet, ExternalLink,
   Network, Coins, ChevronRight, DollarSign, UserPlus, Users2,
   Menu, X, Send, MessageCircle, Star, Shield, Zap, Crown,
-  Mail, Globe, FileText, Lock, Code2, Megaphone, Server
+  Mail, Globe, FileText, Lock, Code2, Megaphone, Server, Trophy
 } from "lucide-react";
 
 import logoPath from '@assets/logo_trends_1777962710178.png';
@@ -1121,6 +1121,146 @@ export default function Landing() {
               Реферальная ссылка доступна в личном кабинете. Выплаты в USDT в течение 48 часов.
             </p>
           </motion.div>
+        </div>
+      </section>
+
+      {/* COMMUNITY POOL */}
+      <section className="py-14 md:py-24 relative z-10 [overflow-x:clip]">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] bg-primary/8 blur-[120px] rounded-full pointer-events-none" />
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-4xl mx-auto">
+
+            {/* Header card */}
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={slideUp}
+              className="glass-card rounded-2xl p-5 md:p-7 mb-5">
+              <div className="flex flex-col sm:flex-row sm:items-start gap-4 mb-4">
+                <div className="flex items-center gap-3 flex-1">
+                  <div className="w-10 h-10 rounded-xl bg-yellow-500/15 border border-yellow-500/25 flex items-center justify-center shrink-0">
+                    <Trophy className="w-5 h-5 text-yellow-400" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl md:text-2xl font-black leading-tight">Community Pool</h2>
+                    <p className="text-sm text-muted-foreground">Ежемесячная выплата из общего пула</p>
+                  </div>
+                </div>
+                <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-primary/10 border border-primary/25 text-primary text-xs font-bold whitespace-nowrap">
+                  10% от месячных инвестиций
+                </div>
+              </div>
+              <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                Каждый месяц 10% от всех поступивших инвестиций делятся между активными партнёрами через два под-пула. Вы получаете акции пропорционально обороту вашей команды.
+              </p>
+            </motion.div>
+
+            {/* Mini Pool + Max Pool */}
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={staggerChildren}
+              className="grid md:grid-cols-2 gap-4 mb-5">
+              {[
+                {
+                  name: "Mini Pool",
+                  pct: "6%",
+                  color: "text-primary",
+                  border: "border-primary/25",
+                  bg: "bg-primary/5",
+                  badgeBg: "bg-primary/10",
+                  conditions: [
+                    "2 прямых партнёра с депозитом ≥ $1 000",
+                    "Оборот команды ≥ $5 000",
+                  ],
+                  share: "1 акция за каждые $5 000 оборота",
+                  shareColor: "text-primary",
+                },
+                {
+                  name: "Max Pool",
+                  pct: "4%",
+                  color: "text-secondary",
+                  border: "border-secondary/25",
+                  bg: "bg-secondary/5",
+                  badgeBg: "bg-secondary/10",
+                  conditions: [
+                    "4 прямых партнёра с депозитом ≥ $1 000",
+                    "Оборот команды ≥ $50 000",
+                  ],
+                  share: "1 акция за каждые $50 000 оборота",
+                  shareColor: "text-secondary",
+                },
+              ].map((pool, i) => (
+                <motion.div key={i} variants={i === 0 ? fadeLeft : fadeRight}
+                  className={`glass-card rounded-2xl p-5 border ${pool.border}`}>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className={`text-lg font-black ${pool.color}`}>{pool.name}</span>
+                    <span className={`text-4xl font-black ${pool.color}`}>{pool.pct}</span>
+                  </div>
+                  <div className="space-y-2 mb-3">
+                    {pool.conditions.map((c, j) => (
+                      <div key={j} className="flex items-start gap-2">
+                        <CheckCircle2 className={`w-4 h-4 mt-0.5 shrink-0 ${pool.color} opacity-70`} />
+                        <span className="text-sm text-muted-foreground">{c}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className={`flex items-center gap-2 pt-3 border-t ${pool.border}`}>
+                    <Coins className={`w-4 h-4 shrink-0 ${pool.shareColor} opacity-70`} />
+                    <span className={`text-sm font-semibold ${pool.shareColor}`}>{pool.share}</span>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* Example table */}
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={slideUp}
+              className="glass-card rounded-2xl overflow-hidden">
+              {/* Table header */}
+              <div className="px-5 py-3 border-b border-white/8">
+                <span className="text-[11px] font-black tracking-widest uppercase text-muted-foreground">
+                  Пример — месяц с $500 000 инвестиций
+                </span>
+              </div>
+              {/* Rows */}
+              {[
+                { label: "Весь пул (10%)", value: "$50 000", bold: true, valueColor: "" },
+                { label: "Mini Pool (6%)", value: "$30 000", bold: false, valueColor: "text-primary" },
+                { label: "Max Pool (4%)", value: "$20 000", bold: false, valueColor: "text-secondary" },
+              ].map((row, i) => (
+                <div key={i} className={`flex items-center justify-between px-5 py-3 border-b border-white/6 ${row.bold ? "bg-white/3" : ""}`}>
+                  <span className={`text-sm ${row.bold ? "font-bold" : "text-muted-foreground"}`}>{row.label}</span>
+                  <span className={`text-sm font-black ${row.valueColor || ""}`}>{row.value}</span>
+                </div>
+              ))}
+              {/* Your share block */}
+              <div className="px-5 py-4 bg-white/2">
+                <p className="text-xs font-bold text-muted-foreground mb-3">
+                  Ваша доля из Mini Pool при обороте $15 000:
+                </p>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center text-primary text-[10px] font-black">3</div>
+                    <span className="text-sm text-muted-foreground">акции ($15 000 ÷ $5 000)</span>
+                  </div>
+                  <span className="text-xs text-muted-foreground">3 из 100 всего в пуле</span>
+                </div>
+                <div className="flex items-center justify-between rounded-xl bg-white/4 px-4 py-3">
+                  <span className="text-sm text-muted-foreground">Выплата (3 ÷ 100 × $30 000)</span>
+                  <span className="text-lg font-black text-green-400">+$900 / мес</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Footer notes */}
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} variants={fadeIn}
+              className="grid sm:grid-cols-2 gap-3 mt-4">
+              {[
+                "Пул работает пока общий объём платформы не достигнет $2 000 000",
+                "Выплаты в USDT в течение 48 часов после закрытия месяца",
+              ].map((note, i) => (
+                <div key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0 text-green-400" />
+                  <span>{note}</span>
+                </div>
+              ))}
+            </motion.div>
+
+          </div>
         </div>
       </section>
 
