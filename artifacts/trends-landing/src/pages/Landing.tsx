@@ -627,20 +627,19 @@ export default function Landing() {
               </div>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black leading-[1.1] tracking-tight">
-              {t('hero_title1')} <span className="text-gradient">Reels</span> {t('hero_title2')}
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black leading-[1.05] tracking-tight">
+              {t('hero_title1')}<br />
+              <span className="text-gradient">{t('hero_title2')}</span>{" "}
+              {t('hero_title3')}
             </h1>
 
-            <p className="text-xl text-muted-foreground leading-relaxed max-w-xl">
+            <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-xl">
               {t('hero_subtitle')}
             </p>
 
-            <div className="glass-card p-4 rounded-2xl flex items-start gap-3">
-              <DollarSign className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                <span className="text-foreground font-semibold">{t('hero_goal_label')}</span>{" "}
-                {t('hero_goal_desc')}
-              </p>
+            <div className="glass-card p-4 rounded-2xl border border-primary/20">
+              <div className="text-xs font-black tracking-widest uppercase text-primary mb-2">{t('hero_goal_label')}</div>
+              <p className="text-sm text-muted-foreground leading-relaxed">{t('hero_goal_desc')}</p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-2">
