@@ -37,7 +37,7 @@ function fmtM(n: number) {
   return fmt(n);
 }
 
-const DAU_MIN = 500_000;
+const DAU_MIN = 5_000_000;
 const DAU_MAX = 50_000_000;
 const STEPS = 10000;
 
@@ -49,10 +49,9 @@ function sliderPosFromDau(dau: number) {
 }
 
 const PRESETS = [
-  { label: "500K", dau: 500_000 },
-  { label: "1M",   dau: 1_000_000 },
   { label: "5M",   dau: 5_000_000 },
   { label: "10M",  dau: 10_000_000 },
+  { label: "15M",  dau: 15_000_000 },
   { label: "25M",  dau: 25_000_000 },
   { label: "50M",  dau: 50_000_000 },
 ];
@@ -66,7 +65,7 @@ export function DauCalculator({
   onSelectPackage?: (id: string) => void;
   fullPackages?: FullPackage[];
 }) {
-  const [dau, setDau] = useState(1_000_000);
+  const [dau, setDau] = useState(10_000_000);
 
   const dailyRub = dau * SHOWS_PER_DAY * CPM_RUB / 1000;
   const monthlyRub = dailyRub * 30;
