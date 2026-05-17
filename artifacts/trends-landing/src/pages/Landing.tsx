@@ -997,6 +997,136 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* MONETIZATION */}
+      <section id="monetization" className="py-14 md:py-24 relative z-10 scroll-mt-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('mono_title')}</h2>
+            <p className="text-lg text-muted-foreground">{t('mono_desc')}</p>
+          </div>
+
+          <MonetizationCards t={t} />
+        </div>
+      </section>
+
+      {/* TOKEN ATTENTION ECONOMY */}
+      <section className="py-14 md:py-28 relative z-10 overflow-hidden">
+        {/* Background glow */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full blur-[160px]" style={{ background: "radial-gradient(ellipse, rgba(123,94,255,0.12) 0%, rgba(0,212,255,0.08) 60%, transparent 100%)" }} />
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+
+          {/* Header */}
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={fadeUp} className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-secondary/30 bg-secondary/10 text-secondary text-sm font-bold mb-6">
+              <Coins className="w-4 h-4" /> {t('token_section_badge')}
+            </div>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-5 leading-tight">
+              {t('token_section_title')}
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t('token_section_desc')}</p>
+          </motion.div>
+
+          {/* 3 earn cards */}
+          <div className="grid md:grid-cols-3 gap-5 mb-10">
+            {[
+              {
+                icon: Users2, color: "text-primary", bg: "bg-primary/10", border: "border-primary/20",
+                title: t('token_viewers_title'), desc: t('token_viewers_desc'), num: "01",
+              },
+              {
+                icon: Star, color: "text-secondary", bg: "bg-secondary/10", border: "border-secondary/20",
+                title: t('token_creators_title'), desc: t('token_creators_desc'), num: "02",
+              },
+              {
+                icon: Network, color: "text-green-400", bg: "bg-green-400/10", border: "border-green-400/20",
+                title: t('token_friends_title'), desc: t('token_friends_desc'), num: "03",
+              },
+            ].map((card, i) => (
+              <motion.div
+                key={i}
+                initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}
+                variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: i * 0.1, ease: EASE } } }}
+                className={`glass-card p-7 rounded-3xl border ${card.border} relative overflow-hidden`}
+              >
+                <div className="absolute top-4 right-5 text-5xl font-black opacity-5 select-none">{card.num}</div>
+                <div className={`w-12 h-12 rounded-2xl ${card.bg} flex items-center justify-center ${card.color} mb-5`}>
+                  <card.icon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-black mb-3">{card.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Viral growth block */}
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeUp}
+            className="glass-card rounded-3xl p-8 md:p-10 border border-secondary/15 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 via-transparent to-primary/5 pointer-events-none" />
+            <div className="relative z-10">
+              <div className="flex flex-col md:flex-row gap-8">
+                <div className="flex-1">
+                  <h3 className="text-2xl md:text-3xl font-black mb-3">{t('token_viral_title')}</h3>
+                  <p className="text-muted-foreground mb-6 leading-relaxed">{t('token_viral_desc')}</p>
+
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    {[
+                      t('token_feature1'), t('token_feature2'),
+                      t('token_feature3'), t('token_feature4'),
+                      t('token_feature5'), t('token_feature6'),
+                    ].map((feat, i) => (
+                      <div key={i} className="flex items-start gap-2.5">
+                        <div className="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center shrink-0 mt-0.5">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-secondary" />
+                        </div>
+                        <span className="text-sm text-muted-foreground leading-relaxed">{feat}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Compare badge */}
+                <div className="flex flex-col items-center justify-center gap-4 md:w-64 shrink-0">
+                  <div className="grid grid-cols-3 gap-2 w-full">
+                    {["Notcoin", "Catizen", "Hamster"].map((name, i) => (
+                      <div key={i} className="glass-card rounded-xl p-3 flex flex-col items-center gap-1.5 border border-white/8">
+                        <Trophy className={`w-5 h-5 ${i === 0 ? 'text-yellow-400' : i === 1 ? 'text-primary' : 'text-secondary'}`} />
+                        <span className="text-xs font-bold text-center leading-tight">{name}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-black text-secondary mb-1">$TRND</div>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{t('token_compare_label')}</p>
+                  </div>
+                  <Button
+                    onClick={() => { setSelectedPkg("founder3"); setIsInvestOpen(true); }}
+                    className="w-full rounded-xl font-bold"
+                    style={{ background: "linear-gradient(135deg, #7B5EFF, #00D4FF)" }}
+                  >
+                    {t('token_cta')} <ArrowRight className="w-4 h-4 ml-1" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* MONETIZATION */}
+      <section id="monetization" className="py-14 md:py-24 relative z-10 scroll-mt-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('mono_title')}</h2>
+            <p className="text-lg text-muted-foreground">{t('mono_desc')}</p>
+          </div>
+
+          <MonetizationCards t={t} />
+        </div>
+      </section>
+
       {/* PRODUCT FULL */}
       <section className="py-16 relative z-10">
         <div className="container mx-auto px-4">
