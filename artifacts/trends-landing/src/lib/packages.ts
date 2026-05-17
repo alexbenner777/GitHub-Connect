@@ -56,7 +56,7 @@ export const PACKAGES: InvestPackage[] = [
       },
       {
         id: "miniapp",
-        title: "В приложении Trends",
+        title: "В Miniapp Trends",
         items: [
           "📱 Badge «Partner Trends» на аватаре — виден всем, кто видит твой канал или профиль",
         ],
@@ -100,7 +100,7 @@ export const PACKAGES: InvestPackage[] = [
       },
       {
         id: "miniapp",
-        title: "В приложении Trends",
+        title: "В Miniapp Trends",
         items: [
           "📱 Badge «co-Investor+» — специальный дизайн тира, выделяется среди обычных пользователей",
         ],
@@ -148,7 +148,7 @@ export const PACKAGES: InvestPackage[] = [
       },
       {
         id: "miniapp",
-        title: "В приложении Trends",
+        title: "В Miniapp Trends",
         items: [
           "📱 Badge «Founding Partner» с анимацией — уникальный дизайн, только у Партнёров",
           "📱 Верифицированный канал «Founding Partner» — галочка-статус, видна всем пользователям",
@@ -197,7 +197,7 @@ export const PACKAGES: InvestPackage[] = [
       },
       {
         id: "miniapp",
-        title: "В приложении Trends",
+        title: "В Miniapp Trends",
         items: [
           "📱 Badge «Strategic Partner» — золотой, анимированная рамка, уникальный дизайн тира",
           "📱 Твоё имя / ник / лого на странице «Инвесторы» — видят все пользователи платформы",
@@ -249,7 +249,7 @@ export const PACKAGES: InvestPackage[] = [
       },
       {
         id: "miniapp",
-        title: "В приложении Trends",
+        title: "В Miniapp Trends",
         items: [
           "📱 Badge «Genesis Whale» — только 10 штук существует на всей платформе, навсегда",
           "📱 Твоё имя / ник / лого на странице «Инвесторы» — видят все пользователи при каждом посещении",
