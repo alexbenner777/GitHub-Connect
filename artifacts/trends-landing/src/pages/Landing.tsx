@@ -1246,69 +1246,6 @@ export default function Landing() {
               </div>
             </motion.div>
 
-            {/* Who qualifies visual */}
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={slideUp}
-              className="glass-card rounded-2xl p-5 md:p-6 mt-5">
-              <p className="text-xs font-black tracking-widest uppercase text-muted-foreground mb-4">
-                Пример — 30 инвесторов в месяц
-              </p>
-
-              {/* Dot grid */}
-              <div className="flex flex-wrap gap-2 mb-5">
-                {Array.from({ length: 30 }).map((_, i) => {
-                  const isPool = i < 10;
-                  const isMini = i < 8;
-                  const isMax = i >= 8 && i < 10;
-                  return (
-                    <div key={i} className="relative group/dot">
-                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-[10px] font-black border transition-all duration-200
-                        ${isMini ? "bg-primary/20 border-primary/50 text-primary" :
-                          isMax ? "bg-secondary/20 border-secondary/50 text-secondary" :
-                          "bg-white/5 border-white/10 text-muted-foreground/40"}`}>
-                        {i + 1}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Legend */}
-              <div className="flex flex-wrap gap-4 mb-5">
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-md bg-primary/20 border border-primary/50" />
-                  <span className="text-xs text-muted-foreground">Mini Pool — <span className="text-primary font-bold">8 человек</span></span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-md bg-secondary/20 border border-secondary/50" />
-                  <span className="text-xs text-muted-foreground">Max Pool — <span className="text-secondary font-bold">2 человека</span></span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-md bg-white/5 border border-white/10" />
-                  <span className="text-xs text-muted-foreground">Не попали в пул — <span className="text-white/50 font-bold">20 человек</span></span>
-                </div>
-              </div>
-
-              {/* Summary row */}
-              <div className="grid grid-cols-3 gap-3 text-center">
-                <div className="rounded-xl bg-white/4 py-3 px-2">
-                  <div className="text-2xl font-black text-white/80">30</div>
-                  <div className="text-[10px] text-muted-foreground mt-0.5">всего инвесторов</div>
-                </div>
-                <div className="rounded-xl bg-primary/10 border border-primary/20 py-3 px-2">
-                  <div className="text-2xl font-black text-primary">8</div>
-                  <div className="text-[10px] text-muted-foreground mt-0.5">в Mini Pool</div>
-                </div>
-                <div className="rounded-xl bg-secondary/10 border border-secondary/20 py-3 px-2">
-                  <div className="text-2xl font-black text-secondary">2</div>
-                  <div className="text-[10px] text-muted-foreground mt-0.5">в Max Pool</div>
-                </div>
-              </div>
-
-              <p className="text-xs text-muted-foreground mt-4 text-center">
-                Только те, кто выполнил условия по партнёрам и обороту, получают выплату — остальные 20 инвесторов пул не получают.
-              </p>
-            </motion.div>
-
             {/* Footer notes */}
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} variants={fadeIn}
               className="grid sm:grid-cols-2 gap-3 mt-4">
