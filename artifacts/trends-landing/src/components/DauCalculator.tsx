@@ -130,7 +130,7 @@ export function DauCalculator({
                   className="text-2xl md:text-3xl font-black text-primary tabular-nums"
                 >
                   {dau >= 1_000_000
-                    ? (dau / 1_000_000).toFixed(dau % 1_000_000 === 0 ? 0 : 1) + "M"
+                    ? (dau / 1_000_000).toFixed(dau % 1_000_000 === 0 ? 0 : 1) + " млн"
                     : fmt(dau / 1000, 0) + "K"} DAU
                 </motion.div>
               </div>
@@ -328,7 +328,7 @@ export function DauCalculator({
                                   transition={{ duration: 0.2 }}
                                   className="text-[10px] text-muted-foreground/60 mt-0.5 tabular-nums"
                                 >
-                                  при {dau >= 1_000_000 ? (dau / 1_000_000).toFixed(dau % 1_000_000 === 0 ? 0 : 1) + "M" : fmt(dau / 1000, 0) + "K"} DAU
+                                  при {dau >= 1_000_000 ? (dau / 1_000_000).toFixed(dau % 1_000_000 === 0 ? 0 : 1) + " млн" : fmt(dau / 1000, 0) + "K"} DAU
                                 </motion.div>
                                 {roiPct !== null && (
                                   <div className={`text-[10px] font-semibold mt-0.5 tabular-nums ${pkg.color}`}>
