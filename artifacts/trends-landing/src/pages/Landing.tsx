@@ -578,6 +578,93 @@ export default function Landing() {
         </AnimatePresence>
       </nav>
 
+      {/* HERO */}
+      <section className="pt-24 pb-10 lg:pt-44 lg:pb-28 px-4 relative z-10">
+        <div className="container mx-auto relative z-10">
+        <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
+
+          {/* MOBILE BADGES — above image on mobile */}
+          <div className="flex flex-wrap gap-3 mt-2 mb-3 lg:hidden order-1">
+            <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">{t('badge_preseed')}</div>
+            <div className="px-3 py-1 rounded-full border text-sm font-bold" style={{ background: "rgba(123,94,255,0.25)", borderColor: "#7B5EFF", color: "#c4b0ff", boxShadow: "0 0 14px 2px rgba(123,94,255,0.45)", textShadow: "0 0 8px #7B5EFF" }}>{t('badge_goal')}</div>
+            <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold flex items-center gap-1">
+              <CheckCircle2 className="w-4 h-4" /> {t('badge_mvp')}
+            </div>
+          </div>
+
+          {/* IMAGE — second on mobile, second on desktop */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85, y: 40 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 1, ease: EASE, delay: 0.2 }}
+            style={{ y: heroY }}
+            className="relative flex items-center justify-center order-2 lg:order-2 mb-2 lg:mb-0"
+          >
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <motion.div
+                animate={{ scale: [1, 1.12, 1], opacity: [0.3, 0.55, 0.3] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="w-48 h-48 lg:w-64 lg:h-64 rounded-full bg-primary blur-[80px]"
+              />
+            </div>
+            <motion.img
+              src={screen1Path}
+              alt="Trends App"
+              animate={{ y: [0, -14, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              className="relative z-10 max-h-[80vh] sm:max-h-[75vh] lg:max-h-[85vh] w-full object-contain drop-shadow-2xl"
+            />
+          </motion.div>
+
+
+          {/* TEXT — third on mobile, first on desktop */}
+          <motion.div initial="hidden" animate="visible" variants={fadeIn} className="space-y-6 lg:space-y-8 order-3 lg:order-1">
+            <div className="hidden lg:flex flex-wrap gap-3">
+              <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">{t('badge_preseed')}</div>
+              <div className="px-3 py-1 rounded-full border text-sm font-bold" style={{ background: "rgba(123,94,255,0.25)", borderColor: "#7B5EFF", color: "#c4b0ff", boxShadow: "0 0 14px 2px rgba(123,94,255,0.45)", textShadow: "0 0 8px #7B5EFF" }}>{t('badge_goal')}</div>
+              <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold flex items-center gap-1">
+                <CheckCircle2 className="w-4 h-4" /> {t('badge_mvp')}
+              </div>
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black leading-[1.1] tracking-tight">
+              {t('hero_title1')} <span className="text-gradient">Reels</span> {t('hero_title2')}
+            </h1>
+
+            <p className="text-xl text-muted-foreground leading-relaxed max-w-xl">
+              {t('hero_subtitle')}
+            </p>
+
+            <div className="glass-card p-4 rounded-2xl flex items-start gap-3">
+              <DollarSign className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                <span className="text-foreground font-semibold">{t('hero_goal_label')}</span>{" "}
+                {t('hero_goal_desc')}
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 pt-2">
+              <MagneticButton onClick={() => openInvest()} className="w-full sm:w-auto">
+                <Button size="lg" className="h-14 px-8 text-lg btn-grad btn-3d font-bold rounded-xl pointer-events-none w-full">
+                  {t('hero_btn_invest')} <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </MagneticButton>
+              <Link href="/cabinet" className="w-full sm:w-auto">
+                <MagneticButton className="w-full">
+                  <Button variant="outline" size="lg"
+                    className="h-14 px-8 text-lg border-primary/30 hover:bg-primary/10 hover:border-primary/50 rounded-xl w-full btn-3d-outline pointer-events-none">
+                    {t('hero_btn_cabinet')}
+                  </Button>
+                </MagneticButton>
+              </Link>
+            </div>
+
+          </motion.div>
+
+        </div>
+        </div>
+      </section>
+
       {/* MINIAPP STATS STRIP */}
       <section className="py-6 relative z-10">
         <div className="container mx-auto px-4">
@@ -792,105 +879,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* HERO */}
-      <section className="pt-24 pb-10 lg:pt-44 lg:pb-28 px-4 relative z-10">
-        <div className="container mx-auto relative z-10">
-        <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
-
-          {/* MOBILE BADGES — above image on mobile */}
-          <div className="flex flex-wrap gap-3 mt-2 mb-3 lg:hidden order-1">
-            <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">{t('badge_preseed')}</div>
-            <div className="px-3 py-1 rounded-full border text-sm font-bold" style={{ background: "rgba(123,94,255,0.25)", borderColor: "#7B5EFF", color: "#c4b0ff", boxShadow: "0 0 14px 2px rgba(123,94,255,0.45)", textShadow: "0 0 8px #7B5EFF" }}>{t('badge_goal')}</div>
-            <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold flex items-center gap-1">
-              <CheckCircle2 className="w-4 h-4" /> {t('badge_mvp')}
-            </div>
-          </div>
-
-          {/* IMAGE — second on mobile, second on desktop */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.85, y: 40 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 1, ease: EASE, delay: 0.2 }}
-            style={{ y: heroY }}
-            className="relative flex items-center justify-center order-2 lg:order-2 mb-2 lg:mb-0"
-          >
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <motion.div
-                animate={{ scale: [1, 1.12, 1], opacity: [0.3, 0.55, 0.3] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="w-48 h-48 lg:w-64 lg:h-64 rounded-full bg-primary blur-[80px]"
-              />
-            </div>
-            <motion.img
-              src={screen1Path}
-              alt="Trends App"
-              animate={{ y: [0, -14, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="relative z-10 max-h-[80vh] sm:max-h-[75vh] lg:max-h-[85vh] w-full object-contain drop-shadow-2xl"
-            />
-          </motion.div>
-
-
-          {/* TEXT — third on mobile, first on desktop */}
-          <motion.div initial="hidden" animate="visible" variants={fadeIn} className="space-y-6 lg:space-y-8 order-3 lg:order-1">
-            <div className="hidden lg:flex flex-wrap gap-3">
-              <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">{t('badge_preseed')}</div>
-              <div className="px-3 py-1 rounded-full border text-sm font-bold" style={{ background: "rgba(123,94,255,0.25)", borderColor: "#7B5EFF", color: "#c4b0ff", boxShadow: "0 0 14px 2px rgba(123,94,255,0.45)", textShadow: "0 0 8px #7B5EFF" }}>{t('badge_goal')}</div>
-              <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold flex items-center gap-1">
-                <CheckCircle2 className="w-4 h-4" /> {t('badge_mvp')}
-              </div>
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black leading-[1.1] tracking-tight">
-              {t('hero_title1')} <span className="text-gradient">Reels</span> {t('hero_title2')}
-            </h1>
-
-            <p className="text-xl text-muted-foreground leading-relaxed max-w-xl">
-              {t('hero_subtitle')}
-            </p>
-
-            <div className="glass-card p-4 rounded-2xl flex items-start gap-3">
-              <DollarSign className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                <span className="text-foreground font-semibold">{t('hero_goal_label')}</span>{" "}
-                {t('hero_goal_desc')}
-              </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
-              <MagneticButton onClick={() => openInvest()} className="w-full sm:w-auto">
-                <Button size="lg" className="h-14 px-8 text-lg btn-grad btn-3d font-bold rounded-xl pointer-events-none w-full">
-                  {t('hero_btn_invest')} <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </MagneticButton>
-              <Link href="/cabinet" className="w-full sm:w-auto">
-                <MagneticButton className="w-full">
-                  <Button variant="outline" size="lg"
-                    className="h-14 px-8 text-lg border-primary/30 hover:bg-primary/10 hover:border-primary/50 rounded-xl w-full btn-3d-outline pointer-events-none">
-                    {t('hero_btn_cabinet')}
-                  </Button>
-                </MagneticButton>
-              </Link>
-            </div>
-
-          </motion.div>
-
-        </div>
-        </div>
-      </section>
-
-      {/* MONETIZATION */}
-      <section id="monetization" className="py-14 md:py-24 relative z-10 scroll-mt-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('mono_title')}</h2>
-            <p className="text-lg text-muted-foreground">{t('mono_desc')}</p>
-          </div>
-
-          <MonetizationCards t={t} />
-        </div>
-      </section>
-
       {/* PRODUCT FULL */}
       <section className="py-16 relative z-10">
         <div className="container mx-auto px-4">
@@ -919,67 +907,21 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* MONETIZATION */}
-      <section id="monetization" className="py-14 md:py-24 relative z-10 scroll-mt-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('mono_title')}</h2>
-            <p className="text-lg text-muted-foreground">{t('mono_desc')}</p>
+      {/* 5 INVESTOR ADVANTAGES */}
+      <section id="investors" className="py-16 md:py-24 lg:py-32 relative z-10 [overflow-x:clip] scroll-mt-20">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center max-w-4xl mx-auto mb-10 md:mb-16 lg:mb-20">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('adv_title')}</h2>
+            <p className="text-base md:text-xl text-muted-foreground">{t('adv_desc')}</p>
           </div>
 
-          <MonetizationCards t={t} />
-        </div>
-      </section>
-
-      {/* MONETIZATION */}
-      <section id="monetization" className="py-14 md:py-24 relative z-10 scroll-mt-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('mono_title')}</h2>
-            <p className="text-lg text-muted-foreground">{t('mono_desc')}</p>
-          </div>
-
-          <MonetizationCards t={t} />
-        </div>
-      </section>
-
-      {/* PRODUCT FULL */}
-      <section className="py-16 relative z-10">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">{t('product_title')} <span className="text-gradient">Trends</span></h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t('product_desc')}</p>
-          </div>
-
-          <motion.div initial="visible" animate="visible" variants={fadeScale}>
-            <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_60px_rgba(0,212,255,0.08)]">
-              <img src={screen2Path} alt="Продукт Trends" className="w-full object-cover" />
-            </div>
-            <div className="mt-10 flex justify-center">
-              <MagneticButton className="w-auto">
-                <a href="https://t.me/Trends_ibot?startapp" target="_blank" rel="noopener noreferrer">
-                  <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.93 }}>
-                    <Button size="lg" className="h-14 px-10 text-lg btn-grad btn-3d font-bold rounded-xl pointer-events-none">
-                      <ExternalLink className="mr-2 w-5 h-5" />
-                      {t('product_btn')}
-                    </Button>
-                  </motion.div>
-                </a>
-              </MagneticButton>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* MONETIZATION */}
-      <section id="monetization" className="py-14 md:py-24 relative z-10 scroll-mt-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('mono_title')}</h2>
-            <p className="text-lg text-muted-foreground">{t('mono_desc')}</p>
-          </div>
-
-          <MonetizationCards t={t} />
+          <AdvantagesGrid openInvest={openInvest} advantages={[
+            { title: t('adv1_title'), desc: t('adv1_desc'), color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-secondary/10", Icon: DollarSign, label: t('adv1_label'), extra: [t('adv1_x1'), t('adv1_x2'), t('adv1_x3'), t('adv1_x4')] },
+            { title: t('adv2_title'), desc: t('adv2_desc'), color: "text-secondary", gradFrom: "from-secondary/20", gradTo: "to-primary/5", Icon: TrendingUp, label: t('adv2_label'), extra: [t('adv2_x1'), t('adv2_x2'), t('adv2_x3'), t('adv2_x4')] },
+            { title: t('adv3_title'), desc: t('adv3_desc'), color: "text-green-400", gradFrom: "from-green-500/20", gradTo: "to-teal-500/5", Icon: Network, label: t('adv3_label'), extra: [t('adv3_x1'), t('adv3_x2'), t('adv3_x3'), t('adv3_x4'), t('adv3_x5')] },
+            { title: t('adv4_title'), desc: t('adv4_desc'), color: "text-yellow-400", gradFrom: "from-yellow-500/20", gradTo: "to-orange-500/5", Icon: Coins, label: t('adv4_label'), extra: [t('adv4_x1'), t('adv4_x2'), t('adv4_x3'), t('adv4_x4'), t('adv4_x5')] },
+            { title: t('adv5_title'), desc: t('adv5_desc'), color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-purple-500/10", Icon: Crown, label: t('adv5_label'), extra: [t('adv5_x1'), t('adv5_x2'), t('adv5_x3'), t('adv5_x4'), t('adv5_x5')] },
+          ]} />
         </div>
       </section>
 
@@ -1086,148 +1028,6 @@ export default function Landing() {
               </div>
             </div>
           </motion.div>
-        </div>
-      </section>
-
-      {/* MONETIZATION */}
-      <section id="monetization" className="py-14 md:py-24 relative z-10 scroll-mt-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('mono_title')}</h2>
-            <p className="text-lg text-muted-foreground">{t('mono_desc')}</p>
-          </div>
-
-          <MonetizationCards t={t} />
-        </div>
-      </section>
-
-      {/* MONETIZATION */}
-      <section id="monetization" className="py-14 md:py-24 relative z-10 scroll-mt-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('mono_title')}</h2>
-            <p className="text-lg text-muted-foreground">{t('mono_desc')}</p>
-          </div>
-
-          <MonetizationCards t={t} />
-        </div>
-      </section>
-
-      {/* TOKEN ATTENTION ECONOMY */}
-      <section className="py-14 md:py-28 relative z-10 overflow-hidden">
-        {/* Background glow */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full blur-[160px]" style={{ background: "radial-gradient(ellipse, rgba(123,94,255,0.12) 0%, rgba(0,212,255,0.08) 60%, transparent 100%)" }} />
-        </div>
-
-        <div className="container mx-auto px-4 relative z-10">
-
-          {/* Header */}
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={fadeUp} className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-secondary/30 bg-secondary/10 text-secondary text-sm font-bold mb-6">
-              <Coins className="w-4 h-4" /> {t('token_section_badge')}
-            </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-5 leading-tight">
-              {t('token_section_title')}
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t('token_section_desc')}</p>
-          </motion.div>
-
-          {/* 3 earn cards */}
-          <div className="grid md:grid-cols-3 gap-5 mb-10">
-            {[
-              {
-                icon: Users2, color: "text-primary", bg: "bg-primary/10", border: "border-primary/20",
-                title: t('token_viewers_title'), desc: t('token_viewers_desc'), num: "01",
-              },
-              {
-                icon: Star, color: "text-secondary", bg: "bg-secondary/10", border: "border-secondary/20",
-                title: t('token_creators_title'), desc: t('token_creators_desc'), num: "02",
-              },
-              {
-                icon: Network, color: "text-green-400", bg: "bg-green-400/10", border: "border-green-400/20",
-                title: t('token_friends_title'), desc: t('token_friends_desc'), num: "03",
-              },
-            ].map((card, i) => (
-              <motion.div
-                key={i}
-                initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}
-                variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: i * 0.1, ease: EASE } } }}
-                className={`glass-card p-7 rounded-3xl border ${card.border} relative overflow-hidden`}
-              >
-                <div className="absolute top-4 right-5 text-5xl font-black opacity-5 select-none">{card.num}</div>
-                <div className={`w-12 h-12 rounded-2xl ${card.bg} flex items-center justify-center ${card.color} mb-5`}>
-                  <card.icon className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-black mb-3">{card.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Viral growth block */}
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeUp}
-            className="glass-card rounded-3xl p-8 md:p-10 border border-secondary/15 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 via-transparent to-primary/5 pointer-events-none" />
-            <div className="relative z-10">
-              <div className="flex flex-col md:flex-row gap-8">
-                <div className="flex-1">
-                  <h3 className="text-2xl md:text-3xl font-black mb-3">{t('token_viral_title')}</h3>
-                  <p className="text-muted-foreground mb-6 leading-relaxed">{t('token_viral_desc')}</p>
-
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    {[
-                      t('token_feature1'), t('token_feature2'),
-                      t('token_feature3'), t('token_feature4'),
-                      t('token_feature5'), t('token_feature6'),
-                    ].map((feat, i) => (
-                      <div key={i} className="flex items-start gap-2.5">
-                        <div className="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center shrink-0 mt-0.5">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-secondary" />
-                        </div>
-                        <span className="text-sm text-muted-foreground leading-relaxed">{feat}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Compare badge */}
-                <div className="flex flex-col items-center justify-center gap-4 md:w-64 shrink-0">
-                  <div className="grid grid-cols-3 gap-2 w-full">
-                    {["Notcoin", "Catizen", "Hamster"].map((name, i) => (
-                      <div key={i} className="glass-card rounded-xl p-3 flex flex-col items-center gap-1.5 border border-white/8">
-                        <Trophy className={`w-5 h-5 ${i === 0 ? 'text-yellow-400' : i === 1 ? 'text-primary' : 'text-secondary'}`} />
-                        <span className="text-xs font-bold text-center leading-tight">{name}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-black text-secondary mb-1">$TRND</div>
-                    <p className="text-xs text-muted-foreground leading-relaxed">{t('token_compare_label')}</p>
-                  </div>
-                  <Button
-                    onClick={() => { setSelectedPkg("founder3"); setIsInvestOpen(true); }}
-                    className="w-full rounded-xl font-bold"
-                    style={{ background: "linear-gradient(135deg, #7B5EFF, #00D4FF)" }}
-                  >
-                    {t('token_cta')} <ArrowRight className="w-4 h-4 ml-1" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* MONETIZATION */}
-      <section id="monetization" className="py-14 md:py-24 relative z-10 scroll-mt-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('mono_title')}</h2>
-            <p className="text-lg text-muted-foreground">{t('mono_desc')}</p>
-          </div>
-
-          <MonetizationCards t={t} />
         </div>
       </section>
 
@@ -1880,272 +1680,6 @@ export default function Landing() {
               </AccordionItem>
             ))}
           </Accordion>
-        </div>
-      </section>
-
-      {/* TOKEN ATTENTION ECONOMY */}
-      <section className="py-14 md:py-28 relative z-10 overflow-hidden">
-        {/* Background glow */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full blur-[160px]" style={{ background: "radial-gradient(ellipse, rgba(123,94,255,0.12) 0%, rgba(0,212,255,0.08) 60%, transparent 100%)" }} />
-        </div>
-
-        <div className="container mx-auto px-4 relative z-10">
-
-          {/* Header */}
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={fadeUp} className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-secondary/30 bg-secondary/10 text-secondary text-sm font-bold mb-6">
-              <Coins className="w-4 h-4" /> {t('token_section_badge')}
-            </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-5 leading-tight">
-              {t('token_section_title')}
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t('token_section_desc')}</p>
-          </motion.div>
-
-          {/* 3 earn cards */}
-          <div className="grid md:grid-cols-3 gap-5 mb-10">
-            {[
-              {
-                icon: Users2, color: "text-primary", bg: "bg-primary/10", border: "border-primary/20",
-                title: t('token_viewers_title'), desc: t('token_viewers_desc'), num: "01",
-              },
-              {
-                icon: Star, color: "text-secondary", bg: "bg-secondary/10", border: "border-secondary/20",
-                title: t('token_creators_title'), desc: t('token_creators_desc'), num: "02",
-              },
-              {
-                icon: Network, color: "text-green-400", bg: "bg-green-400/10", border: "border-green-400/20",
-                title: t('token_friends_title'), desc: t('token_friends_desc'), num: "03",
-              },
-            ].map((card, i) => (
-              <motion.div
-                key={i}
-                initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}
-                variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: i * 0.1, ease: EASE } } }}
-                className={`glass-card p-7 rounded-3xl border ${card.border} relative overflow-hidden`}
-              >
-                <div className="absolute top-4 right-5 text-5xl font-black opacity-5 select-none">{card.num}</div>
-                <div className={`w-12 h-12 rounded-2xl ${card.bg} flex items-center justify-center ${card.color} mb-5`}>
-                  <card.icon className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-black mb-3">{card.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Viral growth block */}
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeUp}
-            className="glass-card rounded-3xl p-8 md:p-10 border border-secondary/15 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 via-transparent to-primary/5 pointer-events-none" />
-            <div className="relative z-10">
-              <div className="flex flex-col md:flex-row gap-8">
-                <div className="flex-1">
-                  <h3 className="text-2xl md:text-3xl font-black mb-3">{t('token_viral_title')}</h3>
-                  <p className="text-muted-foreground mb-6 leading-relaxed">{t('token_viral_desc')}</p>
-
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    {[
-                      t('token_feature1'), t('token_feature2'),
-                      t('token_feature3'), t('token_feature4'),
-                      t('token_feature5'), t('token_feature6'),
-                    ].map((feat, i) => (
-                      <div key={i} className="flex items-start gap-2.5">
-                        <div className="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center shrink-0 mt-0.5">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-secondary" />
-                        </div>
-                        <span className="text-sm text-muted-foreground leading-relaxed">{feat}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Compare badge */}
-                <div className="flex flex-col items-center justify-center gap-4 md:w-64 shrink-0">
-                  <div className="grid grid-cols-3 gap-2 w-full">
-                    {["Notcoin", "Catizen", "Hamster"].map((name, i) => (
-                      <div key={i} className="glass-card rounded-xl p-3 flex flex-col items-center gap-1.5 border border-white/8">
-                        <Trophy className={`w-5 h-5 ${i === 0 ? 'text-yellow-400' : i === 1 ? 'text-primary' : 'text-secondary'}`} />
-                        <span className="text-xs font-bold text-center leading-tight">{name}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-black text-secondary mb-1">$TRND</div>
-                    <p className="text-xs text-muted-foreground leading-relaxed">{t('token_compare_label')}</p>
-                  </div>
-                  <Button
-                    onClick={() => { setSelectedPkg("founder3"); setIsInvestOpen(true); }}
-                    className="w-full rounded-xl font-bold"
-                    style={{ background: "linear-gradient(135deg, #7B5EFF, #00D4FF)" }}
-                  >
-                    {t('token_cta')} <ArrowRight className="w-4 h-4 ml-1" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* MONETIZATION */}
-      <section id="monetization" className="py-14 md:py-24 relative z-10 scroll-mt-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('mono_title')}</h2>
-            <p className="text-lg text-muted-foreground">{t('mono_desc')}</p>
-          </div>
-
-          <MonetizationCards t={t} />
-        </div>
-      </section>
-
-      {/* MONETIZATION */}
-      <section id="monetization" className="py-14 md:py-24 relative z-10 scroll-mt-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('mono_title')}</h2>
-            <p className="text-lg text-muted-foreground">{t('mono_desc')}</p>
-          </div>
-
-          <MonetizationCards t={t} />
-        </div>
-      </section>
-
-      {/* TOKEN ATTENTION ECONOMY */}
-      <section className="py-14 md:py-28 relative z-10 overflow-hidden">
-        {/* Background glow */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full blur-[160px]" style={{ background: "radial-gradient(ellipse, rgba(123,94,255,0.12) 0%, rgba(0,212,255,0.08) 60%, transparent 100%)" }} />
-        </div>
-
-        <div className="container mx-auto px-4 relative z-10">
-
-          {/* Header */}
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={fadeUp} className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-secondary/30 bg-secondary/10 text-secondary text-sm font-bold mb-6">
-              <Coins className="w-4 h-4" /> {t('token_section_badge')}
-            </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-5 leading-tight">
-              {t('token_section_title')}
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t('token_section_desc')}</p>
-          </motion.div>
-
-          {/* 3 earn cards */}
-          <div className="grid md:grid-cols-3 gap-5 mb-10">
-            {[
-              {
-                icon: Users2, color: "text-primary", bg: "bg-primary/10", border: "border-primary/20",
-                title: t('token_viewers_title'), desc: t('token_viewers_desc'), num: "01",
-              },
-              {
-                icon: Star, color: "text-secondary", bg: "bg-secondary/10", border: "border-secondary/20",
-                title: t('token_creators_title'), desc: t('token_creators_desc'), num: "02",
-              },
-              {
-                icon: Network, color: "text-green-400", bg: "bg-green-400/10", border: "border-green-400/20",
-                title: t('token_friends_title'), desc: t('token_friends_desc'), num: "03",
-              },
-            ].map((card, i) => (
-              <motion.div
-                key={i}
-                initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}
-                variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: i * 0.1, ease: EASE } } }}
-                className={`glass-card p-7 rounded-3xl border ${card.border} relative overflow-hidden`}
-              >
-                <div className="absolute top-4 right-5 text-5xl font-black opacity-5 select-none">{card.num}</div>
-                <div className={`w-12 h-12 rounded-2xl ${card.bg} flex items-center justify-center ${card.color} mb-5`}>
-                  <card.icon className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-black mb-3">{card.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Viral growth block */}
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeUp}
-            className="glass-card rounded-3xl p-8 md:p-10 border border-secondary/15 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 via-transparent to-primary/5 pointer-events-none" />
-            <div className="relative z-10">
-              <div className="flex flex-col md:flex-row gap-8">
-                <div className="flex-1">
-                  <h3 className="text-2xl md:text-3xl font-black mb-3">{t('token_viral_title')}</h3>
-                  <p className="text-muted-foreground mb-6 leading-relaxed">{t('token_viral_desc')}</p>
-
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    {[
-                      t('token_feature1'), t('token_feature2'),
-                      t('token_feature3'), t('token_feature4'),
-                      t('token_feature5'), t('token_feature6'),
-                    ].map((feat, i) => (
-                      <div key={i} className="flex items-start gap-2.5">
-                        <div className="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center shrink-0 mt-0.5">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-secondary" />
-                        </div>
-                        <span className="text-sm text-muted-foreground leading-relaxed">{feat}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Compare badge */}
-                <div className="flex flex-col items-center justify-center gap-4 md:w-64 shrink-0">
-                  <div className="grid grid-cols-3 gap-2 w-full">
-                    {["Notcoin", "Catizen", "Hamster"].map((name, i) => (
-                      <div key={i} className="glass-card rounded-xl p-3 flex flex-col items-center gap-1.5 border border-white/8">
-                        <Trophy className={`w-5 h-5 ${i === 0 ? 'text-yellow-400' : i === 1 ? 'text-primary' : 'text-secondary'}`} />
-                        <span className="text-xs font-bold text-center leading-tight">{name}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-black text-secondary mb-1">$TRND</div>
-                    <p className="text-xs text-muted-foreground leading-relaxed">{t('token_compare_label')}</p>
-                  </div>
-                  <Button
-                    onClick={() => { setSelectedPkg("founder3"); setIsInvestOpen(true); }}
-                    className="w-full rounded-xl font-bold"
-                    style={{ background: "linear-gradient(135deg, #7B5EFF, #00D4FF)" }}
-                  >
-                    {t('token_cta')} <ArrowRight className="w-4 h-4 ml-1" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* MONETIZATION */}
-      <section id="monetization" className="py-14 md:py-24 relative z-10 scroll-mt-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('mono_title')}</h2>
-            <p className="text-lg text-muted-foreground">{t('mono_desc')}</p>
-          </div>
-
-          <MonetizationCards t={t} />
-        </div>
-      </section>
-
-      {/* 5 INVESTOR ADVANTAGES */}
-      <section id="investors" className="py-16 md:py-24 lg:py-32 relative z-10 [overflow-x:clip] scroll-mt-20">
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center max-w-4xl mx-auto mb-10 md:mb-16 lg:mb-20">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('adv_title')}</h2>
-            <p className="text-base md:text-xl text-muted-foreground">{t('adv_desc')}</p>
-          </div>
-
-          <AdvantagesGrid openInvest={openInvest} advantages={[
-            { title: t('adv1_title'), desc: t('adv1_desc'), color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-secondary/10", Icon: DollarSign, label: t('adv1_label'), extra: [t('adv1_x1'), t('adv1_x2'), t('adv1_x3'), t('adv1_x4')] },
-            { title: t('adv2_title'), desc: t('adv2_desc'), color: "text-secondary", gradFrom: "from-secondary/20", gradTo: "to-primary/5", Icon: TrendingUp, label: t('adv2_label'), extra: [t('adv2_x1'), t('adv2_x2'), t('adv2_x3'), t('adv2_x4')] },
-            { title: t('adv3_title'), desc: t('adv3_desc'), color: "text-green-400", gradFrom: "from-green-500/20", gradTo: "to-teal-500/5", Icon: Network, label: t('adv3_label'), extra: [t('adv3_x1'), t('adv3_x2'), t('adv3_x3'), t('adv3_x4'), t('adv3_x5')] },
-            { title: t('adv4_title'), desc: t('adv4_desc'), color: "text-yellow-400", gradFrom: "from-yellow-500/20", gradTo: "to-orange-500/5", Icon: Coins, label: t('adv4_label'), extra: [t('adv4_x1'), t('adv4_x2'), t('adv4_x3'), t('adv4_x4'), t('adv4_x5')] },
-            { title: t('adv5_title'), desc: t('adv5_desc'), color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-purple-500/10", Icon: Crown, label: t('adv5_label'), extra: [t('adv5_x1'), t('adv5_x2'), t('adv5_x3'), t('adv5_x4'), t('adv5_x5')] },
-          ]} />
         </div>
       </section>
 
