@@ -208,7 +208,7 @@ function AdvantagesGrid({ openInvest: _openInvest, advantages }: { openInvest: (
   const { Icon: Icon0 } = first;
   const [open0, setOpen0] = useState(false);
   return (
-    <div className="max-w-6xl mx-auto space-y-5">
+    <div className="section-inner space-y-5">
       {/* Item 1 — full width, expandable */}
       <motion.div initial="visible" animate="visible" variants={slideUp}
         className="glass-card rounded-2xl overflow-hidden group cursor-pointer relative"
@@ -579,9 +579,9 @@ export default function Landing() {
       </nav>
 
       {/* HERO */}
-      <section className="pt-24 pb-10 lg:pt-44 lg:pb-28 px-4 relative z-10">
+      <section className="pt-20 pb-8 sm:pt-24 sm:pb-10 lg:pt-40 lg:pb-24 px-4 relative z-10">
         <div className="container mx-auto relative z-10">
-        <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
+        <div className="section-inner flex flex-col lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
 
           {/* MOBILE BADGES — above image on mobile */}
           <div className="flex flex-wrap gap-3 mt-2 mb-3 lg:hidden order-1">
@@ -668,7 +668,7 @@ export default function Landing() {
       {/* MINIAPP STATS STRIP */}
       <section className="py-6 relative z-10">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 section-inner">
             {[
               { label: t('stats_users_label'), value: "12 400+", sub: t('stats_users_sub') },
               { label: t('stats_dau_label'), value: "3 200+", sub: t('stats_dau_sub') },
@@ -686,15 +686,15 @@ export default function Landing() {
       </section>
 
       {/* PROBLEM → SOLUTION */}
-      <section id="problem" className="py-14 md:py-24 relative z-10 scroll-mt-20">
+      <section id="problem" className="py-16 md:py-24 lg:py-32 relative z-10 scroll-mt-20">
         <div className="container mx-auto px-4">
           <motion.div initial="visible" animate="visible" variants={fadeUp}
-            className="text-center max-w-3xl mx-auto mb-16">
+            className="section-header mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('problem_title')}</h2>
             <p className="text-lg text-muted-foreground">{t('problem_subtitle')}</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 section-inner">
             <motion.div initial="visible" animate="visible" variants={fadeLeft}
               className="glass-card p-8 rounded-3xl">
               <h3 className="text-2xl font-bold mb-8">{t('problem_now')}</h3>
@@ -745,9 +745,9 @@ export default function Landing() {
       </section>
 
       {/* WHAT IS TRENDS */}
-      <section className="py-14 md:py-24 relative z-10">
+      <section className="py-16 md:py-24 lg:py-32 relative z-10">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center section-inner">
             <div className="space-y-6 order-2 lg:order-1 lg:pl-10">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-black">
                 {t('what_title')} <span className="text-gradient">Trends</span>?
@@ -793,13 +793,6 @@ export default function Landing() {
                   ))}
                 </div>
               </div>
-              <div className="hidden">
-                <MagneticButton onClick={() => openInvest()} className="w-full sm:w-auto">
-                  <Button size="lg" className="h-14 px-8 text-lg btn-grad btn-3d font-bold rounded-xl pointer-events-none w-full sm:w-auto">
-                    Инвестировать в Trends <ArrowRight className="ml-2 w-5 h-5" />
-                  </Button>
-                </MagneticButton>
-              </div>
             </div>
             <motion.div initial="visible" animate="visible" variants={fadeRight}
               className="relative flex justify-center items-center order-1 lg:order-2 mb-6 lg:mb-0">
@@ -831,9 +824,9 @@ export default function Landing() {
       </section>
 
       {/* MVP */}
-      <section className="py-14 md:py-24 relative z-10 [overflow-x:clip]">
+      <section className="py-16 md:py-24 lg:py-32 relative z-10 [overflow-x:clip]">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center section-inner">
             <motion.div initial="visible" animate="visible" variants={fadeLeft}
               className="relative flex justify-center order-1 lg:order-1">
               <img src={screen3Path} alt="Trends MVP" className="relative z-10 max-h-[480px] lg:max-h-[620px] w-full object-contain drop-shadow-2xl" />
@@ -868,7 +861,7 @@ export default function Landing() {
       </section>
 
       {/* TOKEN ATTENTION ECONOMY */}
-      <section className="py-14 md:py-28 relative z-10 overflow-hidden">
+      <section className="py-16 md:py-24 lg:py-32 relative z-10 overflow-hidden">
         {/* Background glow */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full blur-[160px]" style={{ background: "radial-gradient(ellipse, rgba(123,94,255,0.12) 0%, rgba(0,212,255,0.08) 60%, transparent 100%)" }} />
@@ -877,17 +870,18 @@ export default function Landing() {
         <div className="container mx-auto px-4 relative z-10">
 
           {/* Header */}
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={fadeUp} className="text-center mb-16">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={fadeUp} className="section-header mb-16">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-secondary/30 bg-secondary/10 text-secondary text-sm font-bold mb-6">
               <Coins className="w-4 h-4" /> {t('token_section_badge')}
             </div>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-5 leading-tight">
               {t('token_section_title')}
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t('token_section_desc')}</p>
+            <p className="text-lg text-muted-foreground">{t('token_section_desc')}</p>
           </motion.div>
 
           {/* 3 earn cards */}
+          <div className="section-inner">
           <div className="grid md:grid-cols-3 gap-5 mb-10">
             {[
               {
@@ -970,29 +964,31 @@ export default function Landing() {
               </div>
             </div>
           </motion.div>
+          </div>{/* end section-inner */}
         </div>
       </section>
 
       {/* MONETIZATION */}
-      <section id="monetization" className="py-14 md:py-24 relative z-10 scroll-mt-20">
+      <section id="monetization" className="py-16 md:py-24 lg:py-32 relative z-10 scroll-mt-20">
         <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="section-header mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('mono_title')}</h2>
             <p className="text-lg text-muted-foreground">{t('mono_desc')}</p>
           </div>
-
+          <div className="section-inner">
           <MonetizationCards t={t} />
+          </div>
         </div>
       </section>
 
       {/* PRODUCT FULL */}
-      <section className="py-16 relative z-10">
+      <section className="py-16 md:py-24 lg:py-32 relative z-10">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className="section-header mb-12">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">{t('product_title')} <span className="text-gradient">Trends</span></h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t('product_desc')}</p>
+            <p className="text-lg text-muted-foreground">{t('product_desc')}</p>
           </div>
-
+          <div className="section-inner">
           <motion.div initial="visible" animate="visible" variants={fadeScale}>
             <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_60px_rgba(0,212,255,0.08)]">
               <img src={screen2Path} alt="Продукт Trends" className="w-full object-cover" />
@@ -1010,13 +1006,14 @@ export default function Landing() {
               </MagneticButton>
             </div>
           </motion.div>
+          </div>{/* end section-inner */}
         </div>
       </section>
 
       {/* 5 INVESTOR ADVANTAGES */}
       <section id="investors" className="py-16 md:py-24 lg:py-32 relative z-10 [overflow-x:clip] scroll-mt-20">
         <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center max-w-4xl mx-auto mb-10 md:mb-16 lg:mb-20">
+          <div className="section-header mb-10 md:mb-16 lg:mb-20">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('adv_title')}</h2>
             <p className="text-base md:text-xl text-muted-foreground">{t('adv_desc')}</p>
           </div>
@@ -1039,11 +1036,11 @@ export default function Landing() {
       />
 
       {/* MLM + COMMUNITY POOL — collapsible */}
-      <section className="py-14 md:py-24 relative z-10 [overflow-x:clip]">
+      <section className="py-16 md:py-24 lg:py-32 relative z-10 [overflow-x:clip]">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-green-500/8 blur-[120px] rounded-full pointer-events-none" />
         <div className="container mx-auto px-4 relative z-10">
           {/* Section header — static */}
-          <div className="text-center max-w-3xl mx-auto mb-10">
+          <div className="section-header mb-10">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 font-bold text-sm mb-6">
               <Network className="w-4 h-4" />
               {t('mlm_badge')}
@@ -1393,10 +1390,10 @@ export default function Landing() {
       </section>
 
       {/* FUNDRAISING ROADMAP — 2 rounds */}
-      <section className="py-14 md:py-20 relative z-10">
+      <section className="py-16 md:py-24 lg:py-32 relative z-10">
         <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-10">
+          <div className="section-inner">
+            <div className="section-header mb-10">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary font-bold text-sm mb-5">
                 <Target className="w-4 h-4" />
                 {t('rounds_badge')}
@@ -1404,7 +1401,7 @@ export default function Landing() {
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">
                 {t('rounds_title')} <span className="text-gradient">{t('rounds_title_grad')}</span>
               </h2>
-              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              <p className="text-muted-foreground text-lg">
                 {t('rounds_subtitle')}
               </p>
             </div>
@@ -1591,13 +1588,14 @@ export default function Landing() {
       </section>
 
       {/* ROADMAP */}
-      <section id="roadmap" className="py-14 md:py-24 [overflow-x:clip] scroll-mt-20 relative z-10">
+      <section id="roadmap" className="py-16 md:py-24 lg:py-32 [overflow-x:clip] scroll-mt-20 relative z-10">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
+          <div className="section-header mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">{t('roadmap_title')}</h2>
             <p className="text-lg text-muted-foreground">{t('roadmap_desc')}</p>
           </div>
 
+          <div className="section-inner">
           {/* Horizontal timeline */}
           <div className="relative">
             {/* gradient progress line — centered on circles (circle height 2.75rem = 44px, so center = 22px = 1.375rem) */}
@@ -1657,13 +1655,15 @@ export default function Landing() {
               ))}
             </div>
           </div>
+          </div>{/* end section-inner */}
         </div>
       </section>
 
 
       {/* FAQ */}
-      <section className="py-24 relative z-10">
-        <div className="container mx-auto px-4 max-w-3xl">
+      <section className="py-16 md:py-24 relative z-10">
+        <div className="container mx-auto px-4">
+          <div className="section-inner max-w-3xl! mx-auto" style={{ maxWidth: "48rem" }}>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-center mb-12">{t('faq_title')}</h2>
           <Accordion type="single" collapsible className="w-full space-y-4">
             {[
@@ -1680,6 +1680,7 @@ export default function Landing() {
               </AccordionItem>
             ))}
           </Accordion>
+          </div>{/* end section-inner */}
         </div>
       </section>
 

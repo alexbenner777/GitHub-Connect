@@ -361,6 +361,42 @@
   100% { transform: translateY(-900px) translateX(var(--sway, 0px)); opacity: 0; }
 }
 
+/* ── Layout tokens ─────────────────────────────────────────────────── */
+:root {
+  --section-max: 72rem;   /* = max-w-6xl  */
+  --section-px:  1rem;
+  --section-py-sm: 4rem;  /* py-16  */
+  --section-py-md: 6rem;  /* py-24  */
+  --section-py-lg: 8rem;  /* py-32  */
+}
+@media (min-width: 640px)  { :root { --section-px: 1.5rem; } }
+
+/* Consistent inner content wrapper used by every section */
+.section-inner {
+  max-width: var(--section-max);
+  margin-inline: auto;
+  width: 100%;
+}
+
+/* Consistent section vertical rhythm */
+.section-py {
+  padding-top: var(--section-py-sm);
+  padding-bottom: var(--section-py-sm);
+}
+@media (min-width: 768px) {
+  .section-py { padding-top: var(--section-py-md); padding-bottom: var(--section-py-md); }
+}
+@media (min-width: 1024px) {
+  .section-py { padding-top: var(--section-py-lg); padding-bottom: var(--section-py-lg); }
+}
+
+/* Narrow wrapper for section headers / FAQ / etc. */
+.section-header {
+  max-width: 48rem;   /* max-w-3xl ≈ 48rem */
+  margin-inline: auto;
+  text-align: center;
+}
+
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
