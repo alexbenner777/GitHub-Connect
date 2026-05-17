@@ -36,7 +36,7 @@ export const PACKAGES: InvestPackage[] = [
     shares: 0.63,
     dau50m: 158,
     exit: "1,300–3,000",
-    badge: "Partner Trends",
+    badge: "Starter Trends",
     monetizationSources: 3,
     categories: [
       {
@@ -58,7 +58,7 @@ export const PACKAGES: InvestPackage[] = [
         id: "miniapp",
         title: "В Miniapp Trends",
         items: [
-          "📱 Badge «Partner Trends» на аватаре — виден всем, кто видит твой канал",
+          "📱 Badge «Starter Trends» на аватаре — виден всем, кто видит твой канал",
         ],
       },
       {
@@ -80,7 +80,7 @@ export const PACKAGES: InvestPackage[] = [
     shares: 2.5,
     dau50m: 626,
     exit: "5,000–12,000",
-    badge: "co-Investor+",
+    badge: "Partner Trends",
     monetizationSources: 5,
     categories: [
       {
@@ -102,7 +102,7 @@ export const PACKAGES: InvestPackage[] = [
         id: "miniapp",
         title: "В Miniapp Trends",
         items: [
-          "📱 Badge «co-Investor+» — специальный дизайн тира, выделяется среди обычных пользователей",
+          "📱 Badge «Partner Trends» — специальный дизайн тира, выделяется среди обычных пользователей",
         ],
       },
       {
@@ -132,7 +132,7 @@ export const PACKAGES: InvestPackage[] = [
     shares: 12.5,
     dau50m: 3132,
     exit: "25,000–60,000",
-    badge: "Founding Partner",
+    badge: "Insider Trends",
     recommended: true,
     monetizationSources: 7,
     categories: [
@@ -158,8 +158,8 @@ export const PACKAGES: InvestPackage[] = [
         id: "miniapp",
         title: "В Miniapp Trends",
         items: [
-          "📱 Badge «Founding Partner» с анимацией — уникальный дизайн, только у Партнёров",
-          "📱 Верифицированный канал «Founding Partner» — галочка-статус, видна всем пользователям",
+          "📱 Badge «Insider Trends» с анимацией — уникальный дизайн, только у Партнёров",
+          "📱 Верифицированный канал «Insider Trends» — галочка-статус, видна всем пользователям",
         ],
       },
       {
@@ -181,7 +181,7 @@ export const PACKAGES: InvestPackage[] = [
     shares: 62.5,
     dau50m: 15659,
     exit: "125,000–300,000",
-    badge: "Strategic Partner",
+    badge: "Visionary Trends",
     monetizationSources: 7,
     categories: [
       {
@@ -207,7 +207,7 @@ export const PACKAGES: InvestPackage[] = [
         id: "miniapp",
         title: "В Miniapp Trends",
         items: [
-          "📱 Badge «Strategic Partner» — золотой, анимированная рамка, уникальный дизайн тира",
+          "📱 Badge «Visionary Trends» — золотой, анимированная рамка, уникальный дизайн тира",
           "📱 Твоё имя / ник / лого на странице «Инвесторы» — видят все пользователи платформы",
         ],
       },
@@ -232,7 +232,7 @@ export const PACKAGES: InvestPackage[] = [
     shares: 250,
     dau50m: 62637,
     exit: "500,000–1,200,000",
-    badge: "Genesis Whale",
+    badge: "Co-Investor Trends",
     monetizationSources: 7,
     categories: [
       {
@@ -260,7 +260,7 @@ export const PACKAGES: InvestPackage[] = [
         id: "miniapp",
         title: "В Miniapp Trends",
         items: [
-          "📱 Badge «Genesis Whale» — только 10 штук существует на всей платформе, навсегда",
+          "📱 Badge «Co-Investor Trends» — только 10 штук существует на всей платформе, навсегда",
           "📱 Твоё имя / ник / лого на странице «Инвесторы» — видят все пользователи при каждом посещении",
           "📱 Синяя галочка верификации — активируется сразу после подтверждения инвестиции",
           "📱 Lifetime Premium + полный API-доступ к данным платформы в реальном времени",
