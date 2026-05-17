@@ -749,7 +749,7 @@ export default function Landing() {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center max-w-6xl mx-auto">
             <div className="space-y-6 order-2 lg:order-1 lg:pl-10">
-              <h2 className="text-4xl md:text-5xl font-black">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black">
                 {t('what_title')} <span className="text-gradient">Trends</span>?
               </h2>
               <div className="space-y-5 leading-relaxed">
@@ -844,7 +844,7 @@ export default function Landing() {
                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                 {t('mvp_badge')}
               </div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-tight">{t('mvp_title1')} <span className="text-gradient">{t('mvp_title2')}</span></h2>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight">{t('mvp_title1')} <span className="text-gradient">{t('mvp_title2')}</span></h2>
               <p className="text-base md:text-xl text-muted-foreground">{t('mvp_desc')}</p>
 
               <div className="space-y-4">
@@ -911,7 +911,7 @@ export default function Landing() {
       <section id="investors" className="py-16 md:py-24 lg:py-32 relative z-10 [overflow-x:clip] scroll-mt-20">
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-4xl mx-auto mb-10 md:mb-16 lg:mb-20">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6">{t('adv_title')}</h2>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('adv_title')}</h2>
             <p className="text-base md:text-xl text-muted-foreground">{t('adv_desc')}</p>
           </div>
 
@@ -939,7 +939,7 @@ export default function Landing() {
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-secondary/30 bg-secondary/10 text-secondary text-sm font-bold mb-6">
               <Coins className="w-4 h-4" /> {t('token_section_badge')}
             </div>
-            <h2 className="text-3xl md:text-4xl lg:text-6xl font-black mb-5 leading-tight">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-5 leading-tight">
               {t('token_section_title')}
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t('token_section_desc')}</p>
@@ -1246,7 +1246,7 @@ export default function Landing() {
               <Network className="w-4 h-4" />
               {t('mlm_badge')}
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4">{t('mlm_title')}</h2>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">{t('mlm_title')}</h2>
             <p className="text-lg text-muted-foreground">{t('mlm_desc')}</p>
           </div>
 
@@ -1664,7 +1664,7 @@ export default function Landing() {
       {/* FAQ */}
       <section className="py-24 relative z-10">
         <div className="container mx-auto px-4 max-w-3xl">
-          <h2 className="text-4xl font-black text-center mb-12">{t('faq_title')}</h2>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-center mb-12">{t('faq_title')}</h2>
           <Accordion type="single" collapsible className="w-full space-y-4">
             {[
               { q: t('faq1_q'), a: t('faq1_a') },
