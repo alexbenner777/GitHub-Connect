@@ -12,7 +12,7 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/
 import {
   ArrowRight, CheckCircle2, PlaySquare, TrendingUp, Users, Smartphone,
   BarChart3, Target, ShoppingBag, Gift, Wallet, ExternalLink,
-  Network, Coins, ChevronRight, DollarSign, UserPlus, Users2,
+  Network, Coins, ChevronRight, ChevronDown, DollarSign, UserPlus, Users2,
   Menu, X, Send, MessageCircle, Star, Shield, Zap, Crown,
   Mail, Globe, FileText, Lock, Code2, Megaphone, Server, Trophy
 } from "lucide-react";
@@ -83,45 +83,136 @@ function MagneticButton({ children, className, onClick, ...props }: React.Compon
 }
 
 const ADVANTAGES = [
-  { title: "RevShare от монетизации платформы", desc: "20% всей рекламной выручки (7 источников) идёт напрямую в Investor Pool. Ежедневные и ежемесячные выплаты в USDT прямо на ваш кошелёк.", color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-secondary/10", Icon: DollarSign, label: "01 / Ежедневный доход" },
-  { title: "Собственный источник трафика", desc: "Специальные условия продвижения для инвесторов + приоритет в алгоритме. Используйте мощь платформы для своих проектов и каналов.", color: "text-secondary", gradFrom: "from-secondary/20", gradTo: "to-primary/5", Icon: TrendingUp, label: "02" },
-  { title: "Партнёрская программа", desc: "Получайте до 20% от инвестиций вашей структуры на 5 уровней в глубину (10%–5%–3%–1%–1%). Постройте источник пассивного дохода.", color: "text-green-400", gradFrom: "from-green-500/20", gradTo: "to-teal-500/5", Icon: Network, label: "03" },
-  { title: "Начисление токенов $TRND", desc: "Ранняя аллокация токенов с потенциалом кратного роста при листинге. Встроенный vesting для защиты цены токена.", color: "text-yellow-400", gradFrom: "from-yellow-500/20", gradTo: "to-orange-500/5", Icon: Coins, label: "04" },
-  { title: "Exit Upside × 20 – × 30", desc: "При продаже платформы стратегическому покупателю (оценка $200M–$500M) ваша доля принесёт сверхприбыль — от × 20 до × 30 от вложенного.", color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-purple-500/10", Icon: Crown, label: "05" },
+  {
+    title: "RevShare от монетизации платформы",
+    desc: "20% всей рекламной выручки (7 источников) идёт напрямую в Investor Pool. Ежедневные и ежемесячные выплаты в USDT прямо на ваш кошелёк.",
+    color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-secondary/10", Icon: DollarSign, label: "01 / Ежедневный доход",
+    extra: [
+      "7 источников выручки: in-feed видеореклама, Sponsored Stories, баннеры, интерстишелы, E-commerce партнёрки, Branded Content, Premium подписки",
+      "20% от всей рекламной выручки делится между инвесторами пропорционально пакету",
+      "Ежедневные начисления + ежемесячные выплаты напрямую на USDT-кошелёк",
+      "Никаких блокировок — средства поступают в течение 48 часов после закрытия периода",
+    ],
+  },
+  {
+    title: "Собственный источник трафика",
+    desc: "Специальные условия продвижения для инвесторов + приоритет в алгоритме. Используйте мощь платформы для своих проектов и каналов.",
+    color: "text-secondary", gradFrom: "from-secondary/20", gradTo: "to-primary/5", Icon: TrendingUp, label: "02",
+    extra: [
+      "Приоритет в алгоритмической выдаче — ваш контент видят первым",
+      "До 3× органический охват по сравнению с обычными пользователями",
+      "Доступ к Trends Ads Manager (бета) — управление продвижением из личного кабинета",
+      "Специальный инвесторский бейдж повышает доверие аудитории к вашим каналам",
+    ],
+  },
+  {
+    title: "Партнёрская программа",
+    desc: "Получайте до 20% от инвестиций вашей структуры на 5 уровней в глубину (10%–5%–3%–1%–1%). Постройте источник пассивного дохода.",
+    color: "text-green-400", gradFrom: "from-green-500/20", gradTo: "to-teal-500/5", Icon: Network, label: "03",
+    extra: [
+      "Уровень 1 — 10%: прямые приглашённые вами инвесторы",
+      "Уровень 2 — 5%: партнёры ваших партнёров",
+      "Уровни 3–5 — 3% / 1% / 1%: сеть растёт, вы зарабатываете",
+      "Нет ограничений на размер сети — чем шире структура, тем выше пассивный доход",
+      "Выплаты в USDT в течение 48 часов после каждого нового вложения в вашей сети",
+    ],
+  },
+  {
+    title: "Начисление токенов $TRND",
+    desc: "Ранняя аллокация токенов с потенциалом кратного роста при листинге. Встроенный vesting для защиты цены токена.",
+    color: "text-yellow-400", gradFrom: "from-yellow-500/20", gradTo: "to-orange-500/5", Icon: Coins, label: "04",
+    extra: [
+      "Аллокация пропорциональна размеру пакета — чем раньше входите, тем больше токенов",
+      "Ранние инвесторы Pre-Seed получают бонус ×2 к аллокации",
+      "Vesting: 12 месяцев cliff → 24 месяца линейное разблокирование (защита от обвала)",
+      "Листинг запускается при достижении 10 млн пользователей платформы",
+      "Токен имеет утилити-функции: governance, доступ к Premium, рекламный баланс",
+    ],
+  },
+  {
+    title: "Exit Upside × 20 – × 30",
+    desc: "При продаже платформы стратегическому покупателю (оценка $200M–$500M) ваша доля принесёт сверхприбыль — от × 20 до × 30 от вложенного.",
+    color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-purple-500/10", Icon: Crown, label: "05",
+    extra: [
+      "Целевая оценка при продаже: $200M–$500M (аналоги: TikTok, Snap, Kuaishou)",
+      "Потенциальные покупатели: телеком-операторы, медиагруппы, технологические гиганты",
+      "Pre-Seed инвесторы входят при оценке компании $5–10M — максимальный upside",
+      "Прогнозируемый горизонт: 3–5 лет до стратегического выхода",
+      "Ваша доля фиксируется в момент инвестиции и не размывается без вашего согласия",
+    ],
+  },
 ];
 
-function AdvantageCard({ item, index, variants }: { item: typeof ADVANTAGES[0]; index: number; variants: Variants }) {
+type AdvantageItem = {
+  title: string;
+  desc: string;
+  color: string;
+  gradFrom: string;
+  gradTo: string;
+  Icon: React.ElementType;
+  label: string;
+  extra?: string[];
+};
+
+function AdvantageCard({ item, index, variants }: { item: AdvantageItem; index: number; variants: Variants }) {
   const { Icon } = item;
+  const [open, setOpen] = useState(false);
   return (
     <motion.div initial="visible" animate="visible"
       variants={variants}
-      whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-      className="glass-card rounded-2xl overflow-hidden group cursor-default relative">
-      <div className={`absolute inset-0 bg-gradient-to-br ${item.gradFrom} ${item.gradTo} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-      <div className="relative z-10 p-4 md:p-6 h-full flex flex-col">
+      className="glass-card rounded-2xl overflow-hidden group relative cursor-pointer"
+      onClick={() => setOpen(o => !o)}>
+      <div className={`absolute inset-0 bg-gradient-to-br ${item.gradFrom} ${item.gradTo} transition-opacity duration-500 ${open ? "opacity-100" : "opacity-0 group-hover:opacity-60"}`} />
+      <div className="relative z-10 p-4 md:p-6 flex flex-col">
         <div className="flex items-center justify-between mb-3">
-          <div className="w-9 h-9 md:w-11 md:h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+          <div className="w-9 h-9 md:w-11 md:h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
             <Icon className={`w-4 h-4 md:w-5 md:h-5 ${item.color}`} />
           </div>
-          <div className={`text-xs font-black tracking-widest uppercase ${item.color}`}>{item.label}</div>
+          <div className="flex items-center gap-2">
+            <div className={`text-xs font-black tracking-widest uppercase ${item.color}`}>{item.label}</div>
+            <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.3, ease: EASE }}>
+              <ChevronDown className={`w-4 h-4 ${item.color} opacity-70`} />
+            </motion.div>
+          </div>
         </div>
         <h3 className="text-base md:text-lg font-black mb-2">{item.title}</h3>
-        <p className="text-sm text-muted-foreground leading-relaxed flex-1">{item.desc}</p>
+        <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+        <AnimatePresence initial={false}>
+          {open && item.extra && (
+            <motion.div
+              key="extra"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.4, ease: EASE }}
+              className="overflow-hidden">
+              <ul className="mt-4 pt-4 border-t border-white/10 space-y-2">
+                {item.extra.map((point, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground leading-relaxed">
+                    <CheckCircle2 className={`w-4 h-4 mt-0.5 shrink-0 ${item.color}`} />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.div>
   );
 }
 
-function AdvantagesGrid({ openInvest: _openInvest, advantages }: { openInvest: (pkg?: string) => void; advantages: typeof ADVANTAGES }) {
+function AdvantagesGrid({ openInvest: _openInvest, advantages }: { openInvest: (pkg?: string) => void; advantages: AdvantageItem[] }) {
   const first = advantages[0];
   const { Icon: Icon0 } = first;
+  const [open0, setOpen0] = useState(false);
   return (
     <div className="max-w-6xl mx-auto space-y-5">
-      {/* Item 1 — full width */}
+      {/* Item 1 — full width, expandable */}
       <motion.div initial="visible" animate="visible" variants={slideUp}
-        whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
-        className="glass-card rounded-2xl overflow-hidden group cursor-default relative">
-        <div className={`absolute inset-0 bg-gradient-to-br ${first.gradFrom} ${first.gradTo} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+        className="glass-card rounded-2xl overflow-hidden group cursor-pointer relative"
+        onClick={() => setOpen0(o => !o)}>
+        <div className={`absolute inset-0 bg-gradient-to-br ${first.gradFrom} ${first.gradTo} transition-opacity duration-500 ${open0 ? "opacity-100" : "opacity-0 group-hover:opacity-60"}`} />
         <div className="relative z-10 p-4 md:p-7 flex flex-col md:flex-row gap-4 md:gap-6 items-start md:items-center">
           <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
             <Icon0 className={`w-6 h-6 md:w-7 md:h-7 ${first.color}`} />
@@ -130,8 +221,33 @@ function AdvantagesGrid({ openInvest: _openInvest, advantages }: { openInvest: (
             <div className={`text-xs font-black tracking-widest uppercase mb-2 ${first.color}`}>{first.label}</div>
             <h3 className="text-xl md:text-2xl lg:text-3xl font-black mb-2">{first.title}</h3>
             <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{first.desc}</p>
+            <AnimatePresence initial={false}>
+              {open0 && first.extra && (
+                <motion.div
+                  key="extra0"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.4, ease: EASE }}
+                  className="overflow-hidden">
+                  <ul className="mt-4 pt-4 border-t border-white/10 space-y-2">
+                    {first.extra.map((point, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground leading-relaxed">
+                        <CheckCircle2 className={`w-4 h-4 mt-0.5 shrink-0 ${first.color}`} />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-          <div className={`text-[80px] font-black ${first.color} opacity-[0.06] group-hover:opacity-[0.12] transition-opacity duration-500 shrink-0 hidden lg:block leading-none`}>01</div>
+          <div className="flex flex-col items-center gap-2 shrink-0">
+            <div className={`text-[80px] font-black ${first.color} opacity-[0.06] group-hover:opacity-[0.12] transition-opacity duration-500 hidden lg:block leading-none`}>01</div>
+            <motion.div animate={{ rotate: open0 ? 180 : 0 }} transition={{ duration: 0.3, ease: EASE }} className="hidden md:block">
+              <ChevronDown className={`w-5 h-5 ${first.color} opacity-60`} />
+            </motion.div>
+          </div>
         </div>
       </motion.div>
 
@@ -925,11 +1041,11 @@ export default function Landing() {
           </div>
 
           <AdvantagesGrid openInvest={openInvest} advantages={[
-            { title: t('adv1_title'), desc: t('adv1_desc'), color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-secondary/10", Icon: DollarSign, label: t('adv1_label') },
-            { title: t('adv2_title'), desc: t('adv2_desc'), color: "text-secondary", gradFrom: "from-secondary/20", gradTo: "to-primary/5", Icon: TrendingUp, label: t('adv2_label') },
-            { title: t('adv3_title'), desc: t('adv3_desc'), color: "text-green-400", gradFrom: "from-green-500/20", gradTo: "to-teal-500/5", Icon: Network, label: t('adv3_label') },
-            { title: t('adv4_title'), desc: t('adv4_desc'), color: "text-yellow-400", gradFrom: "from-yellow-500/20", gradTo: "to-orange-500/5", Icon: Coins, label: t('adv4_label') },
-            { title: t('adv5_title'), desc: t('adv5_desc'), color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-purple-500/10", Icon: Crown, label: t('adv5_label') },
+            { title: t('adv1_title'), desc: t('adv1_desc'), color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-secondary/10", Icon: DollarSign, label: t('adv1_label'), extra: [t('adv1_x1'), t('adv1_x2'), t('adv1_x3'), t('adv1_x4')] },
+            { title: t('adv2_title'), desc: t('adv2_desc'), color: "text-secondary", gradFrom: "from-secondary/20", gradTo: "to-primary/5", Icon: TrendingUp, label: t('adv2_label'), extra: [t('adv2_x1'), t('adv2_x2'), t('adv2_x3'), t('adv2_x4')] },
+            { title: t('adv3_title'), desc: t('adv3_desc'), color: "text-green-400", gradFrom: "from-green-500/20", gradTo: "to-teal-500/5", Icon: Network, label: t('adv3_label'), extra: [t('adv3_x1'), t('adv3_x2'), t('adv3_x3'), t('adv3_x4'), t('adv3_x5')] },
+            { title: t('adv4_title'), desc: t('adv4_desc'), color: "text-yellow-400", gradFrom: "from-yellow-500/20", gradTo: "to-orange-500/5", Icon: Coins, label: t('adv4_label'), extra: [t('adv4_x1'), t('adv4_x2'), t('adv4_x3'), t('adv4_x4'), t('adv4_x5')] },
+            { title: t('adv5_title'), desc: t('adv5_desc'), color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-purple-500/10", Icon: Crown, label: t('adv5_label'), extra: [t('adv5_x1'), t('adv5_x2'), t('adv5_x3'), t('adv5_x4'), t('adv5_x5')] },
           ]} />
         </div>
       </section>
