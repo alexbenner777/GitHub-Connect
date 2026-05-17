@@ -261,17 +261,15 @@ export function DauCalculator({
                         </div>
                         <p className="text-xs text-muted-foreground mb-4 leading-relaxed">{pkg.tagline}</p>
 
-                        {/* DAU 50M + динамика */}
+                        {/* RevShare динамика + DAU 50M */}
                         <div className="grid grid-cols-2 gap-2 mb-4">
-                          <div className="rounded-xl border border-green-500/20 bg-green-500/6 p-3">
-                            <div className="text-[10px] text-green-400/75 font-medium mb-0.5">При 50 млн DAU</div>
-                            <div className="text-lg font-black tabular-nums text-green-400">
-                              ${pkg.dau50m.toLocaleString("ru-RU")}
-                              <span className="text-xs font-normal text-green-400/70">/мес</span>
-                            </div>
-                          </div>
                           <div className="rounded-xl border border-white/8 bg-white/3 p-3">
-                            <div className="text-[10px] text-muted-foreground mb-0.5">RevShare сейчас</div>
+                            <div className="text-[10px] text-muted-foreground mb-0.5 leading-tight">
+                              RevShare сейчас (калькулятор)
+                            </div>
+                            <div className={`text-[9px] font-semibold mb-0.5 tabular-nums ${pkg.color}`}>
+                              {fmtDau(dau)} DAU
+                            </div>
                             {rev ? (
                               <motion.div key={Math.round(monthly)} initial={{ opacity: 0.4 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
                                 className={`text-lg font-black tabular-nums ${pkg.color}`}>
@@ -281,6 +279,14 @@ export function DauCalculator({
                             ) : (
                               <div className="text-lg font-black text-muted-foreground">–</div>
                             )}
+                          </div>
+                          <div className="rounded-xl border border-green-500/20 bg-green-500/6 p-3">
+                            <div className="text-[10px] text-green-400/75 font-medium mb-0.5 leading-tight">RevShare при 50 млн DAU</div>
+                            <div className="text-[9px] font-semibold text-green-400/50 mb-0.5">50 млн DAU</div>
+                            <div className="text-lg font-black tabular-nums text-green-400">
+                              ${pkg.dau50m.toLocaleString("ru-RU")}
+                              <span className="text-xs font-normal text-green-400/70">/мес</span>
+                            </div>
                           </div>
                         </div>
 
