@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import {
-  TrendingUp, Users, DollarSign, ChevronRight, CheckCircle2,
+  TrendingUp, Users, DollarSign, ChevronRight, CheckCircle2, Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -20,6 +20,7 @@ export type FullPackage = {
   tokens: string;
   shares: string;
   tagline: string;
+  dau50m: number;
   icon: React.ComponentType<{ className?: string }>;
   color: string;
   border: string;
@@ -305,6 +306,25 @@ export function DauCalculator({
                           ))}
                         </ul>
 
+                        {/* 50M DAU potential — hero highlight */}
+                        <div className="mb-4 rounded-xl border border-green-500/20 bg-green-500/6 p-3 flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-green-500/15 flex items-center justify-center shrink-0">
+                            <Zap className="w-3.5 h-3.5 text-green-400" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="text-[10px] text-green-400/75 font-medium">При 50 млн DAU</div>
+                            <div className={`text-base font-black tabular-nums text-green-400`}>
+                              ${pkg.dau50m.toLocaleString("ru-RU")}<span className="text-xs font-normal text-green-400/70">/мес</span>
+                            </div>
+                          </div>
+                          {roiPct !== null && (
+                            <div className={`text-right shrink-0`}>
+                              <div className="text-[10px] text-muted-foreground">ROI/год</div>
+                              <div className={`text-sm font-black tabular-nums ${pkg.color}`}>{roiPct.toFixed(0)}%</div>
+                            </div>
+                          )}
+                        </div>
+
                         {/* Dynamic metrics */}
                         <div className="grid grid-cols-2 gap-2 mb-6 p-3 rounded-xl bg-white/3 border border-white/8">
                           {/* RevShare — dynamic from slider */}
@@ -330,11 +350,6 @@ export function DauCalculator({
                                 >
                                   при {dau >= 1_000_000 ? (dau / 1_000_000).toFixed(dau % 1_000_000 === 0 ? 0 : 1) + " млн" : fmt(dau / 1000, 0) + "K"} DAU
                                 </motion.div>
-                                {roiPct !== null && (
-                                  <div className={`text-[10px] font-semibold mt-0.5 tabular-nums ${pkg.color}`}>
-                                    ROI {roiPct.toFixed(0)}%/год
-                                  </div>
-                                )}
                               </>
                             ) : (
                               <>
