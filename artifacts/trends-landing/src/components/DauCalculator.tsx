@@ -281,8 +281,7 @@ export function DauCalculator({
                             )}
                           </div>
                           <div className="rounded-xl border border-green-500/20 bg-green-500/6 p-3">
-                            <div className="text-[10px] text-green-400/75 font-medium mb-0.5 leading-tight">RevShare при 50 млн DAU</div>
-                            <div className="text-[9px] font-semibold text-green-400/50 mb-0.5">50 млн DAU</div>
+                            <div className="text-[10px] text-green-400/75 font-medium mb-0.5 leading-tight">RevShare при</div>
                             <div className="text-lg font-black tabular-nums text-green-400">
                               ${pkg.dau50m.toLocaleString("ru-RU")}
                               <span className="text-xs font-normal text-green-400/70">/мес</span>
@@ -290,12 +289,9 @@ export function DauCalculator({
                           </div>
                         </div>
 
-                        {/* Exit + ROI */}
+                        {/* Exit */}
                         <div className="flex items-center justify-between text-xs px-1 mb-4">
-                          <span className="text-muted-foreground">Exit потенциал: <span className="text-green-400 font-bold">${pkg.exit}</span></span>
-                          {roiPct !== null && (
-                            <span className="text-muted-foreground">ROI/год: <span className={`font-black ${pkg.color}`}>{roiPct.toFixed(0)}%</span></span>
-                          )}
+                          <span className="text-muted-foreground">Exit потенциал: <span className="text-green-400 font-bold">${pkg.exit}</span> <span className="text-muted-foreground/60">(прибыль с продажи платформы Trends)</span></span>
                         </div>
 
                         {/* Свёрнутые хайлайты */}

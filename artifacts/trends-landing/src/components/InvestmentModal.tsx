@@ -173,7 +173,7 @@ export function InvestmentModal({
                           <Users className="w-4 h-4 text-green-400" />
                         </div>
                         <div className="flex-1">
-                          <div className="text-[10px] text-green-400/70">Потенциал при 50 млн DAU</div>
+                          <div className="text-[10px] text-green-400/70">RevShare при</div>
                           <div className="text-lg font-black text-green-400">
                             ${fmtUsd(pkg.dau50m)}<span className="text-xs font-normal text-green-400/70">/мес</span>
                           </div>
@@ -239,7 +239,7 @@ export function InvestmentModal({
                 <div className={`text-4xl font-black ${ui.color}`}>${pkg.price.toLocaleString()}</div>
                 <div className="text-sm text-muted-foreground mt-1">Пакет «{pkg.name}» · USDT (TON)</div>
                 <div className="mt-2 text-xs text-green-400/80">
-                  При 50 млн DAU: <span className="font-black text-green-400">${fmtUsd(pkg.dau50m)}/мес</span>
+                  RevShare при: <span className="font-black text-green-400">${fmtUsd(pkg.dau50m)}/мес</span>
                 </div>
               </div>
 
@@ -314,7 +314,7 @@ export function InvestmentModal({
                   </div>
                 ))}
                 <div className="flex justify-between border-t border-white/8 pt-3">
-                  <span className="text-muted-foreground">При 50 млн DAU:</span>
+                  <span className="text-muted-foreground">RevShare при:</span>
                   <span className="font-black text-green-400">${fmtUsd(pkg.dau50m)}/мес</span>
                 </div>
               </div>
@@ -353,7 +353,7 @@ export function InvestmentModal({
                 Пакет <strong>«{pkg.name}»</strong> активирован. Инвестиция подтверждена, MLM-бонусы начисляются.
               </p>
               <div className="rounded-xl border border-green-500/20 bg-green-500/8 p-4">
-                <div className="text-xs text-green-400/70 mb-1">Ваш потенциал при 50 млн DAU</div>
+                <div className="text-xs text-green-400/70 mb-1">RevShare при</div>
                 <div className="text-2xl font-black text-green-400">
                   ${fmtUsd(pkg.dau50m)}<span className="text-base font-normal">/мес</span>
                 </div>
