@@ -190,7 +190,7 @@ export function InvestmentModal({
                         {pkg.categories.map(cat => (
                           <div key={cat.id}>
                             <div className="flex items-center gap-1.5 mb-1.5">
-                              <span className={`text-[10px] font-black uppercase tracking-widest ${ui.color}`}>
+                              <span className="text-[10px] font-black uppercase tracking-widest text-white">
                                 {cat.title}
                               </span>
                             </div>
