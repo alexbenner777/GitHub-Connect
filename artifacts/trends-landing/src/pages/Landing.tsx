@@ -258,6 +258,7 @@ export default function Landing() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [mlmOpen, setMlmOpen] = useState(false);
 
   const { scrollY: scrollYMotion } = useScroll();
   const heroY = useTransform(scrollYMotion, [0, 600], [0, -70]);
@@ -950,18 +951,39 @@ export default function Landing() {
         fullPackages={PACKAGES_DATA}
       />
 
-      {/* MLM */}
+      {/* MLM + COMMUNITY POOL — collapsible */}
       <section className="py-14 md:py-24 relative z-10 [overflow-x:clip]">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-green-500/8 blur-[120px] rounded-full pointer-events-none" />
         <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center max-w-3xl mx-auto mb-16">
+          {/* Clickable header */}
+          <button
+            onClick={() => setMlmOpen(o => !o)}
+            className="w-full text-center max-w-3xl mx-auto mb-8 block group focus:outline-none"
+          >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 font-bold text-sm mb-6">
               <Network className="w-4 h-4" />
               ПАРТНЁРСКАЯ ПРОГРАММА
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-6">Партнёрская программа — зарабатывай на привлечении</h2>
-            <p className="text-lg text-muted-foreground">Приглашайте новых инвесторов и получайте процент от их вложений на 5 уровней вглубь.</p>
-          </div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-6 group-hover:text-primary transition-colors duration-200">Партнёрская программа — зарабатывай на привлечении</h2>
+            <p className="text-lg text-muted-foreground mb-4">Приглашайте новых инвесторов и получайте процент от их вложений на 5 уровней вглубь.</p>
+            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 border border-white/15 text-sm font-bold text-white/70 group-hover:bg-white/10 group-hover:text-white transition-all duration-200">
+              {mlmOpen ? "Скрыть детали" : "Показать детали"}
+              <motion.span animate={{ rotate: mlmOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
+                <ChevronRight className="w-4 h-4 rotate-90" />
+              </motion.span>
+            </div>
+          </button>
+
+          <AnimatePresence>
+          {mlmOpen && (
+          <motion.div
+            key="mlm-content"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            style={{ overflow: "hidden" }}
+          >
 
           <div className="max-w-4xl mx-auto mb-16">
             <div className="glass-card px-6 py-4 rounded-2xl space-y-2">
@@ -1121,14 +1143,9 @@ export default function Landing() {
               Реферальная ссылка доступна в личном кабинете. Выплаты в USDT в течение 48 часов.
             </p>
           </motion.div>
-        </div>
-      </section>
 
-      {/* COMMUNITY POOL */}
-      <section className="py-14 md:py-24 relative z-10 [overflow-x:clip]">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] bg-primary/8 blur-[120px] rounded-full pointer-events-none" />
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto">
+          {/* COMMUNITY POOL — inside collapsible */}
+          <div className="max-w-4xl mx-auto mt-12">
 
             {/* Header card */}
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={slideUp}
@@ -1261,6 +1278,9 @@ export default function Landing() {
             </motion.div>
 
           </div>
+          </motion.div>
+          )}
+          </AnimatePresence>
         </div>
       </section>
 
