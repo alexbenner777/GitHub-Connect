@@ -49,11 +49,11 @@ function sliderPosFromDau(dau: number) {
 }
 
 const PRESETS = [
-  { label: "5M",   dau: 5_000_000 },
-  { label: "10M",  dau: 10_000_000 },
-  { label: "15M",  dau: 15_000_000 },
-  { label: "25M",  dau: 25_000_000 },
-  { label: "50M",  dau: 50_000_000 },
+  { label: "5 млн",   dau: 5_000_000 },
+  { label: "10 млн",  dau: 10_000_000 },
+  { label: "15 млн",  dau: 15_000_000 },
+  { label: "25 млн",  dau: 25_000_000 },
+  { label: "50 млн",  dau: 50_000_000 },
 ];
 
 export function DauCalculator({
