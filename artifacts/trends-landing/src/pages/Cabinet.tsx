@@ -115,6 +115,12 @@ export default function Cabinet() {
   const confirmedInvs = data.investments.filter(i => i.status === "confirmed");
   const pendingInvs = data.investments.filter(i => i.status === "pending");
 
+  const REVSHARE_DAU = 5_000_000;
+  const CPM_RUB = 190, SHOWS = 2, REVSHARE_PCT = 0.20, RUB_USD = 91, TOTAL_SHARES = 5000;
+  const revshareAt5M = data.stats.totalShares > 0
+    ? Math.round((data.stats.totalShares / TOTAL_SHARES) * (REVSHARE_DAU * SHOWS * CPM_RUB / 1000 * 30 / RUB_USD) * REVSHARE_PCT)
+    : 0;
+
   const tabs = [
     { id: "overview", label: "Обзор", icon: BarChart3 },
     { id: "investments", label: "Инвестиции", icon: TrendingUp },
@@ -123,10 +129,10 @@ export default function Cabinet() {
   ] as const;
 
   const statCards = [
-    { label: "Инвестировано", value: `$${data.stats.totalInvested.toLocaleString()}`, icon: DollarSign, color: "text-primary", bg: "from-primary/20 to-primary/5", border: "border-primary/20" },
-    { label: "Прибыль / мес", value: `$${(data.stats.monthlyProfit ?? 0).toLocaleString()}`, icon: TrendingUp, color: "text-green-400", bg: "from-green-500/20 to-green-500/5", border: "border-green-500/20" },
-    { label: "MLM бонусы", value: `$${totalMLM.toFixed(0)}`, icon: Star, color: "text-secondary", bg: "from-secondary/20 to-secondary/5", border: "border-secondary/20" },
-    { label: "Партнёров", value: String(totalMLMRefs), icon: Users, color: "text-yellow-400", bg: "from-yellow-500/20 to-yellow-500/5", border: "border-yellow-500/20" },
+    { label: "Инвестировано", value: `$${data.stats.totalInvested.toLocaleString()}`, sub: null, icon: DollarSign, color: "text-primary", bg: "from-primary/20 to-primary/5", border: "border-primary/20" },
+    { label: "RevShare / мес", value: `$${revshareAt5M.toLocaleString()}`, sub: "при 5M DAU", icon: TrendingUp, color: "text-green-400", bg: "from-green-500/20 to-green-500/5", border: "border-green-500/20" },
+    { label: "MLM бонусы", value: `$${totalMLM.toFixed(0)}`, sub: null, icon: Star, color: "text-secondary", bg: "from-secondary/20 to-secondary/5", border: "border-secondary/20" },
+    { label: "Партнёров", value: String(totalMLMRefs), sub: null, icon: Users, color: "text-yellow-400", bg: "from-yellow-500/20 to-yellow-500/5", border: "border-yellow-500/20" },
   ];
 
   return (
@@ -227,6 +233,7 @@ export default function Cabinet() {
                   </div>
                   <div className="text-xs text-muted-foreground mb-2">{s.label}</div>
                   <div className={`text-2xl font-black ${s.color}`}>{s.value}</div>
+                  {s.sub && <div className="text-[10px] text-muted-foreground/70 mt-1 font-medium">{s.sub}</div>}
                 </motion.div>
               ))}
             </div>
