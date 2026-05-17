@@ -260,7 +260,24 @@ export default function Landing() {
             ))}
           </div>
 
-          <div className="hidden lg:flex gap-3">
+          <div className="hidden lg:flex items-center gap-3">
+            {/* Language switcher */}
+            <div className="flex items-center rounded-xl border border-white/10 bg-white/5 p-1 gap-0.5">
+              {(['ru', 'en'] as Lang[]).map(l => (
+                <button
+                  key={l}
+                  onClick={() => setLang(l)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    lang === l
+                      ? "bg-white/15 text-white"
+                      : "text-muted-foreground hover:text-white"
+                  }`}
+                >
+                  <span>{l === 'ru' ? '🇷🇺' : '🇺🇸'}</span>
+                  <span>{l.toUpperCase()}</span>
+                </button>
+              ))}
+            </div>
             <Link href="/cabinet">
               <Button variant="ghost" className="hover:bg-primary/10 hover:text-primary font-semibold whitespace-nowrap">{t('nav_cabinet')}</Button>
             </Link>
@@ -302,6 +319,23 @@ export default function Landing() {
                   </a>
                 ))}
                 <div className="border-t border-white/10 mt-3 pt-4 flex flex-col gap-3">
+                  {/* Language switcher mobile */}
+                  <div className="flex items-center rounded-xl border border-white/10 bg-white/5 p-1 gap-0.5 self-start">
+                    {(['ru', 'en'] as Lang[]).map(l => (
+                      <button
+                        key={l}
+                        onClick={() => setLang(l)}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                          lang === l
+                            ? "bg-white/15 text-white"
+                            : "text-muted-foreground hover:text-white"
+                        }`}
+                      >
+                        <span>{l === 'ru' ? '🇷🇺' : '🇺🇸'}</span>
+                        <span>{l.toUpperCase()}</span>
+                      </button>
+                    ))}
+                  </div>
                   <Link href="/cabinet" onClick={() => setMobileMenuOpen(false)}>
                     <Button variant="outline" className="w-full border-primary/40 text-primary hover:bg-primary/10">{t('nav_cabinet')}</Button>
                   </Link>
