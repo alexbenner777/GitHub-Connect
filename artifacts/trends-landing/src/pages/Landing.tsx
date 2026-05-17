@@ -266,6 +266,116 @@ function AdvantagesGrid({ openInvest: _openInvest, advantages }: { openInvest: (
   );
 }
 
+function MonetizationCards({ t }: { t: (key: string) => string }) {
+  const [mono1Open, setMono1Open] = useState(false);
+  const [monoOpenIdx, setMonoOpenIdx] = useState<number | null>(null);
+  const monoCards = [
+    { icon: TrendingUp,  num: "02", title: t('mono2_title'), desc: t('mono2_desc'), extra: [t('mono2_x1'), t('mono2_x2'), t('mono2_x3'), t('mono2_x4')] },
+    { icon: Gift,        num: "03", title: t('mono3_title'), desc: t('mono3_desc'), extra: [t('mono3_x1'), t('mono3_x2'), t('mono3_x3'), t('mono3_x4')] },
+    { icon: Wallet,      num: "04", title: t('mono4_title'), desc: t('mono4_desc'), extra: [t('mono4_x1'), t('mono4_x2'), t('mono4_x3'), t('mono4_x4')] },
+    { icon: BarChart3,   num: "05", title: t('mono5_title'), desc: t('mono5_desc'), extra: [t('mono5_x1'), t('mono5_x2'), t('mono5_x3'), t('mono5_x4')] },
+    { icon: Smartphone,  num: "06", title: t('mono6_title'), desc: t('mono6_desc'), extra: [t('mono6_x1'), t('mono6_x2'), t('mono6_x3'), t('mono6_x4')] },
+    { icon: ShoppingBag, num: "07", title: t('mono7_title'), desc: t('mono7_desc'), extra: [t('mono7_x1'), t('mono7_x2'), t('mono7_x3'), t('mono7_x4')] },
+  ];
+  return (
+    <>
+      {/* Card 01 — full width, expandable */}
+      <motion.div initial="visible" animate="visible" variants={fadeScale} className="mb-6">
+        <div
+          className="glass-card p-8 md:p-10 rounded-3xl relative overflow-hidden cursor-pointer group"
+          onClick={() => setMono1Open(o => !o)}
+        >
+          <div className="absolute top-6 right-8 text-8xl font-black text-primary/6 select-none">01</div>
+          <div className="flex flex-col md:flex-row gap-8 items-start md:items-center">
+            <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary shrink-0 group-hover:scale-110 transition-transform duration-300">
+              <Target className="w-8 h-8" />
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-3">
+                <h3 className="text-2xl md:text-3xl font-bold">{t('mono1_title')}</h3>
+                <span className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-bold uppercase tracking-wider">{t('mono1_badge')}</span>
+                <motion.div animate={{ rotate: mono1Open ? 180 : 0 }} transition={{ duration: 0.3, ease: EASE }} className="ml-auto shrink-0">
+                  <ChevronDown className="w-5 h-5 text-primary opacity-60" />
+                </motion.div>
+              </div>
+              <p className="text-muted-foreground text-lg leading-relaxed mb-4">{t('mono1_desc')}</p>
+              <div className="flex flex-wrap gap-3">
+                {["CPM", "CPV", "CPC", "CPA"].map(tag => (
+                  <span key={tag} className="px-3 py-1 rounded-lg bg-primary/10 text-primary font-bold text-sm border border-primary/20">{tag}</span>
+                ))}
+              </div>
+              <AnimatePresence initial={false}>
+                {mono1Open && (
+                  <motion.ul
+                    key="mono1-extra"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.4, ease: EASE }}
+                    className="overflow-hidden mt-5 pt-5 border-t border-white/10 space-y-2"
+                  >
+                    {[t('mono1_x1'), t('mono1_x2'), t('mono1_x3'), t('mono1_x4')].map((point, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground leading-relaxed">
+                        <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </motion.ul>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Cards 02-07 — grid, expandable */}
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {monoCards.map((item, i) => {
+          const isOpen = monoOpenIdx === i;
+          return (
+            <div
+              key={i}
+              className="glass-card p-6 rounded-3xl group relative overflow-hidden cursor-pointer"
+              onClick={() => setMonoOpenIdx(isOpen ? null : i)}
+            >
+              <div className="absolute top-4 right-5 text-5xl font-black text-primary/6 select-none group-hover:text-primary/12 transition-colors">{item.num}</div>
+              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-5 group-hover:scale-110 transition-transform">
+                <item.icon className="w-6 h-6" />
+              </div>
+              <div className="flex items-start justify-between gap-2 mb-2">
+                <h3 className="text-lg font-bold">{item.title}</h3>
+                <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.3, ease: EASE }} className="shrink-0 mt-0.5">
+                  <ChevronDown className="w-4 h-4 text-primary opacity-60" />
+                </motion.div>
+              </div>
+              <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
+              <AnimatePresence initial={false}>
+                {isOpen && (
+                  <motion.ul
+                    key={`mono-extra-${i}`}
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.4, ease: EASE }}
+                    className="overflow-hidden mt-4 pt-4 border-t border-white/10 space-y-2"
+                  >
+                    {item.extra.map((point, j) => (
+                      <li key={j} className="flex items-start gap-2 text-sm text-muted-foreground leading-relaxed">
+                        <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </motion.ul>
+                )}
+              </AnimatePresence>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+}
+
 const TARGET_AMOUNT = 100000;
 const TARGET_INVESTORS = 13;
 const GOAL = 500_000;
@@ -987,48 +1097,7 @@ export default function Landing() {
             <p className="text-lg text-muted-foreground">{t('mono_desc')}</p>
           </div>
 
-          <motion.div initial="visible" animate="visible" variants={fadeScale} className="mb-6">
-            <div className="glass-card p-8 md:p-10 rounded-3xl relative overflow-hidden">
-              <div className="absolute top-6 right-8 text-8xl font-black text-primary/6 select-none">01</div>
-              <div className="flex flex-col md:flex-row gap-8 items-start md:items-center">
-                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary shrink-0">
-                  <Target className="w-8 h-8" />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-3">
-                    <h3 className="text-2xl md:text-3xl font-bold">{t('mono1_title')}</h3>
-                    <span className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-bold uppercase tracking-wider">{t('mono1_badge')}</span>
-                  </div>
-                  <p className="text-muted-foreground text-lg leading-relaxed mb-4">{t('mono1_desc')}</p>
-                  <div className="flex flex-wrap gap-3">
-                    {["CPM", "CPV", "CPC", "CPA"].map(tag => (
-                      <span key={tag} className="px-3 py-1 rounded-lg bg-primary/10 text-primary font-bold text-sm border border-primary/20">{tag}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {[
-              { icon: TrendingUp, num: "02", title: t('mono2_title'), desc: t('mono2_desc') },
-              { icon: Gift, num: "03", title: t('mono3_title'), desc: t('mono3_desc') },
-              { icon: Wallet, num: "04", title: t('mono4_title'), desc: t('mono4_desc') },
-              { icon: BarChart3, num: "05", title: t('mono5_title'), desc: t('mono5_desc') },
-              { icon: Smartphone, num: "06", title: t('mono6_title'), desc: t('mono6_desc') },
-              { icon: ShoppingBag, num: "07", title: t('mono7_title'), desc: t('mono7_desc') }
-            ].map((item, i) => (
-              <div key={i} className="glass-card p-6 rounded-3xl group relative overflow-hidden">
-                <div className="absolute top-4 right-5 text-5xl font-black text-primary/6 select-none group-hover:text-primary/12 transition-colors">{item.num}</div>
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-5 group-hover:scale-110 transition-transform">
-                  <item.icon className="w-6 h-6" />
-                </div>
-                <h3 className="text-lg font-bold mb-2">{item.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
+          <MonetizationCards t={t} />
         </div>
       </section>
 
