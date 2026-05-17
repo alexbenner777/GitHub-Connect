@@ -85,7 +85,7 @@ function MagneticButton({ children, className, onClick, ...props }: React.Compon
 const ADVANTAGES = [
   {
     title: "RevShare от монетизации платформы",
-    desc: "20% всей рекламной выручки (7 источников) идёт напрямую в Investor Pool. Ежемесячные выплаты в USDT прямо на ваш кошелёк.",
+    desc: "20% всей рекламной выручки (7 источников) идёт напрямую в Investor Pool.\nЕжемесячные выплаты в USDT прямо на ваш кошелёк.",
     color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-secondary/10", Icon: DollarSign, label: "01 / Ежедневный доход",
     extra: [
       "7 источников выручки: in-feed видеореклама, Sponsored Stories, баннеры, интерстишелы, E-commerce партнёрки, Branded Content, Premium подписки",
@@ -176,7 +176,7 @@ function AdvantageCard({ item, index, variants }: { item: AdvantageItem; index: 
           </div>
         </div>
         <h3 className="text-base md:text-lg font-black mb-2">{item.title}</h3>
-        <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+        <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">{item.desc}</p>
         <AnimatePresence initial={false}>
           {open && item.extra && (
             <motion.div
@@ -220,7 +220,7 @@ function AdvantagesGrid({ openInvest: _openInvest, advantages }: { openInvest: (
           <div className="flex-1">
             <div className={`text-xs font-black tracking-widest uppercase mb-2 ${first.color}`}>{first.label}</div>
             <h3 className="text-xl md:text-2xl lg:text-3xl font-black mb-2">{first.title}</h3>
-            <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{first.desc}</p>
+            <p className="text-sm md:text-base text-muted-foreground leading-relaxed whitespace-pre-line">{first.desc}</p>
             <AnimatePresence initial={false}>
               {open0 && first.extra && (
                 <motion.div
