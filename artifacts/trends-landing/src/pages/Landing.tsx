@@ -1168,6 +1168,7 @@ export default function Landing() {
               <div className="text-center sm:text-left">
                 <div className="text-sm text-muted-foreground mb-1">{t('mlm_ex_revshare')}</div>
                 <div className="text-2xl sm:text-3xl font-black text-primary">+$370 / мес</div>
+                <div className="text-xs text-muted-foreground/70 mt-1">при 1M DAU</div>
               </div>
             </div>
 
