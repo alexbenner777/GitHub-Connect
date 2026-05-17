@@ -292,7 +292,7 @@ export function DauCalculator({
 
                         {/* Exit */}
                         <div className="flex items-center justify-between text-xs px-1 mb-4">
-                          <span className="text-muted-foreground">Exit потенциал: <span className="text-green-400 font-bold">${pkg.exit}</span> <span className="text-muted-foreground/60">(прибыль с продажи платформы Trends)</span></span>
+                          <span className="text-muted-foreground">Exit потенциал: <span className="text-green-400 font-bold">${pkg.exit}</span> <span className="text-muted-foreground/60">(прибыль с продажи платформы Trends фонду или стратегическому инвестору)</span></span>
                         </div>
 
                         {/* Свёрнутые хайлайты */}
