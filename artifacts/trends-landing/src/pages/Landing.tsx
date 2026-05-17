@@ -258,7 +258,9 @@ export default function Landing() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [mlmOpen, setMlmOpen] = useState(false);
+  const [refOpen, setRefOpen] = useState(false);
+  const [exampleOpen, setExampleOpen] = useState(false);
+  const [poolOpen, setPoolOpen] = useState(false);
 
   const { scrollY: scrollYMotion } = useScroll();
   const heroY = useTransform(scrollYMotion, [0, 600], [0, -70]);
@@ -955,68 +957,86 @@ export default function Landing() {
       <section className="py-14 md:py-24 relative z-10 [overflow-x:clip]">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-green-500/8 blur-[120px] rounded-full pointer-events-none" />
         <div className="container mx-auto px-4 relative z-10">
-          {/* Clickable header */}
-          <button
-            onClick={() => setMlmOpen(o => !o)}
-            className="w-full text-center max-w-3xl mx-auto mb-8 block group focus:outline-none"
-          >
+          {/* Section header — static */}
+          <div className="text-center max-w-3xl mx-auto mb-10">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 font-bold text-sm mb-6">
               <Network className="w-4 h-4" />
               ПАРТНЁРСКАЯ ПРОГРАММА
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-6 group-hover:text-primary transition-colors duration-200">Партнёрская программа — зарабатывай на привлечении</h2>
-            <p className="text-lg text-muted-foreground mb-4">Приглашайте новых инвесторов и получайте процент от их вложений на 5 уровней вглубь.</p>
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 border border-white/15 text-sm font-bold text-white/70 group-hover:bg-white/10 group-hover:text-white transition-all duration-200">
-              {mlmOpen ? "Скрыть детали" : "Показать детали"}
-              <motion.span animate={{ rotate: mlmOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
-                <ChevronRight className="w-4 h-4 rotate-90" />
-              </motion.span>
-            </div>
-          </button>
-
-          <AnimatePresence>
-          {mlmOpen && (
-          <motion.div
-            key="mlm-content"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            style={{ overflow: "hidden" }}
-          >
-
-          <div className="max-w-4xl mx-auto mb-16">
-            <div className="glass-card px-6 py-4 rounded-2xl space-y-2">
-              {[
-                { n: 1, pct: "10%", desc: "Прямые приглашённые вами", bar: 100, grad: "from-primary to-primary/60", badge: "bg-primary/20 text-primary border-primary/30" },
-                { n: 2, pct: "5%",  desc: "Партнёры ваших партнёров", bar: 70,  grad: "from-secondary to-secondary/60", badge: "bg-secondary/20 text-secondary border-secondary/30" },
-                { n: 3, pct: "3%",  desc: "Третье звено сети",        bar: 48,  grad: "from-blue-400 to-blue-400/60", badge: "bg-blue-400/20 text-blue-400 border-blue-400/30" },
-                { n: 4, pct: "1%",  desc: "Четвёртое звено",          bar: 28,  grad: "from-cyan-400 to-cyan-400/60", badge: "bg-cyan-400/20 text-cyan-400 border-cyan-400/30" },
-                { n: 5, pct: "1%",  desc: "Пятое звено",              bar: 18,  grad: "from-teal-400 to-teal-400/60", badge: "bg-teal-400/20 text-teal-400 border-teal-400/30" },
-              ].map((row, i) => (
-                <div key={i} className="flex items-center gap-4">
-                  <div className={`shrink-0 text-xs font-black px-2.5 py-1 rounded-lg border ${row.badge}`}>L{row.n}</div>
-                  <div className="shrink-0 w-10 text-right">
-                    <span className={`text-lg font-black ${row.badge.split(' ')[1]}`}>{row.pct}</span>
-                  </div>
-                  <div className="flex-1 relative h-2 bg-white/5 rounded-full overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${row.bar}%` }}
-                      viewport={{ once: true, amount: 0.5 }}
-                      transition={{ duration: 0.7, delay: i * 0.08 }}
-                      className={`absolute left-0 top-0 h-full rounded-full bg-gradient-to-r ${row.grad}`}
-                    />
-                  </div>
-                  <div className="shrink-0 text-sm text-muted-foreground w-48 text-right hidden md:block">{row.desc}</div>
-                </div>
-              ))}
-            </div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4">Партнёрская программа — зарабатывай на привлечении</h2>
+            <p className="text-lg text-muted-foreground">Приглашайте новых инвесторов и получайте процент от их вложений на 5 уровней вглубь.</p>
           </div>
 
-          {/* MLM Example */}
-          <motion.div initial="visible" animate="visible" variants={fadeIn}
-            className="glass-card p-4 sm:p-8 md:p-10 rounded-3xl border border-green-500/20 max-w-4xl mx-auto">
+          {/* Accordion 1 — Реф программа */}
+          <div className="max-w-4xl mx-auto mb-3">
+            <button
+              onClick={() => setRefOpen(o => !o)}
+              className="w-full flex items-center justify-between px-6 py-5 glass-card rounded-2xl border border-white/10 hover:border-primary/30 transition-all duration-200 group focus:outline-none"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-primary/15 border border-primary/25 flex items-center justify-center shrink-0">
+                  <Network className="w-4 h-4 text-primary" />
+                </div>
+                <span className="text-base sm:text-lg font-bold group-hover:text-primary transition-colors">Реферальная программа</span>
+              </div>
+              <motion.span animate={{ rotate: refOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
+                <ChevronRight className="w-5 h-5 rotate-90 text-muted-foreground" />
+              </motion.span>
+            </button>
+            <AnimatePresence>
+            {refOpen && (
+              <motion.div key="ref-content" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }} style={{ overflow: "hidden" }}>
+                <div className="glass-card px-6 py-5 rounded-2xl mt-2 space-y-2">
+                  {[
+                    { n: 1, pct: "10%", desc: "Прямые приглашённые вами", bar: 100, grad: "from-primary to-primary/60", badge: "bg-primary/20 text-primary border-primary/30" },
+                    { n: 2, pct: "5%",  desc: "Партнёры ваших партнёров", bar: 70,  grad: "from-secondary to-secondary/60", badge: "bg-secondary/20 text-secondary border-secondary/30" },
+                    { n: 3, pct: "3%",  desc: "Третье звено сети",        bar: 48,  grad: "from-blue-400 to-blue-400/60", badge: "bg-blue-400/20 text-blue-400 border-blue-400/30" },
+                    { n: 4, pct: "1%",  desc: "Четвёртое звено",          bar: 28,  grad: "from-cyan-400 to-cyan-400/60", badge: "bg-cyan-400/20 text-cyan-400 border-cyan-400/30" },
+                    { n: 5, pct: "1%",  desc: "Пятое звено",              bar: 18,  grad: "from-teal-400 to-teal-400/60", badge: "bg-teal-400/20 text-teal-400 border-teal-400/30" },
+                  ].map((row, i) => (
+                    <div key={i} className="flex items-center gap-4">
+                      <div className={`shrink-0 text-xs font-black px-2.5 py-1 rounded-lg border ${row.badge}`}>L{row.n}</div>
+                      <div className="shrink-0 w-10 text-right">
+                        <span className={`text-lg font-black ${row.badge.split(' ')[1]}`}>{row.pct}</span>
+                      </div>
+                      <div className="flex-1 relative h-2 bg-white/5 rounded-full overflow-hidden">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${row.bar}%` }}
+                          viewport={{ once: true, amount: 0.5 }}
+                          transition={{ duration: 0.7, delay: i * 0.08 }}
+                          className={`absolute left-0 top-0 h-full rounded-full bg-gradient-to-r ${row.grad}`}
+                        />
+                      </div>
+                      <div className="shrink-0 text-sm text-muted-foreground w-48 text-right hidden md:block">{row.desc}</div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+            </AnimatePresence>
+          </div>
+
+          {/* Accordion 2 — Пример */}
+          <div className="max-w-4xl mx-auto mb-3">
+            <button
+              onClick={() => setExampleOpen(o => !o)}
+              className="w-full flex items-center justify-between px-6 py-5 glass-card rounded-2xl border border-white/10 hover:border-green-500/30 transition-all duration-200 group focus:outline-none"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-green-500/15 border border-green-500/25 flex items-center justify-center shrink-0">
+                  <DollarSign className="w-4 h-4 text-green-400" />
+                </div>
+                <span className="text-base sm:text-lg font-bold group-hover:text-green-400 transition-colors">Пример расчёта</span>
+              </div>
+              <motion.span animate={{ rotate: exampleOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
+                <ChevronRight className="w-5 h-5 rotate-90 text-muted-foreground" />
+              </motion.span>
+            </button>
+            <AnimatePresence>
+            {exampleOpen && (
+              <motion.div key="example-content" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }} style={{ overflow: "hidden" }}>
+                <div className="glass-card p-4 sm:p-8 md:p-10 rounded-3xl border border-green-500/20 mt-2">
             <div className="flex items-start gap-3 mb-6 md:mb-8">
               <div className="w-9 h-9 shrink-0 bg-green-500/20 rounded-xl flex items-center justify-center text-green-400">
                 <DollarSign className="w-4 h-4" />
@@ -1142,32 +1162,38 @@ export default function Landing() {
             <p className="text-xs text-muted-foreground text-center mt-4">
               Реферальная ссылка доступна в личном кабинете. Выплаты в USDT в течение 48 часов.
             </p>
-          </motion.div>
-
-          {/* COMMUNITY POOL — inside collapsible */}
-          <div className="max-w-4xl mx-auto mt-12">
-
-            {/* Header card */}
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={slideUp}
-              className="glass-card rounded-2xl p-5 md:p-7 mb-5">
-              <div className="flex flex-col sm:flex-row sm:items-start gap-4 mb-4">
-                <div className="flex items-center gap-3 flex-1">
-                  <div className="w-10 h-10 rounded-xl bg-yellow-500/15 border border-yellow-500/25 flex items-center justify-center shrink-0">
-                    <Trophy className="w-5 h-5 text-yellow-400" />
-                  </div>
-                  <div>
-                    <h2 className="text-xl md:text-2xl font-black leading-tight">Community Pool</h2>
-                    <p className="text-sm text-muted-foreground">Ежемесячная выплата из общего пула</p>
-                  </div>
                 </div>
-                <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-primary/10 border border-primary/25 text-primary text-xs font-bold whitespace-nowrap">
-                  10% от месячных инвестиций
+              </motion.div>
+            )}
+            </AnimatePresence>
+          </div>
+
+          {/* Accordion 3 — Community Pool */}
+          <div className="max-w-4xl mx-auto mb-3">
+            <button
+              onClick={() => setPoolOpen(o => !o)}
+              className="w-full flex items-center justify-between px-6 py-5 glass-card rounded-2xl border border-white/10 hover:border-yellow-500/30 transition-all duration-200 group focus:outline-none"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-yellow-500/15 border border-yellow-500/25 flex items-center justify-center shrink-0">
+                  <Trophy className="w-4 h-4 text-yellow-400" />
+                </div>
+                <div className="text-left">
+                  <span className="text-base sm:text-lg font-bold group-hover:text-yellow-400 transition-colors block">Community Pool</span>
+                  <span className="text-xs text-muted-foreground">10% от месячных инвестиций</span>
                 </div>
               </div>
-              <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                Каждый месяц 10% от всех поступивших инвестиций делятся между активными партнёрами через два под-пула. Вы получаете акции пропорционально обороту вашей команды.
-              </p>
-            </motion.div>
+              <motion.span animate={{ rotate: poolOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
+                <ChevronRight className="w-5 h-5 rotate-90 text-muted-foreground" />
+              </motion.span>
+            </button>
+            <AnimatePresence>
+            {poolOpen && (
+              <motion.div key="pool-content" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }} style={{ overflow: "hidden" }}>
+                <div className="mt-2">
+                <p className="text-sm md:text-base text-muted-foreground leading-relaxed px-2 py-3">
+                  Каждый месяц 10% от всех поступивших инвестиций делятся между активными партнёрами через два под-пула. Вы получаете акции пропорционально обороту вашей команды.
+                </p>
 
             {/* Mini Pool + Max Pool */}
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={staggerChildren}
@@ -1276,11 +1302,12 @@ export default function Landing() {
                 </div>
               ))}
             </motion.div>
-
+                </div>
+              </motion.div>
+            )}
+            </AnimatePresence>
           </div>
-          </motion.div>
-          )}
-          </AnimatePresence>
+
         </div>
       </section>
 
