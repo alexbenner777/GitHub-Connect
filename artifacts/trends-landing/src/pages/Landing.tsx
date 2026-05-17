@@ -4,6 +4,7 @@ import { Link } from "wouter";
 import { motion, useInView, useScroll, useTransform, AnimatePresence, useMotionValue, useSpring, type Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { InvestmentModal } from "@/components/InvestmentModal";
+import { LegalModal, DOCS, type DocId } from "@/components/LegalModal";
 import { SceneBackground } from "@/components/SceneBackground";
 import { DauCalculator } from "@/components/DauCalculator";
 import type { FullPackage } from "@/components/DauCalculator";
@@ -428,6 +429,7 @@ export default function Landing() {
   const [refOpen, setRefOpen] = useState(false);
   const [exampleOpen, setExampleOpen] = useState(false);
   const [poolOpen, setPoolOpen] = useState(false);
+  const [legalDoc, setLegalDoc] = useState<DocId | null>(null);
 
   const { scrollY: scrollYMotion } = useScroll();
   const heroY = useTransform(scrollYMotion, [0, 600], [0, -70]);
@@ -1553,6 +1555,47 @@ export default function Landing() {
       </section>
 
 
+      {/* DOCUMENTS */}
+      <section className="py-14 md:py-24 relative z-10">
+        <div className="container mx-auto px-4">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={fadeUp} className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border border-white/10 text-sm font-semibold text-primary mb-6">
+              <Shield className="w-4 h-4" /> {lang === 'ru' ? 'Правовая база' : 'Legal'}
+            </div>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">{t('docs_title')}</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t('docs_desc')}</p>
+          </motion.div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              { id: "terms" as DocId, icon: FileText, accent: "text-primary", border: "border-primary/20", bg: "bg-primary/10", title: t('doc_terms_title'), desc: t('doc_terms_desc') },
+              { id: "privacy" as DocId, icon: Lock, accent: "text-secondary", border: "border-secondary/20", bg: "bg-secondary/10", title: t('doc_privacy_title'), desc: t('doc_privacy_desc') },
+              { id: "risks" as DocId, icon: Shield, accent: "text-yellow-400", border: "border-yellow-400/20", bg: "bg-yellow-400/10", title: t('doc_risks_title'), desc: t('doc_risks_desc') },
+              { id: "offer" as DocId, icon: FileText, accent: "text-green-400", border: "border-green-400/20", bg: "bg-green-400/10", title: t('doc_offer_title'), desc: t('doc_offer_desc') },
+            ].map((doc, i) => (
+              <motion.button
+                key={doc.id}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+                variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: i * 0.08, ease: EASE } } }}
+                onClick={() => setLegalDoc(doc.id)}
+                className={`glass-card p-6 rounded-2xl border ${doc.border} text-left group hover:scale-[1.02] transition-transform duration-300 cursor-pointer w-full`}
+              >
+                <div className={`w-12 h-12 rounded-xl ${doc.bg} flex items-center justify-center ${doc.accent} mb-5 group-hover:scale-110 transition-transform`}>
+                  <doc.icon className="w-6 h-6" />
+                </div>
+                <h3 className="text-base font-bold mb-2">{doc.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-4">{doc.desc}</p>
+                <span className={`text-xs font-semibold ${doc.accent} flex items-center gap-1`}>
+                  {t('doc_read')} <ChevronRight className="w-3 h-3" />
+                </span>
+              </motion.button>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* FAQ */}
       <section className="py-24 relative z-10">
         <div className="container mx-auto px-4 max-w-3xl">
@@ -1647,8 +1690,26 @@ export default function Landing() {
             </div>
 
 
+            {/* Documents */}
+            <div className="space-y-5">
+              <h4 className="font-bold text-foreground tracking-wide">{t('footer_docs')}</h4>
+              <ul className="space-y-3">
+                {DOCS.map(doc => (
+                  <li key={doc.id}>
+                    <button
+                      onClick={() => setLegalDoc(doc.id)}
+                      className={`text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group text-left`}
+                    >
+                      <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all text-primary" />
+                      {lang === 'ru' ? doc.titleRu : doc.titleEn}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
             {/* Contacts & Legal */}
-            <div className="space-y-5 lg:col-start-4">
+            <div className="space-y-5">
               <h4 className="font-bold text-foreground tracking-wide">{t('footer_contacts')}</h4>
               <ul className="space-y-3">
                 <li>
@@ -1663,7 +1724,6 @@ export default function Landing() {
                   </Link>
                 </li>
               </ul>
-
             </div>
           </div>
         </div>
@@ -1688,6 +1748,7 @@ export default function Landing() {
       </div>
 
       <InvestmentModal isOpen={isInvestOpen} onClose={() => setIsInvestOpen(false)} defaultPackage={selectedPkg} />
+      <LegalModal docId={legalDoc} lang={lang} onClose={() => setLegalDoc(null)} />
     </div>
   );
 }
