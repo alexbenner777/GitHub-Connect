@@ -1619,69 +1619,41 @@ export default function Landing() {
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-white/8 pt-20 pb-8 relative overflow-hidden z-10">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
-
+      <footer className="border-t border-white/8 py-10 relative overflow-hidden z-10">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[200px] bg-primary/4 blur-[100px] rounded-full pointer-events-none" />
         <div className="container mx-auto px-4 relative z-10">
 
-          {/* Language switcher */}
-          <div className="flex justify-end mb-10">
-            <div className="flex items-center gap-1 p-1 glass-card rounded-xl border border-white/10">
-              <button
-                onClick={() => setLang('ru')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold transition-all ${lang === 'ru' ? 'bg-white/10 text-white' : 'text-muted-foreground hover:text-white'}`}
-              >
-                <span className="text-base leading-none">🇷🇺</span>
-                <span>RU</span>
-              </button>
-              <button
-                onClick={() => setLang('en')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold transition-all ${lang === 'en' ? 'bg-white/10 text-white' : 'text-muted-foreground hover:text-white'}`}
-              >
-                <span className="text-base leading-none">🇺🇸</span>
-                <span>EN</span>
-              </button>
+          {/* Brand row */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-8">
+            <div className="flex items-center gap-3">
+              <img src={logoPath} alt="Logo" className="w-8 h-8 object-contain" />
+              <span style={{ fontFamily: "'Manrope', sans-serif", fontWeight: 800 }} className="text-lg text-white">Trends</span>
+              <span className="hidden sm:block text-muted-foreground text-xs">·</span>
+              <span className="hidden sm:block text-xs text-muted-foreground">{lang === 'ru' ? 'Первый Reels-фид внутри Telegram' : 'First Reels feed inside Telegram'}</span>
+            </div>
+            <div className="flex gap-2">
+              <motion.a whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}
+                href="https://t.me/Trends_ibot" target="_blank" rel="noopener noreferrer"
+                className="w-8 h-8 rounded-lg glass-card border border-white/10 flex items-center justify-center text-primary hover:border-primary/40 transition-colors">
+                <Send className="w-3.5 h-3.5" />
+              </motion.a>
+              <motion.a whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}
+                href="https://t.me/Trends_ibot?startapp" target="_blank" rel="noopener noreferrer"
+                className="w-8 h-8 rounded-lg glass-card border border-white/10 flex items-center justify-center text-secondary hover:border-secondary/40 transition-colors">
+                <MessageCircle className="w-3.5 h-3.5" />
+              </motion.a>
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
-
-            {/* Brand */}
-            <div className="space-y-5 lg:col-span-1">
-              <div className="flex items-center gap-3">
-                <img src={logoPath} alt="Logo" className="w-9 h-9 object-contain" />
-                <span style={{ fontFamily: "'Manrope', sans-serif", fontWeight: 800 }} className="text-xl text-white">Trends</span>
-              </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {t('footer_brand_desc')}
-              </p>
-              <div className="flex gap-3">
-                <motion.a whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}
-                  href="https://t.me/Trends_ibot" target="_blank" rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-xl glass-card border border-white/10 flex items-center justify-center text-primary hover:border-primary/40 transition-colors">
-                  <Send className="w-4 h-4" />
-                </motion.a>
-                <motion.a whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}
-                  href="https://t.me/Trends_ibot?startapp" target="_blank" rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-xl glass-card border border-white/10 flex items-center justify-center text-secondary hover:border-secondary/40 transition-colors">
-                  <MessageCircle className="w-4 h-4" />
-                </motion.a>
-                <motion.a whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}
-                  href="https://t.me/Trends_ibot" target="_blank" rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-xl glass-card border border-white/10 flex items-center justify-center text-muted-foreground hover:border-white/25 transition-colors">
-                  <Globe className="w-4 h-4" />
-                </motion.a>
-              </div>
-            </div>
-
+          {/* Links row */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
             {/* Navigation */}
-            <div className="space-y-5">
-              <h4 className="font-bold text-foreground tracking-wide">{t('footer_nav')}</h4>
-              <ul className="space-y-3">
+            <div>
+              <h4 className="text-xs font-bold text-foreground uppercase tracking-widest mb-3 opacity-60">{t('footer_nav')}</h4>
+              <ul className="space-y-2">
                 {NAV_LINKS.map(link => (
                   <li key={link.href}>
-                    <a href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
-                      <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all text-primary" />
+                    <a href={link.href} className="text-xs text-muted-foreground hover:text-primary transition-colors">
                       {link.label}
                     </a>
                   </li>
@@ -1689,18 +1661,16 @@ export default function Landing() {
               </ul>
             </div>
 
-
             {/* Documents */}
-            <div className="space-y-5">
-              <h4 className="font-bold text-foreground tracking-wide">{t('footer_docs')}</h4>
-              <ul className="space-y-3">
+            <div>
+              <h4 className="text-xs font-bold text-foreground uppercase tracking-widest mb-3 opacity-60">{t('footer_docs')}</h4>
+              <ul className="space-y-2">
                 {DOCS.map(doc => (
                   <li key={doc.id}>
                     <button
                       onClick={() => setLegalDoc(doc.id)}
-                      className={`text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group text-left`}
+                      className="text-xs text-muted-foreground hover:text-primary transition-colors text-left"
                     >
-                      <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all text-primary" />
                       {lang === 'ru' ? doc.titleRu : doc.titleEn}
                     </button>
                   </li>
@@ -1708,19 +1678,19 @@ export default function Landing() {
               </ul>
             </div>
 
-            {/* Contacts & Legal */}
-            <div className="space-y-5">
-              <h4 className="font-bold text-foreground tracking-wide">{t('footer_contacts')}</h4>
-              <ul className="space-y-3">
+            {/* Contacts */}
+            <div>
+              <h4 className="text-xs font-bold text-foreground uppercase tracking-widest mb-3 opacity-60">{t('footer_contacts')}</h4>
+              <ul className="space-y-2">
                 <li>
                   <a href="https://t.me/Trends_ibot?startapp" target="_blank" rel="noopener noreferrer"
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">
-                    <ExternalLink className="w-3.5 h-3.5 text-primary" /> {t('footer_open_mvp')}
+                    className="text-xs text-muted-foreground hover:text-primary transition-colors flex items-center gap-1.5">
+                    <ExternalLink className="w-3 h-3 text-primary" /> {t('footer_open_mvp')}
                   </a>
                 </li>
                 <li>
-                  <Link href="/cabinet" className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">
-                    <Wallet className="w-3.5 h-3.5 text-primary" /> {t('footer_cabinet')}
+                  <Link href="/cabinet" className="text-xs text-muted-foreground hover:text-primary transition-colors flex items-center gap-1.5">
+                    <Wallet className="w-3 h-3 text-primary" /> {t('footer_cabinet')}
                   </Link>
                 </li>
               </ul>
