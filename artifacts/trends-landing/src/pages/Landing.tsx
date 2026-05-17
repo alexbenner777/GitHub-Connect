@@ -924,26 +924,6 @@ export default function Landing() {
             className="glass-card rounded-3xl p-8 md:p-10 border border-secondary/15 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 via-transparent to-primary/5 pointer-events-none" />
             <div className="relative z-10">
-
-              {/* 4 key stats */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10 pb-10 border-b border-white/8">
-                {([
-                  { val: t('token_stat1_val'), label: t('token_stat1_label'), color: "text-primary" },
-                  { val: t('token_stat2_val'), label: t('token_stat2_label'), color: "text-yellow-400" },
-                  { val: t('token_stat3_val'), label: t('token_stat3_label'), color: "text-green-400" },
-                  { val: t('token_stat4_val'), label: t('token_stat4_label'), color: "text-secondary" },
-                ] as const).map((s, i) => (
-                  <motion.div key={i}
-                    initial="hidden" whileInView="visible" viewport={{ once: true }}
-                    variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.45, delay: i * 0.08, ease: EASE } } }}
-                    className="text-center"
-                  >
-                    <div className={`text-2xl md:text-3xl font-black ${s.color} mb-1`}>{s.val}</div>
-                    <div className="text-xs text-muted-foreground leading-snug">{s.label}</div>
-                  </motion.div>
-                ))}
-              </div>
-
               <div className="flex flex-col md:flex-row gap-8">
                 <div className="flex-1">
                   <h3 className="text-2xl md:text-3xl font-black mb-3">{t('token_why_title')}</h3>
@@ -966,7 +946,7 @@ export default function Landing() {
                 </div>
 
                 {/* Compare + CTA panel */}
-                <div className="flex flex-col items-center justify-center gap-4 md:w-64 shrink-0">
+                <div className="flex flex-col items-center justify-center gap-4 md:w-72 shrink-0">
                   <div className="grid grid-cols-3 gap-2 w-full">
                     {["Notcoin", "Catizen", "Hamster"].map((name, i) => (
                       <div key={i} className="glass-card rounded-xl p-3 flex flex-col items-center gap-1.5 border border-white/8">
@@ -975,9 +955,9 @@ export default function Landing() {
                       </div>
                     ))}
                   </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-black text-secondary mb-1">$TRND</div>
-                    <p className="text-xs text-muted-foreground leading-relaxed">{t('token_compare_label')}</p>
+                  <div className="text-center px-2">
+                    <div className="text-lg font-black text-white mb-2">{t('token_compare_title')}</div>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{t('token_compare_desc')}</p>
                   </div>
                   <Button
                     onClick={() => { setSelectedPkg("founder3"); setIsInvestOpen(true); }}
