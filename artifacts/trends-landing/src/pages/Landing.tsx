@@ -685,6 +685,359 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* PROBLEM → SOLUTION */}
+      <section id="problem" className="py-14 md:py-24 relative z-10 scroll-mt-20">
+        <div className="container mx-auto px-4">
+          <motion.div initial="visible" animate="visible" variants={fadeUp}
+            className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('problem_title')}</h2>
+            <p className="text-lg text-muted-foreground">{t('problem_subtitle')}</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <motion.div initial="visible" animate="visible" variants={fadeLeft}
+              className="glass-card p-8 rounded-3xl">
+              <h3 className="text-2xl font-bold mb-8">{t('problem_now')}</h3>
+              <ul className="space-y-6">
+                {[
+                  t('problem_p1'),
+                  t('problem_p2'),
+                  t('problem_p3')
+                ].map((text, i) => (
+                  <li key={i} className="flex gap-4 items-start">
+                    <div className="w-8 h-8 rounded-full bg-destructive/10 flex items-center justify-center shrink-0 text-destructive mt-0.5">✕</div>
+                    <span className="text-lg text-muted-foreground">{text}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            <motion.div initial="visible" animate="visible" variants={fadeRight}
+              className="glass-card p-8 rounded-3xl">
+              <h3 className="text-2xl font-bold mb-8 text-primary">{t('solution_title')}</h3>
+              <ul className="space-y-6">
+                {[
+                  t('solution_s1'),
+                  t('solution_s2'),
+                  t('solution_s3')
+                ].map((text, i) => (
+                  <li key={i} className="flex gap-4 items-start">
+                    <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center shrink-0 text-primary mt-0.5"><ArrowRight className="w-4 h-4" /></div>
+                    <span className="text-lg font-medium">{text}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
+
+          <div className="mt-16 flex flex-wrap justify-center gap-8 text-center">
+            <div>
+              <div className="text-5xl font-black text-gradient mb-2">1B+</div>
+              <div className="text-muted-foreground font-medium uppercase tracking-wider">{t('stat_users')}</div>
+            </div>
+            <div className="w-px h-16 bg-white/10 hidden md:block" />
+            <div>
+              <div className="text-5xl font-black text-gradient mb-2">500M+</div>
+              <div className="text-muted-foreground font-medium uppercase tracking-wider">{t('stat_miniapps')}</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* WHAT IS TRENDS */}
+      <section className="py-14 md:py-24 relative z-10">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center max-w-6xl mx-auto">
+            <div className="space-y-6 order-2 lg:order-1 lg:pl-10">
+              <h2 className="text-4xl md:text-5xl font-black">
+                {t('what_title')} <span className="text-gradient">Trends</span>?
+              </h2>
+              <div className="space-y-5 leading-relaxed">
+                <p className="text-foreground font-semibold text-lg">{t('what_lead')}</p>
+                <div className="space-y-3">
+                  {[
+                    {
+                      label: t('what_users_label'),
+                      icon: Users,
+                      accent: "border-l-primary bg-primary/5",
+                      iconColor: "text-primary bg-primary/15",
+                      labelColor: "text-primary",
+                      text: t('what_users_text'),
+                    },
+                    {
+                      label: t('what_creators_label'),
+                      icon: PlaySquare,
+                      accent: "border-l-secondary bg-secondary/5",
+                      iconColor: "text-secondary bg-secondary/15",
+                      labelColor: "text-secondary",
+                      text: t('what_creators_text'),
+                    },
+                    {
+                      label: t('what_telegram_label'),
+                      icon: Send,
+                      accent: "border-l-blue-400 bg-blue-400/5",
+                      iconColor: "text-blue-400 bg-blue-400/15",
+                      labelColor: "text-blue-400",
+                      text: t('what_telegram_text'),
+                    },
+                  ].map(({ label, icon: Icon, accent, iconColor, labelColor, text }) => (
+                    <div key={label} className={`flex items-start gap-4 pl-4 pr-5 py-4 rounded-xl border-l-2 ${accent}`}>
+                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${iconColor}`}>
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <div className={`text-sm font-bold mb-1 ${labelColor}`}>{label}</div>
+                        <p className="text-muted-foreground text-sm leading-relaxed">{text}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="hidden">
+                <MagneticButton onClick={() => openInvest()} className="w-full sm:w-auto">
+                  <Button size="lg" className="h-14 px-8 text-lg btn-grad btn-3d font-bold rounded-xl pointer-events-none w-full sm:w-auto">
+                    Инвестировать в Trends <ArrowRight className="ml-2 w-5 h-5" />
+                  </Button>
+                </MagneticButton>
+              </div>
+            </div>
+            <motion.div initial="visible" animate="visible" variants={fadeRight}
+              className="relative flex justify-center items-center order-1 lg:order-2 mb-6 lg:mb-0">
+              {/* Glow behind phone */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="w-64 h-64 lg:w-56 lg:h-56 rounded-full bg-secondary/30 blur-[80px]" />
+              </div>
+              {/* iPhone + video composite */}
+              <div className="relative inline-flex justify-center items-center" style={{ height: 'clamp(520px, 95vw, 580px)' }}>
+                {/* Video clipped to phone screen area */}
+                <div className="absolute z-0 overflow-hidden rounded-[9%]"
+                  style={{ top: '1%', bottom: '1%', left: '8%', right: '8%' }}>
+                  <video
+                    autoPlay muted loop playsInline
+                    className="w-full h-full object-cover"
+                  >
+                    <source src={videoPath} type="video/mp4" />
+                    <source src={videoPath} type="video/quicktime" />
+                  </video>
+                </div>
+                {/* iPhone frame on top */}
+                <img src={iphonePath} alt="Trends App"
+                  className="relative z-10 h-full w-auto object-contain drop-shadow-2xl"
+                  style={{ mixBlendMode: 'multiply', transform: 'scaleX(1.06) scaleY(1.078) translateY(-3.6%)', transformOrigin: 'top center' }} />
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* MVP */}
+      <section className="py-14 md:py-24 relative z-10 [overflow-x:clip]">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            <motion.div initial="visible" animate="visible" variants={fadeLeft}
+              className="relative flex justify-center order-1 lg:order-1">
+              <img src={screen3Path} alt="Trends MVP" className="relative z-10 max-h-[480px] lg:max-h-[620px] w-full object-contain drop-shadow-2xl" />
+            </motion.div>
+
+            <div className="space-y-6 lg:space-y-8 order-2 lg:order-2">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 text-green-400 border border-green-500/20 font-bold tracking-wide">
+                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                {t('mvp_badge')}
+              </div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-tight">{t('mvp_title1')} <span className="text-gradient">{t('mvp_title2')}</span></h2>
+              <p className="text-base md:text-xl text-muted-foreground">{t('mvp_desc')}</p>
+
+              <div className="space-y-4">
+                {[
+                  t('mvp_f1'),
+                  t('mvp_f2'),
+                  t('mvp_f3'),
+                  t('mvp_f4'),
+                  t('mvp_f5')
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-4 glass-card p-4 rounded-2xl">
+                    <CheckCircle2 className="w-7 h-7 text-green-400 shrink-0" />
+                    <span className="font-medium">{item}</span>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PRODUCT FULL */}
+      <section className="py-16 relative z-10">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">{t('product_title')} <span className="text-gradient">Trends</span></h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t('product_desc')}</p>
+          </div>
+
+          <motion.div initial="visible" animate="visible" variants={fadeScale}>
+            <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_60px_rgba(0,212,255,0.08)]">
+              <img src={screen2Path} alt="Продукт Trends" className="w-full object-cover" />
+            </div>
+            <div className="mt-10 flex justify-center">
+              <MagneticButton className="w-auto">
+                <a href="https://t.me/Trends_ibot?startapp" target="_blank" rel="noopener noreferrer">
+                  <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.93 }}>
+                    <Button size="lg" className="h-14 px-10 text-lg btn-grad btn-3d font-bold rounded-xl pointer-events-none">
+                      <ExternalLink className="mr-2 w-5 h-5" />
+                      {t('product_btn')}
+                    </Button>
+                  </motion.div>
+                </a>
+              </MagneticButton>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* MONETIZATION */}
+      <section id="monetization" className="py-14 md:py-24 relative z-10 scroll-mt-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('mono_title')}</h2>
+            <p className="text-lg text-muted-foreground">{t('mono_desc')}</p>
+          </div>
+
+          <MonetizationCards t={t} />
+        </div>
+      </section>
+
+      {/* 5 INVESTOR ADVANTAGES */}
+      <section id="investors" className="py-16 md:py-24 lg:py-32 relative z-10 [overflow-x:clip] scroll-mt-20">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center max-w-4xl mx-auto mb-10 md:mb-16 lg:mb-20">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6">{t('adv_title')}</h2>
+            <p className="text-base md:text-xl text-muted-foreground">{t('adv_desc')}</p>
+          </div>
+
+          <AdvantagesGrid openInvest={openInvest} advantages={[
+            { title: t('adv1_title'), desc: t('adv1_desc'), color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-secondary/10", Icon: DollarSign, label: t('adv1_label'), extra: [t('adv1_x1'), t('adv1_x2'), t('adv1_x3'), t('adv1_x4')] },
+            { title: t('adv2_title'), desc: t('adv2_desc'), color: "text-secondary", gradFrom: "from-secondary/20", gradTo: "to-primary/5", Icon: TrendingUp, label: t('adv2_label'), extra: [t('adv2_x1'), t('adv2_x2'), t('adv2_x3'), t('adv2_x4')] },
+            { title: t('adv3_title'), desc: t('adv3_desc'), color: "text-green-400", gradFrom: "from-green-500/20", gradTo: "to-teal-500/5", Icon: Network, label: t('adv3_label'), extra: [t('adv3_x1'), t('adv3_x2'), t('adv3_x3'), t('adv3_x4'), t('adv3_x5')] },
+            { title: t('adv4_title'), desc: t('adv4_desc'), color: "text-yellow-400", gradFrom: "from-yellow-500/20", gradTo: "to-orange-500/5", Icon: Coins, label: t('adv4_label'), extra: [t('adv4_x1'), t('adv4_x2'), t('adv4_x3'), t('adv4_x4'), t('adv4_x5')] },
+            { title: t('adv5_title'), desc: t('adv5_desc'), color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-purple-500/10", Icon: Crown, label: t('adv5_label'), extra: [t('adv5_x1'), t('adv5_x2'), t('adv5_x3'), t('adv5_x4'), t('adv5_x5')] },
+          ]} />
+        </div>
+      </section>
+
+      {/* TOKEN ATTENTION ECONOMY */}
+      <section className="py-14 md:py-28 relative z-10 overflow-hidden">
+        {/* Background glow */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full blur-[160px]" style={{ background: "radial-gradient(ellipse, rgba(123,94,255,0.12) 0%, rgba(0,212,255,0.08) 60%, transparent 100%)" }} />
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+
+          {/* Header */}
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={fadeUp} className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-secondary/30 bg-secondary/10 text-secondary text-sm font-bold mb-6">
+              <Coins className="w-4 h-4" /> {t('token_section_badge')}
+            </div>
+            <h2 className="text-3xl md:text-4xl lg:text-6xl font-black mb-5 leading-tight">
+              {t('token_section_title')}
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t('token_section_desc')}</p>
+          </motion.div>
+
+          {/* 3 earn cards */}
+          <div className="grid md:grid-cols-3 gap-5 mb-10">
+            {[
+              {
+                icon: Users2, color: "text-primary", bg: "bg-primary/10", border: "border-primary/20",
+                title: t('token_viewers_title'), desc: t('token_viewers_desc'), num: "01",
+              },
+              {
+                icon: Star, color: "text-secondary", bg: "bg-secondary/10", border: "border-secondary/20",
+                title: t('token_creators_title'), desc: t('token_creators_desc'), num: "02",
+              },
+              {
+                icon: Network, color: "text-green-400", bg: "bg-green-400/10", border: "border-green-400/20",
+                title: t('token_friends_title'), desc: t('token_friends_desc'), num: "03",
+              },
+            ].map((card, i) => (
+              <motion.div
+                key={i}
+                initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}
+                variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: i * 0.1, ease: EASE } } }}
+                className={`glass-card p-7 rounded-3xl border ${card.border} relative overflow-hidden`}
+              >
+                <div className="absolute top-4 right-5 text-5xl font-black opacity-5 select-none">{card.num}</div>
+                <div className={`w-12 h-12 rounded-2xl ${card.bg} flex items-center justify-center ${card.color} mb-5`}>
+                  <card.icon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-black mb-3">{card.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Viral growth block */}
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeUp}
+            className="glass-card rounded-3xl p-8 md:p-10 border border-secondary/15 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 via-transparent to-primary/5 pointer-events-none" />
+            <div className="relative z-10">
+              <div className="flex flex-col md:flex-row gap-8">
+                <div className="flex-1">
+                  <h3 className="text-2xl md:text-3xl font-black mb-3">{t('token_viral_title')}</h3>
+                  <p className="text-muted-foreground mb-6 leading-relaxed">{t('token_viral_desc')}</p>
+
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    {[
+                      t('token_feature1'), t('token_feature2'),
+                      t('token_feature3'), t('token_feature4'),
+                      t('token_feature5'), t('token_feature6'),
+                    ].map((feat, i) => (
+                      <div key={i} className="flex items-start gap-2.5">
+                        <div className="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center shrink-0 mt-0.5">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-secondary" />
+                        </div>
+                        <span className="text-sm text-muted-foreground leading-relaxed">{feat}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Compare badge */}
+                <div className="flex flex-col items-center justify-center gap-4 md:w-64 shrink-0">
+                  <div className="grid grid-cols-3 gap-2 w-full">
+                    {["Notcoin", "Catizen", "Hamster"].map((name, i) => (
+                      <div key={i} className="glass-card rounded-xl p-3 flex flex-col items-center gap-1.5 border border-white/8">
+                        <Trophy className={`w-5 h-5 ${i === 0 ? 'text-yellow-400' : i === 1 ? 'text-primary' : 'text-secondary'}`} />
+                        <span className="text-xs font-bold text-center leading-tight">{name}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-black text-secondary mb-1">$TRND</div>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{t('token_compare_label')}</p>
+                  </div>
+                  <Button
+                    onClick={() => { setSelectedPkg("founder3"); setIsInvestOpen(true); }}
+                    className="w-full rounded-xl font-bold"
+                    style={{ background: "linear-gradient(135deg, #7B5EFF, #00D4FF)" }}
+                  >
+                    {t('token_cta')} <ArrowRight className="w-4 h-4 ml-1" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* DAU CALCULATOR + INVESTMENT PACKAGES (merged) */}
+      <DauCalculator
+        onInvest={openInvest}
+        onSelectPackage={openInvest}
+        fullPackages={PACKAGES_DATA}
+      />
+
       {/* FUNDRAISING ROADMAP — 2 rounds */}
       <section className="py-14 md:py-20 relative z-10">
         <div className="container mx-auto px-4">
@@ -882,253 +1235,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
-      {/* WHAT IS TRENDS */}
-      <section className="py-14 md:py-24 relative z-10">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center max-w-6xl mx-auto">
-            <div className="space-y-6 order-2 lg:order-1 lg:pl-10">
-              <h2 className="text-4xl md:text-5xl font-black">
-                {t('what_title')} <span className="text-gradient">Trends</span>?
-              </h2>
-              <div className="space-y-5 leading-relaxed">
-                <p className="text-foreground font-semibold text-lg">{t('what_lead')}</p>
-                <div className="space-y-3">
-                  {[
-                    {
-                      label: t('what_users_label'),
-                      icon: Users,
-                      accent: "border-l-primary bg-primary/5",
-                      iconColor: "text-primary bg-primary/15",
-                      labelColor: "text-primary",
-                      text: t('what_users_text'),
-                    },
-                    {
-                      label: t('what_creators_label'),
-                      icon: PlaySquare,
-                      accent: "border-l-secondary bg-secondary/5",
-                      iconColor: "text-secondary bg-secondary/15",
-                      labelColor: "text-secondary",
-                      text: t('what_creators_text'),
-                    },
-                    {
-                      label: t('what_telegram_label'),
-                      icon: Send,
-                      accent: "border-l-blue-400 bg-blue-400/5",
-                      iconColor: "text-blue-400 bg-blue-400/15",
-                      labelColor: "text-blue-400",
-                      text: t('what_telegram_text'),
-                    },
-                  ].map(({ label, icon: Icon, accent, iconColor, labelColor, text }) => (
-                    <div key={label} className={`flex items-start gap-4 pl-4 pr-5 py-4 rounded-xl border-l-2 ${accent}`}>
-                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${iconColor}`}>
-                        <Icon className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <div className={`text-sm font-bold mb-1 ${labelColor}`}>{label}</div>
-                        <p className="text-muted-foreground text-sm leading-relaxed">{text}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="hidden">
-                <MagneticButton onClick={() => openInvest()} className="w-full sm:w-auto">
-                  <Button size="lg" className="h-14 px-8 text-lg btn-grad btn-3d font-bold rounded-xl pointer-events-none w-full sm:w-auto">
-                    Инвестировать в Trends <ArrowRight className="ml-2 w-5 h-5" />
-                  </Button>
-                </MagneticButton>
-              </div>
-            </div>
-            <motion.div initial="visible" animate="visible" variants={fadeRight}
-              className="relative flex justify-center items-center order-1 lg:order-2 mb-6 lg:mb-0">
-              {/* Glow behind phone */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-64 h-64 lg:w-56 lg:h-56 rounded-full bg-secondary/30 blur-[80px]" />
-              </div>
-              {/* iPhone + video composite */}
-              <div className="relative inline-flex justify-center items-center" style={{ height: 'clamp(520px, 95vw, 580px)' }}>
-                {/* Video clipped to phone screen area */}
-                <div className="absolute z-0 overflow-hidden rounded-[9%]"
-                  style={{ top: '1%', bottom: '1%', left: '8%', right: '8%' }}>
-                  <video
-                    autoPlay muted loop playsInline
-                    className="w-full h-full object-cover"
-                  >
-                    <source src={videoPath} type="video/mp4" />
-                    <source src={videoPath} type="video/quicktime" />
-                  </video>
-                </div>
-                {/* iPhone frame on top */}
-                <img src={iphonePath} alt="Trends App"
-                  className="relative z-10 h-full w-auto object-contain drop-shadow-2xl"
-                  style={{ mixBlendMode: 'multiply', transform: 'scaleX(1.06) scaleY(1.078) translateY(-3.6%)', transformOrigin: 'top center' }} />
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* PROBLEM → SOLUTION */}
-      <section id="problem" className="py-14 md:py-24 relative z-10 scroll-mt-20">
-        <div className="container mx-auto px-4">
-          <motion.div initial="visible" animate="visible" variants={fadeUp}
-            className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('problem_title')}</h2>
-            <p className="text-lg text-muted-foreground">{t('problem_subtitle')}</p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            <motion.div initial="visible" animate="visible" variants={fadeLeft}
-              className="glass-card p-8 rounded-3xl">
-              <h3 className="text-2xl font-bold mb-8">{t('problem_now')}</h3>
-              <ul className="space-y-6">
-                {[
-                  t('problem_p1'),
-                  t('problem_p2'),
-                  t('problem_p3')
-                ].map((text, i) => (
-                  <li key={i} className="flex gap-4 items-start">
-                    <div className="w-8 h-8 rounded-full bg-destructive/10 flex items-center justify-center shrink-0 text-destructive mt-0.5">✕</div>
-                    <span className="text-lg text-muted-foreground">{text}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-
-            <motion.div initial="visible" animate="visible" variants={fadeRight}
-              className="glass-card p-8 rounded-3xl">
-              <h3 className="text-2xl font-bold mb-8 text-primary">{t('solution_title')}</h3>
-              <ul className="space-y-6">
-                {[
-                  t('solution_s1'),
-                  t('solution_s2'),
-                  t('solution_s3')
-                ].map((text, i) => (
-                  <li key={i} className="flex gap-4 items-start">
-                    <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center shrink-0 text-primary mt-0.5"><ArrowRight className="w-4 h-4" /></div>
-                    <span className="text-lg font-medium">{text}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          </div>
-
-          <div className="mt-16 flex flex-wrap justify-center gap-8 text-center">
-            <div>
-              <div className="text-5xl font-black text-gradient mb-2">1B+</div>
-              <div className="text-muted-foreground font-medium uppercase tracking-wider">{t('stat_users')}</div>
-            </div>
-            <div className="w-px h-16 bg-white/10 hidden md:block" />
-            <div>
-              <div className="text-5xl font-black text-gradient mb-2">500M+</div>
-              <div className="text-muted-foreground font-medium uppercase tracking-wider">{t('stat_miniapps')}</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* MVP */}
-      <section className="py-14 md:py-24 relative z-10 [overflow-x:clip]">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            <motion.div initial="visible" animate="visible" variants={fadeLeft}
-              className="relative flex justify-center order-1 lg:order-1">
-              <img src={screen3Path} alt="Trends MVP" className="relative z-10 max-h-[480px] lg:max-h-[620px] w-full object-contain drop-shadow-2xl" />
-            </motion.div>
-
-            <div className="space-y-6 lg:space-y-8 order-2 lg:order-2">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 text-green-400 border border-green-500/20 font-bold tracking-wide">
-                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                {t('mvp_badge')}
-              </div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-tight">{t('mvp_title1')} <span className="text-gradient">{t('mvp_title2')}</span></h2>
-              <p className="text-base md:text-xl text-muted-foreground">{t('mvp_desc')}</p>
-
-              <div className="space-y-4">
-                {[
-                  t('mvp_f1'),
-                  t('mvp_f2'),
-                  t('mvp_f3'),
-                  t('mvp_f4'),
-                  t('mvp_f5')
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-4 glass-card p-4 rounded-2xl">
-                    <CheckCircle2 className="w-7 h-7 text-green-400 shrink-0" />
-                    <span className="font-medium">{item}</span>
-                  </div>
-                ))}
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* PRODUCT FULL */}
-      <section className="py-16 relative z-10">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">{t('product_title')} <span className="text-gradient">Trends</span></h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t('product_desc')}</p>
-          </div>
-
-          <motion.div initial="visible" animate="visible" variants={fadeScale}>
-            <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_60px_rgba(0,212,255,0.08)]">
-              <img src={screen2Path} alt="Продукт Trends" className="w-full object-cover" />
-            </div>
-            <div className="mt-10 flex justify-center">
-              <MagneticButton className="w-auto">
-                <a href="https://t.me/Trends_ibot?startapp" target="_blank" rel="noopener noreferrer">
-                  <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.93 }}>
-                    <Button size="lg" className="h-14 px-10 text-lg btn-grad btn-3d font-bold rounded-xl pointer-events-none">
-                      <ExternalLink className="mr-2 w-5 h-5" />
-                      {t('product_btn')}
-                    </Button>
-                  </motion.div>
-                </a>
-              </MagneticButton>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* MONETIZATION */}
-      <section id="monetization" className="py-14 md:py-24 relative z-10 scroll-mt-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('mono_title')}</h2>
-            <p className="text-lg text-muted-foreground">{t('mono_desc')}</p>
-          </div>
-
-          <MonetizationCards t={t} />
-        </div>
-      </section>
-
-      {/* 5 INVESTOR ADVANTAGES */}
-      <section id="investors" className="py-16 md:py-24 lg:py-32 relative z-10 [overflow-x:clip] scroll-mt-20">
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center max-w-4xl mx-auto mb-10 md:mb-16 lg:mb-20">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6">{t('adv_title')}</h2>
-            <p className="text-base md:text-xl text-muted-foreground">{t('adv_desc')}</p>
-          </div>
-
-          <AdvantagesGrid openInvest={openInvest} advantages={[
-            { title: t('adv1_title'), desc: t('adv1_desc'), color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-secondary/10", Icon: DollarSign, label: t('adv1_label'), extra: [t('adv1_x1'), t('adv1_x2'), t('adv1_x3'), t('adv1_x4')] },
-            { title: t('adv2_title'), desc: t('adv2_desc'), color: "text-secondary", gradFrom: "from-secondary/20", gradTo: "to-primary/5", Icon: TrendingUp, label: t('adv2_label'), extra: [t('adv2_x1'), t('adv2_x2'), t('adv2_x3'), t('adv2_x4')] },
-            { title: t('adv3_title'), desc: t('adv3_desc'), color: "text-green-400", gradFrom: "from-green-500/20", gradTo: "to-teal-500/5", Icon: Network, label: t('adv3_label'), extra: [t('adv3_x1'), t('adv3_x2'), t('adv3_x3'), t('adv3_x4'), t('adv3_x5')] },
-            { title: t('adv4_title'), desc: t('adv4_desc'), color: "text-yellow-400", gradFrom: "from-yellow-500/20", gradTo: "to-orange-500/5", Icon: Coins, label: t('adv4_label'), extra: [t('adv4_x1'), t('adv4_x2'), t('adv4_x3'), t('adv4_x4'), t('adv4_x5')] },
-            { title: t('adv5_title'), desc: t('adv5_desc'), color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-purple-500/10", Icon: Crown, label: t('adv5_label'), extra: [t('adv5_x1'), t('adv5_x2'), t('adv5_x3'), t('adv5_x4'), t('adv5_x5')] },
-          ]} />
-        </div>
-      </section>
-
-      {/* DAU CALCULATOR + INVESTMENT PACKAGES (merged) */}
-      <DauCalculator
-        onInvest={openInvest}
-        onSelectPackage={openInvest}
-        fullPackages={PACKAGES_DATA}
-      />
 
       {/* MLM + COMMUNITY POOL — collapsible */}
       <section className="py-14 md:py-24 relative z-10 [overflow-x:clip]">
@@ -1481,112 +1587,6 @@ export default function Landing() {
             </AnimatePresence>
           </div>
 
-        </div>
-      </section>
-
-      {/* TOKEN ATTENTION ECONOMY */}
-      <section className="py-14 md:py-28 relative z-10 overflow-hidden">
-        {/* Background glow */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full blur-[160px]" style={{ background: "radial-gradient(ellipse, rgba(123,94,255,0.12) 0%, rgba(0,212,255,0.08) 60%, transparent 100%)" }} />
-        </div>
-
-        <div className="container mx-auto px-4 relative z-10">
-
-          {/* Header */}
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={fadeUp} className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-secondary/30 bg-secondary/10 text-secondary text-sm font-bold mb-6">
-              <Coins className="w-4 h-4" /> {t('token_section_badge')}
-            </div>
-            <h2 className="text-3xl md:text-4xl lg:text-6xl font-black mb-5 leading-tight">
-              {t('token_section_title')}
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t('token_section_desc')}</p>
-          </motion.div>
-
-          {/* 3 earn cards */}
-          <div className="grid md:grid-cols-3 gap-5 mb-10">
-            {[
-              {
-                icon: Users2, color: "text-primary", bg: "bg-primary/10", border: "border-primary/20",
-                title: t('token_viewers_title'), desc: t('token_viewers_desc'), num: "01",
-              },
-              {
-                icon: Star, color: "text-secondary", bg: "bg-secondary/10", border: "border-secondary/20",
-                title: t('token_creators_title'), desc: t('token_creators_desc'), num: "02",
-              },
-              {
-                icon: Network, color: "text-green-400", bg: "bg-green-400/10", border: "border-green-400/20",
-                title: t('token_friends_title'), desc: t('token_friends_desc'), num: "03",
-              },
-            ].map((card, i) => (
-              <motion.div
-                key={i}
-                initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}
-                variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: i * 0.1, ease: EASE } } }}
-                className={`glass-card p-7 rounded-3xl border ${card.border} relative overflow-hidden`}
-              >
-                <div className="absolute top-4 right-5 text-5xl font-black opacity-5 select-none">{card.num}</div>
-                <div className={`w-12 h-12 rounded-2xl ${card.bg} flex items-center justify-center ${card.color} mb-5`}>
-                  <card.icon className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-black mb-3">{card.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Viral growth block */}
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeUp}
-            className="glass-card rounded-3xl p-8 md:p-10 border border-secondary/15 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 via-transparent to-primary/5 pointer-events-none" />
-            <div className="relative z-10">
-              <div className="flex flex-col md:flex-row gap-8">
-                <div className="flex-1">
-                  <h3 className="text-2xl md:text-3xl font-black mb-3">{t('token_viral_title')}</h3>
-                  <p className="text-muted-foreground mb-6 leading-relaxed">{t('token_viral_desc')}</p>
-
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    {[
-                      t('token_feature1'), t('token_feature2'),
-                      t('token_feature3'), t('token_feature4'),
-                      t('token_feature5'), t('token_feature6'),
-                    ].map((feat, i) => (
-                      <div key={i} className="flex items-start gap-2.5">
-                        <div className="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center shrink-0 mt-0.5">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-secondary" />
-                        </div>
-                        <span className="text-sm text-muted-foreground leading-relaxed">{feat}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Compare badge */}
-                <div className="flex flex-col items-center justify-center gap-4 md:w-64 shrink-0">
-                  <div className="grid grid-cols-3 gap-2 w-full">
-                    {["Notcoin", "Catizen", "Hamster"].map((name, i) => (
-                      <div key={i} className="glass-card rounded-xl p-3 flex flex-col items-center gap-1.5 border border-white/8">
-                        <Trophy className={`w-5 h-5 ${i === 0 ? 'text-yellow-400' : i === 1 ? 'text-primary' : 'text-secondary'}`} />
-                        <span className="text-xs font-bold text-center leading-tight">{name}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-black text-secondary mb-1">$TRND</div>
-                    <p className="text-xs text-muted-foreground leading-relaxed">{t('token_compare_label')}</p>
-                  </div>
-                  <Button
-                    onClick={() => { setSelectedPkg("founder3"); setIsInvestOpen(true); }}
-                    className="w-full rounded-xl font-bold"
-                    style={{ background: "linear-gradient(135deg, #7B5EFF, #00D4FF)" }}
-                  >
-                    {t('token_cta')} <ArrowRight className="w-4 h-4 ml-1" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </motion.div>
         </div>
       </section>
 
