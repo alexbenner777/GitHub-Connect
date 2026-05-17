@@ -307,10 +307,10 @@ export function DauCalculator({
                               {topItems.map((item, i) => (
                                 <li key={i} className="flex items-start gap-2">
                                   <span className="text-sm leading-none mt-0.5 shrink-0">
-                                    {item.match(/^[\u{1F300}-\u{1FFFF}]/u)?.[0] ?? "•"}
+                                    {item.match(/^[\u{1F000}-\u{1FFFF}\u{2300}-\u{27BF}\u{2B00}-\u{2BFF}]/u)?.[0] ?? "•"}
                                   </span>
                                   <span className="text-xs text-muted-foreground leading-snug">
-                                    {item.replace(/^[\u{1F300}-\u{1FFFF}\s]+/u, "").trim()}
+                                    {item.replace(/^[\u{1F000}-\u{1FFFF}\u{2300}-\u{27BF}\u{2B00}-\u{2BFF}\s]+/u, "").trim()}
                                   </span>
                                 </li>
                               ))}
@@ -341,10 +341,10 @@ export function DauCalculator({
                                       {cat.items.map((item, i) => (
                                         <li key={i} className="flex items-start gap-2">
                                           <span className="text-sm leading-none mt-0.5 shrink-0">
-                                            {item.match(/^[\u{1F300}-\u{1FFFF}]/u)?.[0] ?? "✓"}
+                                            {item.match(/^[\u{1F000}-\u{1FFFF}\u{2300}-\u{27BF}\u{2B00}-\u{2BFF}]/u)?.[0] ?? "•"}
                                           </span>
                                           <span className="text-xs text-muted-foreground leading-relaxed">
-                                            {item.replace(/^[\u{1F300}-\u{1FFFF}\s]+/u, "").trim()}
+                                            {item.replace(/^[\u{1F000}-\u{1FFFF}\u{2300}-\u{27BF}\u{2B00}-\u{2BFF}\s]+/u, "").trim()}
                                           </span>
                                         </li>
                                       ))}
