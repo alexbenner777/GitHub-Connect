@@ -578,6 +578,93 @@ export default function Landing() {
         </AnimatePresence>
       </nav>
 
+      {/* HERO */}
+      <section className="pt-24 pb-10 lg:pt-44 lg:pb-28 px-4 relative z-10">
+        <div className="container mx-auto relative z-10">
+        <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
+
+          {/* MOBILE BADGES — above image on mobile */}
+          <div className="flex flex-wrap gap-3 mt-2 mb-3 lg:hidden order-1">
+            <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">{t('badge_preseed')}</div>
+            <div className="px-3 py-1 rounded-full border text-sm font-bold" style={{ background: "rgba(123,94,255,0.25)", borderColor: "#7B5EFF", color: "#c4b0ff", boxShadow: "0 0 14px 2px rgba(123,94,255,0.45)", textShadow: "0 0 8px #7B5EFF" }}>{t('badge_goal')}</div>
+            <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold flex items-center gap-1">
+              <CheckCircle2 className="w-4 h-4" /> {t('badge_mvp')}
+            </div>
+          </div>
+
+          {/* IMAGE — second on mobile, second on desktop */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85, y: 40 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 1, ease: EASE, delay: 0.2 }}
+            style={{ y: heroY }}
+            className="relative flex items-center justify-center order-2 lg:order-2 mb-2 lg:mb-0"
+          >
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <motion.div
+                animate={{ scale: [1, 1.12, 1], opacity: [0.3, 0.55, 0.3] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="w-48 h-48 lg:w-64 lg:h-64 rounded-full bg-primary blur-[80px]"
+              />
+            </div>
+            <motion.img
+              src={screen1Path}
+              alt="Trends App"
+              animate={{ y: [0, -14, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              className="relative z-10 max-h-[80vh] sm:max-h-[75vh] lg:max-h-[85vh] w-full object-contain drop-shadow-2xl"
+            />
+          </motion.div>
+
+
+          {/* TEXT — third on mobile, first on desktop */}
+          <motion.div initial="hidden" animate="visible" variants={fadeIn} className="space-y-6 lg:space-y-8 order-3 lg:order-1">
+            <div className="hidden lg:flex flex-wrap gap-3">
+              <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">{t('badge_preseed')}</div>
+              <div className="px-3 py-1 rounded-full border text-sm font-bold" style={{ background: "rgba(123,94,255,0.25)", borderColor: "#7B5EFF", color: "#c4b0ff", boxShadow: "0 0 14px 2px rgba(123,94,255,0.45)", textShadow: "0 0 8px #7B5EFF" }}>{t('badge_goal')}</div>
+              <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold flex items-center gap-1">
+                <CheckCircle2 className="w-4 h-4" /> {t('badge_mvp')}
+              </div>
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black leading-[1.1] tracking-tight">
+              {t('hero_title1')} <span className="text-gradient">Reels</span> {t('hero_title2')}
+            </h1>
+
+            <p className="text-xl text-muted-foreground leading-relaxed max-w-xl">
+              {t('hero_subtitle')}
+            </p>
+
+            <div className="glass-card p-4 rounded-2xl flex items-start gap-3">
+              <DollarSign className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                <span className="text-foreground font-semibold">{t('hero_goal_label')}</span>{" "}
+                {t('hero_goal_desc')}
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 pt-2">
+              <MagneticButton onClick={() => openInvest()} className="w-full sm:w-auto">
+                <Button size="lg" className="h-14 px-8 text-lg btn-grad btn-3d font-bold rounded-xl pointer-events-none w-full">
+                  {t('hero_btn_invest')} <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </MagneticButton>
+              <Link href="/cabinet" className="w-full sm:w-auto">
+                <MagneticButton className="w-full">
+                  <Button variant="outline" size="lg"
+                    className="h-14 px-8 text-lg border-primary/30 hover:bg-primary/10 hover:border-primary/50 rounded-xl w-full btn-3d-outline pointer-events-none">
+                    {t('hero_btn_cabinet')}
+                  </Button>
+                </MagneticButton>
+              </Link>
+            </div>
+
+          </motion.div>
+
+        </div>
+        </div>
+      </section>
+
       {/* MINIAPP STATS STRIP */}
       <section className="py-6 relative z-10">
         <div className="container mx-auto px-4">
@@ -777,93 +864,6 @@ export default function Landing() {
 
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* HERO */}
-      <section className="pt-24 pb-10 lg:pt-44 lg:pb-28 px-4 relative z-10">
-        <div className="container mx-auto relative z-10">
-        <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
-
-          {/* MOBILE BADGES — above image on mobile */}
-          <div className="flex flex-wrap gap-3 mt-2 mb-3 lg:hidden order-1">
-            <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">{t('badge_preseed')}</div>
-            <div className="px-3 py-1 rounded-full border text-sm font-bold" style={{ background: "rgba(123,94,255,0.25)", borderColor: "#7B5EFF", color: "#c4b0ff", boxShadow: "0 0 14px 2px rgba(123,94,255,0.45)", textShadow: "0 0 8px #7B5EFF" }}>{t('badge_goal')}</div>
-            <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold flex items-center gap-1">
-              <CheckCircle2 className="w-4 h-4" /> {t('badge_mvp')}
-            </div>
-          </div>
-
-          {/* IMAGE — second on mobile, second on desktop */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.85, y: 40 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 1, ease: EASE, delay: 0.2 }}
-            style={{ y: heroY }}
-            className="relative flex items-center justify-center order-2 lg:order-2 mb-2 lg:mb-0"
-          >
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <motion.div
-                animate={{ scale: [1, 1.12, 1], opacity: [0.3, 0.55, 0.3] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="w-48 h-48 lg:w-64 lg:h-64 rounded-full bg-primary blur-[80px]"
-              />
-            </div>
-            <motion.img
-              src={screen1Path}
-              alt="Trends App"
-              animate={{ y: [0, -14, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="relative z-10 max-h-[80vh] sm:max-h-[75vh] lg:max-h-[85vh] w-full object-contain drop-shadow-2xl"
-            />
-          </motion.div>
-
-
-          {/* TEXT — third on mobile, first on desktop */}
-          <motion.div initial="hidden" animate="visible" variants={fadeIn} className="space-y-6 lg:space-y-8 order-3 lg:order-1">
-            <div className="hidden lg:flex flex-wrap gap-3">
-              <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">{t('badge_preseed')}</div>
-              <div className="px-3 py-1 rounded-full border text-sm font-bold" style={{ background: "rgba(123,94,255,0.25)", borderColor: "#7B5EFF", color: "#c4b0ff", boxShadow: "0 0 14px 2px rgba(123,94,255,0.45)", textShadow: "0 0 8px #7B5EFF" }}>{t('badge_goal')}</div>
-              <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold flex items-center gap-1">
-                <CheckCircle2 className="w-4 h-4" /> {t('badge_mvp')}
-              </div>
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black leading-[1.1] tracking-tight">
-              {t('hero_title1')} <span className="text-gradient">Reels</span> {t('hero_title2')}
-            </h1>
-
-            <p className="text-xl text-muted-foreground leading-relaxed max-w-xl">
-              {t('hero_subtitle')}
-            </p>
-
-            <div className="glass-card p-4 rounded-2xl flex items-start gap-3">
-              <DollarSign className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                <span className="text-foreground font-semibold">{t('hero_goal_label')}</span>{" "}
-                {t('hero_goal_desc')}
-              </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
-              <MagneticButton onClick={() => openInvest()} className="w-full sm:w-auto">
-                <Button size="lg" className="h-14 px-8 text-lg btn-grad btn-3d font-bold rounded-xl pointer-events-none w-full">
-                  {t('hero_btn_invest')} <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </MagneticButton>
-              <Link href="/cabinet" className="w-full sm:w-auto">
-                <MagneticButton className="w-full">
-                  <Button variant="outline" size="lg"
-                    className="h-14 px-8 text-lg border-primary/30 hover:bg-primary/10 hover:border-primary/50 rounded-xl w-full btn-3d-outline pointer-events-none">
-                    {t('hero_btn_cabinet')}
-                  </Button>
-                </MagneticButton>
-              </Link>
-            </div>
-
-          </motion.div>
-
-        </div>
         </div>
       </section>
 
