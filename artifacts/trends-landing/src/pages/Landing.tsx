@@ -974,11 +974,11 @@ export default function Landing() {
                   </div>
                   <div className="text-center px-2">
                     <div className="text-lg font-black text-white mb-2">{t('token_compare_title')}</div>
-                    <p className="text-xs text-muted-foreground leading-relaxed">{t('token_compare_desc')}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{t('token_compare_desc')}</p>
                   </div>
                   <Button
                     onClick={() => { setSelectedPkg("founder3"); setIsInvestOpen(true); }}
-                    className="w-full rounded-xl font-bold"
+                    className="w-full rounded-xl font-bold text-white"
                     style={{ background: "linear-gradient(135deg, #7B5EFF, #00D4FF)" }}
                   >
                     {t('token_cta')} <ArrowRight className="w-4 h-4 ml-1" />
