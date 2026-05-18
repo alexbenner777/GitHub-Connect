@@ -3,14 +3,20 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
 import pinoHttp from "pino-http";
+import path from "path";
+import { fileURLToPath } from "url";
 import router from "./routes";
 import { logger } from "./lib/logger";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app: Express = express();
 
 app.set("trust proxy", 1);
 
 const allowedOrigins = [
+  "https://trendspartner.space",
+  "https://www.trendspartner.space",
   "https://trends-landing-production.up.railway.app",
   ...(process.env.REPLIT_DEV_DOMAIN ? [`https://${process.env.REPLIT_DEV_DOMAIN}`] : []),
   ...(process.env.NODE_ENV === "development" ? ["http://localhost:5000", "http://localhost:22520"] : []),
@@ -64,6 +70,14 @@ app.use("/api/auth", authLimiter);
 app.use("/api/investments", investLimiter);
 
 app.use("/api", router);
+
+if (process.env.NODE_ENV === "production") {
+  const staticDir = path.resolve(__dirname, "../../trends-landing/dist/public");
+  app.use(express.static(staticDir));
+  app.get("*", (_req: Request, res: Response) => {
+    res.sendFile(path.join(staticDir, "index.html"));
+  });
+}
 
 app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
   const status = (err as any)?.status ?? (err as any)?.statusCode ?? 500;
