@@ -19,13 +19,11 @@ const loginSchema = z.object({
   password: z.string().min(1, "Пароль обязателен"),
 });
 
-const IS_PROD = process.env.NODE_ENV === "production";
-
 function setCookieToken(res: import("express").Response, token: string) {
   res.cookie("trends_token", token, {
     httpOnly: true,
-    secure: IS_PROD,
-    sameSite: IS_PROD ? "none" : "lax",
+    secure: true,
+    sameSite: "none",
     maxAge: 30 * 24 * 60 * 60 * 1000,
     path: "/",
   });
