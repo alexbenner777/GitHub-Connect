@@ -670,10 +670,10 @@ export default function Landing() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 section-inner">
             {[
-              { label: t('stats_users_label'), value: "12 400+", sub: t('stats_users_sub') },
-              { label: t('stats_dau_label'), value: "3 200+", sub: t('stats_dau_sub') },
-              { label: t('stats_videos_label'), value: "48 000+", sub: t('stats_videos_sub') },
-              { label: t('stats_countries_label'), value: "34", sub: t('stats_countries_sub') },
+              { label: t('stats_users_label'), value: "2 400+", sub: t('stats_users_sub') },
+              { label: t('stats_dau_label'), value: "500+", sub: t('stats_dau_sub') },
+              { label: t('stats_videos_label'), value: "8 000+", sub: t('stats_videos_sub') },
+              { label: t('stats_countries_label'), value: "12", sub: t('stats_countries_sub') },
             ].map((s, i) => (
               <div key={i} className="glass-card rounded-2xl p-4 border border-white/10 text-center">
                 <div className="text-2xl font-black text-gradient">{s.value}</div>
