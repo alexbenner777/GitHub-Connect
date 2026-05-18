@@ -13,6 +13,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         email: data.user.email,
         name: data.user.name,
         referralCode: data.user.referralCode,
+        isAdmin: (data.user as any).isAdmin ?? false,
       }))
       .catch(() => setUser(null))
       .finally(() => setLoading(false));

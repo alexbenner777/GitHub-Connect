@@ -18,6 +18,7 @@ router.get("/cabinet/me", requireAuth, async (req, res, next) => {
       referralCode: usersTable.referralCode,
       walletAddress: usersTable.walletAddress,
       walletNetwork: usersTable.walletNetwork,
+      isAdmin: usersTable.isAdmin,
       createdAt: usersTable.createdAt,
     }).from(usersTable).where(eq(usersTable.id, userId));
 
