@@ -810,7 +810,7 @@ export default function Landing() {
                       </div>
                       <div className="pt-0.5">
                         <div className={`text-base font-bold mb-1.5 ${labelColor}`}>{label}</div>
-                        <p className="text-muted-foreground text-sm leading-relaxed">{text}</p>
+                        <p className="text-[0.9rem] leading-relaxed" style={{ color: "rgba(255,255,255,0.65)" }}>{text}</p>
                       </div>
                     </div>
                   ))}
