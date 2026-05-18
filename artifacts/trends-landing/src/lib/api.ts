@@ -1,16 +1,11 @@
 const BASE = "/api";
 
-function getToken(): string | null {
-  return localStorage.getItem("trends_token");
-}
-
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const token = getToken();
   const res = await fetch(`${BASE}${path}`, {
     ...options,
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(options.headers ?? {}),
     },
   });
@@ -21,10 +16,13 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 
 export const api = {
   register: (body: { email: string; password: string; name: string; telegramUsername?: string; referralCode?: string }) =>
-    request<{ token: string; user: AuthUser }>("/auth/register", { method: "POST", body: JSON.stringify(body) }),
+    request<{ user: AuthUser }>("/auth/register", { method: "POST", body: JSON.stringify(body) }),
 
   login: (body: { email: string; password: string }) =>
-    request<{ token: string; user: AuthUser }>("/auth/login", { method: "POST", body: JSON.stringify(body) }),
+    request<{ user: AuthUser }>("/auth/login", { method: "POST", body: JSON.stringify(body) }),
+
+  logout: () =>
+    request("/auth/logout", { method: "POST" }),
 
   me: () => request<CabinetData>("/cabinet/me"),
 

@@ -19,6 +19,18 @@ const loginSchema = z.object({
   password: z.string().min(1, "Пароль обязателен"),
 });
 
+const IS_PROD = process.env.NODE_ENV === "production";
+
+function setCookieToken(res: import("express").Response, token: string) {
+  res.cookie("trends_token", token, {
+    httpOnly: true,
+    secure: IS_PROD,
+    sameSite: IS_PROD ? "none" : "lax",
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    path: "/",
+  });
+}
+
 const router = Router();
 
 router.post("/auth/register", async (req, res, next) => {
@@ -62,8 +74,8 @@ router.post("/auth/register", async (req, res, next) => {
     }
 
     const token = signToken({ userId: user.id, email: user.email, isAdmin: user.isAdmin });
+    setCookieToken(res, token);
     res.status(201).json({
-      token,
       user: { id: user.id, email: user.email, name: user.name, referralCode: user.referralCode },
     });
   } catch (err) {
@@ -91,13 +103,18 @@ router.post("/auth/login", async (req, res, next) => {
     }
 
     const token = signToken({ userId: user.id, email: user.email, isAdmin: user.isAdmin });
+    setCookieToken(res, token);
     res.json({
-      token,
       user: { id: user.id, email: user.email, name: user.name, referralCode: user.referralCode, isAdmin: user.isAdmin },
     });
   } catch (err) {
     next(err);
   }
+});
+
+router.post("/auth/logout", (_req, res) => {
+  res.clearCookie("trends_token", { path: "/" });
+  res.json({ ok: true });
 });
 
 export default router;

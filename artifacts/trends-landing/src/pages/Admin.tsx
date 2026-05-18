@@ -143,10 +143,11 @@ export default function Admin() {
               className="w-9 h-9 rounded-xl border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">
               <RefreshCw className={`w-4 h-4 text-white/50 ${fetching ? "animate-spin" : ""}`} />
             </button>
-            <button onClick={() => { logout(); setLocation("/"); }}
+            <button onClick={() => logout().then(() => setLocation("/"))}
               className="w-9 h-9 rounded-xl border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">
               <LogOut className="w-4 h-4 text-white/50" />
             </button>
+
           </div>
         </div>
       </div>

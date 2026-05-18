@@ -95,7 +95,7 @@ export default function Cabinet() {
     }
   };
 
-  const handleLogout = () => { logout(); setLocation("/"); };
+  const handleLogout = () => { logout().then(() => setLocation("/")); };
 
   if (authLoading || loadingData) {
     return (

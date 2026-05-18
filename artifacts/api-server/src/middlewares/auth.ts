@@ -9,14 +9,21 @@ declare global {
   }
 }
 
-export function requireAuth(req: Request, res: Response, next: NextFunction) {
+function extractToken(req: Request): string | null {
+  const cookie = (req.cookies as Record<string, string> | undefined)?.["trends_token"];
+  if (cookie) return cookie;
   const header = req.headers.authorization;
-  if (!header?.startsWith("Bearer ")) {
+  if (header?.startsWith("Bearer ")) return header.slice(7);
+  return null;
+}
+
+export function requireAuth(req: Request, res: Response, next: NextFunction) {
+  const token = extractToken(req);
+  if (!token) {
     res.status(401).json({ error: "Unauthorized" });
     return;
   }
   try {
-    const token = header.slice(7);
     req.user = verifyToken(token);
     next();
   } catch {
