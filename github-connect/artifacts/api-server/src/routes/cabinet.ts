@@ -44,7 +44,7 @@ router.get("/cabinet/me", requireAuth, async (req, res) => {
     .reduce((s, i) => s + parseFloat(i.shares), 0);
 
   res.json({
-    user,
+    user: { ...user, isAdmin: req.user!.isAdmin },
     investments,
     transactions,
     stats: {

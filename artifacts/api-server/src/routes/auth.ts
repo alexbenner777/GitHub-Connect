@@ -103,6 +103,7 @@ router.post("/auth/login", async (req, res, next) => {
     const token = signToken({ userId: user.id, email: user.email, isAdmin: user.isAdmin });
     setCookieToken(res, token);
     res.json({
+      token,
       user: { id: user.id, email: user.email, name: user.name, referralCode: user.referralCode, isAdmin: user.isAdmin },
     });
   } catch (err) {

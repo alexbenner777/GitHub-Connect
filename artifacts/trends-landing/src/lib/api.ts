@@ -1,11 +1,26 @@
 const BASE = "/api";
+const TOKEN_KEY = "trends_jwt";
+
+export function getStoredToken(): string | null {
+  try { return localStorage.getItem(TOKEN_KEY); } catch { return null; }
+}
+
+function setStoredToken(token: string) {
+  try { localStorage.setItem(TOKEN_KEY, token); } catch { /* ignore */ }
+}
+
+export function clearStoredToken() {
+  try { localStorage.removeItem(TOKEN_KEY); } catch { /* ignore */ }
+}
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
+  const token = getStoredToken();
   const res = await fetch(`${BASE}${path}`, {
     ...options,
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(options.headers ?? {}),
     },
   });
@@ -16,13 +31,17 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 
 export const api = {
   register: (body: { email: string; password: string; name: string; telegramUsername?: string; referralCode?: string }) =>
-    request<{ user: AuthUser }>("/auth/register", { method: "POST", body: JSON.stringify(body) }),
+    request<{ token?: string; user: AuthUser }>("/auth/register", { method: "POST", body: JSON.stringify(body) })
+      .then(data => { if (data.token) setStoredToken(data.token); return data; }),
 
   login: (body: { email: string; password: string }) =>
-    request<{ user: AuthUser }>("/auth/login", { method: "POST", body: JSON.stringify(body) }),
+    request<{ token?: string; user: AuthUser }>("/auth/login", { method: "POST", body: JSON.stringify(body) })
+      .then(data => { if (data.token) setStoredToken(data.token); return data; }),
 
-  logout: () =>
-    request("/auth/logout", { method: "POST" }),
+  logout: () => {
+    clearStoredToken();
+    return request("/auth/logout", { method: "POST" });
+  },
 
   me: () => request<CabinetData>("/cabinet/me"),
 
@@ -83,6 +102,7 @@ export interface CabinetData {
     referralCode: string;
     walletAddress: string | null;
     walletNetwork: string | null;
+    isAdmin?: boolean;
     createdAt: string;
   };
   investments: Investment[];

@@ -217,6 +217,14 @@ export default function Cabinet() {
               className="w-full btn-grad btn-3d h-12 rounded-xl font-bold text-sm">
               + Новая инвестиция
             </button>
+
+            {/* Admin link */}
+            {user.isAdmin && (
+              <Link href="/admin"
+                className="w-full flex items-center justify-center gap-2 h-12 rounded-xl font-bold text-sm border border-purple-500/40 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 transition-colors">
+                <Shield className="w-4 h-4" /> Admin Panel
+              </Link>
+            )}
           </aside>
 
           {/* ═══════════════ RIGHT MAIN CONTENT ═══════════════ */}

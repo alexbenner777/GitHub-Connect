@@ -4,7 +4,7 @@ import type { AuthUser } from "@/lib/api";
 export interface AuthCtx {
   user: AuthUser | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<AuthUser>;
   register: (data: { email: string; password: string; name: string; telegramUsername?: string; referralCode?: string }) => Promise<void>;
   logout: () => Promise<void>;
 }

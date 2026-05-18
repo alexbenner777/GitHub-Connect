@@ -20,8 +20,8 @@ export default function Login() {
     setError("");
     setLoading(true);
     try {
-      await login(email, password);
-      setLocation("/cabinet");
+      const result = await login(email, password);
+      setLocation(result?.isAdmin ? "/admin" : "/cabinet");
     } catch (err: any) {
       setError(err.message ?? "Ошибка входа");
     } finally {
