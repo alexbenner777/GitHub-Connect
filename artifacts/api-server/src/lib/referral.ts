@@ -1,5 +1,7 @@
-import { db, usersTable, investmentsTable, referralBonusesTable, transactionsTable } from "@workspace/db";
+import { db, usersTable, referralBonusesTable, transactionsTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
+
+type TxOrDb = typeof db | Parameters<Parameters<typeof db.transaction>[0]>[0];
 
 const MLM_LEVELS = [
   { level: 1, percent: 10 },
@@ -9,11 +11,17 @@ const MLM_LEVELS = [
   { level: 5, percent: 1 },
 ];
 
-export async function processReferralBonuses(investmentId: number, investorId: number, amount: number) {
+export async function processReferralBonuses(
+  investmentId: number,
+  investorId: number,
+  amount: number,
+  tx: TxOrDb = db,
+) {
   let currentUserId: number | null = investorId;
 
   for (const { level, percent } of MLM_LEVELS) {
-    const [user] = await db.select({ referredById: usersTable.referredById })
+    const [user] = await tx
+      .select({ referredById: usersTable.referredById })
       .from(usersTable)
       .where(eq(usersTable.id, currentUserId!));
 
@@ -22,7 +30,7 @@ export async function processReferralBonuses(investmentId: number, investorId: n
     const beneficiaryId = user.referredById;
     const bonusAmount = (amount * percent) / 100;
 
-    await db.insert(referralBonusesTable).values({
+    await tx.insert(referralBonusesTable).values({
       beneficiaryId,
       fromUserId: investorId,
       investmentId,
@@ -32,7 +40,7 @@ export async function processReferralBonuses(investmentId: number, investorId: n
       status: "pending",
     });
 
-    await db.insert(transactionsTable).values({
+    await tx.insert(transactionsTable).values({
       userId: beneficiaryId,
       type: "mlm_bonus",
       amount: String(bonusAmount),
