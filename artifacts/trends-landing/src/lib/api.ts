@@ -40,6 +40,9 @@ export const api = {
 
   adminConfirm: (id: number, txHash?: string) =>
     request(`/admin/investments/${id}/confirm`, { method: "PATCH", body: JSON.stringify({ txHash }) }),
+
+  adminReject: (id: number) =>
+    request(`/admin/investments/${id}/reject`, { method: "PATCH", body: JSON.stringify({}) }),
 };
 
 export interface AuthUser {
