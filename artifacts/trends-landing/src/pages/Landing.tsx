@@ -759,34 +759,57 @@ export default function Landing() {
                     {
                       label: t('what_users_label'),
                       icon: Users,
-                      accent: "border-l-primary bg-primary/5",
-                      iconColor: "text-primary bg-primary/15",
+                      glow: "rgba(0,212,255,0.18)",
+                      border: "rgba(0,212,255,0.35)",
+                      iconBg: "bg-primary/20",
+                      iconColor: "text-primary",
                       labelColor: "text-primary",
+                      num: "01",
                       text: t('what_users_text'),
                     },
                     {
                       label: t('what_creators_label'),
                       icon: PlaySquare,
-                      accent: "border-l-secondary bg-secondary/5",
-                      iconColor: "text-secondary bg-secondary/15",
+                      glow: "rgba(123,94,255,0.18)",
+                      border: "rgba(123,94,255,0.35)",
+                      iconBg: "bg-secondary/20",
+                      iconColor: "text-secondary",
                       labelColor: "text-secondary",
+                      num: "02",
                       text: t('what_creators_text'),
                     },
                     {
                       label: t('what_telegram_label'),
                       icon: Send,
-                      accent: "border-l-blue-400 bg-blue-400/5",
-                      iconColor: "text-blue-400 bg-blue-400/15",
+                      glow: "rgba(96,165,250,0.18)",
+                      border: "rgba(96,165,250,0.35)",
+                      iconBg: "bg-blue-400/20",
+                      iconColor: "text-blue-400",
                       labelColor: "text-blue-400",
+                      num: "03",
                       text: t('what_telegram_text'),
                     },
-                  ].map(({ label, icon: Icon, accent, iconColor, labelColor, text }) => (
-                    <div key={label} className={`flex items-start gap-4 pl-4 pr-5 py-4 rounded-xl border-l-2 ${accent}`}>
-                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${iconColor}`}>
-                        <Icon className="w-4 h-4" />
+                  ].map(({ label, icon: Icon, glow, border, iconBg, iconColor, labelColor, num, text }) => (
+                    <div
+                      key={label}
+                      className="relative flex items-start gap-5 px-5 py-5 rounded-2xl overflow-hidden transition-transform duration-300 hover:-translate-y-0.5"
+                      style={{
+                        background: `linear-gradient(135deg, ${glow} 0%, rgba(255,255,255,0.02) 100%)`,
+                        border: `1px solid ${border}`,
+                        boxShadow: `0 0 24px 0 ${glow}, inset 0 1px 0 rgba(255,255,255,0.06)`,
+                      }}
+                    >
+                      {/* step number watermark */}
+                      <span className="absolute top-3 right-4 text-4xl font-black opacity-[0.06] select-none pointer-events-none leading-none" style={{ color: border }}>
+                        {num}
+                      </span>
+                      {/* icon */}
+                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${iconBg}`}
+                        style={{ boxShadow: `0 0 16px 0 ${glow}` }}>
+                        <Icon className={`w-5 h-5 ${iconColor}`} />
                       </div>
-                      <div>
-                        <div className={`text-sm font-bold mb-1 ${labelColor}`}>{label}</div>
+                      <div className="pt-0.5">
+                        <div className={`text-base font-bold mb-1.5 ${labelColor}`}>{label}</div>
                         <p className="text-muted-foreground text-sm leading-relaxed">{text}</p>
                       </div>
                     </div>
