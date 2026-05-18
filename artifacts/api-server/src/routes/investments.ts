@@ -31,16 +31,25 @@ router.post("/investments", requireAuth, async (req, res, next) => {
     const pkg = PACKAGES_MAP[packageId];
     const userId = req.user!.userId;
 
-    const [investment] = await db.insert(investmentsTable).values({
-      userId,
-      packageId,
-      packageName: pkg.name,
-      amount: String(pkg.price),
-      shares: String(pkg.shares),
-      status: "pending",
-      walletFrom: walletFrom ?? null,
-      txHash: txHash ?? null,
-    }).returning();
+    let investment;
+    try {
+      [investment] = await db.insert(investmentsTable).values({
+        userId,
+        packageId,
+        packageName: pkg.name,
+        amount: String(pkg.price),
+        shares: String(pkg.shares),
+        status: "pending",
+        walletFrom: walletFrom ?? null,
+        txHash: txHash ?? null,
+      }).returning();
+    } catch (e: any) {
+      if (e?.code === "23505") {
+        res.status(409).json({ error: "У вас уже есть ожидающая инвестиция по этому пакету. Дождитесь подтверждения или свяжитесь с поддержкой." });
+        return;
+      }
+      throw e;
+    }
 
     const [user] = await db.select({
       name: usersTable.name,
