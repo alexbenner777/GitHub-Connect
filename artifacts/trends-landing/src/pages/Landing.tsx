@@ -1760,13 +1760,18 @@ export default function Landing() {
               <h4 className="text-xs font-bold text-foreground uppercase tracking-widest mb-3 opacity-60">{t('footer_docs')}</h4>
               <ul className="space-y-2">
                 {DOCS.map(doc => (
-                  <li key={doc.id}>
+                  <li key={doc.id} className="flex items-center gap-2">
                     <button
                       onClick={() => setLegalDoc(doc.id)}
                       className="text-xs text-muted-foreground hover:text-primary transition-colors text-left"
                     >
                       {lang === 'ru' ? doc.titleRu : doc.titleEn}
                     </button>
+                    <a href={`/legal/${doc.id}`} target="_blank" rel="noopener noreferrer"
+                      title="Открыть в новой вкладке"
+                      className="text-white/20 hover:text-primary/60 transition-colors shrink-0">
+                      <ExternalLink className="w-2.5 h-2.5" />
+                    </a>
                   </li>
                 ))}
               </ul>

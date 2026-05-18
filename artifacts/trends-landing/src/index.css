@@ -426,3 +426,29 @@ input[type="range"] {
   outline: none;
   cursor: pointer;
 }
+
+/* ── Legal document prose ─────────────────────────────────────── */
+.prose-legal h3 {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: white;
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+.prose-legal p {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+.prose-legal ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+  margin-bottom: 1rem;
+}
+.prose-legal ul li {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  line-height: 1.65;
+  margin-bottom: 0.25rem;
+}
