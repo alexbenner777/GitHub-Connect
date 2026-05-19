@@ -1140,55 +1140,72 @@ export default function Landing() {
 
                     {/* Network tree */}
                     <div className="p-4 border-b border-white/8 overflow-x-auto">
-                      <div className="min-w-[480px]">
-                        {/* Root node */}
-                        <div className="flex justify-center mb-1">
+                      <div className="min-w-[500px] select-none">
+
+                        {/* ROOT */}
+                        <div className="flex justify-center mb-0">
                           <div className="flex flex-col items-center">
-                            <div className="w-10 h-10 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center text-xs font-black text-primary">{t('mlm_you')}</div>
+                            <div className="w-11 h-11 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center text-xs font-black text-primary">{t('mlm_you')}</div>
                             <div className="text-[10px] text-primary font-bold mt-1">$5 000</div>
+                            <div className="w-px h-4 bg-white/25 mt-1" />
                           </div>
                         </div>
-                        {/* Connector down */}
-                        <div className="flex justify-center"><div className="w-px h-3 bg-white/20" /></div>
-                        {/* Horizontal line */}
-                        <div className="relative flex justify-center mb-1">
-                          <div className="absolute top-0 left-[10%] right-[10%] h-px bg-white/20" />
-                        </div>
-                        {/* L1 nodes */}
-                        <div className="flex justify-between px-2 mb-1">
-                          {[
-                            { label: "А", amount: "$25K", income: "+$2 500", color: "bg-yellow-500/20 border-yellow-500/50 text-yellow-300" },
-                            { label: "Б", amount: "$25K", income: "+$2 500", color: "bg-yellow-500/20 border-yellow-500/50 text-yellow-300" },
-                            { label: "В", amount: "$100K", income: "+$10 000", color: "bg-orange-500/20 border-orange-500/50 text-orange-300" },
-                            { label: "Г", amount: "$5K", income: "+$500", color: "bg-secondary/20 border-secondary/50 text-secondary" },
-                            { label: "Д", amount: "$5K", income: "+$500", color: "bg-secondary/20 border-secondary/50 text-secondary" },
-                          ].map((n, i) => (
-                            <div key={i} className="flex flex-col items-center">
-                              <div className={`w-px h-3 bg-white/20`} />
-                              <div className={`w-9 h-9 rounded-full border flex items-center justify-center text-xs font-black ${n.color}`}>{n.label}</div>
-                              <div className="text-[9px] text-muted-foreground mt-0.5">{n.amount}</div>
-                              <div className="text-[9px] text-yellow-400 font-bold">{n.income}</div>
+
+                        {/* L1 — 5 nodes with horizontal bar + vertical drops */}
+                        {(() => {
+                          const l1 = [
+                            { label: "А", amount: "$25K", income: "+$2 500", incomeColor: "text-yellow-400", color: "bg-yellow-500/20 border-yellow-500/50 text-yellow-200" },
+                            { label: "Б", amount: "$25K", income: "+$2 500", incomeColor: "text-yellow-400", color: "bg-yellow-500/20 border-yellow-500/50 text-yellow-200" },
+                            { label: "В", amount: "$100K", income: "+$10 000", incomeColor: "text-orange-400", color: "bg-orange-500/20 border-orange-500/50 text-orange-200" },
+                            { label: "Г", amount: "$5K", income: "+$500", incomeColor: "text-secondary", color: "bg-secondary/20 border-secondary/50 text-secondary" },
+                            { label: "Д", amount: "$5K", income: "+$500", incomeColor: "text-secondary", color: "bg-secondary/20 border-secondary/50 text-secondary" },
+                          ];
+                          return (
+                            <div className="relative flex justify-between px-[5%] mb-1">
+                              {/* Horizontal bar at top */}
+                              <div className="absolute top-0 left-[5%] right-[5%] h-px bg-white/25" />
+                              {l1.map((n, i) => (
+                                <div key={i} className="flex flex-col items-center">
+                                  {/* vertical stem from bar */}
+                                  <div className="w-px h-4 bg-white/25" />
+                                  <div className={`w-9 h-9 rounded-full border-2 flex items-center justify-center text-xs font-black ${n.color}`}>{n.label}</div>
+                                  <div className="text-[9px] text-muted-foreground mt-0.5">{n.amount}</div>
+                                  <div className={`text-[9px] font-black ${n.incomeColor}`}>{n.income}</div>
+                                  <div className="w-px h-3 bg-white/15 mt-1" />
+                                </div>
+                              ))}
                             </div>
-                          ))}
-                        </div>
-                        {/* L2 nodes */}
-                        <div className="flex justify-between px-1 mb-1">
-                          {[
+                          );
+                        })()}
+
+                        {/* L2 — 8 nodes with horizontal bar + vertical drops */}
+                        {(() => {
+                          const l2 = [
                             { n: "1", a: "$10K", i: "+$500" }, { n: "2", a: "$1K", i: "+$50" },
                             { n: "3", a: "$5K", i: "+$250" }, { n: "4", a: "$25K", i: "+$1 250" },
                             { n: "5", a: "$1K", i: "+$50" }, { n: "6", a: "$5K", i: "+$250" },
                             { n: "7", a: "$1K", i: "+$50" }, { n: "8", a: "$10K", i: "+$500" },
-                          ].map((n, i) => (
-                            <div key={i} className="flex flex-col items-center">
-                              <div className="w-px h-2 bg-white/15" />
-                              <div className="w-7 h-7 rounded-full bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-[10px] font-black text-blue-300">{n.n}</div>
-                              <div className="text-[8px] text-muted-foreground">{n.a}</div>
-                              <div className="text-[8px] text-purple-400 font-bold">{n.i}</div>
+                          ];
+                          return (
+                            <div className="relative flex justify-between px-[2%] mb-1">
+                              {/* Horizontal bar at top */}
+                              <div className="absolute top-0 left-[2%] right-[2%] h-px bg-white/15" />
+                              {l2.map((n, i) => (
+                                <div key={i} className="flex flex-col items-center">
+                                  <div className="w-px h-3 bg-white/15" />
+                                  <div className="w-7 h-7 rounded-full bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-[10px] font-black text-blue-300">{n.n}</div>
+                                  <div className="text-[8px] text-muted-foreground leading-tight">{n.a}</div>
+                                  <div className="text-[8px] text-purple-400 font-bold">{n.i}</div>
+                                  <div className="w-px h-2 bg-white/10 mt-1" />
+                                </div>
+                              ))}
                             </div>
-                          ))}
-                        </div>
+                          );
+                        })()}
+
                         {/* L3+ dots */}
-                        <div className="flex justify-between px-2">
+                        <div className="relative flex justify-between px-[3%]">
+                          <div className="absolute top-0 left-[3%] right-[3%] h-px bg-white/8" />
                           {Array.from({ length: 8 }).map((_, i) => (
                             <div key={i} className="flex flex-col items-center">
                               <div className="w-px h-2 bg-white/10" />
@@ -1196,7 +1213,8 @@ export default function Landing() {
                             </div>
                           ))}
                         </div>
-                        <div className="text-center text-[10px] text-muted-foreground mt-2">{t('mlm_lvls_grow')}</div>
+
+                        <div className="text-center text-[10px] text-muted-foreground mt-3">{t('mlm_lvls_grow')}</div>
                       </div>
                     </div>
 
