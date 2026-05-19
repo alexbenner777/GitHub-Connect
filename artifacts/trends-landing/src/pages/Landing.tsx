@@ -1125,32 +1125,112 @@ export default function Landing() {
                       <div className="shrink-0 text-sm text-muted-foreground w-48 text-right hidden md:block">{row.desc}</div>
                     </div>
                   ))}
-                  {/* Example block */}
-                  <div className="rounded-2xl bg-white/3 border border-white/8 p-4 mt-3">
-                    <div className="text-xs font-black tracking-widest uppercase text-muted-foreground mb-3">{t('mlm_ref_ex_title')}</div>
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="w-8 h-8 rounded-xl bg-secondary/20 border border-secondary/30 flex items-center justify-center shrink-0">
-                        <Users2 className="w-3.5 h-3.5 text-secondary" />
+                  {/* Big example block */}
+                  <div className="rounded-2xl bg-white/3 border border-white/8 mt-3 overflow-hidden">
+                    {/* Header */}
+                    <div className="flex items-start gap-3 p-5 pb-4 border-b border-white/8">
+                      <div className="w-9 h-9 rounded-xl bg-primary/15 border border-primary/25 flex items-center justify-center shrink-0">
+                        <DollarSign className="w-4 h-4 text-primary" />
                       </div>
-                      <div className="flex-1 text-sm text-muted-foreground">{t('mlm_ref_ex_desc')}</div>
-                      <div className="text-sm font-black text-secondary shrink-0">$1 000</div>
+                      <div>
+                        <div className="text-sm sm:text-base font-black">{t('mlm_ex_title')}</div>
+                        <div className="text-xs text-muted-foreground mt-0.5">{t('mlm_ex_sub')}</div>
+                      </div>
                     </div>
-                    {[
-                      { lvl: "L1 · 10%", val: "+$100", color: "text-primary" },
-                      { lvl: "L2 · 5%",  val: "+$50",  color: "text-secondary" },
-                      { lvl: "L3 · 3%",  val: "+$30",  color: "text-blue-400" },
-                    ].map((row, i) => (
-                      <div key={i} className="flex items-center gap-3 mb-2">
-                        <div className="w-8 h-8 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                          <ArrowRight className="w-3.5 h-3.5 text-primary" />
+
+                    {/* Network tree */}
+                    <div className="p-4 border-b border-white/8 overflow-x-auto">
+                      <div className="min-w-[480px]">
+                        {/* Root node */}
+                        <div className="flex justify-center mb-1">
+                          <div className="flex flex-col items-center">
+                            <div className="w-10 h-10 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center text-xs font-black text-primary">{t('mlm_you')}</div>
+                            <div className="text-[10px] text-primary font-bold mt-1">$5 000</div>
+                          </div>
                         </div>
-                        <div className="flex-1 text-sm text-muted-foreground">{row.lvl}</div>
-                        <div className={`text-sm font-black ${row.color} shrink-0`}>{row.val}</div>
+                        {/* Connector down */}
+                        <div className="flex justify-center"><div className="w-px h-3 bg-white/20" /></div>
+                        {/* Horizontal line */}
+                        <div className="relative flex justify-center mb-1">
+                          <div className="absolute top-0 left-[10%] right-[10%] h-px bg-white/20" />
+                        </div>
+                        {/* L1 nodes */}
+                        <div className="flex justify-between px-2 mb-1">
+                          {[
+                            { label: "А", amount: "$25K", income: "+$2 500", color: "bg-yellow-500/20 border-yellow-500/50 text-yellow-300" },
+                            { label: "Б", amount: "$25K", income: "+$2 500", color: "bg-yellow-500/20 border-yellow-500/50 text-yellow-300" },
+                            { label: "В", amount: "$100K", income: "+$10 000", color: "bg-orange-500/20 border-orange-500/50 text-orange-300" },
+                            { label: "Г", amount: "$5K", income: "+$500", color: "bg-secondary/20 border-secondary/50 text-secondary" },
+                            { label: "Д", amount: "$5K", income: "+$500", color: "bg-secondary/20 border-secondary/50 text-secondary" },
+                          ].map((n, i) => (
+                            <div key={i} className="flex flex-col items-center">
+                              <div className={`w-px h-3 bg-white/20`} />
+                              <div className={`w-9 h-9 rounded-full border flex items-center justify-center text-xs font-black ${n.color}`}>{n.label}</div>
+                              <div className="text-[9px] text-muted-foreground mt-0.5">{n.amount}</div>
+                              <div className="text-[9px] text-yellow-400 font-bold">{n.income}</div>
+                            </div>
+                          ))}
+                        </div>
+                        {/* L2 nodes */}
+                        <div className="flex justify-between px-1 mb-1">
+                          {[
+                            { n: "1", a: "$10K", i: "+$500" }, { n: "2", a: "$1K", i: "+$50" },
+                            { n: "3", a: "$5K", i: "+$250" }, { n: "4", a: "$25K", i: "+$1 250" },
+                            { n: "5", a: "$1K", i: "+$50" }, { n: "6", a: "$5K", i: "+$250" },
+                            { n: "7", a: "$1K", i: "+$50" }, { n: "8", a: "$10K", i: "+$500" },
+                          ].map((n, i) => (
+                            <div key={i} className="flex flex-col items-center">
+                              <div className="w-px h-2 bg-white/15" />
+                              <div className="w-7 h-7 rounded-full bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-[10px] font-black text-blue-300">{n.n}</div>
+                              <div className="text-[8px] text-muted-foreground">{n.a}</div>
+                              <div className="text-[8px] text-purple-400 font-bold">{n.i}</div>
+                            </div>
+                          ))}
+                        </div>
+                        {/* L3+ dots */}
+                        <div className="flex justify-between px-2">
+                          {Array.from({ length: 8 }).map((_, i) => (
+                            <div key={i} className="flex flex-col items-center">
+                              <div className="w-px h-2 bg-white/10" />
+                              <div className="w-5 h-5 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-[9px] text-muted-foreground">+</div>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="text-center text-[10px] text-muted-foreground mt-2">{t('mlm_lvls_grow')}</div>
                       </div>
-                    ))}
-                    <div className="flex items-center gap-2 pt-3 border-t border-white/8">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-green-400 shrink-0" />
-                      <span className="text-xs text-muted-foreground">{t('mlm_ref_ex_note')}</span>
+                    </div>
+
+                    {/* Summary rows */}
+                    <div className="divide-y divide-white/6">
+                      {[
+                        { icon: <Users2 className="w-3.5 h-3.5" />, iconCls: "bg-yellow-500/15 border-yellow-500/25 text-yellow-400", badge: "L1 · 10%", badgeCls: "bg-yellow-500/15 text-yellow-400 border-yellow-500/25", desc: "2 × $25K", val: "+$5 000", valCls: "text-yellow-400" },
+                        { icon: <Users2 className="w-3.5 h-3.5" />, iconCls: "bg-yellow-500/15 border-yellow-500/25 text-yellow-400", badge: "L1 · 10%", badgeCls: "bg-yellow-500/15 text-yellow-400 border-yellow-500/25", desc: "1 × $100K", val: "+$10 000", valCls: "text-yellow-400" },
+                        { icon: <Users2 className="w-3.5 h-3.5" />, iconCls: "bg-yellow-500/15 border-yellow-500/25 text-yellow-400", badge: "L1 · 10%", badgeCls: "bg-yellow-500/15 text-yellow-400 border-yellow-500/25", desc: "2 × $5K", val: "+$1 000", valCls: "text-yellow-400" },
+                        { icon: <Network className="w-3.5 h-3.5" />, iconCls: "bg-secondary/15 border-secondary/25 text-secondary", badge: "L2 · 5%", badgeCls: "bg-secondary/15 text-secondary border-secondary/25", desc: t('mlm_net50'), val: "+$2 500", valCls: "text-secondary" },
+                        { icon: <Network className="w-3.5 h-3.5" />, iconCls: "bg-secondary/15 border-secondary/25 text-secondary", badge: "L2 · 5%", badgeCls: "bg-secondary/15 text-secondary border-secondary/25", desc: t('mlm_net8'), val: "+$400", valCls: "text-secondary" },
+                        { icon: <Network className="w-3.5 h-3.5" />, iconCls: "bg-blue-500/15 border-blue-500/25 text-blue-400", badge: "L3–5", badgeCls: "bg-blue-500/15 text-blue-400 border-blue-500/25", desc: t('mlm_deeper'), val: "+$1 200", valCls: "text-blue-400" },
+                      ].map((row, i) => (
+                        <div key={i} className="flex items-center gap-3 px-5 py-3">
+                          <div className={`w-7 h-7 rounded-lg border flex items-center justify-center shrink-0 ${row.iconCls}`}>{row.icon}</div>
+                          <div className={`text-[10px] font-black px-2 py-0.5 rounded-md border ${row.badgeCls} shrink-0`}>{row.badge}</div>
+                          <div className="flex-1 text-sm text-muted-foreground">{row.desc}</div>
+                          <div className={`text-sm font-black shrink-0 ${row.valCls}`}>{row.val}</div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Total footer */}
+                    <div className="flex flex-col sm:flex-row gap-4 p-5 bg-white/3 border-t border-white/8">
+                      <div className="flex-1">
+                        <div className="text-xs text-muted-foreground mb-1">{t('mlm_ex_total_label')}</div>
+                        <div className="text-2xl sm:text-3xl font-black text-green-400">$20 100</div>
+                        <div className="text-[10px] text-muted-foreground mt-1">L1: $16 000 · L2: $2 900 · L3–5: $1 200</div>
+                      </div>
+                      <div className="sm:text-right">
+                        <div className="text-xs text-muted-foreground mb-1">{t('mlm_ex_revshare')}</div>
+                        <div className="text-2xl sm:text-3xl font-black text-primary">+$626 / мес</div>
+                        <div className="text-[10px] text-muted-foreground mt-1">при 10M DAU</div>
+                      </div>
                     </div>
                   </div>
                 </div>
