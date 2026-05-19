@@ -1193,9 +1193,9 @@ export default function Landing() {
                   {/* 3 levels */}
                   <div className="glass-card rounded-2xl overflow-hidden">
                     {[
-                      { lvl: "L1", pct: "2%",   desc: t('mlm_income_l1'), bar: 100, badgeCls: "bg-primary/20 text-primary border-primary/30", barCls: "from-primary to-primary/60" },
-                      { lvl: "L2", pct: "1.5%", desc: t('mlm_income_l2'), bar: 75,  badgeCls: "bg-secondary/20 text-secondary border-secondary/30", barCls: "from-secondary to-secondary/60" },
-                      { lvl: "L3", pct: "0.5%", desc: t('mlm_income_l3'), bar: 35,  badgeCls: "bg-blue-400/20 text-blue-400 border-blue-400/30", barCls: "from-blue-400 to-blue-400/60" },
+                      { lvl: "L1", pct: "5%", desc: t('mlm_income_l1'), bar: 100, badgeCls: "bg-primary/20 text-primary border-primary/30", barCls: "from-primary to-primary/60" },
+                      { lvl: "L2", pct: "3%", desc: t('mlm_income_l2'), bar: 65,  badgeCls: "bg-secondary/20 text-secondary border-secondary/30", barCls: "from-secondary to-secondary/60" },
+                      { lvl: "L3", pct: "2%", desc: t('mlm_income_l3'), bar: 42,  badgeCls: "bg-blue-400/20 text-blue-400 border-blue-400/30", barCls: "from-blue-400 to-blue-400/60" },
                     ].map((row, i, arr) => (
                       <div key={i} className={`flex items-center gap-4 px-5 py-4 ${i < arr.length - 1 ? "border-b border-white/6" : ""}`}>
                         <div className={`shrink-0 text-xs font-black px-2.5 py-1 rounded-lg border ${row.badgeCls}`}>{row.lvl}</div>
@@ -1230,8 +1230,8 @@ export default function Landing() {
                       <div className="w-8 h-8 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center shrink-0">
                         <ArrowRight className="w-3.5 h-3.5 text-primary" />
                       </div>
-                      <div className="flex-1 text-sm text-muted-foreground">Ваш доход (L1 · 2%)</div>
-                      <div className="text-sm font-black text-green-400 shrink-0">+$20</div>
+                      <div className="flex-1 text-sm text-muted-foreground">Ваш доход (L1 · 5%)</div>
+                      <div className="text-sm font-black text-green-400 shrink-0">+$50</div>
                     </div>
                     <div className="flex items-center gap-2 pt-3 border-t border-white/8">
                       <CheckCircle2 className="w-3.5 h-3.5 text-green-400 shrink-0" />
