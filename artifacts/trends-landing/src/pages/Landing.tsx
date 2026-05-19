@@ -1178,11 +1178,11 @@ export default function Landing() {
                           );
                         })()}
 
-                        {/* L2 — 2 representative nodes */}
+                        {/* L2 — 2 representative nodes matching summary table */}
                         <div className="flex justify-center gap-16 mb-1">
                           {[
-                            { n: "1", a: "$25K", i: "+$1 250", color: "bg-blue-500/15 border-blue-500/30 text-blue-300", iColor: "text-purple-400" },
-                            { n: "2", a: "$10K", i: "+$500",   color: "bg-blue-500/10 border-blue-500/20 text-blue-400", iColor: "text-purple-300" },
+                            { n: "1", a: "$50K", i: "+$2 500", color: "bg-secondary/15 border-secondary/40 text-secondary", iColor: "text-secondary" },
+                            { n: "2", a: "$8K",  i: "+$400",   color: "bg-blue-500/10 border-blue-500/25 text-blue-400",  iColor: "text-blue-300" },
                           ].map((n, i) => (
                             <div key={i} className="flex flex-col items-center">
                               <div className="w-px h-3 bg-white/15" />
