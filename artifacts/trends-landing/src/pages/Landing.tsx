@@ -221,7 +221,7 @@ function AdvantagesGrid({ openInvest: _openInvest, advantages }: { openInvest: (
               <Icon0 className={`w-6 h-6 ${first.color}`} />
             </div>
             <div className="flex items-center gap-2">
-              <div className={`text-xs font-black tracking-widest uppercase ${first.color}`}>{first.label}</div>
+              <div className={`text-xs font-black tracking-widest uppercase ${first.color}`}>01</div>
               <motion.div animate={{ rotate: open0 ? 180 : 0 }} transition={{ duration: 0.3, ease: EASE }}>
                 <ChevronDown className={`w-4 h-4 ${first.color} opacity-70`} />
               </motion.div>
