@@ -164,17 +164,14 @@ function AdvantageCard({ item, index, variants }: { item: AdvantageItem; index: 
       className="glass-card rounded-2xl overflow-hidden group relative cursor-pointer"
       onClick={() => setOpen(o => !o)}>
       <div className={`absolute inset-0 bg-gradient-to-br ${item.gradFrom} ${item.gradTo} transition-opacity duration-500 ${open ? "opacity-100" : "opacity-0 group-hover:opacity-60"}`} />
-      <div className="relative z-10 p-4 md:p-6 flex flex-col">
-        <div className="flex items-center justify-between mb-3">
-          <div className="w-9 h-9 md:w-11 md:h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-            <Icon className={`w-4 h-4 md:w-5 md:h-5 ${item.color}`} />
-          </div>
-          <div className="flex items-center gap-2">
-            <div className={`text-xs font-black tracking-widest uppercase ${item.color}`}>{item.label}</div>
-            <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.3, ease: EASE }}>
-              <ChevronDown className={`w-4 h-4 ${item.color} opacity-70`} />
-            </motion.div>
-          </div>
+      {/* Big watermark number */}
+      <div className={`absolute top-3 right-4 text-[72px] md:text-[88px] font-black ${item.color} opacity-[0.08] group-hover:opacity-[0.14] transition-opacity duration-500 leading-none select-none pointer-events-none`}>
+        {item.label}
+      </div>
+      <div className="relative z-10 p-4 md:p-6 flex flex-col min-h-[160px]">
+        {/* Icon top-left */}
+        <div className="w-9 h-9 md:w-11 md:h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 mb-3 shrink-0">
+          <Icon className={`w-4 h-4 md:w-5 md:h-5 ${item.color}`} />
         </div>
         <h3 className="text-base md:text-lg font-black mb-2">{item.title}</h3>
         <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
@@ -198,6 +195,12 @@ function AdvantageCard({ item, index, variants }: { item: AdvantageItem; index: 
             </motion.div>
           )}
         </AnimatePresence>
+        {/* Chevron bottom-right */}
+        <div className="flex justify-end mt-3">
+          <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.3, ease: EASE }}>
+            <ChevronDown className={`w-4 h-4 ${item.color} opacity-60`} />
+          </motion.div>
+        </div>
       </div>
     </motion.div>
   );
