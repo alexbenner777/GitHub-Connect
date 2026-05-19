@@ -302,7 +302,7 @@ function MonetizationCards({ t }: { t: (key: string) => string }) {
                 <h3 className="text-2xl md:text-3xl font-bold">{t('mono1_title')}</h3>
                 <span className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-bold uppercase tracking-wider">{t('mono1_badge')}</span>
                 <motion.div animate={{ rotate: mono1Open ? 180 : 0 }} transition={{ duration: 0.3, ease: EASE }} className="ml-auto shrink-0">
-                  <ChevronDown className="w-5 h-5 text-primary opacity-60" />
+                  <ChevronDown className="w-6 h-6 text-primary opacity-60" />
                 </motion.div>
               </div>
               <p className="text-muted-foreground text-lg leading-relaxed mb-4">{t('mono1_desc')}</p>
@@ -352,7 +352,7 @@ function MonetizationCards({ t }: { t: (key: string) => string }) {
               <div className="flex items-start justify-between gap-2 mb-2">
                 <h3 className="text-lg font-bold">{item.title}</h3>
                 <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.3, ease: EASE }} className="shrink-0 mt-0.5">
-                  <ChevronDown className="w-4 h-4 text-primary opacity-60" />
+                  <ChevronDown className="w-6 h-6 text-primary opacity-60" />
                 </motion.div>
               </div>
               <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
