@@ -214,41 +214,61 @@ function AdvantagesGrid({ openInvest: _openInvest, advantages }: { openInvest: (
         className="glass-card rounded-2xl overflow-hidden group cursor-pointer relative"
         onClick={() => setOpen0(o => !o)}>
         <div className={`absolute inset-0 bg-gradient-to-br ${first.gradFrom} ${first.gradTo} transition-opacity duration-500 ${open0 ? "opacity-100" : "opacity-0 group-hover:opacity-60"}`} />
-        <div className="relative z-10 p-4 md:p-7 flex flex-col md:flex-row gap-4 md:gap-6 items-start md:items-center">
-          <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
-            <Icon0 className={`w-6 h-6 md:w-7 md:h-7 ${first.color}`} />
+        <div className="relative z-10 p-4 md:p-7">
+          {/* Mobile header row: icon + label + chevron */}
+          <div className="flex items-center justify-between mb-3 md:hidden">
+            <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
+              <Icon0 className={`w-6 h-6 ${first.color}`} />
+            </div>
+            <div className="flex items-center gap-2">
+              <div className={`text-xs font-black tracking-widest uppercase ${first.color}`}>{first.label}</div>
+              <motion.div animate={{ rotate: open0 ? 180 : 0 }} transition={{ duration: 0.3, ease: EASE }}>
+                <ChevronDown className={`w-4 h-4 ${first.color} opacity-70`} />
+              </motion.div>
+            </div>
           </div>
-          <div className="flex-1">
-            <div className={`text-xs font-black tracking-widest uppercase mb-2 ${first.color}`}>{first.label}</div>
-            <h3 className="text-xl md:text-2xl lg:text-3xl font-black mb-2">{first.title}</h3>
-            <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{first.desc}</p>
-            <AnimatePresence initial={false}>
-              {open0 && first.extra && (
-                <motion.div
-                  key="extra0"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.4, ease: EASE }}
-                  className="overflow-hidden">
-                  <ul className="mt-4 pt-4 border-t border-white/10 space-y-2">
-                    {first.extra.map((point, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground leading-relaxed">
-                        <CheckCircle2 className={`w-4 h-4 mt-0.5 shrink-0 ${first.color}`} />
-                        <span>{point}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              )}
-            </AnimatePresence>
+          {/* Desktop layout: flex row */}
+          <div className="hidden md:flex gap-6 items-center">
+            <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
+              <Icon0 className={`w-7 h-7 ${first.color}`} />
+            </div>
+            <div className="flex-1">
+              <div className={`text-xs font-black tracking-widest uppercase mb-2 ${first.color}`}>{first.label}</div>
+              <h3 className="text-2xl lg:text-3xl font-black mb-2">{first.title}</h3>
+              <p className="text-base text-muted-foreground leading-relaxed">{first.desc}</p>
+            </div>
+            <div className="flex flex-col items-center gap-2 shrink-0">
+              <div className={`text-[80px] font-black ${first.color} opacity-[0.06] group-hover:opacity-[0.12] transition-opacity duration-500 hidden lg:block leading-none`}>01</div>
+              <motion.div animate={{ rotate: open0 ? 180 : 0 }} transition={{ duration: 0.3, ease: EASE }}>
+                <ChevronDown className={`w-5 h-5 ${first.color} opacity-60`} />
+              </motion.div>
+            </div>
           </div>
-          <div className="flex flex-col items-center gap-2 shrink-0">
-            <div className={`text-[80px] font-black ${first.color} opacity-[0.06] group-hover:opacity-[0.12] transition-opacity duration-500 hidden lg:block leading-none`}>01</div>
-            <motion.div animate={{ rotate: open0 ? 180 : 0 }} transition={{ duration: 0.3, ease: EASE }} className="hidden md:block">
-              <ChevronDown className={`w-5 h-5 ${first.color} opacity-60`} />
-            </motion.div>
+          {/* Content: title + desc on mobile, expandable list */}
+          <div className="md:hidden">
+            <h3 className="text-xl font-black mb-2">{first.title}</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">{first.desc}</p>
           </div>
+          <AnimatePresence initial={false}>
+            {open0 && first.extra && (
+              <motion.div
+                key="extra0"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.4, ease: EASE }}
+                className="overflow-hidden">
+                <ul className="mt-4 pt-4 border-t border-white/10 space-y-2">
+                  {first.extra.map((point, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground leading-relaxed">
+                      <CheckCircle2 className={`w-4 h-4 mt-0.5 shrink-0 ${first.color}`} />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </motion.div>
 
