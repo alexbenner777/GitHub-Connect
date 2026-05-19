@@ -1181,8 +1181,8 @@ export default function Landing() {
                         {/* L2 — 2 representative nodes matching summary table */}
                         <div className="flex justify-center gap-16 mb-1">
                           {[
-                            { n: "1", a: "$50K", i: "+$2 500", color: "bg-secondary/15 border-secondary/40 text-secondary", iColor: "text-secondary" },
-                            { n: "2", a: "$8K",  i: "+$400",   color: "bg-blue-500/10 border-blue-500/25 text-blue-400",  iColor: "text-blue-300" },
+                            { n: "1", a: "$25K", i: "+$1 250", color: "bg-secondary/15 border-secondary/40 text-secondary", iColor: "text-secondary" },
+                            { n: "2", a: "$10K", i: "+$500",   color: "bg-blue-500/10 border-blue-500/25 text-blue-400",  iColor: "text-blue-300" },
                           ].map((n, i) => (
                             <div key={i} className="flex flex-col items-center">
                               <div className="w-px h-3 bg-white/15" />
@@ -1214,8 +1214,7 @@ export default function Landing() {
                         { icon: <Users2 className="w-3.5 h-3.5" />, iconCls: "bg-yellow-500/15 border-yellow-500/25 text-yellow-400", badge: "L1 · 10%", badgeCls: "bg-yellow-500/15 text-yellow-400 border-yellow-500/25", desc: "2 × $25K", val: "+$5 000", valCls: "text-yellow-400" },
                         { icon: <Users2 className="w-3.5 h-3.5" />, iconCls: "bg-orange-500/15 border-orange-500/25 text-orange-400", badge: "L1 · 10%", badgeCls: "bg-orange-500/15 text-orange-400 border-orange-500/25", desc: "1 × $100K", val: "+$10 000", valCls: "text-orange-400" },
                         { icon: <Users2 className="w-3.5 h-3.5" />, iconCls: "bg-yellow-500/15 border-yellow-500/25 text-yellow-400", badge: "L1 · 10%", badgeCls: "bg-yellow-500/15 text-yellow-400 border-yellow-500/25", desc: "2 × $5K", val: "+$1 000", valCls: "text-yellow-400" },
-                        { icon: <Network className="w-3.5 h-3.5" />, iconCls: "bg-secondary/15 border-secondary/25 text-secondary", badge: "L2 · 5%", badgeCls: "bg-secondary/15 text-secondary border-secondary/25", desc: t('mlm_net50'), val: "+$2 500", valCls: "text-secondary" },
-                        { icon: <Network className="w-3.5 h-3.5" />, iconCls: "bg-secondary/15 border-secondary/25 text-secondary", badge: "L2 · 5%", badgeCls: "bg-secondary/15 text-secondary border-secondary/25", desc: t('mlm_net8'), val: "+$400", valCls: "text-secondary" },
+                        { icon: <Network className="w-3.5 h-3.5" />, iconCls: "bg-secondary/15 border-secondary/25 text-secondary", badge: "L2 · 5%", badgeCls: "bg-secondary/15 text-secondary border-secondary/25", desc: "$58K сети (8 партнёров)", val: "+$2 900", valCls: "text-secondary" },
                         { icon: <Network className="w-3.5 h-3.5" />, iconCls: "bg-blue-500/15 border-blue-500/25 text-blue-400", badge: "L3–5", badgeCls: "bg-blue-500/15 text-blue-400 border-blue-500/25", desc: t('mlm_deeper'), val: "+$1 200", valCls: "text-blue-400" },
                       ].map((row, i) => (
                         <div key={i} className="flex items-center gap-3 px-5 py-3">
