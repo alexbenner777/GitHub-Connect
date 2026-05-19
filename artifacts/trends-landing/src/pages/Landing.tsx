@@ -1125,7 +1125,7 @@ export default function Landing() {
             </AnimatePresence>
           </div>
 
-          {/* Accordion 2 — Пример */}
+          {/* Accordion 2 — Доход с дохода */}
           <div className="mb-3">
             <button
               onClick={() => setExampleOpen(o => !o)}
@@ -1133,7 +1133,7 @@ export default function Landing() {
             >
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-green-500/15 border border-green-500/25 flex items-center justify-center shrink-0">
-                  <DollarSign className="w-4 h-4 text-green-400" />
+                  <TrendingUp className="w-4 h-4 text-green-400" />
                 </div>
                 <span className="text-base sm:text-lg font-bold group-hover:text-green-400 transition-colors">{t('mlm_acc2')}</span>
               </div>
@@ -1143,134 +1143,69 @@ export default function Landing() {
             </button>
             <AnimatePresence>
             {exampleOpen && (
-              <motion.div key="example-content" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }} style={{ overflow: "hidden" }}>
-                <div className="glass-card p-4 sm:p-8 md:p-10 rounded-3xl border border-green-500/20 mt-2">
-            <div className="flex items-start gap-3 mb-6 md:mb-8">
-              <div className="w-9 h-9 shrink-0 bg-green-500/20 rounded-xl flex items-center justify-center text-green-400">
-                <DollarSign className="w-4 h-4" />
-              </div>
-              <div>
-                <h3 className="text-base sm:text-lg md:text-2xl font-bold leading-snug">{t('mlm_ex_title')}</h3>
-                <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">{t('mlm_ex_sub')}</p>
-              </div>
-            </div>
-
-            {/* Visual referral tree — chaotic */}
-            <div className="mb-6 md:mb-8 p-3 sm:p-5 rounded-2xl bg-white/3 border border-white/8 overflow-x-auto">
-              <div className="min-w-[300px]">
-                {/* YOU */}
-                <div className="flex justify-center mb-2">
-                  <div className="flex flex-col items-center">
-                    <div className="w-12 h-12 rounded-2xl bg-primary/20 border-2 border-primary/50 flex items-center justify-center text-primary font-black text-sm">{t('mlm_you')}</div>
-                    <div className="text-[10px] text-primary font-bold mt-1">$5 000</div>
+              <motion.div key="income-content" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }} style={{ overflow: "hidden" }}>
+                <div className="glass-card p-5 sm:p-8 rounded-3xl border border-green-500/20 mt-2 space-y-5">
+                  {/* Header */}
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 shrink-0 bg-green-500/20 rounded-xl flex items-center justify-center text-green-400">
+                      <TrendingUp className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h3 className="text-base sm:text-lg font-bold leading-snug">{t('mlm_income_title')}</h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">{t('mlm_income_desc')}</p>
+                    </div>
                   </div>
-                </div>
-                {/* L1 connector line */}
-                <div className="flex justify-center mb-1"><div className="w-px h-3 bg-primary/40" /></div>
-                <div className="relative flex justify-center mb-1">
-                  <div className="absolute top-0 left-[15%] right-[15%] h-px bg-primary/25" />
-                  <div className="w-px h-3 bg-primary/40" />
-                </div>
-                {/* L1 — 6 chaotic invites */}
-                <div className="flex justify-between gap-1 mb-2 px-0">
-                  {[
-                    { l: "А", amt: "$25K", bonus: "+$2 500", color: "bg-yellow-400/20 border-yellow-400/50 text-yellow-300" },
-                    { l: "Б", amt: "$25K", bonus: "+$2 500", color: "bg-yellow-400/20 border-yellow-400/50 text-yellow-300" },
-                    { l: "В", amt: "$100K", bonus: "+$10 000", color: "bg-orange-400/25 border-orange-400/60 text-orange-300" },
-                    { l: "Г", amt: "$5K", bonus: "+$500", color: "bg-secondary/20 border-secondary/40 text-secondary" },
-                    { l: "Д", amt: "$5K", bonus: "+$500", color: "bg-secondary/20 border-secondary/40 text-secondary" },
-                  ].map(({ l, amt, bonus, color }, i) => (
-                    <div key={i} className="flex flex-col items-center flex-1">
-                      <div className={`w-9 h-9 rounded-xl border flex items-center justify-center font-bold text-xs ${color}`}>{l}</div>
-                      <div className="text-[7px] text-muted-foreground mt-0.5">{amt}</div>
-                      <div className="text-[7px] text-green-400 font-bold">{bonus}</div>
-                    </div>
-                  ))}
-                </div>
-                {/* L2 connectors */}
-                <div className="flex justify-between gap-1 mb-1 px-0">
-                  {[0,1,2,3,4].map(i => (
-                    <div key={i} className="flex-1 flex justify-center"><div className="w-px h-2 bg-white/20" /></div>
-                  ))}
-                </div>
-                {/* L2 — chaotic, different amounts */}
-                <div className="flex justify-between gap-0.5 px-0 mb-1">
-                  {[
-                    { amt: "$10K", bonus: "+$500" },
-                    { amt: "$1K",  bonus: "+$50" },
-                    { amt: "$5K",  bonus: "+$250" },
-                    { amt: "$25K", bonus: "+$1 250" },
-                    { amt: "$1K",  bonus: "+$50" },
-                    { amt: "$5K",  bonus: "+$250" },
-                    { amt: "$1K",  bonus: "+$50" },
-                    { amt: "$10K", bonus: "+$500" },
-                  ].map(({ amt, bonus }, i) => (
-                    <div key={i} className="flex flex-col items-center flex-1">
-                      <div className="w-7 h-7 rounded-lg bg-blue-400/15 border border-blue-400/30 flex items-center justify-center text-blue-400 font-bold text-[8px]">
-                        {String.fromCharCode(49 + i)}
-                      </div>
-                      <div className="text-[6px] text-muted-foreground mt-0.5">{amt}</div>
-                      <div className="text-[6px] text-green-400 font-bold">{bonus}</div>
-                    </div>
-                  ))}
-                </div>
-                {/* L3+ hint */}
-                <div className="flex justify-between gap-0.5 px-0 mb-1">
-                  {[0,1,2,3,4,5,6,7].map(i => (
-                    <div key={i} className="flex-1 flex justify-center"><div className="w-px h-2 bg-white/10" /></div>
-                  ))}
-                </div>
-                <div className="flex justify-between gap-0.5 px-0 mb-2">
-                  {Array.from({ length: 12 }).map((_, i) => (
-                    <div key={i} className="flex-1 flex justify-center">
-                      <div className="w-4 h-4 rounded bg-teal-400/10 border border-teal-400/20 flex items-center justify-center">
-                        <div className="w-1 h-1 rounded-full bg-teal-400/50" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="text-center text-[10px] text-muted-foreground">{t('mlm_lvls_grow')}</div>
-              </div>
-            </div>
 
-            {/* Breakdown — single card with rows */}
-            <div className="glass-card rounded-2xl overflow-hidden mb-6 md:mb-8">
-              {[
-                { label: "L1 · 10%", icon: UserPlus,  bg: "bg-yellow-400/10",  color: "text-yellow-400",  desc: "2 × $25K",   result: "+$5 000",  resultColor: "text-yellow-400" },
-                { label: "L1 · 10%", icon: Crown,     bg: "bg-orange-400/10", color: "text-orange-400", desc: "1 × $100K",  result: "+$10 000", resultColor: "text-orange-400" },
-                { label: "L1 · 10%", icon: Users2,    bg: "bg-secondary/10",  color: "text-secondary",  desc: "2 × $5K",    result: "+$1 000",  resultColor: "text-secondary" },
-                { label: "L2 · 5%",  icon: Users2,    bg: "bg-blue-400/10",   color: "text-blue-400",   desc: t('mlm_net50'),  result: "+$2 500",  resultColor: "text-blue-400" },
-                { label: "L2 · 5%",  icon: Network,   bg: "bg-teal-400/10",   color: "text-teal-400",   desc: t('mlm_net8'),   result: "+$400",    resultColor: "text-teal-400" },
-                { label: "L3–5",     icon: Network,   bg: "bg-purple-400/10", color: "text-purple-400", desc: t('mlm_deeper'), result: "+$1 200", resultColor: "text-purple-400" },
-              ].map((row, i, arr) => (
-                <div key={i} className={`flex items-center gap-3 px-4 py-3 ${i < arr.length - 1 ? "border-b border-white/6" : ""}`}>
-                  <div className={`w-7 h-7 rounded-lg ${row.bg} flex items-center justify-center shrink-0`}>
-                    <row.icon className={`w-3.5 h-3.5 ${row.color}`} />
+                  {/* 3 levels */}
+                  <div className="glass-card rounded-2xl overflow-hidden">
+                    {[
+                      { lvl: "L1", pct: "6%", desc: t('mlm_income_l1'), bar: 100, badgeCls: "bg-primary/20 text-primary border-primary/30", barCls: "from-primary to-primary/60" },
+                      { lvl: "L2", pct: "3%", desc: t('mlm_income_l2'), bar: 55,  badgeCls: "bg-secondary/20 text-secondary border-secondary/30", barCls: "from-secondary to-secondary/60" },
+                      { lvl: "L3", pct: "1%", desc: t('mlm_income_l3'), bar: 22,  badgeCls: "bg-blue-400/20 text-blue-400 border-blue-400/30", barCls: "from-blue-400 to-blue-400/60" },
+                    ].map((row, i, arr) => (
+                      <div key={i} className={`flex items-center gap-4 px-5 py-4 ${i < arr.length - 1 ? "border-b border-white/6" : ""}`}>
+                        <div className={`shrink-0 text-xs font-black px-2.5 py-1 rounded-lg border ${row.badgeCls}`}>{row.lvl}</div>
+                        <div className="shrink-0 w-10 text-right">
+                          <span className={`text-lg font-black ${row.badgeCls.split(' ')[1]}`}>{row.pct}</span>
+                        </div>
+                        <div className="flex-1 relative h-2 bg-white/5 rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            whileInView={{ width: `${row.bar}%` }}
+                            viewport={{ once: true, amount: 0.5 }}
+                            transition={{ duration: 0.7, delay: i * 0.1 }}
+                            className={`absolute left-0 top-0 h-full rounded-full bg-gradient-to-r ${row.barCls}`}
+                          />
+                        </div>
+                        <div className="shrink-0 text-xs text-muted-foreground w-48 text-right hidden md:block">{row.desc}</div>
+                      </div>
+                    ))}
                   </div>
-                  <div className={`text-[10px] font-bold uppercase tracking-wider ${row.color} shrink-0 w-14`}>{row.label}</div>
-                  <div className="flex-1 min-w-0 text-xs text-muted-foreground truncate">{row.desc}</div>
-                  <div className={`text-sm sm:text-base font-black ${row.resultColor} shrink-0`}>{row.result}</div>
-                </div>
-              ))}
-            </div>
 
-            <div className="flex flex-col sm:flex-row items-center gap-4 p-4 sm:p-6 rounded-2xl glass-card">
-              <div className="flex-1 text-center sm:text-left">
-                <div className="text-sm text-muted-foreground mb-1">{t('mlm_ex_total_label')}</div>
-                <div className="text-4xl sm:text-5xl font-black text-green-400">$20 100</div>
-                <div className="text-xs text-muted-foreground mt-1">L1: $16 000 · L2: $2 900 · L3–5: $1 200</div>
-              </div>
-              <div className="w-full h-px sm:w-px sm:h-12 bg-white/10" />
-              <div className="text-center sm:text-left">
-                <div className="text-sm text-muted-foreground mb-1">{t('mlm_ex_revshare')}</div>
-                <div className="text-2xl sm:text-3xl font-black text-primary">+$626 / мес</div>
-                <div className="text-xs text-muted-foreground/70 mt-1">при 10M DAU</div>
-              </div>
-            </div>
+                  {/* Example calculation */}
+                  <div className="rounded-2xl bg-white/3 border border-white/8 p-5">
+                    <div className="text-xs font-black tracking-widest uppercase text-muted-foreground mb-4">{t('mlm_income_ex_title')}</div>
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-8 h-8 rounded-xl bg-secondary/20 border border-secondary/30 flex items-center justify-center shrink-0">
+                        <Users2 className="w-3.5 h-3.5 text-secondary" />
+                      </div>
+                      <div className="flex-1 text-sm text-muted-foreground">{t('mlm_income_ex_desc')}</div>
+                      <div className="text-sm font-black text-secondary shrink-0">$1 000</div>
+                    </div>
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-8 h-8 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center shrink-0">
+                        <ArrowRight className="w-3.5 h-3.5 text-primary" />
+                      </div>
+                      <div className="flex-1 text-sm text-muted-foreground">Ваш доход (L1 · 6%)</div>
+                      <div className="text-sm font-black text-green-400 shrink-0">+$60</div>
+                    </div>
+                    <div className="flex items-center gap-2 pt-3 border-t border-white/8">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-green-400 shrink-0" />
+                      <span className="text-xs text-muted-foreground">{t('mlm_income_ex_note')}</span>
+                    </div>
+                  </div>
 
-            <p className="text-xs text-muted-foreground text-center mt-4">
-              {t('mlm_ex_footnote')}
-            </p>
+                  <p className="text-xs text-muted-foreground text-center">{t('mlm_income_footnote')}</p>
                 </div>
               </motion.div>
             )}
@@ -1299,106 +1234,65 @@ export default function Landing() {
             <AnimatePresence>
             {poolOpen && (
               <motion.div key="pool-content" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }} style={{ overflow: "hidden" }}>
-                <div className="mt-2">
-                <p className="text-sm md:text-base text-muted-foreground leading-relaxed px-2 py-3">
+                <div className="mt-2 space-y-4">
+                <p className="text-sm md:text-base text-muted-foreground leading-relaxed px-2 py-1">
                   {t('mlm_pool_desc')}
                 </p>
 
-            {/* Mini Pool + Max Pool */}
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={staggerChildren}
-              className="grid md:grid-cols-2 gap-4 mb-5">
-              {[
-                {
-                  name: "Mini Pool",
-                  pct: "6%",
-                  color: "text-primary",
-                  border: "border-primary/25",
-                  bg: "bg-primary/5",
-                  badgeBg: "bg-primary/10",
-                  conditions: [t('mini_pool_c1'), t('mini_pool_c2')],
-                  share: t('mini_pool_share'),
-                  shareColor: "text-primary",
-                },
-                {
-                  name: "Max Pool",
-                  pct: "4%",
-                  color: "text-secondary",
-                  border: "border-secondary/25",
-                  bg: "bg-secondary/5",
-                  badgeBg: "bg-secondary/10",
-                  conditions: [t('max_pool_c1'), t('max_pool_c2')],
-                  share: t('max_pool_share'),
-                  shareColor: "text-secondary",
-                },
-              ].map((pool, i) => (
-                <motion.div key={i} variants={i === 0 ? fadeLeft : fadeRight}
-                  className={`glass-card rounded-2xl p-5 border ${pool.border}`}>
-                  <div className="flex items-center justify-between mb-4">
-                    <span className={`text-lg font-black ${pool.color}`}>{pool.name}</span>
-                    <span className={`text-4xl font-black ${pool.color}`}>{pool.pct}</span>
-                  </div>
-                  <div className="space-y-2 mb-3">
-                    {pool.conditions.map((c, j) => (
-                      <div key={j} className="flex items-start gap-2">
-                        <CheckCircle2 className={`w-4 h-4 mt-0.5 shrink-0 ${pool.color} opacity-70`} />
-                        <span className="text-sm text-muted-foreground">{c}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className={`flex items-center gap-2 pt-3 border-t ${pool.border}`}>
-                    <Coins className={`w-4 h-4 shrink-0 ${pool.shareColor} opacity-70`} />
-                    <span className={`text-sm font-semibold ${pool.shareColor}`}>{pool.share}</span>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            {/* Example table */}
+            {/* Example table header */}
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={slideUp}
               className="glass-card rounded-2xl overflow-hidden">
-              {/* Table header */}
-              <div className="px-5 py-3 border-b border-white/8">
+              <div className="px-5 py-3 border-b border-white/8 flex items-center justify-between">
                 <span className="text-[11px] font-black tracking-widest uppercase text-muted-foreground">
                   {t('pool_table_header')}
                 </span>
               </div>
-              {/* Rows */}
+              {/* Summary rows */}
               {[
-                { label: t('pool_row_total'), value: "$250 000", bold: true, valueColor: "" },
-                { label: "Community Pool (10%)", value: "$25 000", bold: false, valueColor: "text-yellow-400" },
-                { label: "Mini Pool (6%)", value: "$15 000", bold: false, valueColor: "text-primary" },
-                { label: "Max Pool (4%)", value: "$10 000", bold: false, valueColor: "text-secondary" },
+                { label: t('pool_row_total'), value: "$200 000", bold: true, valueColor: "" },
+                { label: "Community Pool (6%)", value: "$12 000", bold: false, valueColor: "text-yellow-400" },
               ].map((row, i) => (
                 <div key={i} className={`flex items-center justify-between px-5 py-3 border-b border-white/6 ${row.bold ? "bg-white/3" : ""}`}>
                   <span className={`text-sm ${row.bold ? "font-bold" : "text-muted-foreground"}`}>{row.label}</span>
                   <span className={`text-sm font-black ${row.valueColor || ""}`}>{row.value}</span>
                 </div>
               ))}
-              {/* Results block */}
-              <div className="px-5 py-4 bg-white/2 space-y-3">
-                <p className="text-xs font-bold text-muted-foreground">
-                  {t('pool_share_label')}
-                </p>
-                <div className="flex items-center justify-between rounded-xl bg-secondary/10 border border-secondary/20 px-4 py-3">
-                  <div className="flex items-center gap-2">
-                    <div className="w-5 h-5 rounded-full bg-secondary/30 border border-secondary/50 flex items-center justify-center text-secondary text-[10px] font-black">2</div>
-                    <span className="text-sm text-muted-foreground">{t('pool_shares_label')}</span>
+
+              {/* Top-5 leaderboard */}
+              {[
+                { rank: 1, pct: "35%", amount: "$4 200", icon: "🥇", bg: "bg-yellow-400/10", border: "border-yellow-400/20", color: "text-yellow-300", barW: 100 },
+                { rank: 2, pct: "25%", amount: "$3 000", icon: "🥈", bg: "bg-slate-400/10", border: "border-slate-400/20", color: "text-slate-300", barW: 71 },
+                { rank: 3, pct: "15%", amount: "$1 800", icon: "🥉", bg: "bg-orange-400/10", border: "border-orange-400/20", color: "text-orange-300", barW: 43 },
+                { rank: 4, pct: "13%", amount: "$1 560", icon: "4", bg: "bg-primary/8",       border: "border-primary/15",   color: "text-primary",   barW: 37 },
+                { rank: 5, pct: "12%", amount: "$1 440", icon: "5", bg: "bg-secondary/8",     border: "border-secondary/15", color: "text-secondary", barW: 34 },
+              ].map((row, i) => (
+                <div key={i} className={`flex items-center gap-3 px-4 py-3 ${i < 4 ? "border-b border-white/6" : ""}`}>
+                  <div className={`w-8 h-8 rounded-xl ${row.bg} border ${row.border} flex items-center justify-center text-sm font-black shrink-0`}>
+                    {row.rank <= 3 ? row.icon : <span className={`text-xs ${row.color}`}>{row.icon}</span>}
                   </div>
-                  <span className="text-lg font-black text-secondary">$5 000 / каждому</span>
-                </div>
-                <div className="flex items-center justify-between rounded-xl bg-primary/10 border border-primary/20 px-4 py-3">
-                  <div className="flex items-center gap-2">
-                    <div className="w-5 h-5 rounded-full bg-primary/30 border border-primary/50 flex items-center justify-center text-primary text-[10px] font-black">8</div>
-                    <span className="text-sm text-muted-foreground">{t('pool_shares_total')}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className={`text-xs font-black ${row.color}`}>Топ {row.rank}</span>
+                      <span className={`text-xs font-bold ${row.color} opacity-60`}>· {row.pct}</span>
+                    </div>
+                    <div className="relative h-1.5 bg-white/5 rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${row.barW}%` }}
+                        viewport={{ once: true, amount: 0.5 }}
+                        transition={{ duration: 0.6, delay: i * 0.07 }}
+                        className={`absolute left-0 top-0 h-full rounded-full ${row.color.replace('text-', 'bg-')}`}
+                      />
+                    </div>
                   </div>
-                  <span className="text-lg font-black text-primary">$1 875 / каждому</span>
+                  <div className={`text-base font-black ${row.color} shrink-0`}>{row.amount}</div>
                 </div>
-              </div>
+              ))}
             </motion.div>
 
             {/* Footer notes */}
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} variants={fadeIn}
-              className="grid sm:grid-cols-2 gap-3 mt-4">
+              className="grid sm:grid-cols-2 gap-3">
               {[t('pool_note1'), t('pool_note2')].map((note, i) => (
                 <div key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
                   <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0 text-green-400" />
