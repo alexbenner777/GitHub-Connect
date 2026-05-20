@@ -2,14 +2,14 @@ import { useState, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
-import { api, type Investment } from "@/lib/api";
+import { api, type Investment, type PlatformMetrics } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import {
   CheckCircle2, Clock, XCircle, RefreshCw, DollarSign,
   AlertTriangle, Search, ExternalLink, ChevronDown, ChevronUp,
-  LogOut, Shield
+  LogOut, Shield, BarChart3, Save, History
 } from "lucide-react";
 
 function StatusBadge({ status }: { status: string }) {
@@ -40,6 +40,15 @@ function StatCard({ label, value, sub, color }: { label: string; value: string; 
   );
 }
 
+const EMPTY_METRICS = {
+  dau: "", mau: "", wau: "", totalUsers: "", newUsersMonth: "",
+  totalVideos: "", newVideosMonth: "", totalCreators: "",
+  adsSold: "", adImpressions: "", adRevenueUsd: "", cpmUsd: "",
+  platformRevenueUsd: "", creatorsPaidOutUsd: "",
+  source: "manual" as "manual" | "api" | "mixed",
+  notes: "",
+};
+
 export default function Admin() {
   const { user, loading, logout } = useAuth();
   const [, setLocation] = useLocation();
@@ -53,6 +62,11 @@ export default function Admin() {
   const [search, setSearch] = useState("");
   const [tab, setTab] = useState<"pending" | "confirmed" | "rejected" | "all">("pending");
   const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [adminTab, setAdminTab] = useState<"investments" | "metrics">("investments");
+  const [metricsForm, setMetricsForm] = useState(EMPTY_METRICS);
+  const [savingMetrics, setSavingMetrics] = useState(false);
+  const [metricsHistory, setMetricsHistory] = useState<PlatformMetrics[]>([]);
+  const [loadingMetrics, setLoadingMetrics] = useState(false);
 
   useEffect(() => {
     if (!loading && (!user || !user.isAdmin)) setLocation("/");
@@ -70,7 +84,73 @@ export default function Admin() {
     }
   }, []);
 
+  const loadMetrics = useCallback(async () => {
+    setLoadingMetrics(true);
+    try {
+      const data = await api.adminGetPlatformMetricsHistory();
+      setMetricsHistory(data.metrics);
+      if (data.metrics[0]) {
+        const m = data.metrics[0];
+        setMetricsForm({
+          dau: m.dau != null ? String(m.dau) : "",
+          mau: m.mau != null ? String(m.mau) : "",
+          wau: m.wau != null ? String(m.wau) : "",
+          totalUsers: m.totalUsers != null ? String(m.totalUsers) : "",
+          newUsersMonth: m.newUsersMonth != null ? String(m.newUsersMonth) : "",
+          totalVideos: m.totalVideos != null ? String(m.totalVideos) : "",
+          newVideosMonth: m.newVideosMonth != null ? String(m.newVideosMonth) : "",
+          totalCreators: m.totalCreators != null ? String(m.totalCreators) : "",
+          adsSold: m.adsSold != null ? String(m.adsSold) : "",
+          adImpressions: m.adImpressions != null ? String(m.adImpressions) : "",
+          adRevenueUsd: m.adRevenueUsd ?? "",
+          cpmUsd: m.cpmUsd ?? "",
+          platformRevenueUsd: m.platformRevenueUsd ?? "",
+          creatorsPaidOutUsd: m.creatorsPaidOutUsd ?? "",
+          source: (m.source as "manual" | "api" | "mixed") ?? "manual",
+          notes: m.notes ?? "",
+        });
+      }
+    } catch {
+      toast({ title: "Ошибка загрузки метрик", variant: "destructive" });
+    } finally {
+      setLoadingMetrics(false);
+    }
+  }, []);
+
+  const saveMetrics = async () => {
+    setSavingMetrics(true);
+    try {
+      const toInt = (v: string) => v !== "" ? parseInt(v) : null;
+      const toStr = (v: string) => v !== "" ? v : null;
+      await api.adminSavePlatformMetrics({
+        dau: toInt(metricsForm.dau),
+        mau: toInt(metricsForm.mau),
+        wau: toInt(metricsForm.wau),
+        totalUsers: toInt(metricsForm.totalUsers),
+        newUsersMonth: toInt(metricsForm.newUsersMonth),
+        totalVideos: toInt(metricsForm.totalVideos),
+        newVideosMonth: toInt(metricsForm.newVideosMonth),
+        totalCreators: toInt(metricsForm.totalCreators),
+        adsSold: toInt(metricsForm.adsSold),
+        adImpressions: toInt(metricsForm.adImpressions),
+        adRevenueUsd: toStr(metricsForm.adRevenueUsd),
+        cpmUsd: toStr(metricsForm.cpmUsd),
+        platformRevenueUsd: toStr(metricsForm.platformRevenueUsd),
+        creatorsPaidOutUsd: toStr(metricsForm.creatorsPaidOutUsd),
+        source: metricsForm.source,
+        notes: toStr(metricsForm.notes),
+      });
+      toast({ title: "✅ Метрики сохранены", description: "Снапшот опубликован для инвесторов" });
+      loadMetrics();
+    } catch (err: any) {
+      toast({ title: err.message, variant: "destructive" });
+    } finally {
+      setSavingMetrics(false);
+    }
+  };
+
   useEffect(() => { if (user?.isAdmin) load(); }, [user]);
+  useEffect(() => { if (user?.isAdmin && adminTab === "metrics") loadMetrics(); }, [user, adminTab]);
 
   const confirm = async (id: number) => {
     setConfirming(id);
@@ -154,6 +234,20 @@ export default function Admin() {
 
       <div className="max-w-6xl mx-auto px-6 py-8 space-y-8">
 
+        {/* Admin tab switcher */}
+        <div className="flex gap-1 p-1 bg-white/4 rounded-xl border border-white/8 w-fit">
+          <button onClick={() => setAdminTab("investments")}
+            className={`flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold transition-colors ${adminTab === "investments" ? "bg-primary/20 text-primary" : "text-white/40 hover:text-white/70"}`}>
+            <DollarSign className="w-4 h-4" /> Инвестиции
+          </button>
+          <button onClick={() => setAdminTab("metrics")}
+            className={`flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold transition-colors ${adminTab === "metrics" ? "bg-primary/20 text-primary" : "text-white/40 hover:text-white/70"}`}>
+            <BarChart3 className="w-4 h-4" /> Метрики платформы
+            {metricsHistory.length > 0 && <span className="text-[10px] bg-green-500/20 text-green-400 px-1.5 py-0.5 rounded-md">обновлено</span>}
+          </button>
+        </div>
+
+        {adminTab === "investments" && <>
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <StatCard label="Ожидают" value={String(pending.length)}
@@ -335,6 +429,156 @@ export default function Admin() {
             })}
           </AnimatePresence>
         </div>
+        </>}
+
+        {/* ─── METRICS TAB ─── */}
+        {adminTab === "metrics" && (
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="font-black text-lg">Метрики платформы</div>
+                <div className="text-xs text-white/40 mt-0.5">Каждое сохранение создаёт новый снапшот — инвесторы видят последний</div>
+              </div>
+              <button onClick={loadMetrics} disabled={loadingMetrics}
+                className="w-9 h-9 rounded-xl border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">
+                <RefreshCw className={`w-4 h-4 text-white/50 ${loadingMetrics ? "animate-spin" : ""}`} />
+              </button>
+            </div>
+
+            <div className="grid lg:grid-cols-2 gap-5">
+              {/* Audience */}
+              <div className="rounded-2xl border border-white/10 bg-white/3 p-5 space-y-3">
+                <div className="text-xs font-bold text-white/50 uppercase tracking-widest">Аудитория</div>
+                {[
+                  { key: "dau", label: "DAU (ежедневная аудитория)" },
+                  { key: "mau", label: "MAU (ежемесячная)" },
+                  { key: "wau", label: "WAU (еженедельная)" },
+                  { key: "totalUsers", label: "Всего пользователей" },
+                  { key: "newUsersMonth", label: "Новых за месяц" },
+                ].map(f => (
+                  <div key={f.key}>
+                    <label className="text-xs text-white/40 mb-1 block">{f.label}</label>
+                    <Input
+                      type="number" min="0" placeholder="—"
+                      value={(metricsForm as any)[f.key]}
+                      onChange={e => setMetricsForm(p => ({ ...p, [f.key]: e.target.value }))}
+                      className="bg-white/4 border-white/10 h-9 text-sm"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Content */}
+              <div className="rounded-2xl border border-white/10 bg-white/3 p-5 space-y-3">
+                <div className="text-xs font-bold text-white/50 uppercase tracking-widest">Контент</div>
+                {[
+                  { key: "totalVideos", label: "Всего видео" },
+                  { key: "newVideosMonth", label: "Новых видео за месяц" },
+                  { key: "totalCreators", label: "Создателей" },
+                ].map(f => (
+                  <div key={f.key}>
+                    <label className="text-xs text-white/40 mb-1 block">{f.label}</label>
+                    <Input
+                      type="number" min="0" placeholder="—"
+                      value={(metricsForm as any)[f.key]}
+                      onChange={e => setMetricsForm(p => ({ ...p, [f.key]: e.target.value }))}
+                      className="bg-white/4 border-white/10 h-9 text-sm"
+                    />
+                  </div>
+                ))}
+
+                <div className="text-xs font-bold text-white/50 uppercase tracking-widest pt-3">Реклама</div>
+                {[
+                  { key: "adsSold", label: "Продано рекламных слотов" },
+                  { key: "adImpressions", label: "Всего рекламных показов" },
+                  { key: "adRevenueUsd", label: "Выручка от рекламы ($)" },
+                  { key: "cpmUsd", label: "CPM ($)" },
+                ].map(f => (
+                  <div key={f.key}>
+                    <label className="text-xs text-white/40 mb-1 block">{f.label}</label>
+                    <Input
+                      type="number" min="0" placeholder="—"
+                      value={(metricsForm as any)[f.key]}
+                      onChange={e => setMetricsForm(p => ({ ...p, [f.key]: e.target.value }))}
+                      className="bg-white/4 border-white/10 h-9 text-sm"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Financials + meta */}
+            <div className="rounded-2xl border border-white/10 bg-white/3 p-5 space-y-3">
+              <div className="text-xs font-bold text-white/50 uppercase tracking-widest">Финансы платформы</div>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {[
+                  { key: "platformRevenueUsd", label: "Общая выручка ($)" },
+                  { key: "creatorsPaidOutUsd", label: "Выплачено создателям ($)" },
+                ].map(f => (
+                  <div key={f.key}>
+                    <label className="text-xs text-white/40 mb-1 block">{f.label}</label>
+                    <Input
+                      type="number" min="0" placeholder="—"
+                      value={(metricsForm as any)[f.key]}
+                      onChange={e => setMetricsForm(p => ({ ...p, [f.key]: e.target.value }))}
+                      className="bg-white/4 border-white/10 h-9 text-sm"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-3 pt-2">
+                <div>
+                  <label className="text-xs text-white/40 mb-1 block">Источник данных</label>
+                  <select value={metricsForm.source} onChange={e => setMetricsForm(p => ({ ...p, source: e.target.value as any }))}
+                    className="w-full h-9 px-3 rounded-xl bg-white/4 border border-white/10 text-foreground text-sm focus:outline-none focus:border-primary/40">
+                    <option value="manual">вручную</option>
+                    <option value="api">live API</option>
+                    <option value="mixed">комбинация</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-xs text-white/40 mb-1 block">Комментарий для инвесторов</label>
+                  <Input
+                    placeholder="Опционально…"
+                    value={metricsForm.notes}
+                    onChange={e => setMetricsForm(p => ({ ...p, notes: e.target.value }))}
+                    className="bg-white/4 border-white/10 h-9 text-sm"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <Button onClick={saveMetrics} disabled={savingMetrics} className="btn-grad font-bold rounded-xl h-11 px-8">
+              {savingMetrics ? <><RefreshCw className="w-4 h-4 mr-2 animate-spin" />Сохраняю…</> : <><Save className="w-4 h-4 mr-2" />Опубликовать снапшот</>}
+            </Button>
+
+            {/* History */}
+            {metricsHistory.length > 0 && (
+              <div className="rounded-2xl border border-white/10 bg-white/3 p-5">
+                <div className="text-xs font-bold text-white/50 uppercase tracking-widest mb-3 flex items-center gap-2">
+                  <History className="w-3.5 h-3.5" /> История снапшотов ({metricsHistory.length})
+                </div>
+                <div className="space-y-2">
+                  {metricsHistory.map((m, i) => (
+                    <div key={m.id} className={`flex items-center justify-between text-xs p-3 rounded-xl ${i === 0 ? "bg-primary/10 border border-primary/20" : "bg-white/3 border border-white/8"}`}>
+                      <div className="flex items-center gap-3">
+                        {i === 0 && <span className="text-[10px] bg-green-500/20 text-green-400 px-1.5 py-0.5 rounded-md font-bold">текущий</span>}
+                        <span className="text-white/50">{new Date(m.recordedAt).toLocaleString("ru")}</span>
+                      </div>
+                      <div className="flex gap-4 text-white/40">
+                        {m.dau != null && <span>DAU {m.dau.toLocaleString("ru")}</span>}
+                        {m.mau != null && <span>MAU {m.mau.toLocaleString("ru")}</span>}
+                        <span className="text-white/20">{m.source}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </motion.div>
+        )}
+
       </div>
     </div>
   );

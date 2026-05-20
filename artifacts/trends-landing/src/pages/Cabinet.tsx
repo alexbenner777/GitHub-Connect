@@ -5,14 +5,15 @@ import { SceneBackground } from "@/components/SceneBackground";
 import {
   Copy, Wallet, ArrowLeft, LogOut, CheckCircle2, Clock, XCircle,
   RefreshCw, Settings, TrendingUp, Users, DollarSign, BarChart3,
-  Network, Star, ChevronRight, Shield
+  Network, Star, ChevronRight, Shield, Globe, PlayCircle, Megaphone,
+  Banknote, Eye, Video, UserCheck
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { InvestmentModal, MONTHLY_PROFIT } from "@/components/InvestmentModal";
 import { useAuth } from "@/hooks/useAuth";
-import { api, type CabinetData } from "@/lib/api";
+import { api, type CabinetData, type PlatformMetrics } from "@/lib/api";
 
 function StatusBadge({ status }: { status: string }) {
   if (status === "confirmed") return (
@@ -52,7 +53,8 @@ export default function Cabinet() {
   const [walletAddr, setWalletAddr] = useState("");
   const [walletNet, setWalletNet] = useState("TON");
   const [savingWallet, setSavingWallet] = useState(false);
-  const [activeTab, setActiveTab] = useState<"overview" | "investments" | "mlm" | "settings">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "investments" | "mlm" | "settings" | "platform">("overview");
+  const [platformMetrics, setPlatformMetrics] = useState<PlatformMetrics | null>(null);
 
   useEffect(() => {
     if (!authLoading && !user) setLocation("/login");
@@ -62,9 +64,10 @@ export default function Cabinet() {
     if (!user) return;
     setLoadingData(true);
     try {
-      const [d, r] = await Promise.all([api.me(), api.referrals()]);
+      const [d, r, pm] = await Promise.all([api.me(), api.referrals(), api.platformMetrics()]);
       setData(d);
       setReferrals(r.levels);
+      setPlatformMetrics(pm.metrics);
       setWalletAddr(d.user.walletAddress ?? "");
       setWalletNet(d.user.walletNetwork ?? "USDT TRC-20");
     } catch {
@@ -125,6 +128,7 @@ export default function Cabinet() {
     { id: "overview", label: "Обзор", icon: BarChart3 },
     { id: "investments", label: "Инвестиции", icon: TrendingUp },
     { id: "mlm", label: "Партнёры", icon: Network },
+    { id: "platform", label: "Платформа", icon: Globe },
     { id: "settings", label: "Настройки", icon: Settings },
   ] as const;
 
@@ -630,6 +634,129 @@ export default function Cabinet() {
                     <LogOut className="w-4 h-4 mr-2" /> Выйти из аккаунта
                   </Button>
                 </div>
+              </motion.div>
+            )}
+
+            {/* ─── PLATFORM ─── */}
+            {activeTab === "platform" && (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
+                {!platformMetrics ? (
+                  <div className="glass-card rounded-2xl p-12 border border-white/10 flex flex-col items-center justify-center text-center gap-4">
+                    <Globe className="w-10 h-10 text-muted-foreground/30" />
+                    <div>
+                      <div className="font-bold text-sm mb-1">Данные платформы скоро появятся</div>
+                      <div className="text-xs text-muted-foreground">Команда публикует метрики по мере роста платформы</div>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="text-sm font-bold flex items-center gap-2">
+                          <Globe className="w-4 h-4 text-primary" /> Метрики платформы Trends
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-0.5">
+                          Обновлено: {new Date(platformMetrics.recordedAt).toLocaleDateString("ru", { day: "numeric", month: "long", year: "numeric" })}
+                          {" · "}
+                          <span className={`font-semibold ${platformMetrics.source === "api" ? "text-green-400" : platformMetrics.source === "mixed" ? "text-yellow-400" : "text-blue-400"}`}>
+                            {platformMetrics.source === "api" ? "✦ live API" : platformMetrics.source === "mixed" ? "✦ частично API" : "вручную"}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="glass-card rounded-2xl p-6 border border-white/10">
+                      <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <Users className="w-3.5 h-3.5" /> Аудитория
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        {[
+                          { label: "DAU", value: platformMetrics.dau, color: "text-primary" },
+                          { label: "MAU", value: platformMetrics.mau, color: "text-secondary" },
+                          { label: "WAU", value: platformMetrics.wau, color: "text-blue-400" },
+                          { label: "Всего пользователей", value: platformMetrics.totalUsers, color: "text-cyan-400" },
+                          { label: "Новых за месяц", value: platformMetrics.newUsersMonth, color: "text-green-400" },
+                        ].map((m, i) => (
+                          <div key={i} className="rounded-xl bg-white/4 border border-white/8 p-4">
+                            <div className="text-xs text-muted-foreground mb-1">{m.label}</div>
+                            <div className={`text-xl font-black ${m.color}`}>
+                              {m.value != null ? m.value.toLocaleString("ru") : <span className="text-white/20 text-base font-normal">—</span>}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="glass-card rounded-2xl p-6 border border-white/10">
+                      <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <Video className="w-3.5 h-3.5" /> Контент
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        {[
+                          { label: "Всего видео", value: platformMetrics.totalVideos, color: "text-primary" },
+                          { label: "Новых за месяц", value: platformMetrics.newVideosMonth, color: "text-green-400" },
+                          { label: "Создателей", value: platformMetrics.totalCreators, color: "text-secondary" },
+                        ].map((m, i) => (
+                          <div key={i} className="rounded-xl bg-white/4 border border-white/8 p-4">
+                            <div className="text-xs text-muted-foreground mb-1">{m.label}</div>
+                            <div className={`text-xl font-black ${m.color}`}>
+                              {m.value != null ? m.value.toLocaleString("ru") : <span className="text-white/20 text-base font-normal">—</span>}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="glass-card rounded-2xl p-6 border border-white/10">
+                      <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <Megaphone className="w-3.5 h-3.5" /> Реклама
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        {[
+                          { label: "Продано слотов", value: platformMetrics.adsSold, prefix: "" },
+                          { label: "Показов рекламы", value: platformMetrics.adImpressions, prefix: "" },
+                          { label: "Выручка от рекламы", value: platformMetrics.adRevenueUsd, prefix: "$" },
+                          { label: "CPM", value: platformMetrics.cpmUsd, prefix: "$" },
+                        ].map((m, i) => (
+                          <div key={i} className="rounded-xl bg-white/4 border border-white/8 p-4">
+                            <div className="text-xs text-muted-foreground mb-1">{m.label}</div>
+                            <div className="text-xl font-black text-yellow-400">
+                              {m.value != null
+                                ? `${m.prefix}${Number(m.value).toLocaleString("ru")}`
+                                : <span className="text-white/20 text-base font-normal">—</span>}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="glass-card rounded-2xl p-6 border border-white/10">
+                      <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <Banknote className="w-3.5 h-3.5" /> Финансы платформы
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        {[
+                          { label: "Общая выручка платформы", value: platformMetrics.platformRevenueUsd, color: "text-green-400" },
+                          { label: "Выплачено создателям", value: platformMetrics.creatorsPaidOutUsd, color: "text-secondary" },
+                        ].map((m, i) => (
+                          <div key={i} className="rounded-xl bg-white/4 border border-white/8 p-4">
+                            <div className="text-xs text-muted-foreground mb-1">{m.label}</div>
+                            <div className={`text-2xl font-black ${m.color}`}>
+                              {m.value != null ? `$${Number(m.value).toLocaleString("ru")}` : <span className="text-white/20 text-base font-normal">—</span>}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {platformMetrics.notes && (
+                      <div className="glass-card rounded-2xl p-5 border border-white/10">
+                        <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">Комментарий от команды</div>
+                        <div className="text-sm text-muted-foreground leading-relaxed">{platformMetrics.notes}</div>
+                      </div>
+                    )}
+                  </>
+                )}
               </motion.div>
             )}
           </main>

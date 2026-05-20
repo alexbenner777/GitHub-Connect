@@ -62,6 +62,18 @@ export const api = {
     request(`/admin/investments/${id}/reject`, { method: "PATCH", body: JSON.stringify({}) }),
 
   stats: () => request<{ raised: number; investors: number }>("/stats"),
+
+  platformMetrics: () =>
+    request<{ metrics: PlatformMetrics | null }>("/platform-metrics"),
+
+  adminGetPlatformMetricsHistory: () =>
+    request<{ metrics: PlatformMetrics[] }>("/admin/platform-metrics/history"),
+
+  adminSavePlatformMetrics: (body: Partial<PlatformMetricsInput>) =>
+    request<{ metrics: PlatformMetrics }>("/admin/platform-metrics", {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
 };
 
 export interface AuthUser {
@@ -94,6 +106,29 @@ export interface Transaction {
   status: string;
   createdAt: string;
 }
+
+export interface PlatformMetrics {
+  id: number;
+  dau: number | null;
+  mau: number | null;
+  wau: number | null;
+  totalUsers: number | null;
+  newUsersMonth: number | null;
+  totalVideos: number | null;
+  newVideosMonth: number | null;
+  totalCreators: number | null;
+  adsSold: number | null;
+  adImpressions: number | null;
+  adRevenueUsd: string | null;
+  cpmUsd: string | null;
+  platformRevenueUsd: string | null;
+  creatorsPaidOutUsd: string | null;
+  source: string;
+  notes: string | null;
+  recordedAt: string;
+}
+
+export type PlatformMetricsInput = Omit<PlatformMetrics, "id" | "recordedAt">;
 
 export interface CabinetData {
   user: {
