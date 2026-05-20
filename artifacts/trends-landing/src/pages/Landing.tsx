@@ -1165,7 +1165,7 @@ export default function Landing() {
                           return (
                             <div className="flex justify-center">
                               {/* Inner tight wrapper — bar spans exactly node centers */}
-                              <div className="relative flex gap-20">
+                              <div className="relative flex gap-28">
                                 <div className="absolute top-0 left-[18px] right-[18px] h-px bg-white/25" />
                                 {l1.map((n, i) => (
                                   <div key={i} className="flex flex-col items-center">
