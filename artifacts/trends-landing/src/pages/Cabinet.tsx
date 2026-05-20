@@ -64,10 +64,9 @@ export default function Cabinet() {
     if (!user) return;
     setLoadingData(true);
     try {
-      const [d, r, pm] = await Promise.all([api.me(), api.referrals(), api.platformMetrics()]);
+      const [d, r] = await Promise.all([api.me(), api.referrals()]);
       setData(d);
       setReferrals(r.levels);
-      setPlatformMetrics(pm.metrics);
       setWalletAddr(d.user.walletAddress ?? "");
       setWalletNet(d.user.walletNetwork ?? "USDT TRC-20");
     } catch {
@@ -75,6 +74,8 @@ export default function Cabinet() {
     } finally {
       setLoadingData(false);
     }
+    // Метрики платформы — некритичный запрос, не блокирует загрузку кабинета
+    api.platformMetrics().then(pm => setPlatformMetrics(pm.metrics)).catch(() => {});
   };
 
   useEffect(() => { loadData(); }, [user]);
