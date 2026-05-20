@@ -74,7 +74,7 @@ app.use("/api", router);
 if (process.env.NODE_ENV === "production") {
   const staticDir = path.resolve(__dirname, "../../trends-landing/dist/public");
   app.use(express.static(staticDir));
-  app.get("*", (_req: Request, res: Response) => {
+  app.get("/{*any}", (_req: Request, res: Response) => {
     res.sendFile(path.join(staticDir, "index.html"));
   });
 }
