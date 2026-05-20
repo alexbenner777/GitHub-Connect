@@ -5,6 +5,7 @@ import { db, usersTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { signToken } from "../lib/jwt.js";
 import { generateReferralCode } from "../lib/referral.js";
+import { notifyNewUser } from "../lib/telegram.js";
 
 const registerSchema = z.object({
   email: z.string().email("Неверный формат email"),
@@ -70,6 +71,15 @@ router.post("/auth/register", async (req, res, next) => {
       }
       throw e;
     }
+
+    notifyNewUser({
+      userId: user.id,
+      name: user.name,
+      email: user.email,
+      telegramUsername: user.telegramUsername ?? null,
+      referralCode: user.referralCode,
+      referredByCode: referralCode ?? null,
+    });
 
     const token = signToken({ userId: user.id, email: user.email, isAdmin: user.isAdmin });
     setCookieToken(res, token);

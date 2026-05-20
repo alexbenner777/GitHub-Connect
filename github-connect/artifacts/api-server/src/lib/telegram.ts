@@ -75,6 +75,27 @@ export async function notifyRejected(p: NotifyRejectedParams): Promise<void> {
   );
 }
 
+export interface NotifyNewUserParams {
+  userId: number;
+  name: string;
+  email: string;
+  telegramUsername: string | null;
+  referralCode: string;
+  referredByCode: string | null;
+}
+
+export async function notifyNewUser(p: NotifyNewUserParams): Promise<void> {
+  const tg = p.telegramUsername ? ` (@${escHtml(p.telegramUsername)})` : "";
+  const ref = p.referredByCode ? `\n🔗 Реферал от: <code>${escHtml(p.referredByCode)}</code>` : "";
+  await sendMessage(
+    `🆕 <b>Новый инвестор #${p.userId}</b>\n` +
+    `👤 ${escHtml(p.name)}${tg}\n` +
+    `📧 ${escHtml(p.email)}\n` +
+    `🎟 Реф. код: <code>${escHtml(p.referralCode)}</code>` +
+    ref
+  );
+}
+
 function escHtml(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
