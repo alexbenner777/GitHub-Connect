@@ -353,7 +353,7 @@ export function InvestmentModal({
               </div>
               <h2 className="text-3xl font-black text-gradient">Заявка принята!</h2>
               <p className="text-muted-foreground">
-                Пакет <strong>«{pkg.name}»</strong> активирован. Инвестиция подтверждена, MLM-бонусы начисляются.
+                Пакет <strong>«{pkg.name}»</strong> — заявка отправлена и ожидает подтверждения. Мы проверим перевод и активируем пакет в течение 24 часов.
               </p>
               <div className="rounded-xl border border-green-500/20 bg-green-500/8 p-4">
                 <div className="text-xs text-green-400/70 mb-1">RevShare при</div>

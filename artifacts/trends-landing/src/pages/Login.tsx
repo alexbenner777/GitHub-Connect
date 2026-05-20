@@ -54,7 +54,17 @@ export default function Login() {
                 className="bg-background/50 border-white/10 h-12" required />
             </div>
             <div>
-              <label className="text-sm font-medium mb-1.5 block">Пароль</label>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-sm font-medium">Пароль</label>
+                <a
+                  href="https://t.me/trendspartner_support"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-primary hover:underline"
+                >
+                  Забыли пароль?
+                </a>
+              </div>
               <Input type="password" placeholder="••••••••" value={password}
                 onChange={e => setPassword(e.target.value)}
                 className="bg-background/50 border-white/10 h-12" required />

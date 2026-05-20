@@ -18,6 +18,7 @@ import {
   Mail, Globe, FileText, Lock, Code2, Megaphone, Server, Trophy
 } from "lucide-react";
 
+import { api } from "@/lib/api";
 import logoPath from '@assets/logo_trends_1777962710178.png';
 import screen1Path from '@assets/скрин_1_1777968001895.png';
 import screen2Path from '@assets/скрин_2_1777969066507.png';
@@ -383,10 +384,9 @@ function MonetizationCards({ t }: { t: (key: string) => string }) {
   );
 }
 
-const TARGET_AMOUNT = 100000;
-const TARGET_INVESTORS = 13;
 const GOAL = 500_000;
-const PROGRESS_PCT = (TARGET_AMOUNT / GOAL) * 100;
+const FALLBACK_AMOUNT = 0;
+const FALLBACK_INVESTORS = 0;
 
 function useCountUp(target: number, duration = 2000, delay = 400) {
   const [value, setValue] = useState(0);
@@ -440,8 +440,18 @@ export default function Landing() {
   const { scrollY: scrollYMotion } = useScroll();
   const heroY = useTransform(scrollYMotion, [0, 600], [0, -70]);
 
-  const { value: raisedValue, ref: raisedRef } = useCountUp(TARGET_AMOUNT, 2200, 500);
-  const { value: investorsValue, ref: investorsRef } = useCountUp(TARGET_INVESTORS, 1400, 600);
+  const [liveRaised, setLiveRaised] = useState(FALLBACK_AMOUNT);
+  const [liveInvestors, setLiveInvestors] = useState(FALLBACK_INVESTORS);
+
+  useEffect(() => {
+    api.stats().then(s => {
+      setLiveRaised(s.raised);
+      setLiveInvestors(s.investors);
+    }).catch(() => {});
+  }, []);
+
+  const { value: raisedValue, ref: raisedRef } = useCountUp(liveRaised, 2200, 500);
+  const { value: investorsValue, ref: investorsRef } = useCountUp(liveInvestors, 1400, 600);
 
 
   useEffect(() => {

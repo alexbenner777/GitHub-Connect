@@ -60,6 +60,8 @@ export const api = {
 
   adminReject: (id: number) =>
     request(`/admin/investments/${id}/reject`, { method: "PATCH", body: JSON.stringify({}) }),
+
+  stats: () => request<{ raised: number; investors: number }>("/stats"),
 };
 
 export interface AuthUser {
