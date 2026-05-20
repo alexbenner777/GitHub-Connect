@@ -1322,8 +1322,9 @@ export default function Landing() {
                         <div className="relative flex gap-16">
                           <div className="absolute top-0 left-[20px] right-[20px] h-px bg-white/20" />
                           {[
-                            { lbl: "А", rev: "$3 130", earn: "+$157", pct: "5%", bg: "bg-yellow-500/20 border-yellow-500/50 text-yellow-200", earn_c: "text-green-400" },
+                            { lbl: "А", rev: "$3 130",  earn: "+$157", pct: "5%", bg: "bg-yellow-500/20 border-yellow-500/50 text-yellow-200", earn_c: "text-green-400" },
                             { lbl: "Б", rev: "$12 527", earn: "+$626", pct: "5%", bg: "bg-orange-500/20 border-orange-500/50 text-orange-200", earn_c: "text-green-400" },
+                            { lbl: "В", rev: "$626",    earn: "+$31",  pct: "5%", bg: "bg-violet-500/20 border-violet-500/50 text-violet-200", earn_c: "text-green-400" },
                           ].map((n, i) => (
                             <div key={i} className="flex flex-col items-center">
                               <div className="w-px h-5 bg-white/20" />
@@ -1367,7 +1368,7 @@ export default function Landing() {
                           <CheckCircle2 className="w-3.5 h-3.5 text-green-400 shrink-0" />
                           <span className="text-xs text-muted-foreground">{t('mlm_income_ex_note')}</span>
                         </div>
-                        <div className="text-sm font-black text-green-400 shrink-0">+$1 009 / мес</div>
+                        <div className="text-sm font-black text-green-400 shrink-0">+$1 153 / мес</div>
                       </div>
                     </div>
                   </div>
