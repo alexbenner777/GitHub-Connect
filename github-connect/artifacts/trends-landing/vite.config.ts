@@ -58,13 +58,20 @@ export default defineConfig({
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
   },
+  assetsInclude: ["**/*.mov"],
   server: {
     port,
     strictPort: true,
     host: "0.0.0.0",
     allowedHosts: true,
     fs: {
-      strict: true,
+      strict: false,
+    },
+    proxy: {
+      "/api": {
+        target: "http://localhost:8080",
+        changeOrigin: true,
+      },
     },
   },
   preview: {

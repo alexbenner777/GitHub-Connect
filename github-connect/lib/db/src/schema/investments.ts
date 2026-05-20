@@ -1,4 +1,5 @@
-import { pgTable, text, serial, timestamp, numeric, integer } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, numeric, integer, uniqueIndex } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 import { usersTable } from "./users";
@@ -16,7 +17,11 @@ export const investmentsTable = pgTable("investments", {
   confirmedAt: timestamp("confirmed_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
-});
+}, (table) => [
+  uniqueIndex("investments_user_package_pending_uidx")
+    .on(table.userId, table.packageId)
+    .where(sql`${table.status} = 'pending'`),
+]);
 
 export const insertInvestmentSchema = createInsertSchema(investmentsTable).omit({
   id: true, createdAt: true, updatedAt: true, status: true, confirmedAt: true

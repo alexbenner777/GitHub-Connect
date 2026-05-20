@@ -1,25 +1,30 @@
 import React, { useState, useEffect, useRef } from "react";
+import { translations, type Lang } from "@/lib/translations";
 import { Link } from "wouter";
 import { motion, useInView, useScroll, useTransform, AnimatePresence, useMotionValue, useSpring, type Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { InvestmentModal } from "@/components/InvestmentModal";
+import { LegalModal, DOCS, type DocId } from "@/components/LegalModal";
 import { SceneBackground } from "@/components/SceneBackground";
+import { DauCalculator } from "@/components/DauCalculator";
+import type { FullPackage } from "@/components/DauCalculator";
+import { PACKAGES as PKG_SOURCE, PACKAGE_UI } from "@/lib/packages";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import {
   ArrowRight, CheckCircle2, PlaySquare, TrendingUp, Users, Smartphone,
   BarChart3, Target, ShoppingBag, Gift, Wallet, ExternalLink,
-  Network, Coins, ChevronRight, DollarSign, UserPlus, Users2,
+  Network, Coins, ChevronRight, ChevronDown, DollarSign, UserPlus, Users2,
   Menu, X, Send, MessageCircle, Star, Shield, Zap, Crown,
-  Mail, Globe, FileText, Lock
+  Mail, Globe, FileText, Lock, Code2, Megaphone, Server, Trophy
 } from "lucide-react";
 
-const logoPath = '/logo.png';
-const screen1Path = '/screen1.png';
-const screen2Path = '/screen2.png';
-const screen3Path = '/screen3.png';
-const screenAppPath = '/screen_app.png';
-const trendsVideoPath = '/trends_demo_video.mp4';
-const iphoneFramePath = '/iphone_frame_transparent.png';
+import logoPath from '@assets/logo_trends_1777962710178.png';
+import screen1Path from '@assets/скрин_1_1777968001895.png';
+import screen2Path from '@assets/скрин_2_1777969066507.png';
+import screen3Path from '@assets/скрин_3_1777969064666.png';
+import screenAppPath from '@assets/111_1778425377815.png';
+import iphonePath from '@assets/iphone_фронт_1778532530856.png';
+import videoPath from '@assets/trends_demo_video.mov';
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -79,106 +84,308 @@ function MagneticButton({ children, className, onClick, ...props }: React.Compon
 }
 
 const ADVANTAGES = [
-  { title: "RevShare от монетизации платформы", desc: "20% всей рекламной выручки (7 источников) идёт напрямую в Investor Pool. Ежедневные и ежемесячные выплаты в USDT прямо на ваш кошелёк.", color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-secondary/10", Icon: DollarSign, label: "01 / Ежедневный доход" },
-  { title: "Собственный источник трафика", desc: "Специальные условия продвижения для инвесторов + приоритет в алгоритме. Используйте мощь платформы для своих проектов и каналов.", color: "text-secondary", gradFrom: "from-secondary/20", gradTo: "to-primary/5", Icon: TrendingUp, label: "02" },
-  { title: "Партнёрская программа", desc: "Получайте до 20% от инвестиций вашей структуры на 5 уровней в глубину (10%–5%–3%–1%–1%). Постройте источник пассивного дохода.", color: "text-green-400", gradFrom: "from-green-500/20", gradTo: "to-teal-500/5", Icon: Network, label: "03" },
-  { title: "Начисление токенов $TRND", desc: "Ранняя аллокация токенов с потенциалом кратного роста при листинге. Встроенный vesting для защиты цены токена.", color: "text-yellow-400", gradFrom: "from-yellow-500/20", gradTo: "to-orange-500/5", Icon: Coins, label: "04" },
-  { title: "Exit Upside × 20 – × 30", desc: "При продаже платформы стратегическому покупателю (оценка $200M–$500M) ваша доля принесёт сверхприбыль — от × 20 до × 30 от вложенного.", color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-purple-500/10", Icon: Crown, label: "05" },
+  {
+    title: "RevShare от монетизации платформы",
+    desc: "20% всей рекламной выручки (7 источников) идёт напрямую в Investor Pool. Ежемесячные выплаты в USDT прямо на ваш кошелёк.",
+    color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-secondary/10", Icon: DollarSign, label: "01 / Ежедневный доход",
+    extra: [
+      "7 источников выручки: in-feed видеореклама, Sponsored Stories, баннеры, интерстишелы, E-commerce партнёрки, Branded Content, Premium подписки",
+      "20% от всей рекламной выручки делится между инвесторами пропорционально пакету",
+      "Ежемесячные выплаты напрямую на USDT-кошелёк",
+      "Никаких блокировок — средства поступают в течение 48 часов после закрытия периода",
+    ],
+  },
+  {
+    title: "Собственный источник трафика",
+    desc: "Специальные условия продвижения для инвесторов + приоритет в алгоритме. Используйте мощь платформы для своих проектов и каналов.",
+    color: "text-secondary", gradFrom: "from-secondary/20", gradTo: "to-primary/5", Icon: TrendingUp, label: "02",
+    extra: [
+      "Приоритет в алгоритмической выдаче — ваш контент видят первым",
+      "До 3× органический охват по сравнению с обычными пользователями",
+      "Доступ к Trends Ads Manager (бета) — управление продвижением из личного кабинета",
+      "Специальный инвесторский бейдж повышает доверие аудитории к вашим каналам",
+    ],
+  },
+  {
+    title: "Партнёрская программа",
+    desc: "Получайте до 20% от инвестиций вашей структуры на 5 уровней в глубину (10%–5%–3%–1%–1%). Постройте источник пассивного дохода.",
+    color: "text-green-400", gradFrom: "from-green-500/20", gradTo: "to-teal-500/5", Icon: Network, label: "03",
+    extra: [
+      "Уровень 1 — 10%: прямые приглашённые вами инвесторы",
+      "Уровень 2 — 5%: партнёры ваших партнёров",
+      "Уровни 3–5 — 3% / 1% / 1%: сеть растёт, вы зарабатываете",
+      "Нет ограничений на размер сети — чем шире структура, тем выше пассивный доход",
+      "Выплаты в USDT в течение 48 часов после каждого нового вложения в вашей сети",
+    ],
+  },
+  {
+    title: "Начисление токенов $TRND",
+    desc: "Ранняя аллокация токенов с потенциалом кратного роста при листинге. Встроенный vesting для защиты цены токена.",
+    color: "text-yellow-400", gradFrom: "from-yellow-500/20", gradTo: "to-orange-500/5", Icon: Coins, label: "04",
+    extra: [
+      "Аллокация пропорциональна размеру пакета — чем раньше входите, тем больше токенов",
+      "Ранние инвесторы Pre-Seed получают бонус ×2 к аллокации",
+      "Vesting: 12 месяцев cliff → 24 месяца линейное разблокирование (защита от обвала)",
+      "Листинг запускается при достижении 10 млн пользователей платформы",
+      "Токен имеет утилити-функции: governance, доступ к Premium, рекламный баланс",
+    ],
+  },
+  {
+    title: "Exit Upside × 20 – × 30",
+    desc: "При продаже платформы стратегическому покупателю (оценка $200M–$500M) ваша доля принесёт сверхприбыль — от × 20 до × 30 от вложенного.",
+    color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-purple-500/10", Icon: Crown, label: "05",
+    extra: [
+      "Целевая оценка при продаже: $200M–$500M (аналоги: TikTok, Snap, Kuaishou)",
+      "Потенциальные покупатели: телеком-операторы, медиагруппы, технологические гиганты",
+      "Pre-Seed инвесторы входят при оценке компании $5–10M — максимальный upside",
+      "Прогнозируемый горизонт: 3–5 лет до стратегического выхода",
+      "Ваша доля фиксируется в момент инвестиции и не размывается без вашего согласия",
+    ],
+  },
 ];
 
-function AdvantageCard({ item, index, variants }: { item: typeof ADVANTAGES[0]; index: number; variants: Variants }) {
+type AdvantageItem = {
+  title: string;
+  desc: string;
+  color: string;
+  gradFrom: string;
+  gradTo: string;
+  Icon: React.ElementType;
+  label: string;
+  extra?: string[];
+};
+
+function AdvantageCard({ item, index, variants }: { item: AdvantageItem; index: number; variants: Variants }) {
   const { Icon } = item;
+  const [open, setOpen] = useState(false);
   return (
-    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }}
+    <motion.div initial="visible" animate="visible"
       variants={variants}
-      whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-      className="glass-card rounded-[2rem] overflow-hidden group cursor-default relative">
-      <div className={`absolute inset-0 bg-gradient-to-br ${item.gradFrom} ${item.gradTo} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-      <div className="relative z-10 p-5 md:p-8 lg:p-10 h-full flex flex-col">
-        <div className="flex items-start justify-between mb-5">
-          <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-            <Icon className={`w-6 h-6 md:w-7 md:h-7 ${item.color}`} />
-          </div>
-          <div className={`text-5xl md:text-6xl font-black ${item.color} opacity-10 group-hover:opacity-20 transition-opacity duration-500 leading-none`}>{item.label}</div>
+      className="glass-card rounded-2xl overflow-hidden group relative cursor-pointer"
+      onClick={() => setOpen(o => !o)}>
+      <div className={`absolute inset-0 bg-gradient-to-br ${item.gradFrom} ${item.gradTo} transition-opacity duration-500 ${open ? "opacity-100" : "opacity-0 group-hover:opacity-60"}`} />
+      {/* Big watermark number */}
+      <div className={`absolute top-3 right-4 text-[72px] md:text-[88px] font-black ${item.color} opacity-[0.08] group-hover:opacity-[0.14] transition-opacity duration-500 leading-none select-none pointer-events-none`}>
+        {item.label}
+      </div>
+      <div className="relative z-10 p-4 md:p-6 flex flex-col min-h-[160px]">
+        {/* Icon top-left */}
+        <div className="w-9 h-9 md:w-11 md:h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 mb-3 shrink-0">
+          <Icon className={`w-4 h-4 md:w-5 md:h-5 ${item.color}`} />
         </div>
-        <div className={`text-xs font-black tracking-widest uppercase mb-3 ${item.color}`}>{item.label}</div>
-        <h3 className="text-xl md:text-2xl font-black mb-3">{item.title}</h3>
-        <p className="text-muted-foreground leading-relaxed flex-1">{item.desc}</p>
+        <h3 className="text-base md:text-lg font-black mb-2">{item.title}</h3>
+        <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+        <AnimatePresence initial={false}>
+          {open && item.extra && (
+            <motion.div
+              key="extra"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.4, ease: EASE }}
+              className="overflow-hidden">
+              <ul className="mt-4 pt-4 border-t border-white/10 space-y-2">
+                {item.extra.map((point, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground leading-relaxed">
+                    <CheckCircle2 className={`w-4 h-4 mt-0.5 shrink-0 ${item.color}`} />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        {/* Chevron bottom-right */}
+        <div className="flex justify-end mt-3">
+          <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.3, ease: EASE }}>
+            <ChevronDown className={`w-6 h-6 ${item.color} opacity-60`} />
+          </motion.div>
+        </div>
       </div>
     </motion.div>
   );
 }
 
-function AdvantagesGrid({ openInvest: _openInvest }: { openInvest: (pkg?: string) => void }) {
-  const first = ADVANTAGES[0];
+function AdvantagesGrid({ openInvest: _openInvest, advantages }: { openInvest: (pkg?: string) => void; advantages: AdvantageItem[] }) {
+  const first = advantages[0];
   const { Icon: Icon0 } = first;
+  const [open0, setOpen0] = useState(false);
   return (
-    <div className="max-w-6xl mx-auto space-y-4 md:space-y-5">
-      {/* Item 1 — full width */}
-      <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={slideUp}
-        whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
-        className="glass-card rounded-[1.5rem] md:rounded-[2rem] overflow-hidden group cursor-default relative">
-        <div className={`absolute inset-0 bg-gradient-to-br ${first.gradFrom} ${first.gradTo} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-        <div className="relative z-10 p-5 md:p-10 lg:p-14 flex flex-col md:flex-row gap-4 md:gap-8 items-start md:items-center">
-          <div className="w-14 h-14 md:w-20 md:h-20 rounded-2xl md:rounded-3xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
-            <Icon0 className={`w-7 h-7 md:w-10 md:h-10 ${first.color}`} />
+    <div className="section-inner space-y-5">
+      {/* Item 1 — full width, expandable */}
+      <motion.div initial="visible" animate="visible" variants={slideUp}
+        className="glass-card rounded-2xl overflow-hidden group cursor-pointer relative"
+        onClick={() => setOpen0(o => !o)}>
+        <div className={`absolute inset-0 bg-gradient-to-br ${first.gradFrom} ${first.gradTo} transition-opacity duration-500 ${open0 ? "opacity-100" : "opacity-0 group-hover:opacity-60"}`} />
+        {/* Big watermark number */}
+        <div className={`absolute top-3 right-4 text-[72px] md:text-[100px] font-black ${first.color} opacity-[0.08] group-hover:opacity-[0.14] transition-opacity duration-500 leading-none select-none pointer-events-none`}>
+          01
+        </div>
+        <div className="relative z-10 p-4 md:p-7 flex flex-col min-h-[160px] md:min-h-[140px]">
+          {/* Icon */}
+          <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300 mb-3">
+            <Icon0 className={`w-6 h-6 md:w-7 md:h-7 ${first.color}`} />
           </div>
-          <div className="flex-1">
-            <div className={`text-xs font-black tracking-widest uppercase mb-2 md:mb-3 ${first.color}`}>{first.label}</div>
-            <h3 className="text-xl md:text-3xl lg:text-4xl font-black mb-2 md:mb-4">{first.title}</h3>
-            <p className="text-sm md:text-xl text-muted-foreground leading-relaxed">{first.desc}</p>
+          <div className={`text-xs font-black tracking-widest uppercase mb-2 ${first.color} hidden md:block`}>{first.label}</div>
+          <h3 className="text-xl md:text-2xl lg:text-3xl font-black mb-2">{first.title}</h3>
+          <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{first.desc}</p>
+          <AnimatePresence initial={false}>
+            {open0 && first.extra && (
+              <motion.div
+                key="extra0"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.4, ease: EASE }}
+                className="overflow-hidden">
+                <ul className="mt-4 pt-4 border-t border-white/10 space-y-2">
+                  {first.extra.map((point, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground leading-relaxed">
+                      <CheckCircle2 className={`w-4 h-4 mt-0.5 shrink-0 ${first.color}`} />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          {/* Chevron bottom-right */}
+          <div className="flex justify-end mt-3">
+            <motion.div animate={{ rotate: open0 ? 180 : 0 }} transition={{ duration: 0.3, ease: EASE }}>
+              <ChevronDown className={`w-6 h-6 ${first.color} opacity-60`} />
+            </motion.div>
           </div>
-          <div className={`text-[80px] md:text-[120px] font-black ${first.color} opacity-[0.06] group-hover:opacity-[0.15] transition-opacity duration-500 shrink-0 hidden lg:block leading-none`}>01</div>
         </div>
       </motion.div>
 
-      {/* Mobile: horizontal scroll strip for items 2-5 */}
-      <div className="md:hidden -mx-4 px-4">
-        <div className="flex gap-3 overflow-x-auto pb-3 snap-x snap-mandatory scrollbar-hide" style={{ scrollbarWidth: "none" }}>
-          {ADVANTAGES.slice(1).map((item, idx) => {
-            const { Icon } = item;
-            return (
-              <motion.div key={idx} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
-                className="glass-card rounded-2xl overflow-hidden group cursor-default relative flex-shrink-0 snap-start w-72">
-                <div className={`absolute inset-0 bg-gradient-to-br ${item.gradFrom} ${item.gradTo} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                <div className="relative z-10 p-5 flex flex-col h-full">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
-                      <Icon className={`w-5 h-5 ${item.color}`} />
-                    </div>
-                    <div className={`text-4xl font-black ${item.color} opacity-10 leading-none`}>{idx + 2}</div>
-                  </div>
-                  <div className={`text-[10px] font-black tracking-widest uppercase mb-2 ${item.color}`}>{`0${idx + 2}`}</div>
-                  <h3 className="text-base font-black mb-2">{item.title}</h3>
-                  <p className="text-muted-foreground text-xs leading-relaxed">{item.desc}</p>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
-        <div className="flex justify-center gap-1 mt-1">
-          {ADVANTAGES.slice(1).map((_, i) => (
-            <div key={i} className={`w-1.5 h-1.5 rounded-full ${i === 0 ? 'bg-primary' : 'bg-white/20'}`} />
-          ))}
-        </div>
+      {/* Items 2 & 3 — two columns */}
+      <div className="grid md:grid-cols-2 gap-5">
+        <AdvantageCard item={advantages[1]} index={1} variants={fadeLeft} />
+        <AdvantageCard item={advantages[2]} index={2} variants={fadeRight} />
       </div>
 
-      {/* Desktop: two columns grid */}
-      <div className="hidden md:grid md:grid-cols-2 gap-5">
-        <AdvantageCard item={ADVANTAGES[1]} index={1} variants={fadeLeft} />
-        <AdvantageCard item={ADVANTAGES[2]} index={2} variants={fadeRight} />
-      </div>
-      <div className="hidden md:grid md:grid-cols-2 gap-5">
-        <AdvantageCard item={ADVANTAGES[3]} index={3} variants={fadeLeft} />
-        <AdvantageCard item={ADVANTAGES[4]} index={4} variants={fadeRight} />
+      {/* Items 4 & 5 — two columns */}
+      <div className="grid md:grid-cols-2 gap-5">
+        <AdvantageCard item={advantages[3]} index={3} variants={fadeLeft} />
+        <AdvantageCard item={advantages[4]} index={4} variants={fadeRight} />
       </div>
     </div>
   );
 }
 
-const TARGET_AMOUNT = 75000;
+function MonetizationCards({ t }: { t: (key: string) => string }) {
+  const [mono1Open, setMono1Open] = useState(false);
+  const [monoOpenIdx, setMonoOpenIdx] = useState<number | null>(null);
+  const monoCards = [
+    { icon: TrendingUp,  num: "02", title: t('mono2_title'), desc: t('mono2_desc'), extra: [t('mono2_x1'), t('mono2_x2'), t('mono2_x3'), t('mono2_x4')] },
+    { icon: Gift,        num: "03", title: t('mono3_title'), desc: t('mono3_desc'), extra: [t('mono3_x1'), t('mono3_x2'), t('mono3_x3'), t('mono3_x4')] },
+    { icon: Wallet,      num: "04", title: t('mono4_title'), desc: t('mono4_desc'), extra: [t('mono4_x1'), t('mono4_x2'), t('mono4_x3'), t('mono4_x4')] },
+    { icon: BarChart3,   num: "05", title: t('mono5_title'), desc: t('mono5_desc'), extra: [t('mono5_x1'), t('mono5_x2'), t('mono5_x3'), t('mono5_x4')] },
+    { icon: Smartphone,  num: "06", title: t('mono6_title'), desc: t('mono6_desc'), extra: [t('mono6_x1'), t('mono6_x2'), t('mono6_x3'), t('mono6_x4')] },
+    { icon: ShoppingBag, num: "07", title: t('mono7_title'), desc: t('mono7_desc'), extra: [t('mono7_x1'), t('mono7_x2'), t('mono7_x3'), t('mono7_x4')] },
+  ];
+  return (
+    <>
+      {/* Card 01 — full width, expandable */}
+      <motion.div initial="visible" animate="visible" variants={fadeScale} className="mb-6">
+        <div
+          className="glass-card p-8 md:p-10 rounded-3xl relative overflow-hidden cursor-pointer group"
+          onClick={() => setMono1Open(o => !o)}
+        >
+          <div className="absolute top-6 right-8 text-8xl font-black text-primary/6 select-none">01</div>
+          <div className="flex flex-col md:flex-row gap-8 items-start md:items-center">
+            <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary shrink-0 group-hover:scale-110 transition-transform duration-300">
+              <Target className="w-8 h-8" />
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-3">
+                <h3 className="text-2xl md:text-3xl font-bold">{t('mono1_title')}</h3>
+                <span className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-bold uppercase tracking-wider">{t('mono1_badge')}</span>
+                <motion.div animate={{ rotate: mono1Open ? 180 : 0 }} transition={{ duration: 0.3, ease: EASE }} className="ml-auto shrink-0">
+                  <ChevronDown className="w-6 h-6 text-primary opacity-60" />
+                </motion.div>
+              </div>
+              <p className="text-muted-foreground text-lg leading-relaxed mb-4">{t('mono1_desc')}</p>
+              <div className="flex flex-wrap gap-3">
+                {["CPM", "CPV", "CPC", "CPA"].map(tag => (
+                  <span key={tag} className="px-3 py-1 rounded-lg bg-primary/10 text-primary font-bold text-sm border border-primary/20">{tag}</span>
+                ))}
+              </div>
+              <AnimatePresence initial={false}>
+                {mono1Open && (
+                  <motion.ul
+                    key="mono1-extra"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.4, ease: EASE }}
+                    className="overflow-hidden mt-5 pt-5 border-t border-white/10 space-y-2"
+                  >
+                    {[t('mono1_x1'), t('mono1_x2'), t('mono1_x3'), t('mono1_x4')].map((point, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground leading-relaxed">
+                        <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </motion.ul>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Cards 02-07 — grid, expandable */}
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {monoCards.map((item, i) => {
+          const isOpen = monoOpenIdx === i;
+          return (
+            <div
+              key={i}
+              className="glass-card p-6 rounded-3xl group relative overflow-hidden cursor-pointer"
+              onClick={() => setMonoOpenIdx(isOpen ? null : i)}
+            >
+              <div className="absolute top-4 right-5 text-5xl font-black text-primary/6 select-none group-hover:text-primary/12 transition-colors">{item.num}</div>
+              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-5 group-hover:scale-110 transition-transform">
+                <item.icon className="w-6 h-6" />
+              </div>
+              <div className="flex items-start justify-between gap-2 mb-2">
+                <h3 className="text-lg font-bold">{item.title}</h3>
+                <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.3, ease: EASE }} className="shrink-0 mt-0.5">
+                  <ChevronDown className="w-6 h-6 text-primary opacity-60" />
+                </motion.div>
+              </div>
+              <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
+              <AnimatePresence initial={false}>
+                {isOpen && (
+                  <motion.ul
+                    key={`mono-extra-${i}`}
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.4, ease: EASE }}
+                    className="overflow-hidden mt-4 pt-4 border-t border-white/10 space-y-2"
+                  >
+                    {item.extra.map((point, j) => (
+                      <li key={j} className="flex items-start gap-2 text-sm text-muted-foreground leading-relaxed">
+                        <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </motion.ul>
+                )}
+              </AnimatePresence>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+}
+
+const TARGET_AMOUNT = 100000;
 const TARGET_INVESTORS = 13;
-const GOAL = 1_000_000;
+const GOAL = 500_000;
 const PROGRESS_PCT = (TARGET_AMOUNT / GOAL) * 100;
 
 function useCountUp(target: number, duration = 2000, delay = 400) {
@@ -203,96 +410,21 @@ function useCountUp(target: number, duration = 2000, delay = 400) {
   return { value, ref };
 }
 
-const PACKAGES_DATA = [
-  {
-    id: "founder1", name: "Основателей 1", price: 100, monthly: 0,
-    exit: "–", tokens: "100", shares: "0",
-    tagline: "Войди в экосистему",
-    icon: Zap,
-    color: "text-sky-400", border: "border-sky-400/20", glow: "",
-    features: [
-      "Рекламный буст $200 внутри Trends",
-      "x2 добыча токенов $TRND",
-      "3-уровневая партнёрская программа",
-      "No Ads Forever",
-    ],
-  },
-  {
-    id: "founder2", name: "Основателей 2", price: 250, monthly: 5,
-    exit: "$2K – $5K", tokens: "250", shares: "0.26",
-    tagline: "Первые доли RevShare",
-    icon: Star,
-    color: "text-secondary", border: "border-secondary/30", glow: "",
-    features: [
-      "0.26 доли в RevShare пуле (20% прибыли)",
-      "Рекламный буст $500",
-      "Партнёрская программа без лимита глубины",
-      "No Ads Forever",
-    ],
-  },
-  {
-    id: "founder3", name: "Основателей 3", price: 1000, monthly: 20,
-    exit: "$10K – $25K", tokens: "1,000", shares: "1.3",
-    tagline: "Лучший вход на стадии Alpha",
-    icon: Shield,
-    recommended: true,
-    color: "text-primary", border: "border-primary/40", glow: "shadow-[0_0_40px_rgba(0,212,255,0.18)]",
-    features: [
-      "1.3 доли в RevShare пуле",
-      "Рекламный буст $2,000",
-      "Founder Identity: золотая рамка + бейдж",
-      "DAO голосование за функции",
-    ],
-  },
-  {
-    id: "founder4", name: "Основателей 4", price: 5000, monthly: 100,
-    exit: "$75K – $180K", tokens: "5,000", shares: "10.04",
-    tagline: "Alpha-Bonus доля",
-    icon: Crown,
-    color: "text-yellow-400", border: "border-yellow-400/20", glow: "shadow-[0_0_30px_rgba(250,204,21,0.12)]",
-    features: [
-      "10.04 доли в RevShare пуле",
-      "Рекламный буст $10,000",
-      "Blue Checkmark: приоритет в алгоритме",
-      "Все привилегии Пакета 3",
-    ],
-  },
-  {
-    id: "founder5", name: "Основателей 5", price: 25000, monthly: 500,
-    exit: "$500K – $1.2M", tokens: "25,000", shares: "65",
-    tagline: "Стратегический узел",
-    icon: TrendingUp,
-    color: "text-orange-400", border: "border-orange-400/20", glow: "shadow-[0_0_30px_rgba(251,146,60,0.10)]",
-    features: [
-      "65 долей в RevShare пуле",
-      "Рекламный буст $50,000",
-      "Early Buyback Rights при Exit",
-      "Network Node + 0% комиссия вывода",
-    ],
-  },
-  {
-    id: "founder6", name: "Основателей 6", price: 100000, monthly: 2000,
-    exit: "$2M – $4.5M", tokens: "100,000", shares: "250",
-    tagline: "Legendary статус",
-    icon: Network,
-    color: "text-amber-400", border: "border-amber-400/20", glow: "shadow-[0_0_40px_rgba(251,191,36,0.12)]",
-    features: [
-      "250 долей — Legendary Share",
-      "Global Revenue Pool: 2% выручки платформы",
-      "Рекламный буст $200,000",
-      "Advisory Board: место в совете",
-    ],
-  },
-];
+// ─── Иконки для маппинга ─────────────────────────────────────────
+const ICON_MAP = { Star, Shield, Crown, TrendingUp, Zap } as const;
 
-const NAV_LINKS = [
-  { href: "#problem", label: "О проекте" },
-  { href: "#monetization", label: "Монетизация" },
-  { href: "#investors", label: "Инвесторам" },
-  { href: "#roadmap", label: "Roadmap" },
-];
+// ─── Пакеты для лендинга — берутся из единого packages.ts ────────
+const PACKAGES_DATA: FullPackage[] = PKG_SOURCE.map(p => {
+  const ui = PACKAGE_UI[p.id];
+  return { ...p, icon: ICON_MAP[ui.iconName], color: ui.color, border: ui.border, glow: ui.glow };
+});
+
+const NAV_HREFS = ["#problem", "#monetization", "#investors", "#roadmap"] as const;
 
 export default function Landing() {
+  const [lang, setLang] = useState<Lang>('ru');
+  const t = (key: keyof typeof translations.ru): string => translations[lang][key] as string;
+
   const [isInvestOpen, setIsInvestOpen] = useState(false);
   const [selectedPkg, setSelectedPkg] = useState("founder3");
   const [users] = useState(7780);
@@ -300,6 +432,10 @@ export default function Landing() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [refOpen, setRefOpen] = useState(false);
+  const [exampleOpen, setExampleOpen] = useState(false);
+  const [poolOpen, setPoolOpen] = useState(false);
+  const [legalDoc, setLegalDoc] = useState<DocId | null>(null);
 
   const { scrollY: scrollYMotion } = useScroll();
   const heroY = useTransform(scrollYMotion, [0, 600], [0, -70]);
@@ -324,8 +460,15 @@ export default function Landing() {
     setIsInvestOpen(true);
   };
 
+  const NAV_LINKS = [
+    { href: "#problem", label: t('nav_about') },
+    { href: "#monetization", label: t('nav_monetization') },
+    { href: "#investors", label: t('nav_investors') },
+    { href: "#roadmap", label: "Roadmap" },
+  ];
+
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground overflow-x-hidden pb-16 md:pb-0">
+    <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground [overflow-x:clip]">
 
       <SceneBackground />
 
@@ -345,25 +488,42 @@ export default function Landing() {
             <span style={{ fontFamily: "'Manrope', sans-serif", fontWeight: 800, letterSpacing: '-0.02em' }} className="text-2xl text-white">Trends</span>
           </div>
 
-          <div className="hidden md:flex gap-8 text-sm font-medium text-muted-foreground">
+          <div className="hidden lg:flex gap-6 text-sm font-medium text-muted-foreground">
             {NAV_LINKS.map(link => (
-              <a key={link.href} href={link.href} className="hover:text-primary transition-colors">{link.label}</a>
+              <a key={link.href} href={link.href} className="hover:text-primary transition-colors whitespace-nowrap">{link.label}</a>
             ))}
           </div>
 
-          <div className="hidden md:flex gap-3">
+          <div className="hidden lg:flex items-center gap-3">
+            {/* Language switcher */}
+            <div className="flex items-center rounded-xl border border-white/10 bg-white/5 p-1 gap-0.5">
+              {(['ru', 'en'] as Lang[]).map(l => (
+                <button
+                  key={l}
+                  onClick={() => setLang(l)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    lang === l
+                      ? "bg-white/15 text-white"
+                      : "text-muted-foreground hover:text-white"
+                  }`}
+                >
+                  <span>{l === 'ru' ? '🇷🇺' : '🇺🇸'}</span>
+                  <span>{l.toUpperCase()}</span>
+                </button>
+              ))}
+            </div>
             <Link href="/cabinet">
-              <Button variant="ghost" className="hover:bg-primary/10 hover:text-primary font-semibold">Войти в кабинет</Button>
+              <Button variant="ghost" className="hover:bg-primary/10 hover:text-primary font-semibold whitespace-nowrap">{t('nav_cabinet')}</Button>
             </Link>
             <motion.div whileTap={{ scale: 0.93 }} whileHover={{ scale: 1.04 }}>
-              <Button onClick={() => openInvest()} className="btn-grad btn-3d text-background font-bold rounded-xl">
-                Инвестировать
+              <Button onClick={() => openInvest()} className="btn-grad btn-3d text-background font-bold rounded-xl whitespace-nowrap">
+                {t('nav_invest')}
               </Button>
             </motion.div>
           </div>
 
           <button
-            className="md:hidden p-2 rounded-xl hover:bg-white/10 transition-colors text-white"
+            className="lg:hidden p-2 rounded-xl hover:bg-white/10 transition-colors text-white"
             onClick={() => setMobileMenuOpen(v => !v)}
           >
             <AnimatePresence mode="wait" initial={false}>
@@ -382,7 +542,7 @@ export default function Landing() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.25, ease: EASE }}
-              className="md:hidden overflow-hidden border-t border-white/10"
+              className="lg:hidden overflow-hidden border-t border-white/10"
               style={{ background: "rgba(6, 9, 20, 0.97)", backdropFilter: "blur(28px)" }}
             >
               <div className="px-4 py-4 flex flex-col gap-1">
@@ -393,12 +553,29 @@ export default function Landing() {
                   </a>
                 ))}
                 <div className="border-t border-white/10 mt-3 pt-4 flex flex-col gap-3">
+                  {/* Language switcher mobile */}
+                  <div className="flex items-center rounded-xl border border-white/10 bg-white/5 p-1 gap-0.5 self-start">
+                    {(['ru', 'en'] as Lang[]).map(l => (
+                      <button
+                        key={l}
+                        onClick={() => setLang(l)}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                          lang === l
+                            ? "bg-white/15 text-white"
+                            : "text-muted-foreground hover:text-white"
+                        }`}
+                      >
+                        <span>{l === 'ru' ? '🇷🇺' : '🇺🇸'}</span>
+                        <span>{l.toUpperCase()}</span>
+                      </button>
+                    ))}
+                  </div>
                   <Link href="/cabinet" onClick={() => setMobileMenuOpen(false)}>
-                    <Button variant="outline" className="w-full border-primary/40 text-primary hover:bg-primary/10">Войти в кабинет</Button>
+                    <Button variant="outline" className="w-full border-primary/40 text-primary hover:bg-primary/10">{t('nav_cabinet')}</Button>
                   </Link>
                   <Button onClick={() => { openInvest(); setMobileMenuOpen(false); }}
                     className="w-full btn-grad btn-3d font-bold">
-                    Инвестировать
+                    {t('nav_invest')}
                   </Button>
                 </div>
               </div>
@@ -407,140 +584,28 @@ export default function Landing() {
         </AnimatePresence>
       </nav>
 
-      {/* MOBILE STICKY CTA */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 p-3 safe-area-bottom"
-        style={{ background: "rgba(5, 8, 18, 0.92)", backdropFilter: "blur(24px)", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-        <Button onClick={() => openInvest()} className="w-full h-12 btn-grad btn-3d font-bold rounded-xl text-base">
-          Инвестировать <ArrowRight className="ml-2 w-4 h-4" />
-        </Button>
-      </div>
-
       {/* HERO */}
-      <section className="pt-24 pb-16 lg:pt-44 lg:pb-28 px-4 relative">
-        <div className="container mx-auto relative z-10 flex flex-wrap gap-3 mb-4 lg:hidden">
-          <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">Pre-Seed</div>
-          <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-muted-foreground text-sm">$1 000 000 целевой объём</div>
-          <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold flex items-center gap-1">
-            <CheckCircle2 className="w-4 h-4" /> MVP готов
+      <section className="pt-20 pb-8 sm:pt-24 sm:pb-10 lg:pt-40 lg:pb-24 px-4 relative z-10">
+        <div className="container mx-auto relative z-10">
+        <div className="section-inner flex flex-col lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
+
+          {/* MOBILE BADGES — above image on mobile */}
+          <div className="flex flex-wrap gap-3 mt-2 mb-3 lg:hidden order-1">
+            <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">{t('badge_preseed')}</div>
+            <div className="px-3 py-1 rounded-full border text-sm font-bold" style={{ background: "rgba(123,94,255,0.25)", borderColor: "#7B5EFF", color: "#c4b0ff", boxShadow: "0 0 14px 2px rgba(123,94,255,0.45)", textShadow: "0 0 8px #7B5EFF" }}>{t('badge_goal')}</div>
+            <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold flex items-center gap-1">
+              <CheckCircle2 className="w-4 h-4" /> {t('badge_mvp')}
+            </div>
           </div>
-        </div>
 
-        <div className="container mx-auto grid lg:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10">
-          <motion.div initial="hidden" animate="visible" variants={fadeIn} className="space-y-6 lg:space-y-8 order-1 lg:order-1">
-            <div className="hidden lg:flex flex-wrap gap-3">
-              <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">Pre-Seed</div>
-              <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-muted-foreground text-sm">$1 000 000 целевой объём</div>
-              <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold flex items-center gap-1">
-                <CheckCircle2 className="w-4 h-4" /> MVP готов
-              </div>
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black leading-[1.1] tracking-tight">
-              Trends — первый <span className="text-gradient">Reels</span> внутри Telegram
-            </h1>
-
-            <p className="text-xl text-muted-foreground leading-relaxed max-w-xl">
-              Войдите на стадии Pre-Seed и получите прямой доступ к рынку из 1 миллиарда пользователей Telegram, у которых до сих пор нет алгоритмической видеоленты.
-            </p>
-
-            <div className="glass-card p-4 rounded-2xl flex items-start gap-3">
-              <DollarSign className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                <span className="text-foreground font-semibold">Цель сбора — маркетинг и инфраструктура Trends.</span>{" "}
-                Привлечённые средства направляются на масштабирование платформы: привлечение аудитории, продвижение и развитие серверной инфраструктуры.
-              </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
-              <MagneticButton onClick={() => openInvest()} className="w-full sm:w-auto">
-                <Button size="lg" className="h-14 px-8 text-lg btn-grad btn-3d font-bold rounded-xl pointer-events-none w-full">
-                  Инвестировать сейчас <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </MagneticButton>
-              <Link href="/cabinet" className="w-full sm:w-auto">
-                <MagneticButton className="w-full">
-                  <Button variant="outline" size="lg"
-                    className="h-14 px-8 text-lg border-primary/30 hover:bg-primary/10 hover:border-primary/50 rounded-xl w-full btn-3d-outline pointer-events-none">
-                    Войти в кабинет
-                  </Button>
-                </MagneticButton>
-              </Link>
-            </div>
-
-            <div className="pt-4 space-y-3">
-              <div className="flex items-center gap-2">
-                <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-bold">
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                  <span ref={investorsRef}>{investorsValue}</span> инвесторов уже вошли
-                </span>
-              </div>
-
-              <div className="flex justify-between items-baseline">
-                <div className="flex items-baseline gap-1">
-                  <span className="text-muted-foreground text-sm">Собрано</span>
-                  <span ref={raisedRef} className="text-white font-black text-xl tabular-nums ml-1">${raisedValue > 0 ? raisedValue.toLocaleString() : "0"}</span>
-                </div>
-                <div className="text-right">
-                  <span className="text-primary font-bold text-sm">Цель $1 000 000</span>
-                  <span className="text-muted-foreground text-xs ml-2">{PROGRESS_PCT.toFixed(1)}%</span>
-                </div>
-              </div>
-
-              <div className="h-3 bg-white/5 rounded-full overflow-visible border border-white/10 relative">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: `${PROGRESS_PCT}%` }}
-                  transition={{ duration: 2, ease: EASE, delay: 0.6 }}
-                  className="h-full bg-gradient-to-r from-primary via-primary to-secondary rounded-full relative"
-                  style={{ overflow: "visible" }}
-                >
-                  <motion.div
-                    className="absolute inset-0 rounded-full"
-                    style={{ background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%)" }}
-                    animate={{ x: ["-100%", "200%"] }}
-                    transition={{ duration: 1.8, delay: 2.4, ease: "easeInOut" }}
-                  />
-                  <motion.div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2"
-                    initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 2.5, duration: 0.3 }}>
-                    <span className="relative flex h-4 w-4">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-60" />
-                      <span className="relative inline-flex rounded-full h-4 w-4 bg-primary border-2 border-background shadow-[0_0_8px_rgba(0,212,255,0.8)]" />
-                    </span>
-                  </motion.div>
-                </motion.div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                <div className="glass-card px-4 py-3 rounded-xl flex items-center gap-3 flex-1">
-                  <div className="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center text-green-400 shrink-0">
-                    <Users className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <div className="text-lg font-black">{users.toLocaleString()}</div>
-                    <div className="text-xs text-muted-foreground">Всего пользователей</div>
-                  </div>
-                </div>
-                <div className="glass-card px-4 py-3 rounded-xl flex items-center gap-3 flex-1">
-                  <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center text-primary shrink-0">
-                    <PlaySquare className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <div className="text-lg font-black">{views.toLocaleString()}</div>
-                    <div className="text-xs text-muted-foreground">Ежедневно смотрят</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
+          {/* IMAGE — second on mobile, second on desktop */}
           <motion.div
             initial={{ opacity: 0, scale: 0.85, y: 40 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 1, ease: EASE, delay: 0.2 }}
             style={{ y: heroY }}
-            className="relative flex items-center justify-center order-2 lg:order-2"
+            className="relative flex items-center justify-center order-2 lg:order-2 mb-2 lg:mb-0"
           >
-            {/* Glowing halo behind phone */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <motion.div
                 animate={{ scale: [1, 1.12, 1], opacity: [0.3, 0.55, 0.3] }}
@@ -553,156 +618,97 @@ export default function Landing() {
               alt="Trends App"
               animate={{ y: [0, -14, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="relative z-10 max-h-[45vh] sm:max-h-[55vh] lg:max-h-[85vh] w-full object-contain drop-shadow-2xl"
+              className="relative z-10 max-h-[80vh] sm:max-h-[75vh] lg:max-h-[85vh] w-full object-contain drop-shadow-2xl"
             />
           </motion.div>
-        </div>
-      </section>
 
-      {/* SOCIAL PROOF STRIP */}
-      <section className="py-12 border-y border-white/8">
-        <div className="container mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerFast}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { value: "1B+", label: "Пользователей Telegram", sub: "целевой рынок", color: "text-primary" },
-              { value: "$75K", label: "Собрано инвесторами", sub: "Pre-Seed раунд", color: "text-green-400" },
-              { value: "13", label: "Ранних инвесторов", sub: "уже в проекте", color: "text-secondary" },
-              { value: "MVP ✓", label: "Продукт работает", sub: "запущен сейчас", color: "text-yellow-400" },
-            ].map((stat, i) => (
-              <motion.div key={i} variants={fadeScale} className="text-center py-2">
-                <div className={`text-3xl md:text-4xl font-black mb-1 ${stat.color}`}>{stat.value}</div>
-                <div className="text-sm font-semibold text-foreground">{stat.label}</div>
-                <div className="text-xs text-muted-foreground mt-0.5">{stat.sub}</div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
 
-      {/* WHAT IS TRENDS */}
-      <section className="py-14 md:py-24 relative">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center max-w-6xl mx-auto">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerChildren}
-              className="space-y-6 order-1 lg:order-1">
-              <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-black">
-                Что такое <span className="text-gradient">Trends</span>?
-              </motion.h2>
-              <motion.div variants={fadeUp} className="space-y-5 leading-relaxed">
-                <p className="text-foreground font-semibold text-lg">Trends — первая в Telegram платформа коротких видео в формате Reels.</p>
-                <div className="space-y-3">
-                  {[
-                    {
-                      label: "Пользователи",
-                      icon: Users,
-                      accent: "border-l-primary bg-primary/5",
-                      iconColor: "text-primary bg-primary/15",
-                      labelColor: "text-primary",
-                      text: "смотрят персонализированную ленту коротких видео прямо внутри Telegram и получают токен внимания TRND за вовлечённость и активность.",
-                    },
-                    {
-                      label: "Авторы",
-                      icon: PlaySquare,
-                      accent: "border-l-secondary bg-secondary/5",
-                      iconColor: "text-secondary bg-secondary/15",
-                      labelColor: "text-secondary",
-                      text: "публикуют контент в ленте, получают органический охват, новую аудиторию и эффективное продвижение своих Telegram-каналов.",
-                    },
-                    {
-                      label: "Telegram",
-                      icon: Send,
-                      accent: "border-l-blue-400 bg-blue-400/5",
-                      iconColor: "text-blue-400 bg-blue-400/15",
-                      labelColor: "text-blue-400",
-                      text: "получает инструмент для развития собственной экосистемы: рекомендации каналов, рост вовлечённости и удержание пользователей внутри платформы.",
-                    },
-                  ].map(({ label, icon: Icon, accent, iconColor, labelColor, text }) => (
-                    <div key={label} className={`flex items-start gap-4 pl-4 pr-5 py-4 rounded-xl border-l-2 ${accent}`}>
-                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${iconColor}`}>
-                        <Icon className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <div className={`text-sm font-bold mb-1 ${labelColor}`}>{label}</div>
-                        <p className="text-muted-foreground text-sm leading-relaxed">{text}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-              <motion.div variants={fadeUp} className="hidden">
-                <MagneticButton onClick={() => openInvest()} className="w-full sm:w-auto">
-                  <Button size="lg" className="h-14 px-8 text-lg btn-grad btn-3d font-bold rounded-xl pointer-events-none w-full sm:w-auto">
-                    Инвестировать в Trends <ArrowRight className="ml-2 w-5 h-5" />
+          {/* TEXT — third on mobile, first on desktop */}
+          <motion.div initial="hidden" animate="visible" variants={fadeIn} className="space-y-6 lg:space-y-8 order-3 lg:order-1">
+            <div className="hidden lg:flex flex-wrap gap-3">
+              <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-bold">{t('badge_preseed')}</div>
+              <div className="px-3 py-1 rounded-full border text-sm font-bold" style={{ background: "rgba(123,94,255,0.25)", borderColor: "#7B5EFF", color: "#c4b0ff", boxShadow: "0 0 14px 2px rgba(123,94,255,0.45)", textShadow: "0 0 8px #7B5EFF" }}>{t('badge_goal')}</div>
+              <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold flex items-center gap-1">
+                <CheckCircle2 className="w-4 h-4" /> {t('badge_mvp')}
+              </div>
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black leading-[1.1] tracking-tight">
+              {t('hero_title1')} <span className="text-gradient">Reels</span> {t('hero_title2')}
+            </h1>
+
+            <p className="text-xl text-muted-foreground leading-relaxed max-w-xl">
+              {t('hero_subtitle')}
+            </p>
+
+            <div className="glass-card p-4 rounded-2xl flex items-start gap-3">
+              <DollarSign className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                <span className="text-foreground font-semibold">{t('hero_goal_label')}</span>{" "}
+                {t('hero_goal_desc')}
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 pt-2">
+              <MagneticButton onClick={() => openInvest()} className="w-full sm:w-auto">
+                <Button size="lg" className="h-14 px-8 text-lg btn-grad btn-3d font-bold rounded-xl pointer-events-none w-full">
+                  {t('hero_btn_invest')} <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </MagneticButton>
+              <Link href="/cabinet" className="w-full sm:w-auto">
+                <MagneticButton className="w-full">
+                  <Button variant="outline" size="lg"
+                    className="h-14 px-8 text-lg border-primary/30 hover:bg-primary/10 hover:border-primary/50 rounded-xl w-full btn-3d-outline pointer-events-none">
+                    {t('hero_btn_cabinet')}
                   </Button>
                 </MagneticButton>
-              </motion.div>
-            </motion.div>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeRight}
-              className="relative flex justify-center order-2 lg:order-2">
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-48 h-48 lg:w-64 lg:h-64 rounded-full bg-secondary/20 blur-[80px]" />
+              </Link>
+            </div>
+
+          </motion.div>
+
+        </div>
+        </div>
+      </section>
+
+      {/* MINIAPP STATS STRIP */}
+      <section className="py-6 relative z-10">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 section-inner">
+            {[
+              { label: t('stats_users_label'), value: "2 400+", sub: t('stats_users_sub') },
+              { label: t('stats_dau_label'), value: "500+", sub: t('stats_dau_sub') },
+              { label: t('stats_videos_label'), value: "8 000+", sub: t('stats_videos_sub') },
+              { label: t('stats_countries_label'), value: "12", sub: t('stats_countries_sub') },
+            ].map((s, i) => (
+              <div key={i} className="glass-card rounded-2xl p-4 border border-white/10 text-center">
+                <div className="text-2xl font-black text-gradient">{s.value}</div>
+                <div className="text-xs font-semibold mt-1">{s.label}</div>
+                <div className="text-[11px] text-muted-foreground mt-0.5">{s.sub}</div>
               </div>
-              {/* iPhone mockup: video below, transparent frame on top */}
-              <div className="relative inline-block"
-                style={{ width: "min(240px, 82vw)" }}>
-                {/* 1. Invisible spacer image to set the container height */}
-                <img
-                  src={iphoneFramePath}
-                  alt=""
-                  aria-hidden
-                  className="w-full h-auto invisible select-none pointer-events-none"
-                />
-                {/* 2. Video fills the screen area (below the frame) */}
-                <div className="absolute overflow-hidden"
-                  style={{
-                    top: "8%",
-                    left: "6.2%",
-                    right: "6.2%",
-                    bottom: "5%",
-                    borderRadius: "8%",
-                    zIndex: 1,
-                  }}>
-                  <video
-                    src={trendsVideoPath}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
-                  />
-                </div>
-                {/* 3. iPhone transparent frame on top to mask video edges */}
-                <img
-                  src={iphoneFramePath}
-                  alt="iPhone"
-                  className="absolute inset-0 w-full h-full pointer-events-none select-none drop-shadow-2xl"
-                  style={{ zIndex: 2 }}
-                />
-              </div>
-            </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* PROBLEM → SOLUTION */}
-      <section id="problem" className="py-14 md:py-24 relative">
+      <section id="problem" className="py-16 md:py-24 lg:py-32 relative z-10 scroll-mt-20">
         <div className="container mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} variants={fadeUp}
-            className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">Огромный рынок пуст</h2>
-            <p className="text-lg text-muted-foreground">Telegram вырос до 1 миллиарда пользователей, но в нём до сих пор нет главного формата потребления контента — бесконечной ленты коротких видео.</p>
+          <motion.div initial="visible" animate="visible" variants={fadeUp}
+            className="section-header mb-16">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('problem_title')}</h2>
+            <p className="text-lg text-muted-foreground">{t('problem_subtitle')}</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeLeft}
+          <div className="grid md:grid-cols-2 gap-8 section-inner">
+            <motion.div initial="visible" animate="visible" variants={fadeLeft}
               className="glass-card p-8 rounded-3xl">
-              <h3 className="text-2xl font-bold mb-8">Telegram сейчас</h3>
+              <h3 className="text-2xl font-bold mb-8">{t('problem_now')}</h3>
               <ul className="space-y-6">
                 {[
-                  "Нет алгоритмической ленты рекомендаций",
-                  "Сложно находить новые каналы и авторов",
-                  "Неудобно смотреть видео (нужно переходить в каналы)"
+                  t('problem_p1'),
+                  t('problem_p2'),
+                  t('problem_p3')
                 ].map((text, i) => (
                   <li key={i} className="flex gap-4 items-start">
                     <div className="w-8 h-8 rounded-full bg-destructive/10 flex items-center justify-center shrink-0 text-destructive mt-0.5">✕</div>
@@ -712,14 +718,14 @@ export default function Landing() {
               </ul>
             </motion.div>
 
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeRight}
+            <motion.div initial="visible" animate="visible" variants={fadeRight}
               className="glass-card p-8 rounded-3xl">
-              <h3 className="text-2xl font-bold mb-8 text-primary">Trends решает</h3>
+              <h3 className="text-2xl font-bold mb-8 text-primary">{t('solution_title')}</h3>
               <ul className="space-y-6">
                 {[
-                  "Бесконечная вертикальная лента (Reels/TikTok) прямо в Mini App",
-                  "Умный алгоритм рекомендаций на базе AI",
-                  "Бесшовный переход внутри экосистемы Telegram"
+                  t('solution_s1'),
+                  t('solution_s2'),
+                  t('solution_s3')
                 ].map((text, i) => (
                   <li key={i} className="flex gap-4 items-start">
                     <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center shrink-0 text-primary mt-0.5"><ArrowRight className="w-4 h-4" /></div>
@@ -730,72 +736,289 @@ export default function Landing() {
             </motion.div>
           </div>
 
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerFast}
-            className="mt-16 flex flex-wrap justify-center gap-8 text-center">
-            <motion.div variants={fadeScale}>
+          <div className="mt-16 flex flex-wrap justify-center gap-8 text-center">
+            <div>
               <div className="text-5xl font-black text-gradient mb-2">1B+</div>
-              <div className="text-muted-foreground font-medium uppercase tracking-wider">Пользователей Telegram</div>
-            </motion.div>
+              <div className="text-muted-foreground font-medium uppercase tracking-wider">{t('stat_users')}</div>
+            </div>
             <div className="w-px h-16 bg-white/10 hidden md:block" />
-            <motion.div variants={fadeScale}>
+            <div>
               <div className="text-5xl font-black text-gradient mb-2">500M+</div>
-              <div className="text-muted-foreground font-medium uppercase tracking-wider">Юзеров Mini Apps</div>
-            </motion.div>
-          </motion.div>
+              <div className="text-muted-foreground font-medium uppercase tracking-wider">{t('stat_miniapps')}</div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* MVP */}
-      <section className="py-14 md:py-24 relative overflow-hidden">
+      {/* WHAT IS TRENDS */}
+      <section className="py-16 md:py-24 lg:py-32 relative z-10">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeLeft}
-              className="relative flex justify-center order-2 lg:order-1">
-              <img src={screen3Path} alt="Trends MVP" className="relative z-10 max-h-[320px] lg:max-h-[620px] object-contain drop-shadow-2xl" />
-            </motion.div>
-
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerChildren} className="space-y-6 lg:space-y-8 order-1 lg:order-2">
-              <motion.div variants={fadeRight} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 text-green-400 border border-green-500/20 font-bold tracking-wide">
-                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                ПРОДУКТ УЖЕ РАБОТАЕТ
-              </motion.div>
-              <motion.h2 variants={fadeRight} className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-tight">MVP готов и <span className="text-gradient">запущен</span></motion.h2>
-              <motion.p variants={fadeRight} className="text-base md:text-xl text-muted-foreground">Мы не продаём идею. Мы привлекаем капитал для масштабирования уже работающей инфраструктуры.</motion.p>
-
-              <motion.div variants={staggerFast} className="space-y-4">
-                {[
-                  "Вертикальная лента стабильна и оптимизирована под Mini App",
-                  "Инфраструктура готова к нагрузкам в миллионы DAU",
-                  "Первые авторы уже загружают контент и получают охваты"
-                ].map((item, i) => (
-                  <motion.div key={i} variants={fadeRight} className="flex items-center gap-4 glass-card p-4 rounded-2xl">
-                    <CheckCircle2 className="w-7 h-7 text-green-400 shrink-0" />
-                    <span className="font-medium">{item}</span>
-                  </motion.div>
-                ))}
-              </motion.div>
-
-              <motion.div variants={fadeScale}>
-                <MagneticButton onClick={() => openInvest()}>
-                  <Button className="mt-4 btn-grad btn-3d h-14 px-8 text-lg font-bold rounded-xl pointer-events-none">
-                    Стать инвестором проекта
-                  </Button>
-                </MagneticButton>
-              </motion.div>
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center section-inner">
+            <div className="space-y-6 order-2 lg:order-1 lg:pl-10">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black">
+                {t('what_title')} <span className="text-gradient">Trends</span>?
+              </h2>
+              <div className="space-y-5 leading-relaxed">
+                <p className="text-foreground font-semibold text-lg">{t('what_lead')}</p>
+                <div className="space-y-3">
+                  {[
+                    {
+                      label: t('what_users_label'),
+                      icon: Users,
+                      glow: "rgba(0,212,255,0.18)",
+                      border: "rgba(0,212,255,0.35)",
+                      iconBg: "bg-primary/20",
+                      iconColor: "text-primary",
+                      labelColor: "text-primary",
+                      num: "01",
+                      text: t('what_users_text'),
+                    },
+                    {
+                      label: t('what_creators_label'),
+                      icon: PlaySquare,
+                      glow: "rgba(123,94,255,0.18)",
+                      border: "rgba(123,94,255,0.35)",
+                      iconBg: "bg-secondary/20",
+                      iconColor: "text-secondary",
+                      labelColor: "text-secondary",
+                      num: "02",
+                      text: t('what_creators_text'),
+                    },
+                    {
+                      label: t('what_telegram_label'),
+                      icon: Send,
+                      glow: "rgba(96,165,250,0.18)",
+                      border: "rgba(96,165,250,0.35)",
+                      iconBg: "bg-blue-400/20",
+                      iconColor: "text-blue-400",
+                      labelColor: "text-blue-400",
+                      num: "03",
+                      text: t('what_telegram_text'),
+                    },
+                  ].map(({ label, icon: Icon, glow, border, iconBg, iconColor, labelColor, num, text }) => (
+                    <div
+                      key={label}
+                      className="relative flex items-start gap-5 px-5 py-5 rounded-2xl overflow-hidden transition-transform duration-300 hover:-translate-y-0.5"
+                      style={{
+                        background: `linear-gradient(135deg, ${glow} 0%, rgba(255,255,255,0.02) 100%)`,
+                        border: `1px solid ${border}`,
+                        boxShadow: `0 0 24px 0 ${glow}, inset 0 1px 0 rgba(255,255,255,0.06)`,
+                      }}
+                    >
+                      {/* step number watermark */}
+                      <span className="absolute top-3 right-4 text-4xl font-black opacity-[0.06] select-none pointer-events-none leading-none" style={{ color: border }}>
+                        {num}
+                      </span>
+                      {/* icon */}
+                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${iconBg}`}
+                        style={{ boxShadow: `0 0 16px 0 ${glow}` }}>
+                        <Icon className={`w-5 h-5 ${iconColor}`} />
+                      </div>
+                      <div className="pt-0.5">
+                        <div className={`text-base font-bold mb-1.5 ${labelColor}`}>{label}</div>
+                        <p className="text-[0.9rem] leading-relaxed" style={{ color: "rgba(255,255,255,0.65)" }}>{text}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <motion.div initial="visible" animate="visible" variants={fadeRight}
+              className="relative flex justify-center items-center order-1 lg:order-2 mb-6 lg:mb-0">
+              {/* Glow behind phone */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="w-64 h-64 lg:w-56 lg:h-56 rounded-full bg-secondary/30 blur-[80px]" />
+              </div>
+              {/* iPhone + video composite */}
+              <div className="relative inline-flex justify-center items-center" style={{ height: 'clamp(520px, 95vw, 580px)' }}>
+                {/* Video clipped to phone screen area */}
+                <div className="absolute z-0 overflow-hidden rounded-[9%]"
+                  style={{ top: '1%', bottom: '1%', left: '8%', right: '8%' }}>
+                  <video
+                    autoPlay muted loop playsInline
+                    className="w-full h-full object-cover"
+                  >
+                    <source src={videoPath} type="video/mp4" />
+                    <source src={videoPath} type="video/quicktime" />
+                  </video>
+                </div>
+                {/* iPhone frame on top */}
+                <img src={iphonePath} alt="Trends App"
+                  className="relative z-10 h-full w-auto object-contain drop-shadow-2xl"
+                  style={{ mixBlendMode: 'multiply', transform: 'scaleX(1.06) scaleY(1.078) translateY(-3.6%)', transformOrigin: 'top center' }} />
+              </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* PRODUCT FULL */}
-      <section className="py-16">
+      {/* MVP */}
+      <section className="py-16 md:py-24 lg:py-32 relative z-10 [overflow-x:clip]">
         <div className="container mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">Продукт <span className="text-gradient">Trends</span></h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Полноценная лента вертикальных видео прямо внутри Telegram — контент от тысяч авторов, персонализированная выдача.</p>
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center section-inner">
+            <motion.div initial="visible" animate="visible" variants={fadeLeft}
+              className="relative flex justify-center order-1 lg:order-1">
+              <img src={screen3Path} alt="Trends MVP" className="relative z-10 max-h-[480px] lg:max-h-[620px] w-full object-contain drop-shadow-2xl" />
+            </motion.div>
+
+            <div className="space-y-6 lg:space-y-8 order-2 lg:order-2">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 text-green-400 border border-green-500/20 font-bold tracking-wide">
+                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                {t('mvp_badge')}
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight">{t('mvp_title1')} <span className="text-gradient">{t('mvp_title2')}</span></h2>
+              <p className="text-base md:text-xl text-muted-foreground">{t('mvp_desc')}</p>
+
+              <div className="space-y-4">
+                {[
+                  t('mvp_f1'),
+                  t('mvp_f2'),
+                  t('mvp_f3'),
+                  t('mvp_f4'),
+                  t('mvp_f5')
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-4 glass-card p-4 rounded-2xl">
+                    <CheckCircle2 className="w-7 h-7 text-green-400 shrink-0" />
+                    <span className="font-medium">{item}</span>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TOKEN ATTENTION ECONOMY */}
+      <section className="py-16 md:py-24 lg:py-32 relative z-10 overflow-hidden">
+        {/* Background glow */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full blur-[160px]" style={{ background: "radial-gradient(ellipse, rgba(123,94,255,0.12) 0%, rgba(0,212,255,0.08) 60%, transparent 100%)" }} />
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+
+          {/* Header */}
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={fadeUp} className="section-header mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-secondary/30 bg-secondary/10 text-secondary text-sm font-bold mb-6">
+              <Coins className="w-4 h-4" /> {t('token_section_badge')}
+            </div>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-5 leading-tight">
+              {t('token_section_title')}
+            </h2>
+            <p className="text-lg text-muted-foreground">{t('token_section_desc')}</p>
           </motion.div>
 
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeScale}>
+          {/* 3 earn cards */}
+          <div className="section-inner">
+          <div className="grid md:grid-cols-3 gap-5 mb-10">
+            {[
+              {
+                icon: Users2, color: "text-primary", bg: "bg-primary/10", border: "border-primary/20",
+                title: t('token_viewers_title'), desc: t('token_viewers_desc'), num: "01",
+              },
+              {
+                icon: Star, color: "text-secondary", bg: "bg-secondary/10", border: "border-secondary/20",
+                title: t('token_creators_title'), desc: t('token_creators_desc'), num: "02",
+              },
+              {
+                icon: TrendingUp, color: "text-green-400", bg: "bg-green-400/10", border: "border-green-400/20",
+                title: t('token_investors_title'), desc: t('token_investors_desc'), num: "03",
+              },
+            ].map((card, i) => (
+              <motion.div
+                key={i}
+                initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}
+                variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: i * 0.1, ease: EASE } } }}
+                className={`glass-card p-7 rounded-3xl border ${card.border} relative overflow-hidden`}
+              >
+                <div className="absolute top-4 right-5 text-5xl font-black opacity-5 select-none">{card.num}</div>
+                <div className={`w-12 h-12 rounded-2xl ${card.bg} flex items-center justify-center ${card.color} mb-5`}>
+                  <card.icon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-black mb-3">{card.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Why $TRND block */}
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeUp}
+            className="glass-card rounded-3xl p-8 md:p-10 border border-secondary/15 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 via-transparent to-primary/5 pointer-events-none" />
+            <div className="relative z-10">
+              <div className="flex flex-col md:flex-row gap-8">
+                <div className="flex-1">
+                  <h3 className="text-2xl md:text-3xl font-black mb-3">{t('token_why_title')}</h3>
+                  <p className="text-muted-foreground mb-6 leading-relaxed">{t('token_why_desc')}</p>
+
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    {[
+                      t('token_why1'), t('token_why2'),
+                      t('token_why3'), t('token_why4'),
+                      t('token_why5'), t('token_why6'),
+                    ].map((feat, i) => (
+                      <div key={i} className="flex items-start gap-2.5">
+                        <div className="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center shrink-0 mt-0.5">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-secondary" />
+                        </div>
+                        <span className="text-sm text-muted-foreground leading-relaxed">{feat}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Compare + CTA panel */}
+                <div className="flex flex-col items-center justify-center gap-4 md:w-72 shrink-0">
+                  <div className="grid grid-cols-3 gap-2 w-full">
+                    {["Notcoin", "Catizen", "Hamster"].map((name, i) => (
+                      <div key={i} className="glass-card rounded-xl p-3 flex flex-col items-center gap-1.5 border border-white/8">
+                        <Trophy className={`w-5 h-5 ${i === 0 ? 'text-yellow-400' : i === 1 ? 'text-primary' : 'text-secondary'}`} />
+                        <span className="text-xs font-bold text-center leading-tight">{name}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="text-center px-2">
+                    <div className="text-lg font-black text-white mb-2">{t('token_compare_title')}</div>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{t('token_compare_desc')}</p>
+                  </div>
+                  <Button
+                    onClick={() => { setSelectedPkg("founder3"); setIsInvestOpen(true); }}
+                    className="w-full rounded-xl font-bold text-white"
+                    style={{ background: "linear-gradient(135deg, #7B5EFF, #00D4FF)" }}
+                  >
+                    {t('token_cta')} <ArrowRight className="w-4 h-4 ml-1" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+          </div>{/* end section-inner */}
+        </div>
+      </section>
+
+      {/* MONETIZATION */}
+      <section id="monetization" className="py-16 md:py-24 lg:py-32 relative z-10 scroll-mt-20">
+        <div className="container mx-auto px-4">
+          <div className="section-header mb-16">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('mono_title')}</h2>
+            <p className="text-lg text-muted-foreground">{t('mono_desc')}</p>
+          </div>
+          <div className="section-inner">
+          <MonetizationCards t={t} />
+          </div>
+        </div>
+      </section>
+
+      {/* PRODUCT FULL */}
+      <section className="py-16 md:py-24 lg:py-32 relative z-10">
+        <div className="container mx-auto px-4">
+          <div className="section-header mb-12">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">{t('product_title')} <span className="text-gradient">Trends</span></h2>
+            <p className="text-lg text-muted-foreground">{t('product_desc')}</p>
+          </div>
+          <div className="section-inner">
+          <motion.div initial="visible" animate="visible" variants={fadeScale}>
             <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_60px_rgba(0,212,255,0.08)]">
               <img src={screen2Path} alt="Продукт Trends" className="w-full object-cover" />
             </div>
@@ -805,285 +1028,668 @@ export default function Landing() {
                   <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.93 }}>
                     <Button size="lg" className="h-14 px-10 text-lg btn-grad btn-3d font-bold rounded-xl pointer-events-none">
                       <ExternalLink className="mr-2 w-5 h-5" />
-                      Открыть MVP Trends
+                      {t('product_btn')}
                     </Button>
                   </motion.div>
                 </a>
               </MagneticButton>
             </div>
           </motion.div>
-        </div>
-      </section>
-
-      {/* MONETIZATION */}
-      <section id="monetization" className="py-14 md:py-24 relative">
-        <div className="container mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
-            className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">7 источников монетизации</h2>
-            <p className="text-lg text-muted-foreground">Диверсифицированная бизнес-модель — рост любого источника усиливает общую экономику платформы.</p>
-          </motion.div>
-
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeScale} className="mb-6">
-            <div className="glass-card p-8 md:p-10 rounded-3xl relative overflow-hidden">
-              <div className="absolute top-6 right-8 text-8xl font-black text-primary/6 select-none">01</div>
-              <div className="flex flex-col md:flex-row gap-8 items-start md:items-center">
-                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary shrink-0">
-                  <Target className="w-8 h-8" />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-3">
-                    <h3 className="text-2xl md:text-3xl font-bold">Реклама в ленте</h3>
-                    <span className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-bold uppercase tracking-wider">Основной</span>
-                  </div>
-                  <p className="text-muted-foreground text-lg leading-relaxed mb-4">Проверенная модель монетизации TikTok, Instagram Reels и YouTube Shorts — адаптированная под экосистему Telegram.</p>
-                  <div className="flex flex-wrap gap-3">
-                    {["CPM", "CPV", "CPC", "CPA"].map(tag => (
-                      <span key={tag} className="px-3 py-1 rounded-lg bg-primary/10 text-primary font-bold text-sm border border-primary/20">{tag}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerChildren}
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {[
-              { icon: TrendingUp, num: "02", title: "Boost-продвижение", desc: "Платное усиление охватов для авторов и брендов — приоритет в ленте" },
-              { icon: Gift, num: "03", title: "Спонсорские интеграции", desc: "Брендированные челленджи, спецпроекты, фиксированные бюджеты" },
-              { icon: Wallet, num: "04", title: "Цифровые донаты", desc: "Комиссия с транзакций между зрителями и авторами" },
-              { icon: BarChart3, num: "05", title: "Аналитика и данные", desc: "B2B-продажа агрегированной аналитики брендам" },
-              { icon: Smartphone, num: "06", title: "Таргет-баннер", desc: "Баннер внизу экрана по интересам — не перекрывает видео" },
-              { icon: ShoppingBag, num: "07", title: "E-commerce в ленте", desc: "Оффер товара + кнопка «Купить» → deep-link на маркетплейс" }
-            ].map((item, i) => (
-              <motion.div key={i} variants={fadeScale} className="glass-card p-6 rounded-3xl group relative overflow-hidden">
-                <div className="absolute top-4 right-5 text-5xl font-black text-primary/6 select-none group-hover:text-primary/12 transition-colors">{item.num}</div>
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-5 group-hover:scale-110 transition-transform">
-                  <item.icon className="w-6 h-6" />
-                </div>
-                <h3 className="text-lg font-bold mb-2">{item.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
+          </div>{/* end section-inner */}
         </div>
       </section>
 
       {/* 5 INVESTOR ADVANTAGES */}
-      <section id="investors" className="py-16 md:py-24 lg:py-32 relative overflow-hidden">
+      <section id="investors" className="py-16 md:py-24 lg:py-32 relative z-10 [overflow-x:clip] scroll-mt-20">
         <div className="container mx-auto px-4 relative z-10">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn}
-            className="text-center max-w-4xl mx-auto mb-10 md:mb-16 lg:mb-20">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6">5 преимуществ инвестора</h2>
-            <p className="text-base md:text-xl text-muted-foreground">Беспрецедентные условия для тех, кто заходит на стадии Pre-Seed. Инвестор зарабатывает вместе с платформой каждый день.</p>
-          </motion.div>
-
-          <AdvantagesGrid openInvest={openInvest} />
-        </div>
-      </section>
-
-      {/* INVESTMENT PACKAGES */}
-      <section className="py-14 md:py-24">
-        <div className="container mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">Инвестиционные пакеты</h2>
-            <p className="text-lg text-muted-foreground">Выберите свой уровень участия. Все пакеты включают RevShare, токены $TRND и партнёрскую программу.</p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 max-w-7xl mx-auto">
-            {PACKAGES_DATA.map((pkg, i) => (
-              <motion.div key={pkg.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn}
-                whileHover={{ y: pkg.recommended ? -6 : -4, transition: { duration: 0.25 } }}
-                className={`relative flex flex-col rounded-3xl border transition-colors ${pkg.recommended
-                  ? `glass-pkg-active xl:-translate-y-4 ${pkg.border} ${pkg.glow}`
-                  : `glass-card ${pkg.border}`
-                }`}>
-
-                <div className="p-7 flex flex-col flex-1">
-                  {/* RECOMMENDED BADGE — inside card */}
-                  {pkg.recommended && (
-                    <div className="flex justify-center mb-5 -mt-1">
-                      <motion.div
-                        animate={{ boxShadow: ["0 4px 20px rgba(0,212,255,0.35)", "0 4px 30px rgba(123,94,255,0.55)", "0 4px 20px rgba(0,212,255,0.35)"] }}
-                        transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                        className="bg-gradient-to-r from-primary to-secondary text-background text-xs font-black px-5 py-1.5 rounded-full uppercase tracking-widest whitespace-nowrap"
-                      >
-                        ★ РЕКОМЕНДУЕМ ★
-                      </motion.div>
-                    </div>
-                  )}
-
-                  {/* Header */}
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${pkg.recommended ? 'bg-primary/20' : 'bg-white/5'}`}>
-                      <pkg.icon className={`w-5 h-5 ${pkg.color}`} />
-                    </div>
-                    <h3 className="text-xl font-bold">{pkg.name}</h3>
-                  </div>
-                  <p className="text-sm text-muted-foreground mb-5">{pkg.tagline}</p>
-
-                  {/* Price */}
-                  <div className="mb-6">
-                    <div className={`text-4xl font-black ${pkg.recommended ? 'text-primary' : 'text-foreground'}`}>
-                      ${pkg.price.toLocaleString()}
-                    </div>
-                    <div className="text-xs text-muted-foreground mt-1">единовременная инвестиция</div>
-                  </div>
-
-                  {/* Features */}
-                  <ul className="space-y-3 flex-1 mb-7">
-                    {pkg.features.map((f, fi) => (
-                      <li key={fi} className="flex items-start gap-2.5">
-                        <CheckCircle2 className={`w-4 h-4 mt-0.5 shrink-0 ${pkg.color}`} />
-                        <span className="text-sm text-muted-foreground leading-snug">{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* Key metrics */}
-                  <div className="grid grid-cols-2 gap-2 mb-6 p-3 rounded-xl bg-white/3 border border-white/8">
-                    <div className="text-center">
-                      <div className={`text-sm font-black ${pkg.color}`}>~${pkg.monthly.toLocaleString()}</div>
-                      <div className="text-[10px] text-muted-foreground">RevShare/мес</div>
-                    </div>
-                    <div className="text-center border-l border-white/8">
-                      <div className="text-sm font-black text-green-400">{pkg.exit}</div>
-                      <div className="text-[10px] text-muted-foreground">Exit потенциал</div>
-                    </div>
-                  </div>
-
-                  <motion.div whileTap={{ scale: 0.95 }} whileHover={{ scale: 1.02 }}>
-                    <Button
-                      onClick={() => openInvest(pkg.id)}
-                      className={`w-full h-12 text-base font-bold rounded-xl btn-3d ${pkg.recommended
-                        ? 'btn-grad'
-                        : `bg-transparent border-2 ${pkg.border} ${pkg.color} hover:bg-white/5`
-                      }`}
-                    >
-                      Инвестировать
-                    </Button>
-                  </motion.div>
-                </div>
-              </motion.div>
-            ))}
+          <div className="section-inner">
+          <div className="section-header mb-10 md:mb-16 lg:mb-20">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('adv_title')}</h2>
+            <p className="text-base md:text-xl text-muted-foreground">{t('adv_desc')}</p>
           </div>
+
+          <AdvantagesGrid openInvest={openInvest} advantages={[
+            { title: t('adv1_title'), desc: t('adv1_desc'), color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-secondary/10", Icon: DollarSign, label: t('adv1_label'), extra: [t('adv1_x1'), t('adv1_x2'), t('adv1_x3'), t('adv1_x4')] },
+            { title: t('adv2_title'), desc: t('adv2_desc'), color: "text-secondary", gradFrom: "from-secondary/20", gradTo: "to-primary/5", Icon: TrendingUp, label: t('adv2_label'), extra: [t('adv2_x1'), t('adv2_x2'), t('adv2_x3'), t('adv2_x4')] },
+            { title: t('adv3_title'), desc: t('adv3_desc'), color: "text-green-400", gradFrom: "from-green-500/20", gradTo: "to-teal-500/5", Icon: Network, label: t('adv3_label'), extra: [t('adv3_x1'), t('adv3_x2'), t('adv3_x3'), t('adv3_x4'), t('adv3_x5')] },
+            { title: t('adv4_title'), desc: t('adv4_desc'), color: "text-yellow-400", gradFrom: "from-yellow-500/20", gradTo: "to-orange-500/5", Icon: Coins, label: t('adv4_label'), extra: [t('adv4_x1'), t('adv4_x2'), t('adv4_x3'), t('adv4_x4'), t('adv4_x5')] },
+            { title: t('adv5_title'), desc: t('adv5_desc'), color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-purple-500/10", Icon: Crown, label: t('adv5_label'), extra: [t('adv5_x1'), t('adv5_x2'), t('adv5_x3'), t('adv5_x4'), t('adv5_x5')] },
+          ]} />
+          </div>{/* end section-inner */}
         </div>
       </section>
 
-      {/* MLM */}
-      <section className="py-14 md:py-24 relative overflow-hidden">
+      {/* DAU CALCULATOR + INVESTMENT PACKAGES (merged) */}
+      <DauCalculator
+        onInvest={openInvest}
+        onSelectPackage={openInvest}
+        fullPackages={PACKAGES_DATA}
+      />
+
+      {/* MLM + COMMUNITY POOL — collapsible */}
+      <section className="py-16 md:py-24 lg:py-32 relative z-10 [overflow-x:clip]">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-green-500/8 blur-[120px] rounded-full pointer-events-none" />
         <div className="container mx-auto px-4 relative z-10">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn}
-            className="text-center max-w-3xl mx-auto mb-16">
+          <div className="section-inner">
+          {/* Section header — static */}
+          <div className="section-header mb-10">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 font-bold text-sm mb-6">
               <Network className="w-4 h-4" />
-              ПАРТНЁРСКАЯ ПРОГРАММА
+              {t('mlm_badge')}
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-6">Партнёрская программа — зарабатывай на привлечении</h2>
-            <p className="text-lg text-muted-foreground">Приглашайте новых инвесторов и получайте процент от их вложений на 5 уровней вглубь.</p>
-          </motion.div>
-
-          <div className="max-w-4xl mx-auto mb-16">
-            <div className="space-y-3">
-              {[
-                { level: "Уровень 1", pct: "10%", desc: "Прямые приглашённые вами", color: "from-primary to-primary/70", textColor: "text-primary", w: "100%" },
-                { level: "Уровень 2", pct: "5%", desc: "Их партнёры", color: "from-secondary to-secondary/70", textColor: "text-secondary", w: "80%" },
-                { level: "Уровень 3", pct: "3%", desc: "Третье звено сети", color: "from-blue-400 to-blue-400/70", textColor: "text-blue-400", w: "60%" },
-                { level: "Уровень 4", pct: "1%", desc: "Четвёртое звено", color: "from-cyan-400 to-cyan-400/70", textColor: "text-cyan-400", w: "40%" },
-                { level: "Уровень 5", pct: "1%", desc: "Пятое звено", color: "from-teal-400 to-teal-400/70", textColor: "text-teal-400", w: "25%" },
-              ].map((lvl, i) => (
-                <motion.div key={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn}
-                  className="glass-card p-5 rounded-2xl flex items-center gap-5">
-                  <div className={`text-2xl font-black ${lvl.textColor} w-14 shrink-0`}>{lvl.pct}</div>
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-semibold">{lvl.level}</span>
-                      <span className="text-sm text-muted-foreground hidden sm:block">{lvl.desc}</span>
-                    </div>
-                    <div className="h-2 bg-white/5 rounded-full overflow-hidden">
-                      <motion.div initial={{ width: 0 }} whileInView={{ width: lvl.w }} viewport={{ once: true }}
-                        transition={{ duration: 0.8, delay: i * 0.1 }}
-                        className={`h-full rounded-full bg-gradient-to-r ${lvl.color}`} />
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">{t('mlm_title')}</h2>
+            <p className="text-lg text-muted-foreground">{t('mlm_desc')}</p>
           </div>
 
-          {/* MLM Example — simplified */}
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn}
-            className="glass-card p-8 md:p-10 rounded-3xl border border-green-500/20 max-w-4xl mx-auto">
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center text-green-400">
-                <DollarSign className="w-5 h-5" />
+          {/* Accordion 1 — Реф программа */}
+          <div className="mb-3">
+            <button
+              onClick={() => setRefOpen(o => !o)}
+              className="w-full flex items-center justify-between px-6 py-5 glass-card rounded-2xl border border-white/10 hover:border-primary/30 transition-all duration-200 group focus:outline-none"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-primary/15 border border-primary/25 flex items-center justify-center shrink-0">
+                  <Network className="w-4 h-4 text-primary" />
+                </div>
+                <div className="text-left">
+                  <span className="text-base sm:text-lg font-bold group-hover:text-primary transition-colors block">{t('mlm_acc1')}</span>
+                  <span className="text-xs text-muted-foreground">{t('mlm_acc1_sub')}</span>
+                </div>
               </div>
-              <div>
-                <h3 className="text-lg md:text-2xl font-bold">Пример: Пакет Основателей 5 — $25,000</h3>
-                <p className="text-sm text-muted-foreground">Вы вложили $25,000 и начали приглашать партнёров</p>
-              </div>
-            </div>
+              <motion.span animate={{ rotate: refOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
+                <ChevronRight className="w-5 h-5 rotate-90 text-muted-foreground" />
+              </motion.span>
+            </button>
+            <AnimatePresence>
+            {refOpen && (
+              <motion.div key="ref-content" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }} style={{ overflow: "hidden" }}>
+                <div className="glass-card px-6 py-5 rounded-2xl mt-2 space-y-2">
+                  {[
+                    { n: 1, pct: "10%", desc: t('mlm_ref_l1'), bar: 100, grad: "from-primary to-primary/60", badge: "bg-primary/20 text-primary border-primary/30" },
+                    { n: 2, pct: "5%",  desc: t('mlm_ref_l2'), bar: 70,  grad: "from-secondary to-secondary/60", badge: "bg-secondary/20 text-secondary border-secondary/30" },
+                    { n: 3, pct: "3%",  desc: t('mlm_ref_l3'), bar: 48,  grad: "from-blue-400 to-blue-400/60", badge: "bg-blue-400/20 text-blue-400 border-blue-400/30" },
+                    { n: 4, pct: "1%",  desc: t('mlm_ref_l4'), bar: 28,  grad: "from-cyan-400 to-cyan-400/60", badge: "bg-cyan-400/20 text-cyan-400 border-cyan-400/30" },
+                    { n: 5, pct: "1%",  desc: t('mlm_ref_l5'), bar: 18,  grad: "from-teal-400 to-teal-400/60", badge: "bg-teal-400/20 text-teal-400 border-teal-400/30" },
+                  ].map((row, i) => (
+                    <div key={i} className="flex items-center gap-4">
+                      <div className={`shrink-0 text-xs font-black px-2.5 py-1 rounded-lg border ${row.badge}`}>L{row.n}</div>
+                      <div className="shrink-0 w-10 text-right">
+                        <span className={`text-lg font-black ${row.badge.split(' ')[1]}`}>{row.pct}</span>
+                      </div>
+                      <div className="flex-1 relative h-2 bg-white/5 rounded-full overflow-hidden">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${row.bar}%` }}
+                          viewport={{ once: true, amount: 0.5 }}
+                          transition={{ duration: 0.7, delay: i * 0.08 }}
+                          className={`absolute left-0 top-0 h-full rounded-full bg-gradient-to-r ${row.grad}`}
+                        />
+                      </div>
+                      <div className="shrink-0 text-sm text-muted-foreground w-48 text-right hidden md:block">{row.desc}</div>
+                    </div>
+                  ))}
+                  {/* Big example block */}
+                  <div className="rounded-2xl bg-white/3 border border-white/8 mt-3 overflow-hidden">
+                    {/* Header */}
+                    <div className="flex items-start gap-3 p-5 pb-4 border-b border-white/8">
+                      <div className="w-9 h-9 rounded-xl bg-primary/15 border border-primary/25 flex items-center justify-center shrink-0">
+                        <DollarSign className="w-4 h-4 text-primary" />
+                      </div>
+                      <div>
+                        <div className="text-sm sm:text-base font-black">{t('mlm_ex_title')}</div>
+                        <div className="text-xs text-muted-foreground mt-0.5">{t('mlm_ex_sub')}</div>
+                      </div>
+                    </div>
 
-            <div className="space-y-4 mb-8">
+                    {/* Network tree */}
+                    <div className="p-4 border-b border-white/8 overflow-x-auto">
+                      <div className="min-w-[620px] select-none">
+
+                        {/* ROOT */}
+                        <div className="flex justify-center">
+                          <div className="flex flex-col items-center">
+                            <div className="w-11 h-11 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center text-xs font-black text-primary">{t('mlm_you')}</div>
+                            <div className="text-[10px] text-primary font-bold mt-1">$5 000</div>
+                            <div className="w-px h-4 bg-white/25 mt-1" />
+                          </div>
+                        </div>
+
+                        {/* L1 + L2 + L3 full tree */}
+                        {(() => {
+                          const l1 = [
+                            { label: "А", amount: "$25K", income: "+$2 500", incomeColor: "text-yellow-400", color: "bg-yellow-500/20 border-yellow-500/50 text-yellow-200" },
+                            { label: "Б", amount: "$100K", income: "+$10 000", incomeColor: "text-orange-400", color: "bg-orange-500/20 border-orange-500/50 text-orange-200" },
+                            { label: "В", amount: "$5K", income: "+$500", incomeColor: "text-violet-400", color: "bg-violet-500/20 border-violet-500/50 text-violet-200" },
+                          ];
+                          const l2Pair = [
+                            { n: "1", a: "$25K", i: "+$1 250", color: "bg-teal-500/15 border-teal-500/40 text-teal-200", iColor: "text-teal-400" },
+                            { n: "2", a: "$5K",  i: "+$250",   color: "bg-cyan-500/10 border-cyan-500/25 text-cyan-300",  iColor: "text-cyan-300" },
+                          ];
+                          return (
+                            <div className="flex justify-center">
+                              {/* Inner tight wrapper — bar spans exactly node centers */}
+                              <div className="relative flex gap-28">
+                                <div className="absolute top-0 left-[18px] right-[18px] h-px bg-white/25" />
+                                {l1.map((n, i) => (
+                                  <div key={i} className="flex flex-col items-center">
+                                    {/* stem from L1 bar */}
+                                    <div className="w-px h-4 bg-white/25" />
+                                    {/* L1 circle */}
+                                    <div className={`w-9 h-9 rounded-full border-2 flex items-center justify-center text-xs font-black ${n.color}`}>{n.label}</div>
+                                    <div className="text-[9px] text-muted-foreground mt-0.5">{n.amount}</div>
+                                    <div className={`text-[9px] font-black ${n.incomeColor}`}>{n.income}</div>
+                                    {/* stem to L2 */}
+                                    <div className="w-px h-3 bg-white/15 mt-1" />
+                                    {/* L2 pair */}
+                                    <div className="relative flex gap-2">
+                                      {/* horizontal connector between L2 children */}
+                                      <div className="absolute top-0 left-[25%] right-[25%] h-px bg-white/15" />
+                                      {l2Pair.map((c, j) => (
+                                        <div key={j} className="flex flex-col items-center">
+                                          <div className="w-px h-3 bg-white/15" />
+                                          <div className={`w-7 h-7 rounded-full border flex items-center justify-center text-[9px] font-black ${c.color}`}>{c.n}</div>
+                                          <div className="text-[8px] text-muted-foreground mt-0.5 leading-tight">{c.a}</div>
+                                          <div className={`text-[8px] font-black leading-tight ${c.iColor}`}>{c.i}</div>
+                                          {/* L3 schematic dots — 2 per L2 node */}
+                                          <div className="w-px h-2 bg-white/10 mt-1" />
+                                          <div className="flex gap-1">
+                                            <div className="w-3.5 h-3.5 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-[7px] text-white/40">+</div>
+                                            <div className="w-3.5 h-3.5 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-[7px] text-white/40">+</div>
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        })()}
+
+                        <div className="text-center text-[10px] text-muted-foreground mt-3">{t('mlm_lvls_grow')}</div>
+                      </div>
+                    </div>
+
+                    {/* Summary rows */}
+                    <div className="divide-y divide-white/6">
+                      {[
+                        { icon: <Users2 className="w-3.5 h-3.5" />, iconCls: "bg-yellow-500/15 border-yellow-500/25 text-yellow-400", badge: "L1 · 10%", badgeCls: "bg-yellow-500/15 text-yellow-400 border-yellow-500/25", desc: "1 × $25K", val: "+$2 500", valCls: "text-yellow-400" },
+                        { icon: <Users2 className="w-3.5 h-3.5" />, iconCls: "bg-orange-500/15 border-orange-500/25 text-orange-400", badge: "L1 · 10%", badgeCls: "bg-orange-500/15 text-orange-400 border-orange-500/25", desc: "1 × $100K", val: "+$10 000", valCls: "text-orange-400" },
+                        { icon: <Users2 className="w-3.5 h-3.5" />, iconCls: "bg-violet-500/15 border-violet-500/25 text-violet-400", badge: "L1 · 10%", badgeCls: "bg-violet-500/15 text-violet-400 border-violet-500/25", desc: "1 × $5K", val: "+$500", valCls: "text-violet-400" },
+                        { icon: <Network className="w-3.5 h-3.5" />, iconCls: "bg-teal-500/15 border-teal-500/25 text-teal-400", badge: "L2 · 5%", badgeCls: "bg-teal-500/15 text-teal-400 border-teal-500/25", desc: "$90K сети (6 партнёров)", val: "+$4 500", valCls: "text-teal-400" },
+                        { icon: <Network className="w-3.5 h-3.5" />, iconCls: "bg-blue-500/15 border-blue-500/25 text-blue-400", badge: "L3–5", badgeCls: "bg-blue-500/15 text-blue-400 border-blue-500/25", desc: t('mlm_deeper'), val: "+$16 200", valCls: "text-blue-400" },
+                      ].map((row, i) => (
+                        <div key={i} className="flex items-center gap-3 px-5 py-3">
+                          <div className={`w-7 h-7 rounded-lg border flex items-center justify-center shrink-0 ${row.iconCls}`}>{row.icon}</div>
+                          <div className={`text-[10px] font-black px-2 py-0.5 rounded-md border ${row.badgeCls} shrink-0`}>{row.badge}</div>
+                          <div className="flex-1 text-sm text-muted-foreground">{row.desc}</div>
+                          <div className={`text-sm font-black shrink-0 ${row.valCls}`}>{row.val}</div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Total footer */}
+                    <div className="flex flex-col sm:flex-row gap-4 p-5 bg-white/3 border-t border-white/8">
+                      <div className="flex-1">
+                        <div className="text-xs text-muted-foreground mb-1">{t('mlm_ex_total_label')}</div>
+                        <div className="text-2xl sm:text-3xl font-black text-green-400">$33 700</div>
+                        <div className="text-[10px] text-muted-foreground mt-1">L1: $13 000 · L2: $4 500 · L3–5: $16 200</div>
+                      </div>
+                      <div className="sm:text-right">
+                        <div className="text-xs text-muted-foreground mb-1">{t('mlm_ex_revshare')}</div>
+                        <div className="text-2xl sm:text-3xl font-black text-primary">+$626 / мес</div>
+                        <div className="text-[10px] text-muted-foreground mt-1">при 10M DAU</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+            </AnimatePresence>
+          </div>
+
+          {/* Accordion 2 — Доход с дохода */}
+          <div className="mb-3">
+            <button
+              onClick={() => setExampleOpen(o => !o)}
+              className="w-full flex items-center justify-between px-6 py-5 glass-card rounded-2xl border border-white/10 hover:border-green-500/30 transition-all duration-200 group focus:outline-none"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-green-500/15 border border-green-500/25 flex items-center justify-center shrink-0">
+                  <TrendingUp className="w-4 h-4 text-green-400" />
+                </div>
+                <div className="text-left">
+                  <span className="text-base sm:text-lg font-bold group-hover:text-green-400 transition-colors block">{t('mlm_acc2')}</span>
+                  <span className="text-xs text-muted-foreground">{t('mlm_acc2_sub')}</span>
+                </div>
+              </div>
+              <motion.span animate={{ rotate: exampleOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
+                <ChevronRight className="w-5 h-5 rotate-90 text-muted-foreground" />
+              </motion.span>
+            </button>
+            <AnimatePresence>
+            {exampleOpen && (
+              <motion.div key="income-content" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }} style={{ overflow: "hidden" }}>
+                <div className="glass-card p-5 sm:p-8 rounded-3xl border border-green-500/20 mt-2 space-y-5">
+                  {/* Header */}
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 shrink-0 bg-green-500/20 rounded-xl flex items-center justify-center text-green-400">
+                      <TrendingUp className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h3 className="text-base sm:text-lg font-bold leading-snug">{t('mlm_income_title')}</h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">{t('mlm_income_desc')}</p>
+                    </div>
+                  </div>
+
+                  {/* 3 levels */}
+                  <div className="glass-card rounded-2xl overflow-hidden">
+                    {[
+                      { lvl: "L1", pct: "5%", desc: t('mlm_income_l1'), bar: 100, badgeCls: "bg-primary/20 text-primary border-primary/30", barCls: "from-primary to-primary/60" },
+                      { lvl: "L2", pct: "3%", desc: t('mlm_income_l2'), bar: 65,  badgeCls: "bg-secondary/20 text-secondary border-secondary/30", barCls: "from-secondary to-secondary/60" },
+                      { lvl: "L3", pct: "2%", desc: t('mlm_income_l3'), bar: 42,  badgeCls: "bg-blue-400/20 text-blue-400 border-blue-400/30", barCls: "from-blue-400 to-blue-400/60" },
+                    ].map((row, i, arr) => (
+                      <div key={i} className={`flex items-center gap-4 px-5 py-4 ${i < arr.length - 1 ? "border-b border-white/6" : ""}`}>
+                        <div className={`shrink-0 text-xs font-black px-2.5 py-1 rounded-lg border ${row.badgeCls}`}>{row.lvl}</div>
+                        <div className="shrink-0 w-10 text-right">
+                          <span className={`text-lg font-black ${row.badgeCls.split(' ')[1]}`}>{row.pct}</span>
+                        </div>
+                        <div className="flex-1 relative h-2 bg-white/5 rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            whileInView={{ width: `${row.bar}%` }}
+                            viewport={{ once: true, amount: 0.5 }}
+                            transition={{ duration: 0.7, delay: i * 0.1 }}
+                            className={`absolute left-0 top-0 h-full rounded-full bg-gradient-to-r ${row.barCls}`}
+                          />
+                        </div>
+                        <div className="shrink-0 text-xs text-muted-foreground w-48 text-right hidden md:block">{row.desc}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Example calculation — visual cascade infographic */}
+                  <div className="rounded-2xl bg-white/3 border border-white/8 p-5">
+                    <div className="text-xs font-black tracking-widest uppercase text-muted-foreground mb-5">{t('mlm_income_ex_title')}</div>
+                    {/* Tree */}
+                    <div className="flex flex-col items-center gap-0 w-full">
+
+                      {/* ROOT — ВЫ */}
+                      <div className="flex flex-col items-center">
+                        <div className="w-12 h-12 rounded-full bg-primary/20 border-2 border-primary/50 flex items-center justify-center text-sm font-black text-primary">ВЫ</div>
+                        <div className="text-[10px] text-muted-foreground mt-1">получаете %</div>
+                      </div>
+
+                      {/* connector root → L1 */}
+                      <div className="w-px h-5 bg-white/20" />
+
+                      {/* L1 row — 3 partners side by side */}
+                      <div className="flex justify-center w-full">
+                        <div className="relative flex gap-24">
+                          <div className="absolute top-0 left-[48px] right-[48px] h-px bg-white/20" />
+                          {[
+                            { lbl: "А", rev: "$3 130",  earn: "+$157", pct: "5%", bg: "bg-yellow-500/20 border-yellow-500/50 text-yellow-200", earn_c: "text-green-400" },
+                            { lbl: "Б", rev: "$12 527", earn: "+$626", pct: "5%", bg: "bg-orange-500/20 border-orange-500/50 text-orange-200", earn_c: "text-green-400" },
+                            { lbl: "В", rev: "$626",    earn: "+$31",  pct: "5%", bg: "bg-violet-500/20 border-violet-500/50 text-violet-200", earn_c: "text-green-400" },
+                          ].map((n, i) => (
+                            <div key={i} className="flex flex-col items-center w-24">
+                              <div className="w-px h-5 bg-white/20" />
+                              <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center text-xs font-black ${n.bg}`}>{n.lbl}</div>
+                              <div className="text-[9px] text-muted-foreground mt-0.5">RevShare {n.rev}</div>
+                              <div className="text-[9px] font-black text-blue-300">L1 · {n.pct}</div>
+                              <div className={`text-[10px] font-black ${n.earn_c}`}>{n.earn}</div>
+                              {/* connector to L2 */}
+                              <div className="w-px h-4 bg-white/15 mt-1" />
+                              {/* L2 pair under each L1 — same packages as MLM example: $25K + $5K */}
+                              <div className="relative flex gap-3">
+                                <div className="absolute top-0 left-[13px] right-[13px] h-px bg-white/12" />
+                                {[
+                                  { rev: "$3 130", earn: "+$94", bg: "bg-teal-500/15 border-teal-500/40 text-teal-200" },
+                                  { rev: "$626",   earn: "+$19", bg: "bg-cyan-500/10 border-cyan-500/25 text-cyan-300" },
+                                ].map((c, j) => (
+                                  <div key={j} className="flex flex-col items-center">
+                                    <div className="w-px h-4 bg-white/12" />
+                                    <div className={`w-7 h-7 rounded-full border flex items-center justify-center text-[8px] font-black ${c.bg}`}>{j + 1}</div>
+                                    <div className="text-[7px] text-muted-foreground mt-0.5 leading-tight">{c.rev}</div>
+                                    <div className="text-[7px] font-black text-teal-400 leading-tight">L2 · 3%</div>
+                                    <div className="text-[8px] font-black text-green-400">{c.earn}</div>
+                                    {/* L3 dots */}
+                                    <div className="w-px h-2 bg-white/10 mt-1" />
+                                    <div className="flex gap-0.5">
+                                      <div className="w-3 h-3 rounded-full bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-[6px] text-white/40">+</div>
+                                      <div className="w-3 h-3 rounded-full bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-[6px] text-white/40">+</div>
+                                    </div>
+                                    <div className="text-[6px] text-violet-400 mt-0.5">L3 · 2%</div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Total */}
+                      <div className="mt-5 w-full rounded-xl bg-green-500/8 border border-green-500/20 px-4 py-3 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-green-400 shrink-0" />
+                          <span className="text-xs text-muted-foreground">{t('mlm_income_ex_note')}</span>
+                        </div>
+                        <div className="text-sm font-black text-green-400 shrink-0">+$1 153 / мес</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-xs text-muted-foreground text-center">{t('mlm_income_footnote')}</p>
+                </div>
+              </motion.div>
+            )}
+            </AnimatePresence>
+          </div>
+
+          {/* Accordion 3 — Community Pool */}
+          <div className="mb-3">
+            <button
+              onClick={() => setPoolOpen(o => !o)}
+              className="w-full flex items-center justify-between px-6 py-5 glass-card rounded-2xl border border-white/10 hover:border-yellow-500/30 transition-all duration-200 group focus:outline-none"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-yellow-500/15 border border-yellow-500/25 flex items-center justify-center shrink-0">
+                  <Trophy className="w-4 h-4 text-yellow-400" />
+                </div>
+                <div className="text-left">
+                  <span className="text-base sm:text-lg font-bold group-hover:text-yellow-400 transition-colors block">{t('mlm_acc3')}</span>
+                  <span className="text-xs text-muted-foreground">{t('mlm_pool_sub')}</span>
+                </div>
+              </div>
+              <motion.span animate={{ rotate: poolOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
+                <ChevronRight className="w-5 h-5 rotate-90 text-muted-foreground" />
+              </motion.span>
+            </button>
+            <AnimatePresence>
+            {poolOpen && (
+              <motion.div key="pool-content" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }} style={{ overflow: "hidden" }}>
+                <div className="mt-2 space-y-4">
+                <p className="text-sm md:text-base text-muted-foreground leading-relaxed px-2 py-1">
+                  {t('mlm_pool_desc')}
+                </p>
+
+            {/* Example table header */}
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={slideUp}
+              className="glass-card rounded-2xl overflow-hidden">
+              <div className="px-5 py-3 border-b border-white/8 flex items-center justify-between">
+                <span className="text-[11px] font-black tracking-widest uppercase text-muted-foreground">
+                  {t('pool_table_header')}
+                </span>
+              </div>
+              {/* Summary rows */}
               {[
-                {
-                  step: "01", icon: UserPlus, color: "text-primary", bg: "bg-primary/10",
-                  action: "Вы пригласили 5 друзей", detail: "Каждый вложил по $25,000",
-                  calc: "5 × $25,000 × 10%", result: "+$12,500", resultColor: "text-primary"
-                },
-                {
-                  step: "02", icon: Users2, color: "text-secondary", bg: "bg-secondary/10",
-                  action: "Каждый из них привёл ещё 3 человека", detail: "Каждый вложил по $5,000",
-                  calc: "15 × $5,000 × 5%", result: "+$3,750", resultColor: "text-secondary"
-                },
-                {
-                  step: "03", icon: Network, color: "text-blue-400", bg: "bg-blue-400/10",
-                  action: "3-й, 4-й и 5-й уровни растут сами", detail: "Небольшой % с каждого участника вашей сети",
-                  calc: "уровни 3–5 × 3%–1%–1%", result: "+$2,500", resultColor: "text-blue-400"
-                },
+                { label: t('pool_row_total'), value: "$200 000", bold: true, valueColor: "" },
+                { label: "Community Pool (6%)", value: "$12 000", bold: false, valueColor: "text-yellow-400" },
               ].map((row, i) => (
-                <div key={i} className="glass-card p-5 rounded-2xl flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-                  <div className={`w-10 h-10 rounded-xl ${row.bg} flex items-center justify-center shrink-0`}>
-                    <row.icon className={`w-5 h-5 ${row.color}`} />
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-semibold">{row.action}</div>
-                    <div className="text-sm text-muted-foreground">{row.detail} · <span className="font-mono">{row.calc}</span></div>
-                  </div>
-                  <div className={`text-2xl font-black ${row.resultColor} shrink-0`}>{row.result}</div>
+                <div key={i} className={`flex items-center justify-between px-5 py-3 border-b border-white/6 ${row.bold ? "bg-white/3" : ""}`}>
+                  <span className={`text-sm ${row.bold ? "font-bold" : "text-muted-foreground"}`}>{row.label}</span>
+                  <span className={`text-sm font-black ${row.valueColor || ""}`}>{row.value}</span>
                 </div>
               ))}
+
+              {/* Top-5 leaderboard */}
+              {[
+                { rank: 1, pct: "35%", amount: "$4 200", icon: "🥇", bg: "bg-yellow-400/10", border: "border-yellow-400/20", color: "text-yellow-300", barCls: "bg-yellow-300", barW: 100 },
+                { rank: 2, pct: "25%", amount: "$3 000", icon: "🥈", bg: "bg-slate-400/10",  border: "border-slate-400/20",  color: "text-slate-300",  barCls: "bg-slate-300",  barW: 71 },
+                { rank: 3, pct: "15%", amount: "$1 800", icon: "🥉", bg: "bg-orange-400/10", border: "border-orange-400/20", color: "text-orange-300", barCls: "bg-orange-300", barW: 43 },
+                { rank: 4, pct: "13%", amount: "$1 560", icon: "4",  bg: "bg-primary/8",     border: "border-primary/15",   color: "text-primary",   barCls: "bg-primary",    barW: 37 },
+                { rank: 5, pct: "12%", amount: "$1 440", icon: "5",  bg: "bg-secondary/8",   border: "border-secondary/15", color: "text-secondary", barCls: "bg-secondary",  barW: 34 },
+              ].map((row, i) => (
+                <div key={i} className={`flex items-center gap-3 px-4 py-3 ${i < 4 ? "border-b border-white/6" : ""}`}>
+                  <div className={`w-8 h-8 rounded-xl ${row.bg} border ${row.border} flex items-center justify-center text-sm font-black shrink-0`}>
+                    {row.rank <= 3 ? row.icon : <span className={`text-xs ${row.color}`}>{row.icon}</span>}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className={`text-xs font-black ${row.color}`}>Топ {row.rank}</span>
+                      <span className={`text-xs font-bold ${row.color} opacity-60`}>· {row.pct}</span>
+                    </div>
+                    <div className="relative h-1.5 bg-white/5 rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${row.barW}%` }}
+                        transition={{ duration: 0.6, delay: 0.3 + i * 0.08 }}
+                        className={`absolute left-0 top-0 h-full rounded-full ${row.barCls}`}
+                      />
+                    </div>
+                  </div>
+                  <div className={`text-base font-black ${row.color} shrink-0`}>{row.amount}</div>
+                </div>
+              ))}
+            </motion.div>
+
+            {/* Footer notes */}
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} variants={fadeIn}
+              className="grid sm:grid-cols-2 gap-3">
+              {[t('pool_note1'), t('pool_note2')].map((note, i) => (
+                <div key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0 text-green-400" />
+                  <span>{note}</span>
+                </div>
+              ))}
+            </motion.div>
+                </div>
+              </motion.div>
+            )}
+            </AnimatePresence>
+          </div>
+
+          </div>{/* end section-inner */}
+        </div>
+      </section>
+
+      {/* FUNDRAISING ROADMAP — 2 rounds */}
+      <section className="py-16 md:py-24 lg:py-32 relative z-10">
+        <div className="container mx-auto px-4">
+          <div className="section-inner">
+            <div className="section-header mb-10">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary font-bold text-sm mb-5">
+                <Target className="w-4 h-4" />
+                {t('rounds_badge')}
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">
+                {t('rounds_title')} <span className="text-gradient">{t('rounds_title_grad')}</span>
+              </h2>
+              <p className="text-muted-foreground text-lg">
+                {t('rounds_subtitle')}
+              </p>
             </div>
 
-            <div className="flex flex-col md:flex-row items-center gap-6 p-6 rounded-2xl glass-card">
-              <div className="flex-1 text-center md:text-left">
-                <div className="text-sm text-muted-foreground mb-1">Итого от партнёрской сети</div>
-                <div className="text-5xl font-black text-green-400">$18,750</div>
+            {/* Two rounds side by side */}
+            <div className="grid md:grid-cols-2 gap-5 mb-8">
+
+              {/* Round 1 — ACTIVE */}
+              <div className="relative rounded-2xl border border-primary/40 bg-primary/5 backdrop-blur-sm p-6 md:p-8 overflow-hidden">
+                <div className="absolute top-4 right-4">
+                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/20 border border-green-500/30 text-green-400 text-xs font-black uppercase tracking-wider">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse inline-block" />
+                    {t('round1_badge')}
+                  </div>
+                </div>
+                <div className="text-xs font-black tracking-widest uppercase text-primary mb-2">{t('round1_label')}</div>
+                <h3 className="text-2xl font-black mb-1">{t('round1_name')}</h3>
+                <div className="text-4xl font-black text-primary mb-1">$500 000</div>
+                <p className="text-sm text-muted-foreground mb-5">{t('round1_desc')}</p>
+
+                {/* Progress bar for round 1 */}
+                <div className="mb-4">
+                  <div className="flex justify-between text-sm mb-2">
+                    <span className="font-bold text-green-400">{t('round1_raised')}</span>
+                    <span className="text-muted-foreground">{t('round1_goal')}</span>
+                  </div>
+                  <div className="relative h-3 rounded-full bg-white/8 overflow-hidden">
+                    <motion.div
+                      className="absolute inset-y-0 left-0 rounded-full"
+                      style={{ background: "linear-gradient(90deg, #00D4FF, #7B5EFF)" }}
+                      initial={{ width: 0 }}
+                      whileInView={{ width: "20%" }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1.2, ease: "easeOut" }}
+                    />
+                    <div className="absolute inset-y-0 left-[20%] flex items-center">
+                      <div className="w-2.5 h-2.5 rounded-full bg-white border-2 border-primary shadow-lg shadow-primary/50 -translate-x-1/2" />
+                    </div>
+                  </div>
+                  <div className="flex justify-between text-xs text-muted-foreground mt-1.5">
+                    <span>{t('round1_pct')}</span>
+                    <span>{t('round1_remaining')}</span>
+                  </div>
+                </div>
+
+                <div className="space-y-2.5">
+                  <div className="flex items-center gap-2.5 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
+                    <span><span className="font-bold text-foreground">{t('round1_f1')}</span> <span className="text-muted-foreground">{t('round1_f1b')}</span></span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
+                    <span className="text-muted-foreground">{t('round1_f2')}</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
+                    <span className="text-muted-foreground">{t('round1_f3')}</span>
+                  </div>
+                </div>
               </div>
-              <div className="w-px h-12 bg-white/10 hidden md:block" />
-              <div className="text-center md:text-left">
-                <div className="text-sm text-muted-foreground mb-1">Плюс ваш RevShare каждый месяц</div>
-                <div className="text-3xl font-black text-primary">+$500 / мес</div>
+
+              {/* Round 2 — UPCOMING */}
+              <div className="relative rounded-2xl border border-white/10 bg-white/3 backdrop-blur-sm p-6 md:p-8 overflow-hidden">
+                <div className="absolute top-4 right-4">
+                  <div className="px-3 py-1 rounded-full bg-white/10 border border-white/15 text-muted-foreground text-xs font-bold uppercase tracking-wider">
+                    {t('round2_badge')}
+                  </div>
+                </div>
+                <div className="text-xs font-black tracking-widest uppercase text-secondary mb-2">{t('round2_label')}</div>
+                <h3 className="text-2xl font-black mb-1">{t('round2_name')}</h3>
+                <div className="text-4xl font-black text-secondary mb-1">$1 500 000</div>
+                <p className="text-sm text-muted-foreground mb-5">{t('round2_desc')}</p>
+
+                {/* Progress bar for round 2 */}
+                <div className="mb-4">
+                  <div className="flex justify-between text-sm mb-2">
+                    <span className="font-bold text-muted-foreground">{t('round2_raised')}</span>
+                    <span className="text-muted-foreground">{t('round2_goal')}</span>
+                  </div>
+                  <div className="relative h-3 rounded-full bg-white/8 overflow-hidden">
+                    <div className="absolute inset-y-0 left-0 w-0 rounded-full" style={{ background: "linear-gradient(90deg, #7B5EFF, #00D4FF)" }} />
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-1.5">{t('round2_opens')}</div>
+                </div>
+
+                <div className="space-y-2.5">
+                  <div className="flex items-center gap-2.5 text-sm">
+                    <div className="w-4 h-4 rounded-full border border-white/20 shrink-0 flex items-center justify-center">
+                      <div className="w-1.5 h-1.5 rounded-full bg-white/30" />
+                    </div>
+                    <span><span className="font-bold text-foreground">{t('round2_f1')}</span> <span className="text-muted-foreground">{t('round2_f1b')}</span></span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-sm">
+                    <div className="w-4 h-4 rounded-full border border-white/20 shrink-0 flex items-center justify-center">
+                      <div className="w-1.5 h-1.5 rounded-full bg-white/30" />
+                    </div>
+                    <span className="text-muted-foreground">{t('round2_f2')}</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-sm">
+                    <div className="w-4 h-4 rounded-full border border-white/20 shrink-0 flex items-center justify-center">
+                      <div className="w-1.5 h-1.5 rounded-full bg-white/30" />
+                    </div>
+                    <span className="text-muted-foreground">{t('round2_f3')}</span>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <p className="text-xs text-muted-foreground text-center mt-4">
-              Реферальная ссылка доступна в личном кабинете. Выплаты в USDT в течение 48 часов.
-            </p>
-          </motion.div>
+            {/* Math summary */}
+            <div className="rounded-2xl border border-white/10 bg-white/3 backdrop-blur-sm p-6 md:p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center text-primary">
+                  <DollarSign className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-black">{t('spending_title')}</h3>
+                  <p className="text-sm text-muted-foreground">{t('spending_subtitle')}</p>
+                </div>
+              </div>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {[
+                  {
+                    icon: Code2,
+                    label: t('spending_dev'),
+                    amount: "$100 000",
+                    note: t('spending_dev_note'),
+                    color: "text-green-400",
+                    bg: "bg-green-500/10 border-green-500/20",
+                    iconBg: "bg-green-500/15 text-green-400",
+                    badge: t('badge_done'),
+                    badgeColor: "bg-green-500/20 text-green-400",
+                  },
+                  {
+                    icon: Server,
+                    label: t('spending_infra'),
+                    amount: "$200 000",
+                    note: t('spending_infra_note'),
+                    color: "text-secondary",
+                    bg: "bg-secondary/5 border-secondary/20",
+                    iconBg: "bg-secondary/15 text-secondary",
+                    badge: "Pre-Seed",
+                    badgeColor: "bg-secondary/20 text-secondary",
+                  },
+                  {
+                    icon: Megaphone,
+                    label: t('spending_marketing'),
+                    amount: "$1 500 000",
+                    note: t('spending_marketing_note'),
+                    color: "text-primary",
+                    bg: "bg-primary/5 border-primary/20",
+                    iconBg: "bg-primary/15 text-primary",
+                    badge: "Pre-Seed",
+                    badgeColor: "bg-primary/20 text-primary",
+                  },
+                  {
+                    icon: Users,
+                    label: t('spending_team'),
+                    amount: "$200 000",
+                    note: t('spending_team_note'),
+                    color: "text-yellow-400",
+                    bg: "bg-yellow-500/5 border-yellow-500/20",
+                    iconBg: "bg-yellow-500/15 text-yellow-400",
+                    badge: "Pre-Seed",
+                    badgeColor: "bg-yellow-500/20 text-yellow-400",
+                  },
+                ].map(({ icon: Icon, label, amount, note, color, bg, iconBg, badge, badgeColor }) => (
+                  <div key={label} className={`rounded-xl border p-5 ${bg}`}>
+                    <div className="flex items-start justify-between mb-3">
+                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${iconBg}`}>
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${badgeColor}`}>{badge}</span>
+                    </div>
+                    <div className={`text-xl font-black mb-0.5 ${color}`}>{amount}</div>
+                    <div className="text-sm font-semibold text-foreground mb-0.5">{label}</div>
+                    <div className="text-xs text-muted-foreground">{note}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
         </div>
       </section>
 
       {/* ROADMAP */}
-      <section id="roadmap" className="py-14 md:py-24 overflow-hidden">
+      <section id="roadmap" className="py-16 md:py-24 lg:py-32 [overflow-x:clip] scroll-mt-20 relative z-10">
         <div className="container mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">Roadmap</h2>
-            <p className="text-lg text-muted-foreground">Запуск в 2026 — путь к глобальному масштабу</p>
-          </motion.div>
+          <div className="section-header mb-16">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">{t('roadmap_title')}</h2>
+            <p className="text-lg text-muted-foreground">{t('roadmap_desc')}</p>
+          </div>
 
+          <div className="section-inner">
           {/* Horizontal timeline */}
           <div className="relative">
             {/* gradient progress line — centered on circles (circle height 2.75rem = 44px, so center = 22px = 1.375rem) */}
@@ -1093,14 +1699,13 @@ export default function Landing() {
 
             <div className="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-4 items-stretch">
               {[
-                { phase: "Июль 2026", title: "Public Launch", desc: "Публичный запуск MVP, онбординг первых 1,000 криэйторов, старт монетизации.", active: true },
-                { phase: "Q3 2026", title: "Growth Phase", desc: "Запуск рекламного кабинета, интеграция с TON, активация RevShare для инвесторов." },
-                { phase: "Q4 2026", title: "Scale", desc: "Агрессивный маркетинг, масштабирование аудитории, выход на международные рынки." },
-                { phase: "2027 — 10M", title: "Листинг $TRND", desc: "При 10M пользователей — листинг токена. Ранние инвесторы получают максимальную аллокацию.", highlight: true },
-                { phase: "2027+", title: "Global Expansion", desc: "Выход на мировые рынки, e-commerce, подготовка к Exit или Series A." },
+                { phase: t('rm1_phase'), title: t('rm1_title'), desc: t('rm1_desc'), active: true, label: t('rm1_label') },
+                { phase: t('rm2_phase'), title: t('rm2_title'), desc: t('rm2_desc') },
+                { phase: t('rm3_phase'), title: t('rm3_title'), desc: t('rm3_desc') },
+                { phase: t('rm4_phase'), title: t('rm4_title'), desc: t('rm4_desc'), highlight: true, label: t('rm4_label') },
+                { phase: t('rm5_phase'), title: t('rm5_title'), desc: t('rm5_desc') },
               ].map((step, i) => (
-                <motion.div key={i} initial="hidden" whileInView="visible" viewport={{ once: true }}
-                  variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: i * 0.1 } } }}
+                <div key={i}
                   className="flex flex-col items-center md:items-start text-center md:text-left">
 
                   {/* numbered circle */}
@@ -1130,89 +1735,38 @@ export default function Landing() {
                     {step.highlight && (
                       <div className="mt-3 flex items-center justify-center md:justify-start gap-1.5">
                         <Coins className="w-3.5 h-3.5 text-yellow-400 shrink-0" />
-                        <span className="text-yellow-400 text-xs font-semibold">Ключевой milestone</span>
+                        <span className="text-yellow-400 text-xs font-semibold">{step.label}</span>
                       </div>
                     )}
                     {step.active && (
                       <div className="mt-3 flex items-center justify-center md:justify-start gap-1.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse inline-block" />
-                        <span className="text-green-400 text-xs font-semibold">Текущий этап</span>
+                        <span className="text-green-400 text-xs font-semibold">{step.label}</span>
                       </div>
                     )}
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
+          </div>{/* end section-inner */}
         </div>
       </section>
 
-      {/* TEAM — 3 members */}
-      <section className="py-24">
-        <div className="container mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">Команда</h2>
-            <p className="text-lg text-muted-foreground">Опытные специалисты с глубокой экспертизой в Telegram, IT и продукте</p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {[
-              {
-                initials: "П", name: "Поляков Михаил", role: "Основатель / CEO",
-                roleColor: "text-primary",
-                desc: "10+ лет в IT, основатель студии разработки и бывший владелец сети Telegram-каналов. Глубоко понимает экосистему Telegram, механику органического роста и монетизацию контента.",
-                tags: ["10+ лет в IT", "Telegram-сети", "Mini Apps"],
-                avatarColor: "bg-primary/15 border-primary/40",
-                textColor: "text-primary"
-              },
-              {
-                initials: "Д", name: "Долгов Николай", role: "Co-Founder / PdM",
-                roleColor: "text-secondary",
-                desc: "Продуктовая стратегия и развитие. Отвечает за видение продукта, roadmap платформы и взаимодействие с инвесторами.",
-                tags: ["Product", "Strategy", "Investor Relations"],
-                avatarColor: "bg-secondary/15 border-secondary/40",
-                textColor: "text-secondary"
-              },
-              {
-                initials: "Ч", name: "Чаунный Владимир", role: "Backend Developer",
-                roleColor: "text-yellow-400",
-                desc: "Senior/FullStack-разработчик, 5+ лет в IT и банковском секторе. Отвечает за надёжность и масштабируемость инфраструктуры.",
-                tags: ["Backend", "Infrastructure", "5+ лет в IT"],
-                avatarColor: "bg-yellow-500/15 border-yellow-500/40",
-                textColor: "text-yellow-400"
-              },
-            ].map((member, i) => (
-              <motion.div key={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn}
-                className="glass-card p-7 rounded-3xl border border-white/10 hover:border-primary/25 transition-all">
-                <div className={`w-16 h-16 ${member.avatarColor} rounded-2xl border-2 flex items-center justify-center mb-5`}>
-                  <span className={`text-2xl font-black ${member.textColor}`}>{member.initials}</span>
-                </div>
-                <h3 className="text-xl font-bold mb-1">{member.name}</h3>
-                <p className={`${member.roleColor} font-semibold text-sm mb-4`}>{member.role}</p>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-5">{member.desc}</p>
-                <div className="flex flex-wrap gap-2">
-                  {member.tags.map(tag => (
-                    <span key={tag} className="px-2 py-1 rounded-lg bg-white/5 text-muted-foreground text-xs font-medium border border-white/10">{tag}</span>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* FAQ */}
-      <section id="faq" className="py-24">
-        <div className="container mx-auto px-4 max-w-3xl">
-          <h2 className="text-4xl font-black text-center mb-12">Вопросы и ответы</h2>
+      <section className="py-16 md:py-24 relative z-10">
+        <div className="container mx-auto px-4">
+          <div className="section-inner">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-center mb-12">{t('faq_title')}</h2>
           <Accordion type="single" collapsible className="w-full space-y-4">
             {[
-              { q: "Как инвестировать?", a: "Выберите подходящий пакет, подключите кошелёк TON или MetaMask в личном кабинете и подтвердите транзакцию. Средства автоматически зачислятся на ваш баланс." },
-              { q: "На что идут привлечённые средства?", a: "100% привлечённого капитала направляется на маркетинг и развитие инфраструктуры Trends: привлечение авторов и аудитории, performance-реклама, серверные мощности и масштабирование платформы." },
-              { q: "Когда начнутся выплаты RevShare?", a: "Выплаты RevShare начнутся в фазе Growth (Q3 2026) после полноценного запуска рекламного кабинета и достижения плановых показателей по DAU." },
-              { q: "Как работает партнёрская программа?", a: "Вы получаете процент от инвестиций привлечённых вами партнёров до 5 уровней в глубину: 10% с первой линии, 5% со второй, 3% с третьей, 1% с четвёртой и 1% с пятой." },
-              { q: "Что такое токены $TRND?", a: "Это utility и governance-токен экосистемы Trends. Инвесторы ранних стадий получают аллокацию токенов, которые будут листиться при достижении 10M аудитории. Встроенный vesting защищает цену от обвала." },
-              { q: "Как осуществляется вывод средств?", a: "Вывод средств доступен в любой момент из личного кабинета при достижении минимальной суммы в $100. Выплаты производятся в USDT на привязанный кошелёк." },
+              { q: t('faq1_q'), a: t('faq1_a') },
+              { q: t('faq2_q'), a: t('faq2_a') },
+              { q: t('faq3_q'), a: t('faq3_a') },
+              { q: t('faq4_q'), a: t('faq4_a') },
+              { q: t('faq5_q'), a: t('faq5_a') },
+              { q: t('faq6_q'), a: t('faq6_a') },
             ].map((faq, i) => (
               <AccordionItem key={i} value={`item-${i}`} className="glass-card border border-white/8 px-6 rounded-xl overflow-hidden">
                 <AccordionTrigger className="text-base font-medium hover:text-primary transition-colors py-4 text-left">{faq.q}</AccordionTrigger>
@@ -1220,70 +1774,47 @@ export default function Landing() {
               </AccordionItem>
             ))}
           </Accordion>
+          </div>{/* end section-inner */}
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-white/8 pt-20 pb-8 relative overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
-
-
+      <footer className="border-t border-white/8 py-10 relative overflow-hidden z-10">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[200px] bg-primary/4 blur-[100px] rounded-full pointer-events-none" />
         <div className="container mx-auto px-4 relative z-10">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
+          <div className="section-inner">
 
-            {/* Brand */}
-            <div className="space-y-5 lg:col-span-1">
-              <div className="flex items-center gap-3">
-                <img src={logoPath} alt="Logo" className="w-9 h-9 object-contain" />
-                <span style={{ fontFamily: "'Manrope', sans-serif", fontWeight: 800 }} className="text-xl text-white">Trends</span>
-              </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Первый Reels-фид внутри Telegram. Инвестируй в платформу для 1 миллиарда пользователей Telegram.
-              </p>
-              <div className="flex gap-3">
-                <motion.a whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}
-                  href="https://t.me/Trends_ibot" target="_blank" rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-xl glass-card border border-white/10 flex items-center justify-center text-primary hover:border-primary/40 transition-colors">
-                  <Send className="w-4 h-4" />
-                </motion.a>
-                <motion.a whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}
-                  href="https://t.me/Trends_ibot?startapp" target="_blank" rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-xl glass-card border border-white/10 flex items-center justify-center text-secondary hover:border-secondary/40 transition-colors">
-                  <MessageCircle className="w-4 h-4" />
-                </motion.a>
-                <motion.a whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}
-                  href="https://t.me/Trends_ibot" target="_blank" rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-xl glass-card border border-white/10 flex items-center justify-center text-muted-foreground hover:border-white/25 transition-colors">
-                  <Globe className="w-4 h-4" />
-                </motion.a>
-              </div>
-              {/* Key stats */}
-              <div className="grid grid-cols-2 gap-3 pt-2">
-                <div className="glass-card p-3 rounded-xl text-center">
-                  <div className="text-lg font-black text-primary">$75K</div>
-                  <div className="text-[10px] text-muted-foreground">Собрано</div>
-                </div>
-                <div className="glass-card p-3 rounded-xl text-center">
-                  <div className="text-lg font-black text-green-400">13</div>
-                  <div className="text-[10px] text-muted-foreground">Инвесторов</div>
-                </div>
-              </div>
+          {/* Brand row */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-8">
+            <div className="flex items-center gap-3">
+              <img src={logoPath} alt="Logo" className="w-8 h-8 object-contain" />
+              <span style={{ fontFamily: "'Manrope', sans-serif", fontWeight: 800 }} className="text-lg text-white">Trends</span>
+              <span className="hidden sm:block text-muted-foreground text-xs">·</span>
+              <span className="hidden sm:block text-xs text-muted-foreground">{lang === 'ru' ? 'Первый Reels-фид внутри Telegram' : 'First Reels feed inside Telegram'}</span>
             </div>
+            <div className="flex gap-2">
+              <motion.a whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}
+                href="https://t.me/Trends_ibot" target="_blank" rel="noopener noreferrer"
+                className="w-8 h-8 rounded-lg glass-card border border-white/10 flex items-center justify-center text-primary hover:border-primary/40 transition-colors">
+                <Send className="w-3.5 h-3.5" />
+              </motion.a>
+              <motion.a whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}
+                href="https://t.me/Trends_ibot?startapp" target="_blank" rel="noopener noreferrer"
+                className="w-8 h-8 rounded-lg glass-card border border-white/10 flex items-center justify-center text-secondary hover:border-secondary/40 transition-colors">
+                <MessageCircle className="w-3.5 h-3.5" />
+              </motion.a>
+            </div>
+          </div>
 
+          {/* Links row */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
             {/* Navigation */}
-            <div className="space-y-5">
-              <h4 className="font-bold text-foreground tracking-wide">Навигация</h4>
-              <ul className="space-y-3">
-                {[
-                  { href: "#problem", label: "О проекте" },
-                  { href: "#monetization", label: "Монетизация" },
-                  { href: "#investors", label: "Инвесторам" },
-                  { href: "#roadmap", label: "Roadmap" },
-                  { href: "#faq", label: "FAQ" },
-                ].map(link => (
+            <div>
+              <h4 className="text-xs font-bold text-foreground uppercase tracking-widest mb-3 opacity-60">{t('footer_nav')}</h4>
+              <ul className="space-y-2">
+                {NAV_LINKS.map(link => (
                   <li key={link.href}>
-                    <a href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
-                      <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all text-primary" />
+                    <a href={link.href} className="text-xs text-muted-foreground hover:text-primary transition-colors">
                       {link.label}
                     </a>
                   </li>
@@ -1291,70 +1822,78 @@ export default function Landing() {
               </ul>
             </div>
 
+            {/* Documents */}
+            <div>
+              <h4 className="text-xs font-bold text-foreground uppercase tracking-widest mb-3 opacity-60">{t('footer_docs')}</h4>
+              <ul className="space-y-2">
+                {DOCS.map(doc => (
+                  <li key={doc.id} className="flex items-center gap-2">
+                    <button
+                      onClick={() => setLegalDoc(doc.id)}
+                      className="text-xs text-muted-foreground hover:text-primary transition-colors text-left"
+                    >
+                      {lang === 'ru' ? doc.titleRu : doc.titleEn}
+                    </button>
+                    <a href={`/legal/${doc.id}`} target="_blank" rel="noopener noreferrer"
+                      title="Открыть в новой вкладке"
+                      className="text-white/20 hover:text-primary/60 transition-colors shrink-0">
+                      <ExternalLink className="w-2.5 h-2.5" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-            {/* Contacts & Legal */}
-            <div className="space-y-5 lg:col-start-4">
-              <h4 className="font-bold text-foreground tracking-wide">Контакты</h4>
-              <ul className="space-y-3">
+            {/* Contacts */}
+            <div>
+              <h4 className="text-xs font-bold text-foreground uppercase tracking-widest mb-3 opacity-60">{t('footer_contacts')}</h4>
+              <ul className="space-y-2">
                 <li>
                   <a href="https://t.me/Trends_ibot?startapp" target="_blank" rel="noopener noreferrer"
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">
-                    <ExternalLink className="w-3.5 h-3.5 text-primary" /> Открыть MVP
+                    className="text-xs text-muted-foreground hover:text-primary transition-colors flex items-center gap-1.5">
+                    <ExternalLink className="w-3 h-3 text-primary" /> {t('footer_open_mvp')}
                   </a>
                 </li>
                 <li>
-                  <Link href="/cabinet" className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">
-                    <Wallet className="w-3.5 h-3.5 text-primary" /> Личный кабинет
+                  <Link href="/cabinet" className="text-xs text-muted-foreground hover:text-primary transition-colors flex items-center gap-1.5">
+                    <Wallet className="w-3 h-3 text-primary" /> {t('footer_cabinet')}
                   </Link>
                 </li>
               </ul>
-
-              <div className="border-t border-white/8 pt-4 space-y-3">
-                <h5 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Раунд</h5>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-muted-foreground">Тип раунда</span>
-                    <span className="font-bold text-primary">Pre-Seed</span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-muted-foreground">Цель</span>
-                    <span className="font-bold text-foreground">$1 000 000</span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-muted-foreground">RevShare пул</span>
-                    <span className="font-bold text-green-400">20%</span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-muted-foreground">Exit потенциал</span>
-                    <span className="font-bold text-yellow-400">× 20 – × 30</span>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
+          </div>{/* end section-inner */}
         </div>
       </footer>
 
       {/* BOTTOM BAR */}
       <div className="border-t border-white/6" style={{ background: "rgba(4, 6, 14, 0.97)" }}>
-        <div className="container mx-auto px-4 py-5 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <img src={logoPath} alt="" className="w-5 h-5 object-contain opacity-60" />
-            <span>© {new Date().getFullYear()} Trends. Все права защищены.</span>
+        <div className="container mx-auto px-4 py-5">
+          <div className="section-inner flex flex-col gap-3 text-xs text-muted-foreground">
+          {/* Top row: copyright + doc links */}
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
+            <span>© {new Date().getFullYear()} Trends. {t('footer_copyright')}</span>
+            <div className="flex flex-wrap justify-center gap-4">
+              {DOCS.map(doc => (
+                <button
+                  key={doc.id}
+                  onClick={() => setLegalDoc(doc.id)}
+                  className="hover:text-primary transition-colors flex items-center gap-1"
+                >
+                  <doc.icon className="w-3 h-3" />
+                  {lang === 'ru' ? doc.titleRu : doc.titleEn}
+                </button>
+              ))}
+            </div>
           </div>
-          <div className="text-center opacity-60 max-w-md">Средства привлекаются на маркетинг и инфраструктуру платформы. Инвестирование сопряжено с рисками. Не является публичной офертой.</div>
-          <div className="flex gap-5">
-            <a href="#" className="hover:text-primary transition-colors flex items-center gap-1">
-              <FileText className="w-3 h-3" /> Terms
-            </a>
-            <a href="#" className="hover:text-primary transition-colors flex items-center gap-1">
-              <Lock className="w-3 h-3" /> Privacy
-            </a>
+          {/* Bottom row: disclaimer */}
+          <p className="text-center opacity-50 leading-relaxed">{t('footer_disclaimer')}</p>
           </div>
         </div>
       </div>
 
       <InvestmentModal isOpen={isInvestOpen} onClose={() => setIsInvestOpen(false)} defaultPackage={selectedPkg} />
+      <LegalModal docId={legalDoc} lang={lang} onClose={() => setLegalDoc(null)} />
     </div>
   );
 }

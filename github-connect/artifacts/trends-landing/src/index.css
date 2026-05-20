@@ -69,27 +69,27 @@
 }
 
 :root {
-  --background: 222 47% 5%;
+  --background: 220 40% 20%;
   --foreground: 210 40% 98%;
-  --card: 222 42% 8%;
+  --card: 220 35% 24%;
   --card-foreground: 210 40% 98%;
-  --card-border: 222 35% 12%;
-  --border: 222 35% 11%;
+  --card-border: 220 30% 20%;
+  --border: 220 30% 18%;
   --primary: 192 100% 50%;
   --primary-foreground: 220 50% 8%;
   --secondary: 257 100% 68%;
   --secondary-foreground: 210 40% 98%;
-  --muted: 222 45% 10%;
-  --muted-foreground: 215 20% 65%;
+  --muted: 220 40% 14%;
+  --muted-foreground: 215 20% 76%;
   --accent: 192 100% 50%;
   --accent-foreground: 220 50% 8%;
   --destructive: 0 80% 60%;
   --destructive-foreground: 210 40% 98%;
-  --input: 222 38% 12%;
+  --input: 220 30% 20%;
   --ring: 192 100% 50%;
-  --popover: 222 50% 5%;
+  --popover: 220 40% 10%;
   --popover-foreground: 210 40% 98%;
-  --popover-border: 222 35% 12%;
+  --popover-border: 220 30% 20%;
   
   --chart-1: 192 100% 50%;
   --chart-2: 257 100% 68%;
@@ -113,27 +113,27 @@
 }
 
 .dark {
-  --background: 222 47% 5%;
+  --background: 220 40% 20%;
   --foreground: 210 40% 98%;
-  --card: 222 42% 8%;
+  --card: 220 35% 24%;
   --card-foreground: 210 40% 98%;
-  --card-border: 222 35% 12%;
-  --border: 222 35% 11%;
+  --card-border: 220 30% 20%;
+  --border: 220 30% 18%;
   --primary: 192 100% 50%;
   --primary-foreground: 220 50% 8%;
   --secondary: 257 100% 68%;
   --secondary-foreground: 210 40% 98%;
-  --muted: 222 45% 10%;
-  --muted-foreground: 215 20% 65%;
+  --muted: 220 40% 14%;
+  --muted-foreground: 215 20% 76%;
   --accent: 192 100% 50%;
   --accent-foreground: 220 50% 8%;
   --destructive: 0 80% 60%;
   --destructive-foreground: 210 40% 98%;
-  --input: 222 38% 12%;
+  --input: 220 30% 20%;
   --ring: 192 100% 50%;
-  --popover: 222 50% 5%;
+  --popover: 220 40% 10%;
   --popover-foreground: 210 40% 98%;
-  --popover-border: 222 35% 12%;
+  --popover-border: 220 30% 20%;
   
   --chart-1: 192 100% 50%;
   --chart-2: 257 100% 68%;
@@ -157,21 +157,24 @@
   }
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    color: hsl(210, 40%, 98%);
+    background-color: hsl(220, 40%, 20%);
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading;
+    color: hsl(210, 40%, 98%);
   }
 }
 
 /* ── Liquid Glass base ─────────────────────────────────────────────── */
 .glass-card {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.045);
   backdrop-filter: blur(20px) saturate(160%);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.10);
   box-shadow:
-    0 2px 16px rgba(0,0,0,0.28),
-    inset 0 1px 0 rgba(255,255,255,0.07);
+    0 2px 12px rgba(0,0,0,0.10),
+    inset 0 1px 0 rgba(255,255,255,0.08);
   position: relative;
   isolation: isolate;
 }
@@ -262,6 +265,7 @@
   border: none !important;
   position: relative;
   overflow: hidden;
+  isolation: isolate;
 }
 
 .btn-grad::before {
@@ -271,6 +275,7 @@
   background: linear-gradient(135deg, #33ddff 0%, #9b7eff 100%);
   opacity: 0;
   transition: opacity 0.2s ease;
+  z-index: -1;
 }
 
 .btn-grad:hover::before {
@@ -356,21 +361,94 @@
   100% { transform: translateY(-900px) translateX(var(--sway, 0px)); opacity: 0; }
 }
 
-/* ── Hide scrollbar ─────────────────────────────────────────────────── */
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* ── Layout tokens ─────────────────────────────────────────────────── */
+:root {
+  --section-max: 72rem;   /* = max-w-6xl  */
+  --section-px:  1rem;
+  --section-py-sm: 4rem;  /* py-16  */
+  --section-py-md: 6rem;  /* py-24  */
+  --section-py-lg: 8rem;  /* py-32  */
 }
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
+@media (min-width: 640px)  { :root { --section-px: 1.5rem; } }
+
+/* Consistent inner content wrapper used by every section */
+.section-inner {
+  max-width: var(--section-max);
+  margin-inline: auto;
+  width: 100%;
 }
 
-/* ── Safe area for mobile sticky CTA ───────────────────────────────── */
-.safe-area-bottom {
-  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+/* Consistent section vertical rhythm */
+.section-py {
+  padding-top: var(--section-py-sm);
+  padding-bottom: var(--section-py-sm);
+}
+@media (min-width: 768px) {
+  .section-py { padding-top: var(--section-py-md); padding-bottom: var(--section-py-md); }
+}
+@media (min-width: 1024px) {
+  .section-py { padding-top: var(--section-py-lg); padding-bottom: var(--section-py-lg); }
 }
 
-/* ── Smooth section transitions ─────────────────────────────────────── */
-section {
-  scroll-margin-top: 5rem;
+/* Narrow wrapper for section headers / FAQ / etc. */
+.section-header {
+  max-width: 48rem;   /* max-w-3xl ≈ 48rem */
+  margin-inline: auto;
+  text-align: center;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #00D4FF;
+  border: 2px solid #fff;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.6);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #00D4FF;
+  border: 2px solid #fff;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.6);
+  border: none;
+}
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 999px;
+  outline: none;
+  cursor: pointer;
+}
+
+/* ── Legal document prose ─────────────────────────────────────── */
+.prose-legal h3 {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: white;
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+.prose-legal p {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+.prose-legal ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+  margin-bottom: 1rem;
+}
+.prose-legal ul li {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  line-height: 1.65;
+  margin-bottom: 0.25rem;
 }

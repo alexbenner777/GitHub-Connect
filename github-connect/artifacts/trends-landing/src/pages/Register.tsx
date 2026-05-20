@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
 import { Loader2, ArrowLeft } from "lucide-react";
-const logoPath = '/logo.png';
+import logoPath from "@assets/logo_trends_1777962710178.png";
 
 export default function Register() {
   const { register } = useAuth();

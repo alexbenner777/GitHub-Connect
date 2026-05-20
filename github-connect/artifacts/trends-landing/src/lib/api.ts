@@ -1,13 +1,23 @@
 const BASE = "/api";
+const TOKEN_KEY = "trends_jwt";
 
-function getToken(): string | null {
-  return localStorage.getItem("trends_token");
+export function getStoredToken(): string | null {
+  try { return localStorage.getItem(TOKEN_KEY); } catch { return null; }
+}
+
+function setStoredToken(token: string) {
+  try { localStorage.setItem(TOKEN_KEY, token); } catch { /* ignore */ }
+}
+
+export function clearStoredToken() {
+  try { localStorage.removeItem(TOKEN_KEY); } catch { /* ignore */ }
 }
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const token = getToken();
+  const token = getStoredToken();
   const res = await fetch(`${BASE}${path}`, {
     ...options,
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -21,10 +31,17 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 
 export const api = {
   register: (body: { email: string; password: string; name: string; telegramUsername?: string; referralCode?: string }) =>
-    request<{ token: string; user: AuthUser }>("/auth/register", { method: "POST", body: JSON.stringify(body) }),
+    request<{ token?: string; user: AuthUser }>("/auth/register", { method: "POST", body: JSON.stringify(body) })
+      .then(data => { if (data.token) setStoredToken(data.token); return data; }),
 
   login: (body: { email: string; password: string }) =>
-    request<{ token: string; user: AuthUser }>("/auth/login", { method: "POST", body: JSON.stringify(body) }),
+    request<{ token?: string; user: AuthUser }>("/auth/login", { method: "POST", body: JSON.stringify(body) })
+      .then(data => { if (data.token) setStoredToken(data.token); return data; }),
+
+  logout: () => {
+    clearStoredToken();
+    return request("/auth/logout", { method: "POST" });
+  },
 
   me: () => request<CabinetData>("/cabinet/me"),
 
@@ -40,6 +57,9 @@ export const api = {
 
   adminConfirm: (id: number, txHash?: string) =>
     request(`/admin/investments/${id}/confirm`, { method: "PATCH", body: JSON.stringify({ txHash }) }),
+
+  adminReject: (id: number) =>
+    request(`/admin/investments/${id}/reject`, { method: "PATCH", body: JSON.stringify({}) }),
 };
 
 export interface AuthUser {
@@ -82,6 +102,7 @@ export interface CabinetData {
     referralCode: string;
     walletAddress: string | null;
     walletNetwork: string | null;
+    isAdmin?: boolean;
     createdAt: string;
   };
   investments: Investment[];
@@ -89,6 +110,7 @@ export interface CabinetData {
   stats: {
     totalInvested: number;
     totalShares: number;
+    monthlyProfit: number;
     mlmTotalBonus: number;
     mlmReferralsCount: number;
   };
