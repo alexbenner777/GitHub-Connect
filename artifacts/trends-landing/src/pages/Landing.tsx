@@ -1302,26 +1302,73 @@ export default function Landing() {
                     ))}
                   </div>
 
-                  {/* Example calculation */}
+                  {/* Example calculation — visual cascade infographic */}
                   <div className="rounded-2xl bg-white/3 border border-white/8 p-5">
-                    <div className="text-xs font-black tracking-widest uppercase text-muted-foreground mb-4">{t('mlm_income_ex_title')}</div>
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-8 h-8 rounded-xl bg-secondary/20 border border-secondary/30 flex items-center justify-center shrink-0">
-                        <Users2 className="w-3.5 h-3.5 text-secondary" />
+                    <div className="text-xs font-black tracking-widest uppercase text-muted-foreground mb-5">{t('mlm_income_ex_title')}</div>
+                    {/* Tree */}
+                    <div className="flex flex-col items-center gap-0">
+
+                      {/* ROOT — ВЫ */}
+                      <div className="flex flex-col items-center">
+                        <div className="w-12 h-12 rounded-full bg-primary/20 border-2 border-primary/50 flex items-center justify-center text-sm font-black text-primary">ВЫ</div>
+                        <div className="text-[10px] text-muted-foreground mt-1">получаете %</div>
                       </div>
-                      <div className="flex-1 text-sm text-muted-foreground">{t('mlm_income_ex_desc')}</div>
-                      <div className="text-sm font-black text-secondary shrink-0">$1 000</div>
-                    </div>
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-8 h-8 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center shrink-0">
-                        <ArrowRight className="w-3.5 h-3.5 text-primary" />
+
+                      {/* connector root → L1 */}
+                      <div className="w-px h-5 bg-white/20" />
+
+                      {/* L1 row — 2 partners side by side */}
+                      <div className="flex justify-center">
+                        <div className="relative flex gap-16">
+                          <div className="absolute top-0 left-[20px] right-[20px] h-px bg-white/20" />
+                          {[
+                            { lbl: "А", rev: "$1 000", earn: "+$50", pct: "5%", bg: "bg-yellow-500/20 border-yellow-500/50 text-yellow-200", earn_c: "text-green-400" },
+                            { lbl: "Б", rev: "$800",   earn: "+$40", pct: "5%", bg: "bg-orange-500/20 border-orange-500/50 text-orange-200", earn_c: "text-green-400" },
+                          ].map((n, i) => (
+                            <div key={i} className="flex flex-col items-center">
+                              <div className="w-px h-5 bg-white/20" />
+                              <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center text-xs font-black ${n.bg}`}>{n.lbl}</div>
+                              <div className="text-[9px] text-muted-foreground mt-0.5">RevShare {n.rev}</div>
+                              <div className="text-[9px] font-black text-blue-300">L1 · {n.pct}</div>
+                              <div className={`text-[10px] font-black ${n.earn_c}`}>{n.earn}</div>
+                              {/* connector to L2 */}
+                              <div className="w-px h-4 bg-white/15 mt-1" />
+                              {/* L2 pair under each L1 */}
+                              <div className="relative flex gap-3">
+                                <div className="absolute top-0 left-[13px] right-[13px] h-px bg-white/12" />
+                                {[
+                                  { rev: "$400", earn: "+$12", bg: "bg-teal-500/15 border-teal-500/40 text-teal-200" },
+                                  { rev: "$300", earn: "+$9",  bg: "bg-cyan-500/10 border-cyan-500/25 text-cyan-300" },
+                                ].map((c, j) => (
+                                  <div key={j} className="flex flex-col items-center">
+                                    <div className="w-px h-4 bg-white/12" />
+                                    <div className={`w-7 h-7 rounded-full border flex items-center justify-center text-[8px] font-black ${c.bg}`}>{j + 1}</div>
+                                    <div className="text-[7px] text-muted-foreground mt-0.5 leading-tight">{c.rev}</div>
+                                    <div className="text-[7px] font-black text-teal-400 leading-tight">L2 · 3%</div>
+                                    <div className="text-[8px] font-black text-green-400">{c.earn}</div>
+                                    {/* L3 dots */}
+                                    <div className="w-px h-2 bg-white/10 mt-1" />
+                                    <div className="flex gap-0.5">
+                                      <div className="w-3 h-3 rounded-full bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-[6px] text-white/40">+</div>
+                                      <div className="w-3 h-3 rounded-full bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-[6px] text-white/40">+</div>
+                                    </div>
+                                    <div className="text-[6px] text-violet-400 mt-0.5">L3 · 2%</div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                      <div className="flex-1 text-sm text-muted-foreground">Ваш доход (L1 · 5%)</div>
-                      <div className="text-sm font-black text-green-400 shrink-0">+$50</div>
-                    </div>
-                    <div className="flex items-center gap-2 pt-3 border-t border-white/8">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-green-400 shrink-0" />
-                      <span className="text-xs text-muted-foreground">{t('mlm_income_ex_note')}</span>
+
+                      {/* Total */}
+                      <div className="mt-5 w-full rounded-xl bg-green-500/8 border border-green-500/20 px-4 py-3 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-green-400 shrink-0" />
+                          <span className="text-xs text-muted-foreground">{t('mlm_income_ex_note')}</span>
+                        </div>
+                        <div className="text-sm font-black text-green-400 shrink-0">+$111 / мес</div>
+                      </div>
                     </div>
                   </div>
 
