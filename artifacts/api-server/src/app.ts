@@ -25,7 +25,7 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, cb) => {
-      if (!origin || allowedOrigins.some((o) => origin.startsWith(o))) return cb(null, true);
+      if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
       cb(new Error(`CORS: origin not allowed — ${origin}`));
     },
     credentials: true,

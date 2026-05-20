@@ -10,8 +10,18 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Authentication
+  - name: cabinet
+    description: Investor personal cabinet
+  - name: investments
+    description: Investment packages
+  - name: admin
+    description: Admin operations
+  - name: stats
+    description: Public statistics
 paths:
-  /healthz:
+  /health:
     get:
       operationId: healthCheck
       tags: [health]
@@ -24,7 +34,294 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      summary: Register a new investor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+      responses:
+        "201":
+          description: Registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "409":
+          $ref: "#/components/responses/Conflict"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Log in
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /stats:
+    get:
+      operationId: getStats
+      tags: [stats]
+      summary: Public fundraising statistics
+      responses:
+        "200":
+          description: Stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsResponse"
+
+  /cabinet/me:
+    get:
+      operationId: getMe
+      tags: [cabinet]
+      summary: Get current investor profile and stats
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Cabinet data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CabinetResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /cabinet/referrals:
+    get:
+      operationId: getReferrals
+      tags: [cabinet]
+      summary: Get MLM referral breakdown by level
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Referral levels
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReferralsResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /cabinet/wallet:
+    patch:
+      operationId: updateWallet
+      tags: [cabinet]
+      summary: Set payout wallet address
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WalletUpdateRequest"
+      responses:
+        "200":
+          description: Saved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /investments:
+    post:
+      operationId: createInvestment
+      tags: [investments]
+      summary: Submit an investment application
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInvestmentRequest"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvestmentResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "409":
+          $ref: "#/components/responses/Conflict"
+    get:
+      operationId: getMyInvestments
+      tags: [investments]
+      summary: List current user's investments
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: List
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvestmentsListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /admin/investments:
+    get:
+      operationId: adminListInvestments
+      tags: [admin]
+      summary: List all investments (admin)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: All investments
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvestmentsListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /admin/investments/{id}/confirm:
+    patch:
+      operationId: adminConfirmInvestment
+      tags: [admin]
+      summary: Confirm a pending investment and trigger MLM bonuses
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                txHash:
+                  type: string
+      responses:
+        "200":
+          description: Confirmed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvestmentResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+
+  /admin/investments/{id}/reject:
+    patch:
+      operationId: adminRejectInvestment
+      tags: [admin]
+      summary: Reject a pending investment
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Rejected
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvestmentResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
   schemas:
     HealthStatus:
       type: object
@@ -33,4 +330,274 @@ components:
           type: string
       required:
         - status
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    RegisterRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 6
+        name:
+          type: string
+        telegramUsername:
+          type: string
+        referralCode:
+          type: string
+      required:
+        - email
+        - password
+        - name
+
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required:
+        - email
+        - password
+
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        user:
+          $ref: "#/components/schemas/UserProfile"
+      required:
+        - token
+        - user
+
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+        telegramUsername:
+          type: string
+          nullable: true
+        referralCode:
+          type: string
+        walletAddress:
+          type: string
+          nullable: true
+        walletNetwork:
+          type: string
+          nullable: true
+        isAdmin:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - email
+        - name
+        - referralCode
+        - isAdmin
+        - createdAt
+
+    StatsResponse:
+      type: object
+      properties:
+        raised:
+          type: number
+        investors:
+          type: integer
+      required:
+        - raised
+        - investors
+
+    Investment:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        packageId:
+          type: string
+        packageName:
+          type: string
+        amount:
+          type: string
+        shares:
+          type: string
+        status:
+          type: string
+          enum: [pending, confirmed, rejected]
+        walletFrom:
+          type: string
+          nullable: true
+        txHash:
+          type: string
+          nullable: true
+        confirmedAt:
+          type: string
+          format: date-time
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - userId
+        - packageId
+        - packageName
+        - amount
+        - shares
+        - status
+        - createdAt
+
+    InvestmentResponse:
+      type: object
+      properties:
+        investment:
+          $ref: "#/components/schemas/Investment"
+      required:
+        - investment
+
+    InvestmentsListResponse:
+      type: object
+      properties:
+        investments:
+          type: array
+          items:
+            $ref: "#/components/schemas/Investment"
+      required:
+        - investments
+
+    CreateInvestmentRequest:
+      type: object
+      properties:
+        packageId:
+          type: string
+          enum: [founder0, founder1, founder2, founder3, founder4, founder5]
+        walletFrom:
+          type: string
+        txHash:
+          type: string
+      required:
+        - packageId
+
+    WalletUpdateRequest:
+      type: object
+      properties:
+        walletAddress:
+          type: string
+          minLength: 10
+          maxLength: 100
+        walletNetwork:
+          type: string
+          enum: [TON, "USDT TRC-20", "USDT ERC-20", BTC, ETH]
+      required:
+        - walletAddress
+        - walletNetwork
+
+    CabinetResponse:
+      type: object
+      properties:
+        user:
+          $ref: "#/components/schemas/UserProfile"
+        investments:
+          type: array
+          items:
+            $ref: "#/components/schemas/Investment"
+        transactions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Transaction"
+        stats:
+          $ref: "#/components/schemas/CabinetStats"
+      required:
+        - user
+        - investments
+        - transactions
+        - stats
+
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        type:
+          type: string
+        amount:
+          type: string
+        description:
+          type: string
+          nullable: true
+        status:
+          type: string
+        referenceId:
+          type: integer
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - userId
+        - type
+        - amount
+        - status
+        - createdAt
+
+    CabinetStats:
+      type: object
+      properties:
+        totalInvested:
+          type: number
+        totalShares:
+          type: number
+        monthlyProfit:
+          type: number
+        mlmTotalBonus:
+          type: number
+        mlmReferralsCount:
+          type: integer
+      required:
+        - totalInvested
+        - totalShares
+        - monthlyProfit
+        - mlmTotalBonus
+        - mlmReferralsCount
+
+    ReferralsResponse:
+      type: object
+      properties:
+        levels:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              count:
+                type: integer
+              earned:
+                type: number
+            required:
+              - count
+              - earned
+      required:
+        - levels
 

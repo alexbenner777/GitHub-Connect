@@ -7,7 +7,7 @@ import { requireAuth } from "../middlewares/auth.js";
 
 const walletUpdateSchema = z.object({
   walletAddress: z.string().min(10, "Некорректный адрес кошелька").max(100),
-  walletNetwork: z.enum(["TON", "ETH", "BTC"]),
+  walletNetwork: z.enum(["TON", "USDT TRC-20", "USDT ERC-20", "BTC", "ETH"]),
 });
 
 const router = Router();

@@ -2,7 +2,7 @@ import { Router } from "express";
 import { z } from "zod";
 import { db, investmentsTable, transactionsTable, usersTable } from "@workspace/db";
 import { PACKAGES_MAP } from "@workspace/db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 import { requireAuth, requireAdmin } from "../middlewares/auth.js";
 import { processReferralBonuses } from "../lib/referral.js";
 import {
@@ -104,11 +104,14 @@ router.patch("/admin/investments/:id/confirm", requireAdmin, async (req, res, ne
       const [inv] = await tx.select().from(investmentsTable).where(eq(investmentsTable.id, id));
       if (!inv) { res.status(404).json({ error: "Инвестиция не найдена" }); return; }
       if (inv.status === "confirmed") { res.status(400).json({ error: "Уже подтверждена" }); return; }
+      if (inv.status === "rejected") { res.status(400).json({ error: "Нельзя подтвердить отклонённую инвестицию" }); return; }
 
       const [updated] = await tx.update(investmentsTable)
         .set({ status: "confirmed", txHash: txHash ?? inv.txHash, confirmedAt: new Date() })
-        .where(eq(investmentsTable.id, id))
+        .where(and(eq(investmentsTable.id, id), eq(investmentsTable.status, "pending")))
         .returning();
+
+      if (!updated) { res.status(409).json({ error: "Инвестиция уже была обработана" }); return; }
 
       await tx.insert(transactionsTable).values({
         userId: inv.userId,
