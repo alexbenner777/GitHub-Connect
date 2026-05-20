@@ -1156,11 +1156,11 @@ export default function Landing() {
                           const l1 = [
                             { label: "А", amount: "$25K", income: "+$2 500", incomeColor: "text-yellow-400", color: "bg-yellow-500/20 border-yellow-500/50 text-yellow-200" },
                             { label: "Б", amount: "$100K", income: "+$10 000", incomeColor: "text-orange-400", color: "bg-orange-500/20 border-orange-500/50 text-orange-200" },
-                            { label: "В", amount: "$5K", income: "+$500", incomeColor: "text-secondary", color: "bg-secondary/20 border-secondary/50 text-secondary" },
+                            { label: "В", amount: "$5K", income: "+$500", incomeColor: "text-violet-400", color: "bg-violet-500/20 border-violet-500/50 text-violet-200" },
                           ];
                           const l2Pair = [
-                            { n: "1", a: "$25K", i: "+$1 250", color: "bg-secondary/15 border-secondary/40 text-secondary", iColor: "text-secondary" },
-                            { n: "2", a: "$5K",  i: "+$250",   color: "bg-blue-500/10 border-blue-500/25 text-blue-400",  iColor: "text-blue-300" },
+                            { n: "1", a: "$25K", i: "+$1 250", color: "bg-teal-500/15 border-teal-500/40 text-teal-200", iColor: "text-teal-400" },
+                            { n: "2", a: "$5K",  i: "+$250",   color: "bg-cyan-500/10 border-cyan-500/25 text-cyan-300",  iColor: "text-cyan-300" },
                           ];
                           return (
                             <div className="flex justify-center">
@@ -1212,7 +1212,7 @@ export default function Landing() {
                       {[
                         { icon: <Users2 className="w-3.5 h-3.5" />, iconCls: "bg-yellow-500/15 border-yellow-500/25 text-yellow-400", badge: "L1 · 10%", badgeCls: "bg-yellow-500/15 text-yellow-400 border-yellow-500/25", desc: "1 × $25K", val: "+$2 500", valCls: "text-yellow-400" },
                         { icon: <Users2 className="w-3.5 h-3.5" />, iconCls: "bg-orange-500/15 border-orange-500/25 text-orange-400", badge: "L1 · 10%", badgeCls: "bg-orange-500/15 text-orange-400 border-orange-500/25", desc: "1 × $100K", val: "+$10 000", valCls: "text-orange-400" },
-                        { icon: <Users2 className="w-3.5 h-3.5" />, iconCls: "bg-yellow-500/15 border-yellow-500/25 text-yellow-400", badge: "L1 · 10%", badgeCls: "bg-yellow-500/15 text-yellow-400 border-yellow-500/25", desc: "1 × $5K", val: "+$500", valCls: "text-yellow-400" },
+                        { icon: <Users2 className="w-3.5 h-3.5" />, iconCls: "bg-violet-500/15 border-violet-500/25 text-violet-400", badge: "L1 · 10%", badgeCls: "bg-violet-500/15 text-violet-400 border-violet-500/25", desc: "1 × $5K", val: "+$500", valCls: "text-violet-400" },
                         { icon: <Network className="w-3.5 h-3.5" />, iconCls: "bg-secondary/15 border-secondary/25 text-secondary", badge: "L2 · 5%", badgeCls: "bg-secondary/15 text-secondary border-secondary/25", desc: "$90K сети (6 партнёров)", val: "+$4 500", valCls: "text-secondary" },
                         { icon: <Network className="w-3.5 h-3.5" />, iconCls: "bg-blue-500/15 border-blue-500/25 text-blue-400", badge: "L3–5", badgeCls: "bg-blue-500/15 text-blue-400 border-blue-500/25", desc: t('mlm_deeper'), val: "+$16 200", valCls: "text-blue-400" },
                       ].map((row, i) => (
