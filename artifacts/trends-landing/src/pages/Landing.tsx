@@ -1446,9 +1446,8 @@ export default function Landing() {
                     <div className="relative h-1.5 bg-white/5 rounded-full overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
-                        whileInView={{ width: `${row.barW}%` }}
-                        viewport={{ once: true, amount: 0.5 }}
-                        transition={{ duration: 0.6, delay: i * 0.07 }}
+                        animate={{ width: `${row.barW}%` }}
+                        transition={{ duration: 0.6, delay: 0.3 + i * 0.08 }}
                         className={`absolute left-0 top-0 h-full rounded-full ${row.color.replace('text-', 'bg-')}`}
                       />
                     </div>
