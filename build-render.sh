@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
 
-export PNPM_HOME="$HOME/.pnpm"
-mkdir -p "$PNPM_HOME"
-curl -fsSL https://get.pnpm.io/install.sh | env PNPM_HOME="$PNPM_HOME" sh -
-export PATH="$PNPM_HOME:$PATH"
+export PNPM_PREFIX="$HOME/.local"
+mkdir -p "$PNPM_PREFIX"
+npm install --global pnpm@10 --prefix "$PNPM_PREFIX" --silent
+export PATH="$PNPM_PREFIX/bin:$PATH"
 
 pnpm install --no-frozen-lockfile
 pnpm --filter @workspace/trends-landing run build:railway
