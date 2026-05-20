@@ -1306,7 +1306,7 @@ export default function Landing() {
                   <div className="rounded-2xl bg-white/3 border border-white/8 p-5">
                     <div className="text-xs font-black tracking-widest uppercase text-muted-foreground mb-5">{t('mlm_income_ex_title')}</div>
                     {/* Tree */}
-                    <div className="flex flex-col items-center gap-0">
+                    <div className="flex flex-col items-center gap-0 w-full">
 
                       {/* ROOT — ВЫ */}
                       <div className="flex flex-col items-center">
@@ -1317,9 +1317,9 @@ export default function Landing() {
                       {/* connector root → L1 */}
                       <div className="w-px h-5 bg-white/20" />
 
-                      {/* L1 row — 2 partners side by side */}
-                      <div className="flex justify-center">
-                        <div className="relative flex gap-16">
+                      {/* L1 row — 3 partners side by side */}
+                      <div className="flex justify-center w-full">
+                        <div className="relative flex gap-24">
                           <div className="absolute top-0 left-[20px] right-[20px] h-px bg-white/20" />
                           {[
                             { lbl: "А", rev: "$3 130",  earn: "+$157", pct: "5%", bg: "bg-yellow-500/20 border-yellow-500/50 text-yellow-200", earn_c: "text-green-400" },
