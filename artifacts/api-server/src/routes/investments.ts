@@ -119,7 +119,7 @@ router.patch("/admin/investments/:id/confirm", requireAdmin, async (req, res, ne
         referenceId: inv.id,
       });
 
-      await processReferralBonuses(inv.id, inv.userId, parseFloat(inv.amount));
+      await processReferralBonuses(inv.id, inv.userId, parseFloat(inv.amount), tx);
 
       const [user] = await db.select({
         name: usersTable.name,

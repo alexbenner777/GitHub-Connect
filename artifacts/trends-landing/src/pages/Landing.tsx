@@ -25,7 +25,8 @@ import screen2Path from '@assets/скрин_2_1777969066507.webp';
 import screen3Path from '@assets/скрин_3_1777969064666.webp';
 import screenAppPath from '@assets/111_1778425377815.png';
 import iphonePath from '@assets/iphone_фронт_1778532530856.png';
-import videoPath from '@assets/trends_demo_video.mov';
+import videoMp4Path from '@assets/trends_demo_video.mp4';
+import videoMovPath from '@assets/trends_demo_video.mov';
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -848,8 +849,8 @@ export default function Landing() {
                     autoPlay muted loop playsInline
                     className="w-full h-full object-cover"
                   >
-                    <source src={videoPath} type="video/mp4" />
-                    <source src={videoPath} type="video/quicktime" />
+                    <source src={videoMp4Path} type="video/mp4" />
+                    <source src={videoMovPath} type="video/quicktime" />
                   </video>
                 </div>
                 {/* iPhone frame on top */}

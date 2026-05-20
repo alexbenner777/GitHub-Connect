@@ -1,8 +1,14 @@
 import { Router } from "express";
+import { z } from "zod";
 import { db, usersTable, investmentsTable, transactionsTable, referralBonusesTable } from "@workspace/db";
 import { PACKAGES_MAP } from "@workspace/db";
 import { eq, desc, sum, count } from "drizzle-orm";
 import { requireAuth } from "../middlewares/auth.js";
+
+const walletUpdateSchema = z.object({
+  walletAddress: z.string().min(10, "Некорректный адрес кошелька").max(100),
+  walletNetwork: z.enum(["TON", "ETH", "BTC"]),
+});
 
 const router = Router();
 
@@ -87,11 +93,12 @@ router.get("/cabinet/referrals", requireAuth, async (req, res, next) => {
 router.patch("/cabinet/wallet", requireAuth, async (req, res, next) => {
   try {
     const userId = req.user!.userId;
-    const { walletAddress, walletNetwork } = req.body;
-    if (!walletAddress || !walletNetwork) {
-      res.status(400).json({ error: "walletAddress и walletNetwork обязательны" });
+    const parsed = walletUpdateSchema.safeParse(req.body);
+    if (!parsed.success) {
+      res.status(400).json({ error: parsed.error.errors[0]?.message ?? "Неверные данные" });
       return;
     }
+    const { walletAddress, walletNetwork } = parsed.data;
     await db.update(usersTable)
       .set({ walletAddress, walletNetwork })
       .where(eq(usersTable.id, userId));
