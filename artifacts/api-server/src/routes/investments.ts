@@ -12,7 +12,7 @@ import {
 } from "../lib/telegram.js";
 
 const createInvestmentSchema = z.object({
-  packageId: z.enum(["founder1", "founder2", "founder3", "founder4", "founder5"]),
+  packageId: z.enum(["founder0", "founder1", "founder2", "founder3", "founder4", "founder5"]),
   walletFrom: z.string().optional(),
   txHash: z.string().optional(),
 });

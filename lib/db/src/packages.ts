@@ -6,6 +6,7 @@ export interface PackageDef {
 }
 
 export const PACKAGES_CATALOG: PackageDef[] = [
+  { id: "founder0", name: "TEST $1",      price: 1,      shares: 0.01  },
   { id: "founder1", name: "Starter",      price: 250,    shares: 0.63  },
   { id: "founder2", name: "Partner",      price: 1000,   shares: 2.5   },
   { id: "founder3", name: "Insider",      price: 5000,   shares: 12.5  },

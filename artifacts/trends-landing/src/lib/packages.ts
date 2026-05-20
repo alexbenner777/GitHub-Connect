@@ -27,6 +27,26 @@ export type InvestPackage = {
 
 export const PACKAGES: InvestPackage[] = [
 
+  // ─── ТЕСТ $1 ─────────────────────────────────────────
+  {
+    id: "founder0",
+    name: "TEST $1",
+    tagline: "Тестовый пакет для проверки уведомлений",
+    price: 1,
+    shares: 0.01,
+    dau50m: 0,
+    exit: "—",
+    badge: "TEST",
+    monetizationSources: 0,
+    categories: [
+      {
+        id: "info",
+        title: "Информация",
+        items: ["🧪 Тестовый пакет — только для проверки системы уведомлений"],
+      },
+    ],
+  },
+
   // ─── СТАРТ $250 ─────────────────────────────────────
   {
     id: "founder1",
@@ -289,6 +309,7 @@ export const PACKAGE_UI: Record<string, {
   glow: string;
   iconName: "Star" | "Shield" | "Crown" | "TrendingUp" | "Zap";
 }> = {
+  founder0: { color: "text-gray-400",    border: "border-gray-400/30",     glow: "",                                              iconName: "Star"       },
   founder1: { color: "text-secondary",   border: "border-secondary/30",    glow: "",                                              iconName: "Star"       },
   founder2: { color: "text-primary",     border: "border-primary/40",      glow: "shadow-[0_0_40px_rgba(0,212,255,0.18)]",        iconName: "Shield"     },
   founder3: { color: "text-yellow-400",  border: "border-yellow-400/30",   glow: "shadow-[0_0_30px_rgba(250,204,21,0.12)]",       iconName: "Crown"      },
