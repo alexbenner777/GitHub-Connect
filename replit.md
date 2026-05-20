@@ -4,7 +4,7 @@ Investment landing page for the Trends Telegram Mini App (Reels inside Telegram)
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/trends-landing run dev` — run the landing page (port 22520)
+- `pnpm --filter @workspace/trends-landing run dev` — run the landing page (port 5000)
 - `pnpm --filter @workspace/api-server run dev` — run the API server (port 8080)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run typecheck:libs` — build lib/db declarations (run before api-server typecheck)
@@ -40,7 +40,7 @@ Investment landing page for the Trends Telegram Mini App (Reels inside Telegram)
 - Frontend-only landing with no required backend for the core investment CTA flow
 - Images imported via `@assets` alias → resolves to `attached_assets/` folder
 - Colors: primary cyan `#00D4FF`, secondary purple `#7B5EFF` (defined in `index.css`)
-- Railway CI/CD: every git push to `main` triggers an automatic rebuild on Railway prod
+- Render CI/CD: every git push to `main` triggers an automatic rebuild on Render
 
 ## Product
 
@@ -50,15 +50,17 @@ Investment landing page for Trends — the first Reels platform inside Telegram.
 
 - Edit only `artifacts/trends-landing/src/` and `attached_assets/`
 - Do not touch `.replit-artifact/artifact.toml`
-- After each change, push to GitHub main → Railway auto-deploys
+- After each change, push to GitHub main → Render auto-deploys
 - Colors: primary cyan #00D4FF, secondary purple #7B5EFF
 
 ## Gotchas
 
 - Images must be imported via `@assets` alias (resolves to `attached_assets/`)
 - GitHub remote: `https://github.com/darcynj757-svg/trends-landing.git`
-- Railway prod: `https://trends-landing-production.up.railway.app`
-- Git push must be done after every file change for Railway to pick it up
+- Render prod: see Render dashboard for the live URL
+- Git push must be done after every file change for Render to pick it up
+- Production build uses `vite.config.prod.ts` (no PORT/BASE_PATH env vars required)
+- Render build script: `build-render.sh` → calls `build:prod` then API server build
 
 ## Pointers
 

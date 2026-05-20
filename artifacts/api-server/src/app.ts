@@ -17,7 +17,6 @@ app.set("trust proxy", 1);
 const allowedOrigins = [
   "https://trendspartner.space",
   "https://www.trendspartner.space",
-  "https://trends-landing-production.up.railway.app",
   ...(process.env.REPLIT_DEV_DOMAIN ? [`https://${process.env.REPLIT_DEV_DOMAIN}`] : []),
   ...(process.env.RENDER_EXTERNAL_URL ? [process.env.RENDER_EXTERNAL_URL] : []),
   ...(process.env.NODE_ENV === "development" ? ["http://localhost:5000", "http://localhost:22520"] : []),

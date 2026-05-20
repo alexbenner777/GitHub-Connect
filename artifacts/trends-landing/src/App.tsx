@@ -17,7 +17,7 @@ const queryClient = new QueryClient();
 const MANIFEST_URL =
   typeof window !== "undefined"
     ? `${window.location.origin}/tonconnect-manifest.json`
-    : "https://trends-landing-production.up.railway.app/tonconnect-manifest.json";
+    : "https://trendspartner.space/tonconnect-manifest.json";
 
 function Router() {
   return (
