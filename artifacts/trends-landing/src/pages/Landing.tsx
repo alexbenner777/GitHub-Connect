@@ -1320,13 +1320,13 @@ export default function Landing() {
                       {/* L1 row — 3 partners side by side */}
                       <div className="flex justify-center w-full">
                         <div className="relative flex gap-24">
-                          <div className="absolute top-0 left-[20px] right-[20px] h-px bg-white/20" />
+                          <div className="absolute top-0 left-[48px] right-[48px] h-px bg-white/20" />
                           {[
                             { lbl: "А", rev: "$3 130",  earn: "+$157", pct: "5%", bg: "bg-yellow-500/20 border-yellow-500/50 text-yellow-200", earn_c: "text-green-400" },
                             { lbl: "Б", rev: "$12 527", earn: "+$626", pct: "5%", bg: "bg-orange-500/20 border-orange-500/50 text-orange-200", earn_c: "text-green-400" },
                             { lbl: "В", rev: "$626",    earn: "+$31",  pct: "5%", bg: "bg-violet-500/20 border-violet-500/50 text-violet-200", earn_c: "text-green-400" },
                           ].map((n, i) => (
-                            <div key={i} className="flex flex-col items-center">
+                            <div key={i} className="flex flex-col items-center w-24">
                               <div className="w-px h-5 bg-white/20" />
                               <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center text-xs font-black ${n.bg}`}>{n.lbl}</div>
                               <div className="text-[9px] text-muted-foreground mt-0.5">RevShare {n.rev}</div>
