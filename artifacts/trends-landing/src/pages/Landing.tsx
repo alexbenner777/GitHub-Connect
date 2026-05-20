@@ -1163,9 +1163,9 @@ export default function Landing() {
                             { n: "2", a: "$5K",  i: "+$250",   color: "bg-blue-500/10 border-blue-500/25 text-blue-400",  iColor: "text-blue-300" },
                           ];
                           return (
-                            <div className="relative flex justify-between px-[2%]">
+                            <div className="relative flex justify-center gap-14">
                               {/* Horizontal L1 bar */}
-                              <div className="absolute top-0 left-[2%] right-[2%] h-px bg-white/25" />
+                              <div className="absolute top-0 left-[5%] right-[5%] h-px bg-white/25" />
                               {l1.map((n, i) => (
                                 <div key={i} className="flex flex-col items-center">
                                   {/* stem from L1 bar */}
@@ -1186,9 +1186,12 @@ export default function Landing() {
                                         <div className={`w-7 h-7 rounded-full border flex items-center justify-center text-[9px] font-black ${c.color}`}>{c.n}</div>
                                         <div className="text-[8px] text-muted-foreground mt-0.5 leading-tight">{c.a}</div>
                                         <div className={`text-[8px] font-black leading-tight ${c.iColor}`}>{c.i}</div>
-                                        {/* L3 schematic dot */}
+                                        {/* L3 schematic dots — 2 per L2 node */}
                                         <div className="w-px h-2 bg-white/10 mt-1" />
-                                        <div className="w-4 h-4 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-[8px] text-white/40">+</div>
+                                        <div className="flex gap-1">
+                                          <div className="w-3.5 h-3.5 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-[7px] text-white/40">+</div>
+                                          <div className="w-3.5 h-3.5 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-[7px] text-white/40">+</div>
+                                        </div>
                                       </div>
                                     ))}
                                   </div>
