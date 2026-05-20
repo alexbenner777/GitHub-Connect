@@ -1163,40 +1163,42 @@ export default function Landing() {
                             { n: "2", a: "$5K",  i: "+$250",   color: "bg-blue-500/10 border-blue-500/25 text-blue-400",  iColor: "text-blue-300" },
                           ];
                           return (
-                            <div className="relative flex justify-center gap-14">
-                              {/* Horizontal L1 bar */}
-                              <div className="absolute top-0 left-[5%] right-[5%] h-px bg-white/25" />
-                              {l1.map((n, i) => (
-                                <div key={i} className="flex flex-col items-center">
-                                  {/* stem from L1 bar */}
-                                  <div className="w-px h-4 bg-white/25" />
-                                  {/* L1 circle */}
-                                  <div className={`w-9 h-9 rounded-full border-2 flex items-center justify-center text-xs font-black ${n.color}`}>{n.label}</div>
-                                  <div className="text-[9px] text-muted-foreground mt-0.5">{n.amount}</div>
-                                  <div className={`text-[9px] font-black ${n.incomeColor}`}>{n.income}</div>
-                                  {/* stem to L2 */}
-                                  <div className="w-px h-3 bg-white/15 mt-1" />
-                                  {/* L2 pair */}
-                                  <div className="relative flex gap-2">
-                                    {/* horizontal connector between L2 children */}
-                                    <div className="absolute top-0 left-[25%] right-[25%] h-px bg-white/15" />
-                                    {l2Pair.map((c, j) => (
-                                      <div key={j} className="flex flex-col items-center">
-                                        <div className="w-px h-3 bg-white/15" />
-                                        <div className={`w-7 h-7 rounded-full border flex items-center justify-center text-[9px] font-black ${c.color}`}>{c.n}</div>
-                                        <div className="text-[8px] text-muted-foreground mt-0.5 leading-tight">{c.a}</div>
-                                        <div className={`text-[8px] font-black leading-tight ${c.iColor}`}>{c.i}</div>
-                                        {/* L3 schematic dots — 2 per L2 node */}
-                                        <div className="w-px h-2 bg-white/10 mt-1" />
-                                        <div className="flex gap-1">
-                                          <div className="w-3.5 h-3.5 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-[7px] text-white/40">+</div>
-                                          <div className="w-3.5 h-3.5 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-[7px] text-white/40">+</div>
+                            <div className="flex justify-center">
+                              {/* Inner tight wrapper — bar spans exactly node centers */}
+                              <div className="relative flex gap-14">
+                                <div className="absolute top-0 left-[18px] right-[18px] h-px bg-white/25" />
+                                {l1.map((n, i) => (
+                                  <div key={i} className="flex flex-col items-center">
+                                    {/* stem from L1 bar */}
+                                    <div className="w-px h-4 bg-white/25" />
+                                    {/* L1 circle */}
+                                    <div className={`w-9 h-9 rounded-full border-2 flex items-center justify-center text-xs font-black ${n.color}`}>{n.label}</div>
+                                    <div className="text-[9px] text-muted-foreground mt-0.5">{n.amount}</div>
+                                    <div className={`text-[9px] font-black ${n.incomeColor}`}>{n.income}</div>
+                                    {/* stem to L2 */}
+                                    <div className="w-px h-3 bg-white/15 mt-1" />
+                                    {/* L2 pair */}
+                                    <div className="relative flex gap-2">
+                                      {/* horizontal connector between L2 children */}
+                                      <div className="absolute top-0 left-[25%] right-[25%] h-px bg-white/15" />
+                                      {l2Pair.map((c, j) => (
+                                        <div key={j} className="flex flex-col items-center">
+                                          <div className="w-px h-3 bg-white/15" />
+                                          <div className={`w-7 h-7 rounded-full border flex items-center justify-center text-[9px] font-black ${c.color}`}>{c.n}</div>
+                                          <div className="text-[8px] text-muted-foreground mt-0.5 leading-tight">{c.a}</div>
+                                          <div className={`text-[8px] font-black leading-tight ${c.iColor}`}>{c.i}</div>
+                                          {/* L3 schematic dots — 2 per L2 node */}
+                                          <div className="w-px h-2 bg-white/10 mt-1" />
+                                          <div className="flex gap-1">
+                                            <div className="w-3.5 h-3.5 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-[7px] text-white/40">+</div>
+                                            <div className="w-3.5 h-3.5 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-[7px] text-white/40">+</div>
+                                          </div>
                                         </div>
-                                      </div>
-                                    ))}
+                                      ))}
+                                    </div>
                                   </div>
-                                </div>
-                              ))}
+                                ))}
+                              </div>
                             </div>
                           );
                         })()}
