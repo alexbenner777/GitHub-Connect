@@ -1140,10 +1140,10 @@ export default function Landing() {
 
                     {/* Network tree */}
                     <div className="p-4 border-b border-white/8 overflow-x-auto">
-                      <div className="min-w-[500px] select-none">
+                      <div className="min-w-[620px] select-none">
 
                         {/* ROOT */}
-                        <div className="flex justify-center mb-0">
+                        <div className="flex justify-center">
                           <div className="flex flex-col items-center">
                             <div className="w-11 h-11 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center text-xs font-black text-primary">{t('mlm_you')}</div>
                             <div className="text-[10px] text-primary font-bold mt-1">$5 000</div>
@@ -1151,7 +1151,7 @@ export default function Landing() {
                           </div>
                         </div>
 
-                        {/* L1 — 4 nodes with horizontal bar + vertical drops */}
+                        {/* L1 + L2 + L3 full tree */}
                         {(() => {
                           const l1 = [
                             { label: "А", amount: "$25K", income: "+$2 500", incomeColor: "text-yellow-400", color: "bg-yellow-500/20 border-yellow-500/50 text-yellow-200" },
@@ -1159,49 +1159,45 @@ export default function Landing() {
                             { label: "В", amount: "$100K", income: "+$10 000", incomeColor: "text-orange-400", color: "bg-orange-500/20 border-orange-500/50 text-orange-200" },
                             { label: "Г", amount: "$5K", income: "+$500", incomeColor: "text-secondary", color: "bg-secondary/20 border-secondary/50 text-secondary" },
                           ];
+                          const l2Pair = [
+                            { n: "1", a: "$25K", i: "+$1 250", color: "bg-secondary/15 border-secondary/40 text-secondary", iColor: "text-secondary" },
+                            { n: "2", a: "$5K",  i: "+$250",   color: "bg-blue-500/10 border-blue-500/25 text-blue-400",  iColor: "text-blue-300" },
+                          ];
                           return (
-                            <div className="relative flex justify-between px-[5%] mb-1">
-                              {/* Horizontal bar at top */}
-                              <div className="absolute top-0 left-[5%] right-[5%] h-px bg-white/25" />
+                            <div className="relative flex justify-between px-[2%]">
+                              {/* Horizontal L1 bar */}
+                              <div className="absolute top-0 left-[2%] right-[2%] h-px bg-white/25" />
                               {l1.map((n, i) => (
                                 <div key={i} className="flex flex-col items-center">
-                                  {/* vertical stem from bar */}
+                                  {/* stem from L1 bar */}
                                   <div className="w-px h-4 bg-white/25" />
+                                  {/* L1 circle */}
                                   <div className={`w-9 h-9 rounded-full border-2 flex items-center justify-center text-xs font-black ${n.color}`}>{n.label}</div>
                                   <div className="text-[9px] text-muted-foreground mt-0.5">{n.amount}</div>
                                   <div className={`text-[9px] font-black ${n.incomeColor}`}>{n.income}</div>
+                                  {/* stem to L2 */}
                                   <div className="w-px h-3 bg-white/15 mt-1" />
+                                  {/* L2 pair */}
+                                  <div className="relative flex gap-2">
+                                    {/* horizontal connector between L2 children */}
+                                    <div className="absolute top-0 left-[25%] right-[25%] h-px bg-white/15" />
+                                    {l2Pair.map((c, j) => (
+                                      <div key={j} className="flex flex-col items-center">
+                                        <div className="w-px h-3 bg-white/15" />
+                                        <div className={`w-7 h-7 rounded-full border flex items-center justify-center text-[9px] font-black ${c.color}`}>{c.n}</div>
+                                        <div className="text-[8px] text-muted-foreground mt-0.5 leading-tight">{c.a}</div>
+                                        <div className={`text-[8px] font-black leading-tight ${c.iColor}`}>{c.i}</div>
+                                        {/* L3 schematic dot */}
+                                        <div className="w-px h-2 bg-white/10 mt-1" />
+                                        <div className="w-4 h-4 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-[8px] text-white/40">+</div>
+                                      </div>
+                                    ))}
+                                  </div>
                                 </div>
                               ))}
                             </div>
                           );
                         })()}
-
-                        {/* L2 — 2 representative nodes (each L1 invited $25K + $5K) */}
-                        <div className="flex justify-center gap-16 mb-1">
-                          {[
-                            { n: "1", a: "$25K", i: "+$1 250", color: "bg-secondary/15 border-secondary/40 text-secondary", iColor: "text-secondary" },
-                            { n: "2", a: "$5K",  i: "+$250",   color: "bg-blue-500/10 border-blue-500/25 text-blue-400",  iColor: "text-blue-300" },
-                          ].map((n, i) => (
-                            <div key={i} className="flex flex-col items-center">
-                              <div className="w-px h-3 bg-white/15" />
-                              <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-[10px] font-black ${n.color}`}>{n.n}</div>
-                              <div className="text-[9px] text-muted-foreground leading-tight mt-0.5">{n.a}</div>
-                              <div className={`text-[9px] font-black ${n.iColor}`}>{n.i}</div>
-                              <div className="w-px h-2 bg-white/10 mt-1" />
-                            </div>
-                          ))}
-                        </div>
-
-                        {/* L3+ dots */}
-                        <div className="flex justify-center gap-16">
-                          {Array.from({ length: 2 }).map((_, i) => (
-                            <div key={i} className="flex flex-col items-center">
-                              <div className="w-px h-2 bg-white/10" />
-                              <div className="w-5 h-5 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-[9px] text-muted-foreground">+</div>
-                            </div>
-                          ))}
-                        </div>
 
                         <div className="text-center text-[10px] text-muted-foreground mt-3">{t('mlm_lvls_grow')}</div>
                       </div>
