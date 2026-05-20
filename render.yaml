@@ -2,7 +2,7 @@ services:
   - type: web
     name: trends-landing
     runtime: node
-    buildCommand: npm install -g pnpm@10 && pnpm install --no-frozen-lockfile && pnpm --filter @workspace/trends-landing run build:railway && pnpm --filter @workspace/api-server run build
+    buildCommand: bash build-render.sh
     startCommand: NODE_ENV=production node --enable-source-maps artifacts/api-server/dist/index.mjs
     healthCheckPath: /api/health
     envVars:
