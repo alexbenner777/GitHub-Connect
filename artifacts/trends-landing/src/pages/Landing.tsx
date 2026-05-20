@@ -1428,11 +1428,11 @@ export default function Landing() {
 
               {/* Top-5 leaderboard */}
               {[
-                { rank: 1, pct: "35%", amount: "$4 200", icon: "🥇", bg: "bg-yellow-400/10", border: "border-yellow-400/20", color: "text-yellow-300", barW: 100 },
-                { rank: 2, pct: "25%", amount: "$3 000", icon: "🥈", bg: "bg-slate-400/10", border: "border-slate-400/20", color: "text-slate-300", barW: 71 },
-                { rank: 3, pct: "15%", amount: "$1 800", icon: "🥉", bg: "bg-orange-400/10", border: "border-orange-400/20", color: "text-orange-300", barW: 43 },
-                { rank: 4, pct: "13%", amount: "$1 560", icon: "4", bg: "bg-primary/8",       border: "border-primary/15",   color: "text-primary",   barW: 37 },
-                { rank: 5, pct: "12%", amount: "$1 440", icon: "5", bg: "bg-secondary/8",     border: "border-secondary/15", color: "text-secondary", barW: 34 },
+                { rank: 1, pct: "35%", amount: "$4 200", icon: "🥇", bg: "bg-yellow-400/10", border: "border-yellow-400/20", color: "text-yellow-300", barCls: "bg-yellow-300", barW: 100 },
+                { rank: 2, pct: "25%", amount: "$3 000", icon: "🥈", bg: "bg-slate-400/10",  border: "border-slate-400/20",  color: "text-slate-300",  barCls: "bg-slate-300",  barW: 71 },
+                { rank: 3, pct: "15%", amount: "$1 800", icon: "🥉", bg: "bg-orange-400/10", border: "border-orange-400/20", color: "text-orange-300", barCls: "bg-orange-300", barW: 43 },
+                { rank: 4, pct: "13%", amount: "$1 560", icon: "4",  bg: "bg-primary/8",     border: "border-primary/15",   color: "text-primary",   barCls: "bg-primary",    barW: 37 },
+                { rank: 5, pct: "12%", amount: "$1 440", icon: "5",  bg: "bg-secondary/8",   border: "border-secondary/15", color: "text-secondary", barCls: "bg-secondary",  barW: 34 },
               ].map((row, i) => (
                 <div key={i} className={`flex items-center gap-3 px-4 py-3 ${i < 4 ? "border-b border-white/6" : ""}`}>
                   <div className={`w-8 h-8 rounded-xl ${row.bg} border ${row.border} flex items-center justify-center text-sm font-black shrink-0`}>
@@ -1448,7 +1448,7 @@ export default function Landing() {
                         initial={{ width: 0 }}
                         animate={{ width: `${row.barW}%` }}
                         transition={{ duration: 0.6, delay: 0.3 + i * 0.08 }}
-                        className={`absolute left-0 top-0 h-full rounded-full ${row.color.replace('text-', 'bg-')}`}
+                        className={`absolute left-0 top-0 h-full rounded-full ${row.barCls}`}
                       />
                     </div>
                   </div>
