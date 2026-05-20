@@ -415,10 +415,13 @@ function useCountUp(target: number, duration = 2000, delay = 400) {
 const ICON_MAP = { Star, Shield, Crown, TrendingUp, Zap } as const;
 
 // ─── Пакеты для лендинга — берутся из единого packages.ts ────────
-const PACKAGES_DATA: FullPackage[] = PKG_SOURCE.map(p => {
-  const ui = PACKAGE_UI[p.id];
-  return { ...p, icon: ICON_MAP[ui.iconName], color: ui.color, border: ui.border, glow: ui.glow };
-});
+// Тестовый пакет (founder0) скрыт на лендинге, доступен только в кабинете
+const PACKAGES_DATA: FullPackage[] = PKG_SOURCE
+  .filter(p => p.id !== "founder0")
+  .map(p => {
+    const ui = PACKAGE_UI[p.id];
+    return { ...p, icon: ICON_MAP[ui.iconName], color: ui.color, border: ui.border, glow: ui.glow };
+  });
 
 const NAV_HREFS = ["#problem", "#monetization", "#investors", "#roadmap"] as const;
 
