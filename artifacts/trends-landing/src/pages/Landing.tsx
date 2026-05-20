@@ -1155,9 +1155,8 @@ export default function Landing() {
                         {(() => {
                           const l1 = [
                             { label: "А", amount: "$25K", income: "+$2 500", incomeColor: "text-yellow-400", color: "bg-yellow-500/20 border-yellow-500/50 text-yellow-200" },
-                            { label: "Б", amount: "$25K", income: "+$2 500", incomeColor: "text-yellow-400", color: "bg-yellow-500/20 border-yellow-500/50 text-yellow-200" },
-                            { label: "В", amount: "$100K", income: "+$10 000", incomeColor: "text-orange-400", color: "bg-orange-500/20 border-orange-500/50 text-orange-200" },
-                            { label: "Г", amount: "$5K", income: "+$500", incomeColor: "text-secondary", color: "bg-secondary/20 border-secondary/50 text-secondary" },
+                            { label: "Б", amount: "$100K", income: "+$10 000", incomeColor: "text-orange-400", color: "bg-orange-500/20 border-orange-500/50 text-orange-200" },
+                            { label: "В", amount: "$5K", income: "+$500", incomeColor: "text-secondary", color: "bg-secondary/20 border-secondary/50 text-secondary" },
                           ];
                           const l2Pair = [
                             { n: "1", a: "$25K", i: "+$1 250", color: "bg-secondary/15 border-secondary/40 text-secondary", iColor: "text-secondary" },
@@ -1206,11 +1205,11 @@ export default function Landing() {
                     {/* Summary rows */}
                     <div className="divide-y divide-white/6">
                       {[
-                        { icon: <Users2 className="w-3.5 h-3.5" />, iconCls: "bg-yellow-500/15 border-yellow-500/25 text-yellow-400", badge: "L1 · 10%", badgeCls: "bg-yellow-500/15 text-yellow-400 border-yellow-500/25", desc: "2 × $25K", val: "+$5 000", valCls: "text-yellow-400" },
+                        { icon: <Users2 className="w-3.5 h-3.5" />, iconCls: "bg-yellow-500/15 border-yellow-500/25 text-yellow-400", badge: "L1 · 10%", badgeCls: "bg-yellow-500/15 text-yellow-400 border-yellow-500/25", desc: "1 × $25K", val: "+$2 500", valCls: "text-yellow-400" },
                         { icon: <Users2 className="w-3.5 h-3.5" />, iconCls: "bg-orange-500/15 border-orange-500/25 text-orange-400", badge: "L1 · 10%", badgeCls: "bg-orange-500/15 text-orange-400 border-orange-500/25", desc: "1 × $100K", val: "+$10 000", valCls: "text-orange-400" },
                         { icon: <Users2 className="w-3.5 h-3.5" />, iconCls: "bg-yellow-500/15 border-yellow-500/25 text-yellow-400", badge: "L1 · 10%", badgeCls: "bg-yellow-500/15 text-yellow-400 border-yellow-500/25", desc: "1 × $5K", val: "+$500", valCls: "text-yellow-400" },
-                        { icon: <Network className="w-3.5 h-3.5" />, iconCls: "bg-secondary/15 border-secondary/25 text-secondary", badge: "L2 · 5%", badgeCls: "bg-secondary/15 text-secondary border-secondary/25", desc: "$120K сети (8 партнёров)", val: "+$6 000", valCls: "text-secondary" },
-                        { icon: <Network className="w-3.5 h-3.5" />, iconCls: "bg-blue-500/15 border-blue-500/25 text-blue-400", badge: "L3–5", badgeCls: "bg-blue-500/15 text-blue-400 border-blue-500/25", desc: t('mlm_deeper'), val: "+$21 600", valCls: "text-blue-400" },
+                        { icon: <Network className="w-3.5 h-3.5" />, iconCls: "bg-secondary/15 border-secondary/25 text-secondary", badge: "L2 · 5%", badgeCls: "bg-secondary/15 text-secondary border-secondary/25", desc: "$90K сети (6 партнёров)", val: "+$4 500", valCls: "text-secondary" },
+                        { icon: <Network className="w-3.5 h-3.5" />, iconCls: "bg-blue-500/15 border-blue-500/25 text-blue-400", badge: "L3–5", badgeCls: "bg-blue-500/15 text-blue-400 border-blue-500/25", desc: t('mlm_deeper'), val: "+$16 200", valCls: "text-blue-400" },
                       ].map((row, i) => (
                         <div key={i} className="flex items-center gap-3 px-5 py-3">
                           <div className={`w-7 h-7 rounded-lg border flex items-center justify-center shrink-0 ${row.iconCls}`}>{row.icon}</div>
@@ -1225,8 +1224,8 @@ export default function Landing() {
                     <div className="flex flex-col sm:flex-row gap-4 p-5 bg-white/3 border-t border-white/8">
                       <div className="flex-1">
                         <div className="text-xs text-muted-foreground mb-1">{t('mlm_ex_total_label')}</div>
-                        <div className="text-2xl sm:text-3xl font-black text-green-400">$43 100</div>
-                        <div className="text-[10px] text-muted-foreground mt-1">L1: $15 500 · L2: $6 000 · L3–5: $21 600</div>
+                        <div className="text-2xl sm:text-3xl font-black text-green-400">$33 700</div>
+                        <div className="text-[10px] text-muted-foreground mt-1">L1: $13 000 · L2: $4 500 · L3–5: $16 200</div>
                       </div>
                       <div className="sm:text-right">
                         <div className="text-xs text-muted-foreground mb-1">{t('mlm_ex_revshare')}</div>
