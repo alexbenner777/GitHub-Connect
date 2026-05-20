@@ -1091,7 +1091,10 @@ export default function Landing() {
                 <div className="w-9 h-9 rounded-xl bg-primary/15 border border-primary/25 flex items-center justify-center shrink-0">
                   <Network className="w-4 h-4 text-primary" />
                 </div>
-                <span className="text-base sm:text-lg font-bold group-hover:text-primary transition-colors">{t('mlm_acc1')}</span>
+                <div className="text-left">
+                  <span className="text-base sm:text-lg font-bold group-hover:text-primary transition-colors block">{t('mlm_acc1')}</span>
+                  <span className="text-xs text-muted-foreground">{t('mlm_acc1_sub')}</span>
+                </div>
               </div>
               <motion.span animate={{ rotate: refOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
                 <ChevronRight className="w-5 h-5 rotate-90 text-muted-foreground" />
@@ -1255,7 +1258,10 @@ export default function Landing() {
                 <div className="w-9 h-9 rounded-xl bg-green-500/15 border border-green-500/25 flex items-center justify-center shrink-0">
                   <TrendingUp className="w-4 h-4 text-green-400" />
                 </div>
-                <span className="text-base sm:text-lg font-bold group-hover:text-green-400 transition-colors">{t('mlm_acc2')}</span>
+                <div className="text-left">
+                  <span className="text-base sm:text-lg font-bold group-hover:text-green-400 transition-colors block">{t('mlm_acc2')}</span>
+                  <span className="text-xs text-muted-foreground">{t('mlm_acc2_sub')}</span>
+                </div>
               </div>
               <motion.span animate={{ rotate: exampleOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
                 <ChevronRight className="w-5 h-5 rotate-90 text-muted-foreground" />
