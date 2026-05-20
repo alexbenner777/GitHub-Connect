@@ -290,7 +290,15 @@ export default function Admin() {
                           )}
                           <div>
                             <div className="text-xs text-white/40 mb-1">Кошелёк отправителя</div>
-                            <div className="font-mono text-xs text-white/70 break-all">{inv.walletFrom ?? "—"}</div>
+                            <div className="font-mono text-xs text-white/70 break-all flex items-start gap-1">
+                              <span>{inv.walletFrom ?? "—"}</span>
+                              {inv.walletFrom && (
+                                <a href={`https://tonviewer.com/${inv.walletFrom}`} target="_blank" rel="noreferrer"
+                                  className="text-primary hover:text-primary/80 shrink-0 mt-0.5">
+                                  <ExternalLink className="w-3 h-3" />
+                                </a>
+                              )}
+                            </div>
                           </div>
                           <div>
                             <div className="text-xs text-white/40 mb-1">TxHash</div>
