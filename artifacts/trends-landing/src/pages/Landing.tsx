@@ -1322,8 +1322,8 @@ export default function Landing() {
                         <div className="relative flex gap-16">
                           <div className="absolute top-0 left-[20px] right-[20px] h-px bg-white/20" />
                           {[
-                            { lbl: "А", rev: "$1 000", earn: "+$50", pct: "5%", bg: "bg-yellow-500/20 border-yellow-500/50 text-yellow-200", earn_c: "text-green-400" },
-                            { lbl: "Б", rev: "$800",   earn: "+$40", pct: "5%", bg: "bg-orange-500/20 border-orange-500/50 text-orange-200", earn_c: "text-green-400" },
+                            { lbl: "А", rev: "$3 130", earn: "+$157", pct: "5%", bg: "bg-yellow-500/20 border-yellow-500/50 text-yellow-200", earn_c: "text-green-400" },
+                            { lbl: "Б", rev: "$12 527", earn: "+$626", pct: "5%", bg: "bg-orange-500/20 border-orange-500/50 text-orange-200", earn_c: "text-green-400" },
                           ].map((n, i) => (
                             <div key={i} className="flex flex-col items-center">
                               <div className="w-px h-5 bg-white/20" />
@@ -1333,12 +1333,12 @@ export default function Landing() {
                               <div className={`text-[10px] font-black ${n.earn_c}`}>{n.earn}</div>
                               {/* connector to L2 */}
                               <div className="w-px h-4 bg-white/15 mt-1" />
-                              {/* L2 pair under each L1 */}
+                              {/* L2 pair under each L1 — same packages as MLM example: $25K + $5K */}
                               <div className="relative flex gap-3">
                                 <div className="absolute top-0 left-[13px] right-[13px] h-px bg-white/12" />
                                 {[
-                                  { rev: "$400", earn: "+$12", bg: "bg-teal-500/15 border-teal-500/40 text-teal-200" },
-                                  { rev: "$300", earn: "+$9",  bg: "bg-cyan-500/10 border-cyan-500/25 text-cyan-300" },
+                                  { rev: "$3 130", earn: "+$94", bg: "bg-teal-500/15 border-teal-500/40 text-teal-200" },
+                                  { rev: "$626",   earn: "+$19", bg: "bg-cyan-500/10 border-cyan-500/25 text-cyan-300" },
                                 ].map((c, j) => (
                                   <div key={j} className="flex flex-col items-center">
                                     <div className="w-px h-4 bg-white/12" />
@@ -1367,7 +1367,7 @@ export default function Landing() {
                           <CheckCircle2 className="w-3.5 h-3.5 text-green-400 shrink-0" />
                           <span className="text-xs text-muted-foreground">{t('mlm_income_ex_note')}</span>
                         </div>
-                        <div className="text-sm font-black text-green-400 shrink-0">+$111 / мес</div>
+                        <div className="text-sm font-black text-green-400 shrink-0">+$1 009 / мес</div>
                       </div>
                     </div>
                   </div>
