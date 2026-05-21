@@ -495,7 +495,7 @@ export default function Landing() {
       </div>
 
       {/* NAV */}
-      <nav className="fixed top-[2px] w-full z-50 glass-nav">
+      <nav className="relative w-full z-50 glass-nav">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img src={logoPath} alt="Trends Logo" className="w-10 h-10 object-contain" />
