@@ -263,6 +263,9 @@
   background: linear-gradient(135deg, #00D4FF 0%, #7B5EFF 100%) !important;
   color: #ffffff !important;
   border: none !important;
+  border-width: 0 !important;
+  outline: none !important;
+  box-shadow: none;
   position: relative;
   overflow: hidden;
   isolation: isolate;
