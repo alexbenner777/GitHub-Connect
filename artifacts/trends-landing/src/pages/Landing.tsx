@@ -998,7 +998,7 @@ export default function Landing() {
                   </div>
                   <Button
                     onClick={() => { setSelectedPkg("founder3"); setIsInvestOpen(true); }}
-                    className="w-full rounded-xl font-bold text-white"
+                    className="w-full rounded-xl font-bold text-white border-0 outline-none"
                     style={{ background: "linear-gradient(135deg, #7B5EFF, #00D4FF)" }}
                   >
                     {t('token_cta')} <ArrowRight className="w-4 h-4 ml-1" />
