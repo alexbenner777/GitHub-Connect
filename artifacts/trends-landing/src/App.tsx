@@ -10,6 +10,7 @@ import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Admin from "@/pages/Admin";
 import Legal from "@/pages/Legal";
+import Presentation from "@/pages/Presentation";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ function Router() {
       <Route path="/cabinet" component={Cabinet} />
       <Route path="/admin" component={Admin} />
       <Route path="/legal/:doc" component={Legal} />
+      <Route path="/presentation" component={Presentation} />
       <Route component={NotFound} />
     </Switch>
   );
