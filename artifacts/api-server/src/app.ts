@@ -25,8 +25,13 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, cb) => {
-      if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
-      cb(new Error(`CORS: origin not allowed — ${origin}`));
+      if (!origin) return cb(null, true);
+      if (allowedOrigins.includes(origin)) return cb(null, true);
+      if (/^https:\/\/[a-zA-Z0-9-]+\.replit\.dev$/.test(origin)) return cb(null, true);
+      if (/^https:\/\/[a-zA-Z0-9-]+\.janeway\.replit\.dev$/.test(origin)) return cb(null, true);
+      const err: any = new Error(`CORS: origin not allowed — ${origin}`);
+      err.status = 403;
+      cb(err);
     },
     credentials: true,
   }),
