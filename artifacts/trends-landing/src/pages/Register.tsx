@@ -25,7 +25,7 @@ export default function Register() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    if (password.length < 6) { setError("Пароль минимум 6 символов"); return; }
+    if (password.length < 8) { setError("Пароль минимум 8 символов"); return; }
     setLoading(true);
     try {
       await register({ email, password, name, telegramUsername: telegram || undefined, referralCode: referralCode || undefined });
@@ -68,7 +68,7 @@ export default function Register() {
                 className="bg-background/50 border-white/10 h-12" required />
             </div>
             <div>
-              <label className="text-sm font-medium mb-1.5 block">Пароль * (мин. 6 символов)</label>
+              <label className="text-sm font-medium mb-1.5 block">Пароль * (мин. 8 символов)</label>
               <Input type="password" placeholder="••••••••" value={password}
                 onChange={e => setPassword(e.target.value)}
                 className="bg-background/50 border-white/10 h-12" required />
