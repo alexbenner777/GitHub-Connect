@@ -86,6 +86,7 @@ router.post("/auth/register", async (req, res, next) => {
     const token = signToken({ userId: user.id, email: user.email, isAdmin: user.isAdmin });
     setCookieToken(res, token);
     res.status(201).json({
+      token,
       user: { id: user.id, email: user.email, name: user.name, referralCode: user.referralCode },
     });
   } catch (err) {
