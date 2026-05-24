@@ -24,7 +24,12 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
       ...(options.headers ?? {}),
     },
   });
-  const data = await res.json();
+  let data: any;
+  try {
+    data = await res.json();
+  } catch {
+    throw new Error(res.ok ? "Неверный ответ сервера" : `Ошибка сервера (${res.status})`);
+  }
   if (!res.ok) throw new Error(data.error ?? "Ошибка запроса");
   return data as T;
 }

@@ -71,6 +71,10 @@ export default defineConfig({
       "/api": {
         target: "http://localhost:8080",
         changeOrigin: true,
+        onError(_err, _req, res) {
+          res.writeHead(503, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ error: "Сервер временно недоступен, попробуйте позже" }));
+        },
       },
     },
   },
