@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { translations, type Lang } from "@/lib/translations";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
+import { useAuth } from "@/hooks/useAuth";
 import { motion, useInView, useScroll, useTransform, AnimatePresence, useMotionValue, useSpring, type Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { InvestmentModal } from "@/components/InvestmentModal";
 import { LegalModal, DOCS, type DocId } from "@/components/LegalModal";
 import { SceneBackground } from "@/components/SceneBackground";
 import { DauCalculator } from "@/components/DauCalculator";
@@ -429,8 +429,6 @@ export default function Landing() {
   const [lang, setLang] = useState<Lang>('ru');
   const t = (key: keyof typeof translations.ru): string => translations[lang][key] as string;
 
-  const [isInvestOpen, setIsInvestOpen] = useState(false);
-  const [selectedPkg, setSelectedPkg] = useState("founder3");
   const [users] = useState(7780);
   const [views] = useState(2550);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -469,9 +467,16 @@ export default function Landing() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const openInvest = (pkg = "founder3") => {
-    setSelectedPkg(pkg);
-    setIsInvestOpen(true);
+  const { user } = useAuth();
+  const [, setLocation] = useLocation();
+
+  const openInvest = (_pkg = "founder3") => {
+    if (user) {
+      setLocation("/cabinet?invest=true");
+    } else {
+      const ref = new URLSearchParams(window.location.search).get("ref");
+      setLocation(ref ? `/register?ref=${ref}` : "/register");
+    }
   };
 
   const NAV_LINKS = [
@@ -997,7 +1002,7 @@ export default function Landing() {
                     <p className="text-sm text-muted-foreground leading-relaxed">{t('token_compare_desc')}</p>
                   </div>
                   <Button
-                    onClick={() => { setSelectedPkg("founder3"); setIsInvestOpen(true); }}
+                    onClick={() => openInvest("founder3")}
                     className="w-full rounded-xl font-bold text-white border-0 outline-none"
                     style={{ background: "linear-gradient(135deg, #7B5EFF, #00D4FF)" }}
                   >
@@ -1906,7 +1911,6 @@ export default function Landing() {
         </div>
       </div>
 
-      <InvestmentModal isOpen={isInvestOpen} onClose={() => setIsInvestOpen(false)} defaultPackage={selectedPkg} />
       <LegalModal docId={legalDoc} lang={lang} onClose={() => setLegalDoc(null)} />
     </div>
   );

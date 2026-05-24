@@ -21,7 +21,7 @@ export default function Login() {
     setLoading(true);
     try {
       const result = await login(email, password);
-      setLocation(result?.isAdmin ? "/admin" : "/cabinet");
+      setLocation(result?.isAdmin ? "/admin" : "/cabinet?invest=true");
     } catch (err: any) {
       setError(err.message ?? "Ошибка входа");
     } finally {

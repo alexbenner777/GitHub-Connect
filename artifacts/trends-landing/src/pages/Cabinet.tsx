@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link, useLocation } from "wouter";
+import { Link, useLocation, useSearch } from "wouter";
 import { SceneBackground } from "@/components/SceneBackground";
 import {
   Copy, Wallet, ArrowLeft, LogOut, CheckCircle2, Clock, XCircle,
@@ -45,8 +45,16 @@ const LEVEL_PCTS = [10, 5, 3, 1, 1];
 export default function Cabinet() {
   const { user, loading: authLoading, logout } = useAuth();
   const [, setLocation] = useLocation();
+  const search = useSearch();
   const { toast } = useToast();
   const [isInvestOpen, setIsInvestOpen] = useState(false);
+
+  useEffect(() => {
+    if (new URLSearchParams(search).get("invest") === "true") {
+      setIsInvestOpen(true);
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  }, [search]);
   const [data, setData] = useState<CabinetData | null>(null);
   const [referrals, setReferrals] = useState<Record<number, { count: number; earned: number }>>({});
   const [loadingData, setLoadingData] = useState(true);

@@ -29,7 +29,7 @@ export default function Register() {
     setLoading(true);
     try {
       await register({ email, password, name, telegramUsername: telegram || undefined, referralCode: referralCode || undefined });
-      setLocation("/cabinet");
+      setLocation("/cabinet?invest=true");
     } catch (err: any) {
       setError(err.message ?? "Ошибка регистрации");
     } finally {
