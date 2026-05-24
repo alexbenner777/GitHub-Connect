@@ -1,11 +1,13 @@
 import { Router } from "express";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
+import crypto from "node:crypto";
 import { db, usersTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { signToken } from "../lib/jwt.js";
 import { generateReferralCode } from "../lib/referral.js";
 import { notifyNewUser } from "../lib/telegram.js";
+import { sendPasswordResetEmail } from "../lib/email.js";
 
 const registerSchema = z.object({
   email: z.string().email("Неверный формат email"),
@@ -124,6 +126,63 @@ router.post("/auth/login", async (req, res, next) => {
 router.post("/auth/logout", (_req, res) => {
   res.clearCookie("trends_token", { path: "/" });
   res.json({ ok: true });
+});
+
+router.post("/auth/forgot-password", async (req, res, next) => {
+  try {
+    const { email } = z.object({ email: z.string().email() }).parse(req.body);
+    const normalizedEmail = email.toLowerCase().trim();
+
+    const [user] = await db.select({ id: usersTable.id, email: usersTable.email })
+      .from(usersTable).where(eq(usersTable.email, normalizedEmail));
+
+    if (user) {
+      const token = crypto.randomBytes(32).toString("hex");
+      const expiry = new Date(Date.now() + 60 * 60 * 1000);
+
+      await db.update(usersTable)
+        .set({ resetToken: token, resetTokenExpiry: expiry })
+        .where(eq(usersTable.id, user.id));
+
+      const origin = req.headers.origin ?? `https://${req.headers.host}`;
+      const resetUrl = `${origin}/reset-password?token=${token}`;
+
+      await sendPasswordResetEmail(user.email, resetUrl).catch(() => {});
+    }
+
+    res.json({ ok: true });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post("/auth/reset-password", async (req, res, next) => {
+  try {
+    const { token, password } = z.object({
+      token: z.string().min(1),
+      password: z.string().min(8, "Пароль должен содержать минимум 8 символов"),
+    }).parse(req.body);
+
+    const [user] = await db.select({
+      id: usersTable.id,
+      resetToken: usersTable.resetToken,
+      resetTokenExpiry: usersTable.resetTokenExpiry,
+    }).from(usersTable).where(eq(usersTable.resetToken, token));
+
+    if (!user || !user.resetTokenExpiry || user.resetTokenExpiry < new Date()) {
+      res.status(400).json({ error: "Ссылка недействительна или истекла" });
+      return;
+    }
+
+    const passwordHash = await bcrypt.hash(password, 12);
+    await db.update(usersTable)
+      .set({ passwordHash, resetToken: null, resetTokenExpiry: null })
+      .where(eq(usersTable.id, user.id));
+
+    res.json({ ok: true });
+  } catch (err) {
+    next(err);
+  }
 });
 
 export default router;

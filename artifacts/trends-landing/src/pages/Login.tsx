@@ -56,14 +56,9 @@ export default function Login() {
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <label className="text-sm font-medium">Пароль</label>
-                <a
-                  href="https://t.me/trendspartner_support"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-primary hover:underline"
-                >
+                <Link href="/forgot-password" className="text-xs text-primary hover:underline">
                   Забыли пароль?
-                </a>
+                </Link>
               </div>
               <Input type="password" placeholder="••••••••" value={password}
                 onChange={e => setPassword(e.target.value)}
