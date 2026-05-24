@@ -30,9 +30,9 @@ export const PACKAGES: InvestPackage[] = [
   // ─── ТЕСТ $1 ─────────────────────────────────────────
   {
     id: "founder0",
-    name: "TEST $1",
+    name: "TEST $0.1",
     tagline: "Тестовый пакет для проверки уведомлений",
-    price: 1,
+    price: 0.1,
     shares: 0.01,
     dau50m: 0,
     exit: "—",
