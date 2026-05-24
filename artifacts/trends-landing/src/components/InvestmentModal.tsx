@@ -56,9 +56,10 @@ export function InvestmentModal({
   const [selectedId, setId]     = useState(defaultPackage);
   const [walletFrom, setWallet] = useState("");
   const [submitting, setSub]    = useState(false);
+  const [payClicked, setPayClicked] = useState(false);
 
   useEffect(() => {
-    if (isOpen) { setStep(1); setId(defaultPackage); setWallet(""); setSub(false); }
+    if (isOpen) { setStep(1); setId(defaultPackage); setWallet(""); setSub(false); setPayClicked(false); }
   }, [isOpen, defaultPackage]);
 
   useEffect(() => { if (connectedAddress) setWallet(connectedAddress); }, [connectedAddress]);
@@ -70,14 +71,17 @@ export function InvestmentModal({
   const tonkeeperLink = buildLink("https://app.tonkeeper.com/transfer", pkg.price, `Trends ${pkg.name}`);
   const tonspaceLink  = buildLink("https://tonspace.co/transfer",       pkg.price, `Trends ${pkg.name}`);
 
-  const handleWalletPay = (url: string) => { window.open(url, "_blank"); setTimeout(() => setStep(3), 1500); };
+  const handleWalletPay = (url: string) => {
+    window.open(url, "_blank");
+    setPayClicked(true);
+  };
 
   const handleSubmit = async () => {
     if (!user) { onClose(); setLocation("/login"); return; }
     setSub(true);
     try {
       await api.createInvestment({ packageId: selectedId, walletFrom: walletFrom || connectedAddress || undefined });
-      setStep(4);
+      setStep(3);
     } catch (err: any) {
       toast({ title: err.message ?? "Ошибка", variant: "destructive" });
     } finally { setSub(false); }
@@ -227,124 +231,110 @@ export function InvestmentModal({
             </motion.div>
           )}
 
-          {/* ── Шаг 2: оплата ── */}
+          {/* ── Шаг 2: оплата + подтверждение (объединено) ── */}
           {step === 2 && (
             <motion.div key="step2"
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }}
-              className="p-6 space-y-5 overflow-y-auto"
+              className="p-6 space-y-4 overflow-y-auto"
             >
               <button onClick={() => setStep(1)} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
                 <ArrowLeft className="w-4 h-4" /> Назад
               </button>
               <h2 className="text-2xl font-bold text-center">Оплата</h2>
 
+              {/* Сумма */}
               <div className={`text-center rounded-2xl p-4 border ${ui.border} bg-white/4`}>
                 <div className={`text-4xl font-black ${ui.color}`}>${pkg.price.toLocaleString()}</div>
                 <div className="text-sm text-muted-foreground mt-1">Пакет «{pkg.name}» · USDT (TON)</div>
-                <div className="mt-2 text-xs text-green-400/80">
+                <div className="mt-1.5 text-xs text-green-400/80">
                   RevShare при: <span className="font-black text-green-400">${fmtUsd(pkg.dau50m)}/мес</span>
                 </div>
               </div>
 
-              {connectedAddress ? (
-                <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-3 flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-green-400 shrink-0" />
-                  <div className="min-w-0">
-                    <div className="text-xs text-green-400 font-semibold">Кошелёк подключён</div>
-                    <div className="text-xs font-mono text-muted-foreground truncate">{connectedAddress}</div>
+              {/* Шаг 1 инструкции: открыть кошелёк и оплатить */}
+              {!payClicked ? (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 text-sm font-semibold">
+                    <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-black shrink-0">1</span>
+                    Откройте кошелёк и оплатите:
                   </div>
+
+                  <button onClick={() => handleWalletPay(tonkeeperLink)}
+                    className="w-full flex items-center gap-4 p-4 rounded-xl border border-white/10 hover:border-primary/50 hover:bg-primary/5 transition-all text-left">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0098EA] to-[#006BB5] flex items-center justify-center shrink-0">
+                      <Smartphone className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-bold text-sm">TonKeeper</div>
+                      <div className="text-xs text-muted-foreground">Откроется с предзаполненным платежом</div>
+                    </div>
+                    <ExternalLink className="w-4 h-4 text-muted-foreground" />
+                  </button>
+
+                  <button onClick={() => handleWalletPay(tonspaceLink)}
+                    className="w-full flex items-center gap-4 p-4 rounded-xl border border-white/10 hover:border-secondary/50 hover:bg-secondary/5 transition-all text-left">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7B5EFF] to-[#5B3FDF] flex items-center justify-center shrink-0">
+                      <Wallet className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-bold text-sm">TonSpace</div>
+                      <div className="text-xs text-muted-foreground">Откроется с предзаполненным платежом</div>
+                    </div>
+                    <ExternalLink className="w-4 h-4 text-muted-foreground" />
+                  </button>
+
+                  <p className="text-xs text-muted-foreground text-center pt-1">
+                    Адрес получателя и сумма заполнятся автоматически
+                  </p>
                 </div>
               ) : (
-                <button onClick={() => openTon()}
-                  className="w-full flex items-center gap-3 p-3 rounded-xl border border-primary/30 bg-primary/5 hover:bg-primary/10 transition-colors text-left">
-                  <Wallet className="w-5 h-5 text-primary shrink-0" />
-                  <div>
-                    <div className="text-sm font-semibold">Подключить кошелёк</div>
-                    <div className="text-xs text-muted-foreground">Адрес заполнится автоматически</div>
+                /* Шаг 2 инструкции: подтвердить после оплаты */
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+                  className="space-y-4"
+                >
+                  <div className="bg-primary/10 border border-primary/20 rounded-xl p-3 flex items-center gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
+                    <div className="text-sm">
+                      <div className="font-semibold text-primary">Кошелёк открыт</div>
+                      <div className="text-xs text-muted-foreground">Завершите перевод в приложении, затем вернитесь сюда</div>
+                    </div>
                   </div>
-                </button>
+
+                  <div className="flex items-center gap-2 text-sm font-semibold">
+                    <span className="w-6 h-6 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-xs font-black shrink-0">2</span>
+                    Ваш TON-адрес (необязательно):
+                  </div>
+
+                  <Input placeholder="UQ... или EQ..."
+                    value={walletFrom} onChange={e => setWallet(e.target.value)}
+                    className="bg-background/50 border-white/10 h-11 font-mono text-xs" />
+                  <p className="text-xs text-muted-foreground -mt-2">Поможет быстрее найти вашу транзакцию</p>
+
+                  <Button
+                    className="w-full btn-grad btn-3d font-bold rounded-xl h-12 text-base"
+                    onClick={handleSubmit}
+                    disabled={submitting}
+                  >
+                    {submitting
+                      ? <Loader2 className="w-5 h-5 animate-spin" />
+                      : "✓ Я оплатил — отправить заявку"}
+                  </Button>
+
+                  <button
+                    onClick={() => setPayClicked(false)}
+                    className="w-full text-center text-xs text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    ← Вернуться к выбору кошелька
+                  </button>
+                </motion.div>
               )}
-
-              <div className="space-y-3">
-                <p className="text-sm font-semibold text-center">Выберите кошелёк для оплаты:</p>
-                <button onClick={() => handleWalletPay(tonkeeperLink)}
-                  className="w-full flex items-center gap-4 p-4 rounded-xl border border-white/10 hover:border-primary/50 hover:bg-primary/5 transition-all text-left">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0098EA] to-[#006BB5] flex items-center justify-center shrink-0">
-                    <Smartphone className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-bold text-sm">TonKeeper</div>
-                    <div className="text-xs text-muted-foreground">Откроется с предзаполненным платежом</div>
-                  </div>
-                  <ExternalLink className="w-4 h-4 text-muted-foreground" />
-                </button>
-
-                <button onClick={() => handleWalletPay(tonspaceLink)}
-                  className="w-full flex items-center gap-4 p-4 rounded-xl border border-white/10 hover:border-secondary/50 hover:bg-secondary/5 transition-all text-left">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7B5EFF] to-[#5B3FDF] flex items-center justify-center shrink-0">
-                    <Wallet className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-bold text-sm">TonSpace</div>
-                    <div className="text-xs text-muted-foreground">Откроется с предзаполненным платежом</div>
-                  </div>
-                  <ExternalLink className="w-4 h-4 text-muted-foreground" />
-                </button>
-              </div>
             </motion.div>
           )}
 
-          {/* ── Шаг 3: подтверждение ── */}
+          {/* ── Шаг 3: успех ── */}
           {step === 3 && (
             <motion.div key="step3"
-              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }}
-              className="p-6 space-y-5 overflow-y-auto"
-            >
-              <button onClick={() => setStep(2)} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                <ArrowLeft className="w-4 h-4" /> Назад
-              </button>
-              <h2 className="text-2xl font-bold text-center">Подтверждение</h2>
-
-              <div className="rounded-2xl p-5 space-y-3 border border-white/10 bg-white/4 text-sm">
-                {[
-                  ["Пакет",        `«${pkg.name}»`],
-                  ["Сумма",        `$${pkg.price.toLocaleString()} USDT`],
-                  ["RevShare доля",`${pkg.shares}`],
-                ].map(([label, val]) => (
-                  <div key={label} className="flex justify-between">
-                    <span className="text-muted-foreground">{label}:</span>
-                    <span className="font-bold">{val}</span>
-                  </div>
-                ))}
-                <div className="flex justify-between border-t border-white/8 pt-3">
-                  <span className="text-muted-foreground">RevShare при:</span>
-                  <span className="font-black text-green-400">${fmtUsd(pkg.dau50m)}/мес</span>
-                </div>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium mb-1.5 block">Ваш TON-адрес (необязательно)</label>
-                <Input placeholder="UQ... или EQ..."
-                  value={walletFrom} onChange={e => setWallet(e.target.value)}
-                  className="bg-background/50 border-white/10 h-11 font-mono text-xs" />
-                <p className="text-xs text-muted-foreground mt-1">Поможет нам найти вашу транзакцию быстрее</p>
-              </div>
-
-              {!user && (
-                <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-3 text-sm text-blue-300">
-                  Для отслеживания инвестиции войдите в аккаунт.
-                </div>
-              )}
-
-              <Button className="w-full btn-grad btn-3d font-bold rounded-xl h-12" onClick={handleSubmit} disabled={submitting}>
-                {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : "Отправить заявку"}
-              </Button>
-            </motion.div>
-          )}
-
-          {/* ── Шаг 4: успех ── */}
-          {step === 4 && (
-            <motion.div key="step4"
               initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
               className="p-6 space-y-5 text-center py-8 overflow-y-auto"
             >
@@ -353,7 +343,7 @@ export function InvestmentModal({
               </div>
               <h2 className="text-3xl font-black text-gradient">Заявка принята!</h2>
               <p className="text-muted-foreground">
-                Пакет <strong>«{pkg.name}»</strong> — заявка отправлена и ожидает подтверждения. Мы проверим перевод и активируем пакет в течение 24 часов.
+                Пакет <strong>«{pkg.name}»</strong> ожидает подтверждения. Мы проверим перевод и активируем пакет в течение 24 часов.
               </p>
               <div className="rounded-xl border border-green-500/20 bg-green-500/8 p-4">
                 <div className="text-xs text-green-400/70 mb-1">RevShare при</div>
