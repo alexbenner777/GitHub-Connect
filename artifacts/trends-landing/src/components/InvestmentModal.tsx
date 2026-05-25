@@ -11,7 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
 import { api } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
-import { useTonAddress, useTonConnectModal } from "@tonconnect/ui-react";
+import { useTonAddress, useTonConnectModal, useTonConnectUI } from "@tonconnect/ui-react";
 import { PACKAGES, PACKAGE_UI, CATEGORY_ICON } from "@/lib/packages";
 
 // ─── иконки по имени ────────────────────────────────────────────
@@ -51,6 +51,7 @@ export function InvestmentModal({
   const { toast }           = useToast();
   const connectedAddress    = useTonAddress();
   const { open: openTon }   = useTonConnectModal();
+  const [tonUI]             = useTonConnectUI();
 
   const [step, setStep]         = useState(1);
   const [selectedId, setId]     = useState(defaultPackage);
@@ -280,41 +281,88 @@ export function InvestmentModal({
                 </div>
               </div>
 
-              {/* Шаг 1 инструкции: открыть кошелёк и оплатить */}
+              {/* Шаг 1 инструкции: подключить кошелёк и оплатить */}
               {!payClicked ? (
                 <div className="space-y-3">
-                  <div className="flex items-center gap-2 text-sm font-semibold">
-                    <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-black shrink-0">1</span>
-                    Откройте кошелёк и оплатите:
+
+                  {/* ── Wallet Connect ── */}
+                  {connectedAddress ? (
+                    <div className="rounded-xl border border-green-500/30 bg-green-500/8 p-3 space-y-3">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center shrink-0">
+                            <CheckCircle2 className="w-4 h-4 text-green-400" />
+                          </div>
+                          <div>
+                            <div className="text-xs font-bold text-green-400">Кошелёк подключён</div>
+                            <div className="text-[10px] text-muted-foreground font-mono">
+                              {connectedAddress.slice(0, 6)}…{connectedAddress.slice(-6)}
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => tonUI.disconnect()}
+                          className="text-[10px] text-muted-foreground hover:text-foreground transition-colors border border-white/10 px-2 py-1 rounded-lg"
+                        >
+                          Отключить
+                        </button>
+                      </div>
+                      <button
+                        onClick={() => handleWalletPay(tonkeeperLink)}
+                        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-green-500/15 hover:bg-green-500/25 border border-green-500/30 transition-all font-bold text-sm text-green-400"
+                      >
+                        <Wallet className="w-4 h-4" />
+                        Оплатить ${pkg.price.toLocaleString()} USDT
+                        <ExternalLink className="w-3.5 h-3.5 opacity-60" />
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={openTon}
+                      className="w-full flex items-center gap-4 p-4 rounded-xl border-2 border-primary/40 bg-primary/8 hover:border-primary/70 hover:bg-primary/12 transition-all text-left group"
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center shrink-0">
+                        <Wallet className="w-5 h-5 text-primary" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-bold text-sm text-primary">Подключить TON кошелёк</div>
+                        <div className="text-xs text-muted-foreground">TonKeeper, TonSpace и другие</div>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-primary/60 group-hover:text-primary transition-colors" />
+                    </button>
+                  )}
+
+                  {/* ── Divider ── */}
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1 h-px bg-white/8" />
+                    <span className="text-[10px] text-muted-foreground uppercase tracking-wider">или открыть приложение</span>
+                    <div className="flex-1 h-px bg-white/8" />
                   </div>
 
+                  {/* ── Внешние приложения ── */}
                   <button onClick={() => handleWalletPay(tonkeeperLink)}
-                    className="w-full flex items-center gap-4 p-4 rounded-xl border border-white/10 hover:border-primary/50 hover:bg-primary/5 transition-all text-left">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0098EA] to-[#006BB5] flex items-center justify-center shrink-0">
-                      <Smartphone className="w-5 h-5 text-white" />
+                    className="w-full flex items-center gap-4 p-3.5 rounded-xl border border-white/10 hover:border-[#0098EA]/50 hover:bg-[#0098EA]/5 transition-all text-left">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0098EA] to-[#006BB5] flex items-center justify-center shrink-0">
+                      <Smartphone className="w-4 h-4 text-white" />
                     </div>
                     <div className="flex-1">
                       <div className="font-bold text-sm">TonKeeper</div>
-                      <div className="text-xs text-muted-foreground">Откроется с предзаполненным платежом</div>
+                      <div className="text-xs text-muted-foreground">Сумма и адрес заполнятся автоматически</div>
                     </div>
                     <ExternalLink className="w-4 h-4 text-muted-foreground" />
                   </button>
 
                   <button onClick={() => handleWalletPay(tonspaceLink)}
-                    className="w-full flex items-center gap-4 p-4 rounded-xl border border-white/10 hover:border-secondary/50 hover:bg-secondary/5 transition-all text-left">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7B5EFF] to-[#5B3FDF] flex items-center justify-center shrink-0">
-                      <Wallet className="w-5 h-5 text-white" />
+                    className="w-full flex items-center gap-4 p-3.5 rounded-xl border border-white/10 hover:border-[#7B5EFF]/50 hover:bg-[#7B5EFF]/5 transition-all text-left">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#7B5EFF] to-[#5B3FDF] flex items-center justify-center shrink-0">
+                      <Wallet className="w-4 h-4 text-white" />
                     </div>
                     <div className="flex-1">
                       <div className="font-bold text-sm">TonSpace</div>
-                      <div className="text-xs text-muted-foreground">Откроется с предзаполненным платежом</div>
+                      <div className="text-xs text-muted-foreground">Сумма и адрес заполнятся автоматически</div>
                     </div>
                     <ExternalLink className="w-4 h-4 text-muted-foreground" />
                   </button>
-
-                  <p className="text-xs text-muted-foreground text-center pt-1">
-                    Адрес получателя и сумма заполнятся автоматически
-                  </p>
                 </div>
               ) : (
                 /* Шаг 2 инструкции: подтвердить после оплаты */
