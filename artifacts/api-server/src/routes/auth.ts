@@ -148,7 +148,9 @@ router.post("/auth/forgot-password", async (req, res, next) => {
       const origin = req.headers.origin ?? `https://${req.headers.host}`;
       const resetUrl = `${origin}/reset-password?token=${token}`;
 
-      await sendPasswordResetEmail(user.email, resetUrl).catch(() => {});
+      await sendPasswordResetEmail(user.email, resetUrl).catch((err) => {
+        console.error("[forgot-password] email send failed:", err?.message ?? err);
+      });
     }
 
     res.json({ ok: true });
