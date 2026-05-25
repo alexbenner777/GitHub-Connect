@@ -66,6 +66,93 @@ async function fetchRecentUSDTTransfers(since: number): Promise<Array<{
   return results;
 }
 
+async function confirmInvestment(
+  inv: { id: number; userId: number; amount: string; packageName: string },
+  match: { txHash: string; amount: number },
+): Promise<boolean> {
+  let confirmed = false;
+  await db.transaction(async (tx) => {
+    const [updated] = await tx
+      .update(investmentsTable)
+      .set({ status: "confirmed", txHash: match.txHash, confirmedAt: new Date() })
+      .where(and(
+        eq(investmentsTable.id, inv.id),
+        eq(investmentsTable.status, "pending"),
+      ))
+      .returning();
+
+    if (!updated) return;
+    confirmed = true;
+
+    await tx.insert(transactionsTable).values({
+      userId: inv.userId,
+      type: "investment",
+      amount: inv.amount,
+      description: `Инвестиция подтверждена автоматически: ${inv.packageName}`,
+      status: "completed",
+      referenceId: inv.id,
+    });
+
+    const invAmount = parseFloat(inv.amount);
+    await processReferralBonuses(inv.id, inv.userId, invAmount, tx);
+
+    const [user] = await db.select({
+      name: usersTable.name,
+      telegramUsername: usersTable.telegramUsername,
+    }).from(usersTable).where(eq(usersTable.id, inv.userId));
+
+    notifyConfirmed({
+      investmentId: inv.id,
+      userName: user?.name ?? `User #${inv.userId}`,
+      telegramUsername: user?.telegramUsername ?? null,
+      packageName: inv.packageName,
+      amount: invAmount,
+      txHash: match.txHash,
+    });
+
+    logger.info({ investmentId: inv.id, txHash: match.txHash, amount: invAmount }, "Investment auto-confirmed via TON checker");
+  });
+  return confirmed;
+}
+
+export async function checkSingleInvestment(investmentId: number): Promise<boolean> {
+  try {
+    const [inv] = await db
+      .select({
+        id: investmentsTable.id,
+        userId: investmentsTable.userId,
+        amount: investmentsTable.amount,
+        packageName: investmentsTable.packageName,
+        walletFrom: investmentsTable.walletFrom,
+        txHash: investmentsTable.txHash,
+        createdAt: investmentsTable.createdAt,
+      })
+      .from(investmentsTable)
+      .where(and(eq(investmentsTable.id, investmentId), eq(investmentsTable.status, "pending")));
+
+    if (!inv) return false;
+
+    const invCreatedTs = new Date(inv.createdAt).getTime() / 1000;
+    const transfers = await fetchRecentUSDTTransfers(Math.floor(invCreatedTs) - 300);
+    if (transfers.length === 0) return false;
+
+    const invAmount = parseFloat(inv.amount);
+
+    const match = transfers.find(t => {
+      if (inv.txHash && t.txHash !== inv.txHash) return false;
+      const amountOk = Math.abs(t.amount - invAmount) < 0.05;
+      const timeOk = t.timestamp >= invCreatedTs - 300;
+      return amountOk && timeOk;
+    });
+
+    if (!match) return false;
+    return await confirmInvestment(inv, match);
+  } catch (err) {
+    logger.error(err, "TON single investment check error");
+    return false;
+  }
+}
+
 export async function checkAndConfirmPayments(): Promise<void> {
   try {
     const pending = await db
@@ -75,6 +162,7 @@ export async function checkAndConfirmPayments(): Promise<void> {
         amount: investmentsTable.amount,
         packageName: investmentsTable.packageName,
         walletFrom: investmentsTable.walletFrom,
+        txHash: investmentsTable.txHash,
         createdAt: investmentsTable.createdAt,
       })
       .from(investmentsTable)
@@ -92,52 +180,14 @@ export async function checkAndConfirmPayments(): Promise<void> {
       const invCreatedTs = new Date(inv.createdAt).getTime() / 1000;
 
       const match = transfers.find(t => {
+        if (inv.txHash && t.txHash !== inv.txHash) return false;
         const amountOk = Math.abs(t.amount - invAmount) < 0.05;
         const timeOk = t.timestamp >= invCreatedTs - 300;
         return amountOk && timeOk;
       });
 
       if (!match) continue;
-
-      await db.transaction(async (tx) => {
-        const [updated] = await tx
-          .update(investmentsTable)
-          .set({ status: "confirmed", txHash: match.txHash, confirmedAt: new Date() })
-          .where(and(
-            eq(investmentsTable.id, inv.id),
-            eq(investmentsTable.status, "pending"),
-          ))
-          .returning();
-
-        if (!updated) return;
-
-        await tx.insert(transactionsTable).values({
-          userId: inv.userId,
-          type: "investment",
-          amount: inv.amount,
-          description: `Инвестиция подтверждена автоматически: ${inv.packageName}`,
-          status: "completed",
-          referenceId: inv.id,
-        });
-
-        await processReferralBonuses(inv.id, inv.userId, invAmount, tx);
-
-        const [user] = await db.select({
-          name: usersTable.name,
-          telegramUsername: usersTable.telegramUsername,
-        }).from(usersTable).where(eq(usersTable.id, inv.userId));
-
-        notifyConfirmed({
-          investmentId: inv.id,
-          userName: user?.name ?? `User #${inv.userId}`,
-          telegramUsername: user?.telegramUsername ?? null,
-          packageName: inv.packageName,
-          amount: invAmount,
-          txHash: match.txHash,
-        });
-
-        logger.info({ investmentId: inv.id, txHash: match.txHash, amount: invAmount }, "Investment auto-confirmed via TON checker");
-      });
+      await confirmInvestment(inv, match);
     }
   } catch (err) {
     logger.error(err, "TON payment checker error");

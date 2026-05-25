@@ -10,6 +10,7 @@ import {
   notifyConfirmed,
   notifyRejected,
 } from "../lib/telegram.js";
+import { checkSingleInvestment } from "../lib/ton-checker.js";
 
 const createInvestmentSchema = z.object({
   packageId: z.enum(["founder0", "founder1", "founder2", "founder3", "founder4", "founder5"]),
@@ -78,6 +79,37 @@ router.get("/investments", requireAuth, async (req, res, next) => {
       .where(eq(investmentsTable.userId, userId))
       .orderBy(desc(investmentsTable.createdAt));
     res.json({ investments: list });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/investments/:id", requireAuth, async (req, res, next) => {
+  try {
+    const id = parseInt(req.params["id"] as string);
+    if (isNaN(id)) { res.status(400).json({ error: "Неверный ID" }); return; }
+    const userId = req.user!.userId;
+    const [inv] = await db.select().from(investmentsTable)
+      .where(and(eq(investmentsTable.id, id), eq(investmentsTable.userId, userId)));
+    if (!inv) { res.status(404).json({ error: "Не найдено" }); return; }
+    res.json({ investment: inv });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post("/investments/:id/check", requireAuth, async (req, res, next) => {
+  try {
+    const id = parseInt(req.params["id"] as string);
+    if (isNaN(id)) { res.status(400).json({ error: "Неверный ID" }); return; }
+    const userId = req.user!.userId;
+    const [inv] = await db.select({ id: investmentsTable.id, status: investmentsTable.status })
+      .from(investmentsTable)
+      .where(and(eq(investmentsTable.id, id), eq(investmentsTable.userId, userId)));
+    if (!inv) { res.status(404).json({ error: "Не найдено" }); return; }
+    if (inv.status !== "pending") { res.json({ confirmed: inv.status === "confirmed", status: inv.status }); return; }
+    const confirmed = await checkSingleInvestment(id);
+    res.json({ confirmed, status: confirmed ? "confirmed" : "pending" });
   } catch (err) {
     next(err);
   }

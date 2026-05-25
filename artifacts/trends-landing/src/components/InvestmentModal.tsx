@@ -59,10 +59,37 @@ export function InvestmentModal({
   const [submitting, setSub]    = useState(false);
   const [payClicked, setPayClicked] = useState(false);
   const [paying, setPaying]     = useState(false);
+  const [pendingInvId, setPendingInvId] = useState<number | null>(null);
+  const [pollTimeout, setPollTimeout]   = useState(false);
 
   useEffect(() => {
-    if (isOpen) { setStep(1); setId(defaultPackage); setWallet(""); setSub(false); setPayClicked(false); setPaying(false); }
+    if (isOpen) {
+      setStep(1); setId(defaultPackage); setWallet(""); setSub(false);
+      setPayClicked(false); setPaying(false); setPendingInvId(null); setPollTimeout(false);
+    }
   }, [isOpen, defaultPackage]);
+
+  useEffect(() => {
+    if (pendingInvId === null) return;
+    let tries = 0;
+    const MAX_TRIES = 60;
+    const timer = setInterval(async () => {
+      tries++;
+      try {
+        const { status } = await api.checkInvestment(pendingInvId);
+        if (status === "confirmed") {
+          clearInterval(timer);
+          setStep(3);
+        } else if (tries >= MAX_TRIES) {
+          clearInterval(timer);
+          setPollTimeout(true);
+        }
+      } catch {
+        if (tries >= MAX_TRIES) { clearInterval(timer); setPollTimeout(true); }
+      }
+    }, 10_000);
+    return () => clearInterval(timer);
+  }, [pendingInvId]);
 
   useEffect(() => { if (connectedAddress) setWallet(connectedAddress); }, [connectedAddress]);
 
@@ -86,6 +113,7 @@ export function InvestmentModal({
 
   const handleTonConnectPay = async () => {
     if (!connectedAddress || !tonUI) return;
+    if (!user) { onClose(); setLocation("/login"); return; }
     setPaying(true);
     try {
       const { TonClient, JettonMaster } = await import("@ton/ton");
@@ -114,7 +142,7 @@ export function InvestmentModal({
         .storeRef(forwardPayload)
         .endCell();
 
-      await tonUI.sendTransaction({
+      const result = await tonUI.sendTransaction({
         validUntil: Math.floor(Date.now() / 1000) + 600,
         messages: [{
           address: jettonWalletAddr.toString(),
@@ -123,13 +151,21 @@ export function InvestmentModal({
         }],
       });
 
-      setPayClicked(true);
+      const txHash = (result as any)?.boc ?? undefined;
+
+      const { investment } = await api.createInvestment({
+        packageId: selectedId,
+        walletFrom: connectedAddress,
+        txHash: typeof txHash === "string" ? txHash : undefined,
+      });
+
+      setPendingInvId(investment.id);
     } catch (err: any) {
       const msg: string = err?.message ?? "";
       if (/reject|cancel|decline|user/i.test(msg)) {
         toast({ title: "Транзакция отменена", variant: "destructive" });
       } else {
-        toast({ title: "Ошибка при отправке транзакции", description: msg || "Попробуйте ещё раз", variant: "destructive" });
+        toast({ title: "Ошибка при отправке", description: msg || "Попробуйте ещё раз", variant: "destructive" });
       }
     } finally {
       setPaying(false);
@@ -348,9 +384,11 @@ export function InvestmentModal({
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }}
               className="p-6 space-y-4 overflow-y-auto"
             >
-              <button onClick={() => setStep(1)} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                <ArrowLeft className="w-4 h-4" /> Назад
-              </button>
+              {!pendingInvId && (
+                <button onClick={() => setStep(1)} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  <ArrowLeft className="w-4 h-4" /> Назад
+                </button>
+              )}
               <h2 className="text-2xl font-bold text-center">Оплата</h2>
 
               {/* Сумма */}
@@ -362,8 +400,46 @@ export function InvestmentModal({
                 </div>
               </div>
 
-              {/* Шаг 1 инструкции: подключить кошелёк и оплатить */}
-              {!payClicked ? (
+              {/* ── Экран ожидания подтверждения блокчейна ── */}
+              {pendingInvId ? (
+                <motion.div
+                  key="checking"
+                  initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+                  className="space-y-4 py-2"
+                >
+                  {pollTimeout ? (
+                    <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/8 p-4 text-center space-y-2">
+                      <div className="text-2xl">⏳</div>
+                      <div className="font-bold text-yellow-400">Транзакция ещё обрабатывается</div>
+                      <div className="text-xs text-muted-foreground">
+                        Блокчейн может занять больше времени. Ваша заявка сохранена — мы подтвердим её вручную в течение 24 часов.
+                      </div>
+                      <button onClick={() => setStep(3)} className="mt-2 text-xs text-primary hover:underline">
+                        Перейти к заявке →
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="rounded-xl border border-primary/30 bg-primary/8 p-6 text-center space-y-4">
+                      <div className="relative w-16 h-16 mx-auto">
+                        <div className="absolute inset-0 rounded-full border-2 border-primary/20" />
+                        <div className="absolute inset-0 rounded-full border-2 border-t-primary border-r-transparent border-b-transparent border-l-transparent animate-spin" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <CheckCircle2 className="w-6 h-6 text-primary/60" />
+                        </div>
+                      </div>
+                      <div>
+                        <div className="font-bold text-base text-primary">Транзакция отправлена</div>
+                        <div className="text-sm text-muted-foreground mt-1">Ожидаем подтверждения в блокчейне TON…</div>
+                        <div className="text-xs text-muted-foreground/60 mt-2">Обычно 10–60 секунд · Проверяем каждые 10 сек</div>
+                      </div>
+                    </div>
+                  )}
+                  <div className={`text-center rounded-xl p-3 border ${ui.border} bg-white/3`}>
+                    <div className="text-xs text-muted-foreground">Заявка #{pendingInvId} · ${pkg.price.toLocaleString()} USDT</div>
+                    <div className="text-xs text-muted-foreground/60 mt-0.5">Пакет «{pkg.name}»</div>
+                  </div>
+                </motion.div>
+              ) : !payClicked ? (
                 <div className="space-y-3">
 
                   {/* ── Wallet Connect ── */}
@@ -397,7 +473,7 @@ export function InvestmentModal({
                           ? <Loader2 className="w-4 h-4 animate-spin" />
                           : <Wallet className="w-4 h-4" />
                         }
-                        {paying ? "Ожидание подтверждения…" : `Оплатить $${pkg.price.toLocaleString()} USDT`}
+                        {paying ? "Подписание транзакции…" : `Оплатить $${pkg.price.toLocaleString()} USDT`}
                       </button>
                     </div>
                   ) : (
@@ -410,7 +486,7 @@ export function InvestmentModal({
                       </div>
                       <div className="flex-1">
                         <div className="font-bold text-sm text-primary">Подключить TON кошелёк</div>
-                        <div className="text-xs text-muted-foreground">TonKeeper, TonSpace и другие</div>
+                        <div className="text-xs text-muted-foreground">Telegram Wallet, TonKeeper и другие</div>
                       </div>
                       <ChevronRight className="w-4 h-4 text-primary/60 group-hover:text-primary transition-colors" />
                     </button>

@@ -52,8 +52,14 @@ export const api = {
 
   referrals: () => request<{ levels: Record<number, { count: number; earned: number }> }>("/cabinet/referrals"),
 
-  createInvestment: (body: { packageId: string; walletFrom?: string }) =>
+  createInvestment: (body: { packageId: string; walletFrom?: string; txHash?: string }) =>
     request<{ investment: Investment }>("/investments", { method: "POST", body: JSON.stringify(body) }),
+
+  getInvestment: (id: number) =>
+    request<{ investment: Investment }>(`/investments/${id}`),
+
+  checkInvestment: (id: number) =>
+    request<{ confirmed: boolean; status: string }>(`/investments/${id}/check`, { method: "POST" }),
 
   updateWallet: (body: { walletAddress: string; walletNetwork: string }) =>
     request("/cabinet/wallet", { method: "PATCH", body: JSON.stringify(body) }),
