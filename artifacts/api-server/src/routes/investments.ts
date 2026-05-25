@@ -11,6 +11,7 @@ import {
   notifyRejected,
 } from "../lib/telegram.js";
 import { checkSingleInvestment } from "../lib/ton-checker.js";
+import { sendInvestmentConfirmedEmail } from "../lib/email.js";
 
 const createInvestmentSchema = z.object({
   packageId: z.enum(["founder0", "founder1", "founder2", "founder3", "founder4", "founder5"]),
@@ -158,6 +159,7 @@ router.patch("/admin/investments/:id/confirm", requireAdmin, async (req, res, ne
 
       const [user] = await db.select({
         name: usersTable.name,
+        email: usersTable.email,
         telegramUsername: usersTable.telegramUsername,
       }).from(usersTable).where(eq(usersTable.id, inv.userId));
 
@@ -169,6 +171,19 @@ router.patch("/admin/investments/:id/confirm", requireAdmin, async (req, res, ne
         amount: parseFloat(inv.amount),
         txHash: txHash ?? inv.txHash ?? null,
       });
+
+      if (user?.email) {
+        const origin = process.env.RENDER_EXTERNAL_URL
+          ?? (process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : "https://trendspartner.space");
+        sendInvestmentConfirmedEmail({
+          to: user.email,
+          name: user.name,
+          packageName: inv.packageName,
+          amount: parseFloat(inv.amount),
+          txHash: txHash ?? inv.txHash ?? null,
+          cabinetUrl: `${origin}/cabinet`,
+        }).catch((err) => console.error("[email] Failed to send confirmation email:", err?.message));
+      }
 
       res.json({ investment: updated });
     });

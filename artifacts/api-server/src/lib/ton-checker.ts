@@ -3,6 +3,7 @@ import { eq, and } from "drizzle-orm";
 import { logger } from "./logger.js";
 import { processReferralBonuses } from "./referral.js";
 import { notifyConfirmed } from "./telegram.js";
+import { sendInvestmentConfirmedEmail } from "./email.js";
 
 const PAYMENT_WALLET = "UQCG4jJ5BHZhV0qAOwYxMNemhgcdtMBJv5cDXs0O5K3LNAgt";
 const TONAPI_BASE = "https://tonapi.io/v2";
@@ -98,6 +99,7 @@ async function confirmInvestment(
 
     const [user] = await db.select({
       name: usersTable.name,
+      email: usersTable.email,
       telegramUsername: usersTable.telegramUsername,
     }).from(usersTable).where(eq(usersTable.id, inv.userId));
 
@@ -109,6 +111,19 @@ async function confirmInvestment(
       amount: invAmount,
       txHash: match.txHash,
     });
+
+    if (user?.email) {
+      const origin = process.env.RENDER_EXTERNAL_URL
+        ?? (process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : "https://trendspartner.space");
+      sendInvestmentConfirmedEmail({
+        to: user.email,
+        name: user.name,
+        packageName: inv.packageName,
+        amount: invAmount,
+        txHash: match.txHash,
+        cabinetUrl: `${origin}/cabinet`,
+      }).catch((err) => logger.warn({ err }, "Failed to send confirmation email"));
+    }
 
     logger.info({ investmentId: inv.id, txHash: match.txHash, amount: invAmount }, "Investment auto-confirmed via TON checker");
   });
