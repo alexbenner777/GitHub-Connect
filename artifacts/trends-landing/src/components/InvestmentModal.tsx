@@ -58,9 +58,10 @@ export function InvestmentModal({
   const [walletFrom, setWallet] = useState("");
   const [submitting, setSub]    = useState(false);
   const [payClicked, setPayClicked] = useState(false);
+  const [paying, setPaying]     = useState(false);
 
   useEffect(() => {
-    if (isOpen) { setStep(1); setId(defaultPackage); setWallet(""); setSub(false); setPayClicked(false); }
+    if (isOpen) { setStep(1); setId(defaultPackage); setWallet(""); setSub(false); setPayClicked(false); setPaying(false); }
   }, [isOpen, defaultPackage]);
 
   useEffect(() => { if (connectedAddress) setWallet(connectedAddress); }, [connectedAddress]);
@@ -81,6 +82,58 @@ export function InvestmentModal({
     a.click();
     document.body.removeChild(a);
     setPayClicked(true);
+  };
+
+  const handleTonConnectPay = async () => {
+    if (!connectedAddress || !tonUI) return;
+    setPaying(true);
+    try {
+      const { TonClient, JettonMaster } = await import("@ton/ton");
+      const { Address, beginCell, toNano } = await import("@ton/core");
+
+      const client = new TonClient({ endpoint: "https://toncenter.com/api/v2/jsonRPC" });
+      const master = client.open(JettonMaster.create(Address.parse(USDT_MASTER)));
+      const jettonWalletAddr = await master.getWalletAddress(Address.parse(connectedAddress));
+
+      const jettonAmount = BigInt(pkg.price * 1_000_000);
+
+      const forwardPayload = beginCell()
+        .storeUint(0, 32)
+        .storeStringTail(`Trends ${pkg.name}`)
+        .endCell();
+
+      const body = beginCell()
+        .storeUint(0xf8a7ea5, 32)
+        .storeUint(0, 64)
+        .storeCoins(jettonAmount)
+        .storeAddress(Address.parse(PAYMENT_WALLET))
+        .storeAddress(Address.parse(connectedAddress))
+        .storeBit(0)
+        .storeCoins(toNano("0.05"))
+        .storeBit(1)
+        .storeRef(forwardPayload)
+        .endCell();
+
+      await tonUI.sendTransaction({
+        validUntil: Math.floor(Date.now() / 1000) + 600,
+        messages: [{
+          address: jettonWalletAddr.toString(),
+          amount: toNano("0.15").toString(),
+          payload: Buffer.from(body.toBoc()).toString("base64"),
+        }],
+      });
+
+      setPayClicked(true);
+    } catch (err: any) {
+      const msg: string = err?.message ?? "";
+      if (/reject|cancel|decline|user/i.test(msg)) {
+        toast({ title: "Транзакция отменена", variant: "destructive" });
+      } else {
+        toast({ title: "Ошибка при отправке транзакции", description: msg || "Попробуйте ещё раз", variant: "destructive" });
+      }
+    } finally {
+      setPaying(false);
+    }
   };
 
   const handleSubmit = async () => {
@@ -336,12 +389,15 @@ export function InvestmentModal({
                         </button>
                       </div>
                       <button
-                        onClick={() => handleWalletPay(tonkeeperLink)}
-                        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-green-500/15 hover:bg-green-500/25 border border-green-500/30 transition-all font-bold text-sm text-green-400"
+                        onClick={handleTonConnectPay}
+                        disabled={paying}
+                        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-green-500/15 hover:bg-green-500/25 border border-green-500/30 transition-all font-bold text-sm text-green-400 disabled:opacity-60 disabled:cursor-not-allowed"
                       >
-                        <Wallet className="w-4 h-4" />
-                        Оплатить ${pkg.price.toLocaleString()} USDT
-                        <ExternalLink className="w-3.5 h-3.5 opacity-60" />
+                        {paying
+                          ? <Loader2 className="w-4 h-4 animate-spin" />
+                          : <Wallet className="w-4 h-4" />
+                        }
+                        {paying ? "Ожидание подтверждения…" : `Оплатить $${pkg.price.toLocaleString()} USDT`}
                       </button>
                     </div>
                   ) : (
