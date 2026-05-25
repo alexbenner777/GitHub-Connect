@@ -69,8 +69,8 @@ export function InvestmentModal({
   const ui     = PACKAGE_UI[selectedId];
   const PkgIcon = ICONS[ui.iconName];
 
-  const tonkeeperLink = buildLink("https://app.tonkeeper.com/transfer", pkg.price, `Trends ${pkg.name}`);
-  const tonspaceLink  = buildLink("https://tonspace.co/transfer",       pkg.price, `Trends ${pkg.name}`);
+  const tonkeeperLink  = buildLink("https://app.tonkeeper.com/transfer", pkg.price, `Trends ${pkg.name}`);
+  const mytonwallet   = buildLink("https://mytonwallet.io/transfer",    pkg.price, `Trends ${pkg.name}`);
 
   const handleWalletPay = (url: string) => {
     window.open(url, "_blank");
@@ -352,13 +352,13 @@ export function InvestmentModal({
                     <ExternalLink className="w-4 h-4 text-muted-foreground" />
                   </button>
 
-                  <button onClick={() => handleWalletPay(tonspaceLink)}
+                  <button onClick={() => handleWalletPay(mytonwallet)}
                     className="w-full flex items-center gap-4 p-3.5 rounded-xl border border-white/10 hover:border-[#7B5EFF]/50 hover:bg-[#7B5EFF]/5 transition-all text-left">
                     <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#7B5EFF] to-[#5B3FDF] flex items-center justify-center shrink-0">
                       <Wallet className="w-4 h-4 text-white" />
                     </div>
                     <div className="flex-1">
-                      <div className="font-bold text-sm">TonSpace</div>
+                      <div className="font-bold text-sm">MyTonWallet</div>
                       <div className="text-xs text-muted-foreground">Сумма и адрес заполнятся автоматически</div>
                     </div>
                     <ExternalLink className="w-4 h-4 text-muted-foreground" />
