@@ -108,42 +108,71 @@ export function InvestmentModal({
                 </p>
               </div>
 
-              {/* Двухколоночный layout */}
+              {/* Layout: mobile = column, desktop = row */}
               <div className="flex flex-col md:flex-row flex-1 min-h-0 overflow-hidden">
 
-                {/* Левая панель — список пакетов */}
-                <div className="md:w-[210px] shrink-0 border-b md:border-b-0 md:border-r border-white/8 overflow-y-auto py-2 px-2">
-                  {PACKAGES.map(p => {
-                    const pui = PACKAGE_UI[p.id];
-                    const PIco = ICONS[pui.iconName];
-                    const active = selectedId === p.id;
-                    return (
-                      <button key={p.id} onClick={() => setId(p.id)}
-                        className={`w-full text-left p-2.5 rounded-xl transition-all border mb-1 ${
-                          active ? `${pui.border} bg-white/8` : "border-transparent hover:border-white/10 hover:bg-white/4"
-                        }`}
-                      >
-                        <div className="flex items-center justify-between gap-2">
-                          <div className="flex items-center gap-2 min-w-0">
-                            <PIco className={`w-4 h-4 shrink-0 ${pui.color}`} />
-                            <div className="min-w-0">
-                              <div className={`text-sm font-bold truncate ${active ? pui.color : ""}`}>
-                                {p.name}
-                                {p.recommended && (
-                                  <span className="ml-1 text-[9px] bg-primary/20 text-primary px-1.5 py-0.5 rounded-full">ХИТ</span>
-                                )}
+                {/* Mobile: горизонтальный скролл / Desktop: вертикальная панель */}
+                <div className="md:w-[210px] shrink-0 md:border-r border-white/8 md:overflow-y-auto">
+                  {/* Desktop list */}
+                  <div className="hidden md:block py-2 px-2">
+                    {PACKAGES.map(p => {
+                      const pui = PACKAGE_UI[p.id];
+                      const PIco = ICONS[pui.iconName];
+                      const active = selectedId === p.id;
+                      return (
+                        <button key={p.id} onClick={() => setId(p.id)}
+                          className={`w-full text-left p-2.5 rounded-xl transition-all border mb-1 ${
+                            active ? `${pui.border} bg-white/8` : "border-transparent hover:border-white/10 hover:bg-white/4"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-2 min-w-0">
+                              <PIco className={`w-4 h-4 shrink-0 ${pui.color}`} />
+                              <div className="min-w-0">
+                                <div className={`text-sm font-bold truncate ${active ? pui.color : ""}`}>
+                                  {p.name}
+                                  {p.recommended && (
+                                    <span className="ml-1 text-[9px] bg-primary/20 text-primary px-1.5 py-0.5 rounded-full">ХИТ</span>
+                                  )}
+                                </div>
+                                <div className="text-xs text-muted-foreground font-mono">${p.price.toLocaleString()}</div>
                               </div>
-                              <div className="text-xs text-muted-foreground font-mono">${p.price.toLocaleString()}</div>
                             </div>
+                            {active && <ChevronRight className={`w-3.5 h-3.5 shrink-0 ${pui.color}`} />}
                           </div>
-                          {active && <ChevronRight className={`w-3.5 h-3.5 shrink-0 ${pui.color}`} />}
-                        </div>
-                      </button>
-                    );
-                  })}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {/* Mobile: горизонтальный скролл-ряд */}
+                  <div className="md:hidden flex gap-2 overflow-x-auto px-3 py-2.5 border-b border-white/8 scrollbar-none">
+                    {PACKAGES.map(p => {
+                      const pui = PACKAGE_UI[p.id];
+                      const PIco = ICONS[pui.iconName];
+                      const active = selectedId === p.id;
+                      return (
+                        <button key={p.id} onClick={() => setId(p.id)}
+                          className={`flex-none flex items-center gap-1.5 px-3 py-2 rounded-xl border transition-all ${
+                            active ? `${pui.border} bg-white/10` : "border-white/10 bg-white/3"
+                          }`}
+                        >
+                          <PIco className={`w-3.5 h-3.5 shrink-0 ${pui.color}`} />
+                          <div className="text-left">
+                            <div className={`text-xs font-bold whitespace-nowrap ${active ? pui.color : ""}`}>
+                              {p.name}
+                              {p.recommended && (
+                                <span className="ml-1 text-[8px] bg-primary/20 text-primary px-1 py-0.5 rounded-full">ХИТ</span>
+                              )}
+                            </div>
+                            <div className="text-[10px] text-muted-foreground font-mono">${p.price.toLocaleString()}</div>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
 
-                {/* Правая панель — детали пакета */}
+                {/* Детали пакета */}
                 <div className="flex-1 overflow-y-auto">
                   <AnimatePresence mode="wait">
                     <motion.div key={selectedId}
