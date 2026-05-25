@@ -78,6 +78,70 @@ export async function sendInvestmentConfirmedEmail(p: InvestmentConfirmedParams)
   await sendEmail(p.to, `✅ Инвестиция подтверждена — ${p.packageName} · $${p.amount.toLocaleString("ru-RU")} USDT`, html);
 }
 
+export interface InvestmentRejectedParams {
+  to: string;
+  name: string;
+  packageName: string;
+  amount: number;
+  reason?: string | null;
+  cabinetUrl: string;
+}
+
+export async function sendInvestmentRejectedEmail(p: InvestmentRejectedParams): Promise<void> {
+  const reasonRow = p.reason
+    ? `<tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+        <td style="color:#8b92a0;padding:10px 0;font-size:13px;vertical-align:top;">Причина</td>
+        <td style="font-size:13px;color:#fff;text-align:right;">${p.reason}</td>
+       </tr>`
+    : "";
+
+  const html = `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0d0f14;color:#fff;margin:0;padding:40px 20px;">
+  <div style="max-width:520px;margin:0 auto;background:#151821;border-radius:16px;padding:40px;border:1px solid rgba(255,255,255,0.08);">
+    <div style="margin-bottom:28px;">
+      <span style="font-size:22px;font-weight:900;color:#fff;">Trends</span>
+    </div>
+
+    <div style="background:rgba(255,80,80,0.08);border:1px solid rgba(255,80,80,0.25);border-radius:14px;padding:20px;text-align:center;margin-bottom:28px;">
+      <div style="font-size:32px;margin-bottom:8px;">❌</div>
+      <div style="font-size:20px;font-weight:900;color:#ff5050;">Инвестиция отклонена</div>
+      <div style="color:#8b92a0;font-size:13px;margin-top:4px;">Ваша заявка не была подтверждена</div>
+    </div>
+
+    <p style="color:#c8cdd6;font-size:15px;margin:0 0 24px;line-height:1.6;">
+      Привет, <strong style="color:#fff;">${p.name}</strong>!<br><br>
+      К сожалению, ваша заявка на инвестицию в пакет <strong style="color:#ff5050;">«${p.packageName}»</strong> была отклонена. Если вы считаете это ошибкой или хотите повторить попытку — свяжитесь с нами.
+    </p>
+
+    <table style="width:100%;border-collapse:collapse;margin-bottom:28px;">
+      <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+        <td style="color:#8b92a0;padding:10px 0;font-size:13px;">Пакет</td>
+        <td style="font-size:14px;font-weight:700;color:#fff;text-align:right;">${p.packageName}</td>
+      </tr>
+      <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+        <td style="color:#8b92a0;padding:10px 0;font-size:13px;">Сумма</td>
+        <td style="font-size:14px;font-weight:700;color:#8b92a0;text-align:right;">$${p.amount.toLocaleString("ru-RU")} USDT</td>
+      </tr>
+      ${reasonRow}
+    </table>
+
+    <a href="${p.cabinetUrl}" style="display:block;text-align:center;background:linear-gradient(135deg,#00D4FF,#7B5EFF);color:#fff;text-decoration:none;font-weight:700;font-size:15px;padding:14px 32px;border-radius:12px;margin-bottom:24px;">
+      Открыть личный кабинет →
+    </a>
+
+    <p style="color:#555c6a;font-size:12px;margin:0;line-height:1.6;text-align:center;">
+      Если у вас есть вопросы — напишите в поддержку.<br>
+      Мы всегда рады помочь 🙏
+    </p>
+  </div>
+</body>
+</html>`;
+
+  await sendEmail(p.to, `❌ Заявка на инвестицию отклонена — ${p.packageName}`, html);
+}
+
 export async function sendPasswordResetEmail(to: string, resetUrl: string): Promise<void> {
   if (!RESEND_API_KEY) {
     throw new Error("RESEND_API_KEY не задан — отправка email невозможна");

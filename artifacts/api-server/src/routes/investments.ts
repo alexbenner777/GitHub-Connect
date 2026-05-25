@@ -11,7 +11,7 @@ import {
   notifyRejected,
 } from "../lib/telegram.js";
 import { checkSingleInvestment } from "../lib/ton-checker.js";
-import { sendInvestmentConfirmedEmail } from "../lib/email.js";
+import { sendInvestmentConfirmedEmail, sendInvestmentRejectedEmail } from "../lib/email.js";
 
 const createInvestmentSchema = z.object({
   packageId: z.enum(["founder0", "founder1", "founder2", "founder3", "founder4", "founder5"]),
@@ -197,6 +197,10 @@ router.patch("/admin/investments/:id/reject", requireAdmin, async (req, res, nex
     const id = parseInt(req.params["id"] as string);
     if (isNaN(id)) { res.status(400).json({ error: "Неверный ID" }); return; }
 
+    const reason: string | undefined = typeof req.body?.reason === "string" && req.body.reason.trim()
+      ? req.body.reason.trim()
+      : undefined;
+
     const [inv] = await db.select().from(investmentsTable).where(eq(investmentsTable.id, id));
     if (!inv) { res.status(404).json({ error: "Инвестиция не найдена" }); return; }
     if (inv.status !== "pending") { res.status(400).json({ error: "Можно отклонить только pending-инвестицию" }); return; }
@@ -208,6 +212,7 @@ router.patch("/admin/investments/:id/reject", requireAdmin, async (req, res, nex
 
     const [user] = await db.select({
       name: usersTable.name,
+      email: usersTable.email,
       telegramUsername: usersTable.telegramUsername,
     }).from(usersTable).where(eq(usersTable.id, inv.userId));
 
@@ -218,6 +223,19 @@ router.patch("/admin/investments/:id/reject", requireAdmin, async (req, res, nex
       packageName: inv.packageName,
       amount: parseFloat(inv.amount),
     });
+
+    if (user?.email) {
+      const origin = process.env.RENDER_EXTERNAL_URL
+        ?? (process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : "https://trendspartner.space");
+      sendInvestmentRejectedEmail({
+        to: user.email,
+        name: user.name,
+        packageName: inv.packageName,
+        amount: parseFloat(inv.amount),
+        reason: reason ?? null,
+        cabinetUrl: `${origin}/cabinet`,
+      }).catch((err) => console.error("[email] Failed to send rejection email:", err?.message));
+    }
 
     res.json({ investment: updated });
   } catch (err) {

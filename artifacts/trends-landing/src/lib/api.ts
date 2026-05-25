@@ -69,8 +69,8 @@ export const api = {
   adminConfirm: (id: number, txHash?: string) =>
     request(`/admin/investments/${id}/confirm`, { method: "PATCH", body: JSON.stringify({ txHash }) }),
 
-  adminReject: (id: number) =>
-    request(`/admin/investments/${id}/reject`, { method: "PATCH", body: JSON.stringify({}) }),
+  adminReject: (id: number, reason?: string) =>
+    request(`/admin/investments/${id}/reject`, { method: "PATCH", body: JSON.stringify({ reason: reason ?? null }) }),
 
   stats: () => request<{ raised: number; investors: number }>("/stats"),
 

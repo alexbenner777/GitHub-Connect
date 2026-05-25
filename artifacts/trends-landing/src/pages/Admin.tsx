@@ -11,6 +11,10 @@ import {
   AlertTriangle, Search, ExternalLink, ChevronDown, ChevronUp,
   LogOut, Shield, BarChart3, Save, History
 } from "lucide-react";
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
+} from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 
 function StatusBadge({ status }: { status: string }) {
   if (status === "confirmed") return (
@@ -58,6 +62,8 @@ export default function Admin() {
   const [txHashes, setTxHashes] = useState<Record<number, string>>({});
   const [confirming, setConfirming] = useState<number | null>(null);
   const [rejecting, setRejecting] = useState<number | null>(null);
+  const [rejectDialogId, setRejectDialogId] = useState<number | null>(null);
+  const [rejectReason, setRejectReason] = useState("");
   const [fetching, setFetching] = useState(true);
   const [search, setSearch] = useState("");
   const [tab, setTab] = useState<"pending" | "confirmed" | "rejected" | "all">("pending");
@@ -165,10 +171,18 @@ export default function Admin() {
     }
   };
 
-  const reject = async (id: number) => {
+  const openRejectDialog = (id: number) => {
+    setRejectReason("");
+    setRejectDialogId(id);
+  };
+
+  const reject = async () => {
+    if (rejectDialogId == null) return;
+    const id = rejectDialogId;
+    setRejectDialogId(null);
     setRejecting(id);
     try {
-      await api.adminReject(id);
+      await api.adminReject(id, rejectReason.trim() || undefined);
       toast({ title: "Инвестиция отклонена" });
       load();
     } catch (err: any) {
@@ -354,7 +368,7 @@ export default function Admin() {
                               ? <RefreshCw className="w-3.5 h-3.5 animate-spin" />
                               : <><CheckCircle2 className="w-3.5 h-3.5 mr-1" />Подтвердить</>}
                           </Button>
-                          <Button size="sm" onClick={() => reject(inv.id)} disabled={confirming === inv.id || rejecting === inv.id}
+                          <Button size="sm" onClick={() => openRejectDialog(inv.id)} disabled={confirming === inv.id || rejecting === inv.id}
                             className="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-xl h-8 px-3 font-bold text-xs shrink-0">
                             {rejecting === inv.id
                               ? <RefreshCw className="w-3.5 h-3.5 animate-spin" />
@@ -580,6 +594,42 @@ export default function Admin() {
         )}
 
       </div>
+
+      {/* Reject reason dialog */}
+      <Dialog open={rejectDialogId != null} onOpenChange={(open) => { if (!open) setRejectDialogId(null); }}>
+        <DialogContent className="bg-[#151821] border border-white/10 text-white max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="text-base font-bold flex items-center gap-2">
+              <XCircle className="w-4 h-4 text-red-400" />
+              Отклонить инвестицию
+            </DialogTitle>
+          </DialogHeader>
+          <div className="py-2">
+            <p className="text-sm text-white/50 mb-3">
+              Укажите причину отклонения — она будет отправлена инвестору на email (необязательно).
+            </p>
+            <Textarea
+              placeholder="Причина отклонения (необязательно)..."
+              value={rejectReason}
+              onChange={(e) => setRejectReason(e.target.value)}
+              className="bg-background/60 border-white/10 text-white placeholder:text-white/30 resize-none h-24 text-sm"
+              autoFocus
+            />
+          </div>
+          <DialogFooter className="gap-2">
+            <Button variant="ghost" onClick={() => setRejectDialogId(null)}
+              className="text-white/50 hover:text-white border border-white/10">
+              Отмена
+            </Button>
+            <Button onClick={reject}
+              className="bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/30 font-bold">
+              <XCircle className="w-3.5 h-3.5 mr-1.5" />
+              Отклонить
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
     </div>
   );
 }
