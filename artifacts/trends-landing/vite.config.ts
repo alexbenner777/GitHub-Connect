@@ -76,6 +76,11 @@ export default defineConfig({
           res.end(JSON.stringify({ error: "Сервер временно недоступен, попробуйте позже" }));
         },
       },
+      "/tonconnect-manifest.json": {
+        target: "http://localhost:8080",
+        changeOrigin: true,
+        rewrite: (path) => `/api${path}`,
+      },
     },
   },
   preview: {
