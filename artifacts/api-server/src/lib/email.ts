@@ -1,5 +1,5 @@
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const FROM_EMAIL = process.env.FROM_EMAIL ?? "Trends Investor <noreply@trendspartner.space>";
+const FROM_EMAIL = process.env.FROM_EMAIL ?? "Trends Investor <onboarding@resend.dev>";
 
 export async function sendPasswordResetEmail(to: string, resetUrl: string): Promise<void> {
   if (!RESEND_API_KEY) {
