@@ -84,7 +84,17 @@ export function InvestmentModal({
       await api.createInvestment({ packageId: selectedId, walletFrom: walletFrom || connectedAddress || undefined });
       setStep(3);
     } catch (err: any) {
-      toast({ title: err.message ?? "Ошибка", variant: "destructive" });
+      const msg: string = err.message ?? "Ошибка";
+      const isDuplicate = msg.includes("уже есть") || msg.includes("500") || msg.toLowerCase().includes("internal");
+      if (isDuplicate) {
+        toast({
+          title: "Заявка уже создана",
+          description: `У вас уже есть ожидающая инвестиция «${pkg.name}». Перейдите в кабинет — она там отображается.`,
+          variant: "destructive",
+        });
+      } else {
+        toast({ title: msg, variant: "destructive" });
+      }
     } finally { setSub(false); }
   };
 
