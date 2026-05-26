@@ -79,8 +79,25 @@ app.use("/api", router);
 
 if (process.env.NODE_ENV === "production") {
   const staticDir = path.resolve(__dirname, "../../trends-landing/dist/public");
-  app.use(express.static(staticDir));
-  app.get("/{*any}", (_req: Request, res: Response) => {
+
+  // Hashed assets — cache forever
+  app.use("/assets", express.static(path.join(staticDir, "assets"), {
+    immutable: true,
+    maxAge: "1y",
+  }));
+
+  // Other static files (favicon, robots.txt, sitemap.xml, og-image.png, etc.)
+  app.use(express.static(staticDir, {
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith("index.html")) {
+        res.setHeader("Cache-Control", "no-cache");
+      }
+    },
+  }));
+
+  // SPA fallback — only for routes without a file extension
+  app.get("/{*any}", (req: Request, res: Response) => {
+    if (path.extname(req.path)) return res.status(404).send("Not found");
     res.sendFile(path.join(staticDir, "index.html"));
   });
 }
