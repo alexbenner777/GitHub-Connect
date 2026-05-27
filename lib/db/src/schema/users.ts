@@ -13,6 +13,15 @@ export const usersTable = pgTable("users", {
   isAdmin: boolean("is_admin").notNull().default(false),
   walletAddress: text("wallet_address"),
   walletNetwork: text("wallet_network"),
+  // Wallet OTP verification
+  walletOtpCode: text("wallet_otp_code"),
+  walletOtpExpiry: timestamp("wallet_otp_expiry", { withTimezone: true }),
+  walletOtpPending: text("wallet_otp_pending"), // JSON: { address, network }
+  // Two-factor authentication
+  twoFactorEnabled: boolean("two_factor_enabled").notNull().default(false),
+  twoFactorCode: text("two_factor_code"),
+  twoFactorExpiry: timestamp("two_factor_expiry", { withTimezone: true }),
+  // Password reset
   resetToken: text("reset_token"),
   resetTokenExpiry: timestamp("reset_token_expiry", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),

@@ -104,7 +104,7 @@ if (process.env.NODE_ENV === "production") {
 
   // SPA fallback — only for routes without a file extension
   app.get("/{*any}", (req: Request, res: Response) => {
-    if (path.extname(req.path)) return res.status(404).send("Not found");
+    if (path.extname(req.path)) { res.status(404).send("Not found"); return; }
     res.sendFile(path.join(staticDir, "index.html"));
   });
 }

@@ -9,12 +9,26 @@ declare global {
   }
 }
 
+const MUTATION_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
+
 function extractToken(req: Request): string | null {
   const cookie = (req.cookies as Record<string, string> | undefined)?.["trends_token"];
   if (cookie) return cookie;
+  // Keep Authorization header support during transition period
   const header = req.headers.authorization;
   if (header?.startsWith("Bearer ")) return header.slice(7);
   return null;
+}
+
+export function validateCsrf(req: Request, res: Response, next: NextFunction) {
+  if (!MUTATION_METHODS.has(req.method)) return next();
+  const cookieToken = (req.cookies as Record<string, string> | undefined)?.["trends_csrf"];
+  const headerToken = req.headers["x-csrf-token"] as string | undefined;
+  if (!cookieToken || !headerToken || cookieToken !== headerToken) {
+    res.status(403).json({ error: "Invalid CSRF token" });
+    return;
+  }
+  next();
 }
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
