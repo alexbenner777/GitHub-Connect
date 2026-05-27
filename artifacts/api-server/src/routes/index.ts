@@ -5,6 +5,7 @@ import cabinetRouter from "./cabinet";
 import investmentsRouter from "./investments";
 import statsRouter from "./stats";
 import platformMetricsRouter from "./platform-metrics";
+import platformUpdatesRouter from "./platform-updates";
 import tonconnectManifestRouter from "./tonconnect-manifest";
 
 const router: IRouter = Router();
@@ -16,5 +17,6 @@ router.use(cabinetRouter);
 router.use(investmentsRouter);
 router.use(statsRouter);
 router.use(platformMetricsRouter);
+router.use(platformUpdatesRouter);
 
 export default router;

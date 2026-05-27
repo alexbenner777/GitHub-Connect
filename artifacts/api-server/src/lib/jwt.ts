@@ -13,7 +13,7 @@ export interface JwtPayload {
 
 export function signToken(payload: JwtPayload): string {
   const { email: _email, ...clean } = payload;
-  return jwt.sign(clean, SECRET!, { expiresIn: "60m" });
+  return jwt.sign(clean, SECRET!, { expiresIn: "7d" });
 }
 
 export function verifyToken(token: string): JwtPayload {

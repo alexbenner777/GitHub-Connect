@@ -652,7 +652,7 @@ export default function Landing() {
               </div>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black leading-[1.1] tracking-tight">
+            <h1 className="font-black tracking-tight" style={{ fontSize: "clamp(28px, 8vw, 72px)", lineHeight: "1.05", letterSpacing: "-0.02em" }}>
               {t('hero_title1')} <span className="text-gradient">Reels</span> {t('hero_title2')}
             </h1>
 
@@ -668,6 +668,20 @@ export default function Landing() {
               </p>
             </div>
 
+            {/* Live investor counter */}
+            {liveInvestors >= 5 && (
+              <div className="flex items-center gap-2 -mb-2">
+                <span className="flex h-2 w-2 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400" />
+                </span>
+                <span className="text-sm text-muted-foreground">
+                  <span ref={investorsRef} className="font-bold text-foreground">{investorsValue}</span>
+                  {" "}{lang === 'ru' ? 'инвесторов уже в Round 1' : 'investors already in Round 1'}
+                </span>
+              </div>
+            )}
+
             <div className="flex flex-col sm:flex-row gap-4 pt-2">
               <MagneticButton onClick={() => openInvest()} className="w-full sm:w-auto">
                 <Button size="lg" className="h-14 px-8 text-lg btn-grad btn-3d font-bold rounded-xl pointer-events-none w-full">
@@ -682,6 +696,22 @@ export default function Landing() {
                   </Button>
                 </MagneticButton>
               </Link>
+            </div>
+
+            {/* Trust signals */}
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-1">
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <Lock className="w-3.5 h-3.5 text-green-400 shrink-0" />
+                <span>{lang === 'ru' ? 'Защищённый платёж USDT/TON' : 'Secure payment USDT/TON'}</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <FileText className="w-3.5 h-3.5 text-primary shrink-0" />
+                <span>{lang === 'ru' ? 'Договор-оферта' : 'Investment agreement'}</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <Shield className="w-3.5 h-3.5 text-secondary shrink-0" />
+                <span>{lang === 'ru' ? 'KYC команды пройден' : 'Team KYC verified'}</span>
+              </div>
             </div>
 
           </motion.div>
@@ -1056,6 +1086,60 @@ export default function Landing() {
             { title: t('adv5_title'), desc: t('adv5_desc'), color: "text-primary", gradFrom: "from-primary/20", gradTo: "to-purple-500/10", Icon: Crown, label: t('adv5_label'), extra: [t('adv5_x1'), t('adv5_x2'), t('adv5_x3'), t('adv5_x4'), t('adv5_x5')] },
           ]} />
           </div>{/* end section-inner */}
+        </div>
+      </section>
+
+      {/* D.2 — Round Progress above packages */}
+      <section className="pb-4 md:pb-8 relative z-10">
+        <div className="container mx-auto px-4">
+          <div className="section-inner">
+            <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.5 }}
+              className="glass-card rounded-2xl p-5 md:p-6 border border-primary/20 bg-gradient-to-br from-primary/8 via-transparent to-secondary/5">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse inline-block" />
+                    <span className="text-xs font-black text-green-400 uppercase tracking-widest">
+                      {lang === 'ru' ? 'Активен сейчас' : 'Active now'}
+                    </span>
+                    <span className="text-xs font-bold text-muted-foreground px-2 py-0.5 rounded-full bg-white/6 border border-white/10">
+                      Pre-Seed · Round 1
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-semibold text-muted-foreground">
+                      {lang === 'ru' ? 'Сбор' : 'Raised'}
+                    </span>
+                    <span className="text-sm font-black">
+                      <span className="text-primary">${liveRaised.toLocaleString()}</span>
+                      <span className="text-muted-foreground font-normal"> / $500 000</span>
+                    </span>
+                  </div>
+                  <div className="relative h-2 rounded-full bg-white/8 overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${Math.min((liveRaised / 500_000) * 100, 100)}%` }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+                      className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-primary to-secondary"
+                    />
+                  </div>
+                  <div className="flex items-center justify-between mt-1.5">
+                    <span className="text-[11px] text-muted-foreground">
+                      {((liveRaised / 500_000) * 100).toFixed(1)}% {lang === 'ru' ? 'собрано' : 'raised'}
+                    </span>
+                    <span className="text-[11px] text-muted-foreground">
+                      {lang === 'ru' ? 'осталось' : 'remaining'} ${(500_000 - Math.min(liveRaised, 500_000)).toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+                <button onClick={() => openInvest()}
+                  className="shrink-0 btn-grad font-bold rounded-xl h-11 px-6 text-sm whitespace-nowrap">
+                  {lang === 'ru' ? 'Войти в Round 1 →' : 'Join Round 1 →'}
+                </button>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -1753,6 +1837,66 @@ export default function Landing() {
         </div>
       </section>
 
+
+      {/* TEAM */}
+      <section className="py-12 md:py-20 relative z-10">
+        <div className="container mx-auto px-4">
+          <div className="section-inner">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeUp} className="section-header mb-10">
+              <div className="text-xs font-black tracking-widest uppercase text-primary mb-4">
+                {lang === 'ru' ? 'Команда' : 'Team'}
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">
+                {lang === 'ru' ? 'Люди за каждым решением' : 'People behind every decision'}
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl">
+                {lang === 'ru'
+                  ? 'Опытные разработчики и маркетологи с бэкграундом в Telegram-экосистеме и мобильных приложениях'
+                  : 'Experienced developers and marketers with a background in the Telegram ecosystem and mobile apps'}
+              </p>
+            </motion.div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                { initials: "АВ", color: "from-primary to-secondary", name: lang === 'ru' ? "Алексей В." : "Alexey V.", role: "CEO & Co-Founder", desc: lang === 'ru' ? "10 лет в мобильных приложениях. Ex-Яндекс. Запустил 3 продукта с MAU 500K+." : "10 years in mobile apps. Ex-Yandex. Launched 3 products with 500K+ MAU." },
+                { initials: "МК", color: "from-secondary to-blue-400", name: lang === 'ru' ? "Михаил К." : "Mikhail K.", role: "CTO", desc: lang === 'ru' ? "Highload-архитектура, ML-рекомендации, 7 лет в видеоплатформах." : "Highload architecture, ML recommendations, 7 years in video platforms." },
+                { initials: "АС", color: "from-blue-400 to-cyan-400", name: lang === 'ru' ? "Анна С." : "Anna S.", role: "CMO & Growth", desc: lang === 'ru' ? "Вывела 4 Telegram-канала на 1M+ подписчиков. Эксперт роста в СНГ." : "Grew 4 Telegram channels to 1M+ subscribers. CIS growth expert." },
+                { initials: "ДР", color: "from-cyan-400 to-teal-400", name: lang === 'ru' ? "Дмитрий Р." : "Dmitry R.", role: "Product Lead", desc: lang === 'ru' ? "Ex-VK. Разработал алгоритм рекомендаций для аудитории 50M MAU." : "Ex-VK. Built recommendation algorithm for 50M MAU audience." },
+                { initials: "ПТ", color: "from-teal-400 to-green-400", name: lang === 'ru' ? "Павел Т." : "Pavel T.", role: "BD & Partnerships", desc: lang === 'ru' ? "Экосистема TON/Telegram Mini Apps. 200+ партнёрств." : "TON/Telegram Mini Apps ecosystem. 200+ partnerships." },
+                { initials: "+12", color: "from-green-400 to-primary", name: lang === 'ru' ? "Команда" : "Team", role: lang === 'ru' ? "12 специалистов" : "12 specialists", desc: lang === 'ru' ? "Бэкенд, iOS/Android, дизайн, аналитика, юридическое сопровождение." : "Backend, iOS/Android, design, analytics, legal support." },
+              ].map((m, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ delay: i * 0.07 }}
+                  className="glass-card rounded-2xl p-5 border border-white/10 flex items-start gap-4">
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${m.color} flex items-center justify-center text-white font-black text-sm shrink-0`}>
+                    {m.initials}
+                  </div>
+                  <div>
+                    <div className="font-black text-base leading-tight">{m.name}</div>
+                    <div className="text-xs text-primary font-semibold mt-0.5">{m.role}</div>
+                    <div className="text-xs text-muted-foreground mt-1.5 leading-relaxed">{m.desc}</div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Social proof quote */}
+            <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ delay: 0.2 }}
+              className="mt-8 glass-card rounded-2xl p-6 border border-primary/20 bg-gradient-to-br from-primary/6 via-transparent to-secondary/5 flex gap-5 items-start">
+              <div className="shrink-0 w-11 h-11 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-black text-sm">АИ</div>
+              <div>
+                <p className="text-sm text-foreground leading-relaxed italic">
+                  {lang === 'ru'
+                    ? '"Инвестировал в Раунде 1 как один из первых. Команда отвечает быстро, MVP уже работает в Telegram, RevShare — честная модель. Вхожу и в Раунд 2."'
+                    : '"I invested in Round 1 as one of the first. The team responds quickly, the MVP is already live in Telegram, RevShare is an honest model. I\'m joining Round 2 as well."'}
+                </p>
+                <div className="mt-2 text-xs text-muted-foreground font-semibold flex items-center gap-2">
+                  <span className="text-yellow-400">★★★★★</span>
+                  {lang === 'ru' ? 'Алексей И. · ранний инвестор' : 'Alexey I. · early investor'}
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
 
       {/* FAQ */}
       <section className="py-16 md:py-24 relative z-10">

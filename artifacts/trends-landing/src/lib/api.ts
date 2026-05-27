@@ -121,6 +121,18 @@ export const api = {
 
   adminSavePlatformMetrics: (body: Partial<PlatformMetricsInput>) =>
     request<{ metrics: PlatformMetrics }>("/admin/platform-metrics", { method: "POST", body: JSON.stringify(body) }),
+
+  platformUpdates: () =>
+    request<{ updates: PlatformUpdate[] }>("/platform-updates"),
+
+  adminGetPlatformUpdates: () =>
+    request<{ updates: PlatformUpdate[] }>("/admin/platform-updates"),
+
+  adminSavePlatformUpdate: (body: { title: string; body: string; date?: string; published: boolean }) =>
+    request<{ update: PlatformUpdate }>("/admin/platform-updates", { method: "POST", body: JSON.stringify(body) }),
+
+  adminPatchPlatformUpdate: (id: number, body: Partial<{ title: string; body: string; date: string; published: boolean }>) =>
+    request<{ update: PlatformUpdate }>(`/admin/platform-updates/${id}`, { method: "PATCH", body: JSON.stringify(body) }),
 };
 
 export interface AuthUser {
@@ -160,6 +172,15 @@ export interface PlatformMetrics {
 }
 
 export type PlatformMetricsInput = Omit<PlatformMetrics, "id" | "recordedAt">;
+
+export interface PlatformUpdate {
+  id: number;
+  date: string;
+  title: string;
+  body: string;
+  published: boolean;
+  createdAt: string;
+}
 
 export interface CabinetData {
   user: {

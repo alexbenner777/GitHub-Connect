@@ -8,13 +8,14 @@ import {
   Network, Star, ChevronRight, Shield, Globe, Megaphone,
   Banknote, Video, Share2, ExternalLink, Trash2, Download,
   KeyRound, Smartphone, AlertTriangle, Eye, EyeOff, ChevronUp, ChevronDown,
+  Target, Bell,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { InvestmentModal, MONTHLY_PROFIT } from "@/components/InvestmentModal";
 import { useAuth } from "@/hooks/useAuth";
-import { api, type CabinetData, type PlatformMetrics, type SessionInfo } from "@/lib/api";
+import { api, type CabinetData, type PlatformMetrics, type PlatformUpdate, type SessionInfo } from "@/lib/api";
 
 // ─── Helpers ───────────────────────────────────────────────────────────────
 
@@ -112,6 +113,7 @@ export default function Cabinet() {
   const [loadingData, setLoadingData] = useState(true);
   const [activeTab, setActiveTab] = useState<"overview" | "investments" | "mlm" | "settings" | "platform">("overview");
   const [platformMetrics, setPlatformMetrics] = useState<PlatformMetrics | null>(null);
+  const [platformUpdates, setPlatformUpdates] = useState<PlatformUpdate[]>([]);
   const [totalRaised, setTotalRaised] = useState(0);
 
   // Wallet
@@ -168,6 +170,7 @@ export default function Cabinet() {
       setLoadingData(false);
     }
     api.platformMetrics().then(pm => setPlatformMetrics(pm.metrics)).catch(() => {});
+    api.platformUpdates().then(r => setPlatformUpdates(r.updates)).catch(() => {});
   };
 
   useEffect(() => { loadData(); }, [user]);
@@ -319,10 +322,31 @@ export default function Cabinet() {
 
   if (authLoading || loadingData) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <RefreshCw className="w-8 h-8 text-primary animate-spin" />
-          <p className="text-muted-foreground">Загрузка кабинета...</p>
+      <div className="min-h-screen bg-background text-foreground">
+        <SceneBackground />
+        <nav className="fixed top-0 w-full z-50 glass-nav">
+          <div className="max-w-screen-xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div className="w-20 h-5 rounded-lg bg-white/8 animate-pulse" />
+            <div className="w-36 h-8 rounded-full bg-white/8 animate-pulse" />
+          </div>
+        </nav>
+        <div className="max-w-screen-xl mx-auto px-4 pt-24 pb-24 lg:pb-16">
+          <div className="flex flex-col md:flex-row gap-6">
+            <div className="hidden md:block md:w-72 shrink-0 space-y-4">
+              <div className="glass-card rounded-2xl p-6 border border-white/10 h-44 animate-pulse bg-white/3" />
+              <div className="glass-card rounded-2xl p-5 border border-white/10 h-20 animate-pulse bg-white/3" />
+              <div className="glass-card rounded-2xl p-2 border border-white/10 h-52 animate-pulse bg-white/3" />
+            </div>
+            <div className="flex-1 space-y-4">
+              <div className="grid grid-cols-2 xl:grid-cols-4 gap-3">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="glass-card rounded-2xl p-5 border border-white/10 h-24 animate-pulse bg-white/3" />
+                ))}
+              </div>
+              <div className="glass-card rounded-2xl border border-white/10 h-64 animate-pulse bg-white/3" />
+              <div className="glass-card rounded-2xl border border-white/10 h-48 animate-pulse bg-white/3" />
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -334,6 +358,20 @@ export default function Cabinet() {
   const totalMLMRefs = Object.values(referrals).reduce((s, l) => s + l.count, 0);
   const confirmedInvs = data.investments.filter(i => i.status === "confirmed");
   const pendingInvs = data.investments.filter(i => i.status === "pending");
+
+  // Tier badge
+  const totalConfirmed = confirmedInvs.reduce((s, i) => s + parseFloat(i.amount), 0);
+  const tier = totalConfirmed >= 100_000
+    ? { label: "Co-Investor", color: "text-yellow-300", bg: "bg-yellow-400/15 border-yellow-400/30", pulse: true }
+    : totalConfirmed >= 25_000
+    ? { label: "Visionary", color: "text-violet-300", bg: "bg-violet-500/15 border-violet-500/30", pulse: false }
+    : totalConfirmed >= 5_000
+    ? { label: "Insider", color: "text-secondary", bg: "bg-secondary/15 border-secondary/30", pulse: false }
+    : totalConfirmed >= 1_000
+    ? { label: "Partner", color: "text-primary", bg: "bg-primary/15 border-primary/30", pulse: false }
+    : totalConfirmed >= 250
+    ? { label: "Starter", color: "text-muted-foreground", bg: "bg-white/10 border-white/20", pulse: false }
+    : { label: "Гость", color: "text-muted-foreground/50", bg: "bg-white/5 border-white/10", pulse: false };
 
   const CPM_RUB = 190, SHOWS = 2, REVSHARE_PCT = 0.20, RUB_USD = 91, TOTAL_SHARES = 5000;
   const REVSHARE_DAU = 5_000_000;
@@ -397,14 +435,20 @@ export default function Cabinet() {
       </nav>
 
       {/* ══ MOBILE PROFILE STRIP ══ */}
-      <div className="lg:hidden border-b border-white/8 px-4 py-3" style={{ background: "rgba(8, 11, 22, 0.6)", marginTop: "64px" }}>
+      <div className="md:hidden border-b border-white/8 px-4 py-3" style={{ background: "rgba(8, 11, 22, 0.6)", marginTop: "64px" }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-sm font-black text-white">
               {user.name[0].toUpperCase()}
             </div>
             <div>
-              <div className="font-bold text-sm leading-tight">{user.name}</div>
+              <div className="font-bold text-sm leading-tight flex items-center gap-2">
+                {user.name}
+                <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-bold border ${tier.bg} ${tier.color}`}>
+                  {tier.pulse && <span className="w-1 h-1 rounded-full bg-current animate-pulse" />}
+                  {tier.label}
+                </span>
+              </div>
               <div className="text-[11px] text-muted-foreground">{data.user.email}</div>
             </div>
           </div>
@@ -430,11 +474,11 @@ export default function Cabinet() {
         </div>
       </div>
 
-      <div className="max-w-screen-xl mx-auto px-4 pt-4 lg:pt-24 pb-24 lg:pb-16">
-        <div className="flex flex-col lg:flex-row gap-6">
+      <div className="max-w-screen-xl mx-auto px-4 pt-4 md:pt-24 pb-24 md:pb-16">
+        <div className="flex flex-col md:flex-row gap-6">
 
           {/* ══ SIDEBAR — desktop only ══ */}
-          <aside className="hidden lg:flex lg:flex-col lg:w-72 shrink-0 space-y-4">
+          <aside className="hidden md:flex md:flex-col md:w-72 shrink-0 space-y-4">
 
             {/* Profile card */}
             <div className="glass-card rounded-2xl p-6 border border-white/10 relative overflow-hidden">
@@ -445,9 +489,15 @@ export default function Cabinet() {
                 </div>
                 <div className="font-black text-lg leading-tight">{user.name}</div>
                 <div className="text-sm text-muted-foreground mt-0.5">{user.email}</div>
-                <div className="flex items-center gap-1.5 mt-3" title="Аккаунт верифицирован">
-                  <Shield className="w-3 h-3 text-green-400" />
-                  <span className="text-xs text-green-400 font-semibold">Верифицирован</span>
+                <div className="flex items-center gap-2 mt-3 flex-wrap">
+                  <div className="flex items-center gap-1.5" title="Аккаунт верифицирован">
+                    <Shield className="w-3 h-3 text-green-400" />
+                    <span className="text-xs text-green-400 font-semibold">Верифицирован</span>
+                  </div>
+                  <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-bold border ${tier.bg} ${tier.color}`}>
+                    {tier.pulse && <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />}
+                    {tier.label}
+                  </span>
                 </div>
                 <div className="mt-3 pt-3 border-t border-white/8 text-xs text-muted-foreground">
                   С нами с {formatDate(data.user.createdAt)}
@@ -526,11 +576,23 @@ export default function Cabinet() {
               {statCards.map((s, i) => (
                 <motion.div key={i} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.07 }}
-                  className={`glass-card rounded-2xl p-5 border ${s.border} bg-gradient-to-br ${s.bg} relative overflow-hidden`}>
+                  className={`glass-card rounded-2xl p-5 border ${s.border} bg-gradient-to-br ${s.bg} relative overflow-hidden flex flex-col`}>
                   <div className="absolute top-3 right-3 opacity-20"><s.icon className="w-8 h-8" /></div>
                   <div className="text-xs text-muted-foreground mb-2">{s.label}</div>
                   <div className={`text-2xl font-black ${s.color}`}>{s.value}</div>
                   {s.sub && <div className="text-[10px] text-muted-foreground/70 mt-1 font-medium">{s.sub}</div>}
+                  {i === 0 && data.stats.totalInvested === 0 && (
+                    <button onClick={() => setIsInvestOpen(true)}
+                      className="mt-2 text-[11px] font-bold text-primary hover:underline text-left leading-tight">
+                      + Инвестировать →
+                    </button>
+                  )}
+                  {i === 1 && data.stats.totalShares === 0 && (
+                    <button onClick={() => setIsInvestOpen(true)}
+                      className="mt-2 text-[11px] font-bold text-green-400 hover:underline text-left leading-tight">
+                      Получить долю →
+                    </button>
+                  )}
                 </motion.div>
               ))}
             </div>
@@ -549,6 +611,36 @@ export default function Cabinet() {
             {/* ─── OVERVIEW ─── */}
             {activeTab === "overview" && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
+
+                {/* Onboarding block for new investors */}
+                {confirmedInvs.length === 0 && pendingInvs.length === 0 && (
+                  <div className="glass-card rounded-2xl border border-primary/25 bg-gradient-to-br from-primary/8 via-transparent to-secondary/5 p-6">
+                    <div className="text-xs font-black text-muted-foreground uppercase tracking-widest mb-5">Добро пожаловать в Trends</div>
+                    <div className="space-y-4">
+                      {[
+                        { step: "01", title: "Аккаунт создан", desc: "Вы зарегистрированы и готовы к инвестированию", done: true, color: "text-green-400", bg: "bg-green-500/15 border-green-500/30" },
+                        { step: "02", title: "Выберите пакет Pre-Seed", desc: "Starter $250 · Partner $1K · Insider $5K · Visionary $25K · Co-Investor $100K", done: false, color: "text-primary", bg: "bg-primary/15 border-primary/30", cta: true },
+                        { step: "03", title: "Получите RevShare + MLM", desc: "RevShare от рекламной выручки платформы и MLM-бонусы от структуры партнёров", done: false, color: "text-secondary", bg: "bg-secondary/15 border-secondary/30" },
+                      ].map((s, i) => (
+                        <div key={i} className="flex gap-4 items-start">
+                          <div className={`shrink-0 w-9 h-9 rounded-xl border flex items-center justify-center text-xs font-black ${s.bg} ${s.color}`}>
+                            {s.done ? <CheckCircle2 className="w-4 h-4" /> : s.step}
+                          </div>
+                          <div className="flex-1 pt-0.5">
+                            <div className="text-sm font-bold">{s.title}</div>
+                            <div className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{s.desc}</div>
+                            {s.cta && (
+                              <button onClick={() => setIsInvestOpen(true)}
+                                className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline">
+                                Выбрать пакет →
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* Portfolio */}
                 {confirmedInvs.length > 0 && (
@@ -583,8 +675,10 @@ export default function Cabinet() {
                   </div>
                 )}
 
-                {/* DAU Profitability */}
-                {data.stats.totalShares > 0 && (() => {
+                {/* DAU Profitability — always shown */}
+                {(() => {
+                  const hasShares = data.stats.totalShares > 0;
+                  const exampleShares = hasShares ? data.stats.totalShares : 100;
                   const milestones = [
                     { label: "500K", dau: 500_000 },
                     { label: "1M", dau: 1_000_000 },
@@ -595,7 +689,7 @@ export default function Cabinet() {
                   ];
                   const earnings = milestones.map(m => {
                     const pool = (m.dau * SHOWS * CPM_RUB / 1000 * 30 / RUB_USD) * REVSHARE_PCT;
-                    return Math.round((data.stats.totalShares / TOTAL_SHARES) * pool);
+                    return Math.round((exampleShares / TOTAL_SHARES) * pool);
                   });
                   const maxEarning = Math.max(...earnings);
                   const barColors = ["bg-primary/40", "bg-primary/55", "bg-secondary/60", "bg-secondary/75", "bg-green-400/70", "bg-green-400"];
@@ -604,15 +698,18 @@ export default function Cabinet() {
                     <div className="glass-card rounded-2xl p-6 border border-white/10 bg-gradient-to-br from-green-500/5 to-transparent">
                       <div className="flex items-center justify-between mb-1 flex-wrap gap-2">
                         <div className="text-sm font-bold flex items-center gap-2">
-                          <TrendingUp className="w-4 h-4 text-green-400" /> Ваш RevShare при разных DAU
+                          <TrendingUp className="w-4 h-4 text-green-400" />
+                          {hasShares ? "Ваш RevShare при разных DAU" : "RevShare — пример при 100 долях"}
                         </div>
-                        <Link href="/#packages"
+                        <button onClick={() => setIsInvestOpen(true)}
                           className="text-xs text-primary font-semibold hover:underline flex items-center gap-1">
-                          Увеличить долю <ChevronRight className="w-3 h-3" />
-                        </Link>
+                          {hasShares ? "Увеличить долю" : "Получить долю"} <ChevronRight className="w-3 h-3" />
+                        </button>
                       </div>
                       <div className="text-xs text-muted-foreground mb-5">
-                        {data.stats.totalShares.toFixed(2)} долей · формула идентична калькулятору
+                        {hasShares
+                          ? `${data.stats.totalShares.toFixed(2)} долей · формула идентична калькулятору`
+                          : "Условный пример: 100 долей из 5 000 пула · инвестируйте, чтобы увидеть свои цифры"}
                       </div>
                       <div className="flex items-end gap-2 h-32 mb-3">
                         {earnings.map((earn, i) => {
@@ -643,6 +740,12 @@ export default function Cabinet() {
                         <span className="text-xs text-muted-foreground">При 50M DAU (пик) / в месяц</span>
                         <span className="text-green-400 font-black text-lg">${earnings[5].toLocaleString()}</span>
                       </div>
+                      {!hasShares && (
+                        <button onClick={() => setIsInvestOpen(true)}
+                          className="mt-3 w-full btn-grad font-bold rounded-xl h-9 text-sm">
+                          Инвестировать и получить реальный RevShare
+                        </button>
+                      )}
                     </div>
                   );
                 })()}
@@ -1354,6 +1457,64 @@ export default function Cabinet() {
                     )}
                   </>
                 )}
+
+                {/* Roadmap timeline (always shown) */}
+                <div className="glass-card rounded-2xl p-6 border border-white/10">
+                  <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-5 flex items-center gap-2">
+                    <Target className="w-3.5 h-3.5 text-primary" /> Дорожная карта
+                  </div>
+                  <div className="space-y-0">
+                    {([
+                      { date: "Q4 2024", label: "MVP запущен в Telegram", done: true },
+                      { date: "Q1–Q2 2025", label: "Pre-Seed Round 1 · цель $500K", active: true },
+                      { date: "Q3 2025", label: "1.5M MAU · Pre-Seed Round 2", done: false },
+                      { date: "Q4 2025", label: "5M MAU · первая реклама", done: false },
+                      { date: "Q1 2026", label: "RevShare активация", done: false },
+                      { date: "2026+", label: "10M+ MAU · Seed раунд", done: false },
+                    ] as { date: string; label: string; done?: boolean; active?: boolean }[]).map((step, i, arr) => (
+                      <div key={i} className="flex gap-4">
+                        <div className="flex flex-col items-center">
+                          <div className={`w-3 h-3 rounded-full border-2 mt-0.5 shrink-0 ${step.done ? "bg-green-400 border-green-400" : step.active ? "bg-primary border-primary shadow-[0_0_10px_rgba(0,212,255,0.5)]" : "border-white/20 bg-transparent"}`}>
+                            {step.active && <span className="block w-full h-full rounded-full animate-ping bg-primary opacity-60" />}
+                          </div>
+                          {i < arr.length - 1 && <div className={`w-px flex-1 mt-1 mb-1 ${step.done ? "bg-green-400/40" : "bg-white/10"}`} style={{ minHeight: "24px" }} />}
+                        </div>
+                        <div className="pb-5">
+                          <div className={`text-[11px] font-bold uppercase tracking-wider ${step.done ? "text-green-400" : step.active ? "text-primary" : "text-muted-foreground/50"}`}>{step.date}</div>
+                          <div className={`text-sm font-semibold mt-0.5 ${step.done ? "text-foreground" : step.active ? "text-foreground" : "text-muted-foreground/60"}`}>{step.label}</div>
+                          {step.done && <div className="mt-0.5 inline-flex items-center gap-1 text-[10px] text-green-400 font-bold"><CheckCircle2 className="w-3 h-3" /> Выполнено</div>}
+                          {step.active && <div className="mt-0.5 inline-flex items-center gap-1 text-[10px] text-primary font-bold"><span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse inline-block" /> В процессе</div>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* News feed from platform updates */}
+                {platformUpdates.length > 0 && (
+                  <div className="glass-card rounded-2xl p-6 border border-white/10">
+                    <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-5 flex items-center gap-2">
+                      <Bell className="w-3.5 h-3.5 text-secondary" /> Новости платформы
+                    </div>
+                    <div className="space-y-4">
+                      {platformUpdates.slice(0, 5).map((upd, i) => (
+                        <div key={upd.id} className={`${i < platformUpdates.length - 1 ? "pb-4 border-b border-white/6" : ""}`}>
+                          <div className="flex items-start justify-between gap-2 mb-1">
+                            <div className="text-sm font-bold">{upd.title}</div>
+                            <div className="text-[10px] text-muted-foreground shrink-0">{formatDate(upd.date)}</div>
+                          </div>
+                          <div className="text-xs text-muted-foreground leading-relaxed">{upd.body}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {platformUpdates.length === 0 && (
+                  <div className="glass-card rounded-2xl p-5 border border-white/8 flex items-center gap-3">
+                    <Bell className="w-5 h-5 text-muted-foreground/30 shrink-0" />
+                    <div className="text-xs text-muted-foreground">Новости платформы появятся здесь по мере выхода обновлений</div>
+                  </div>
+                )}
               </motion.div>
             )}
           </main>
@@ -1361,7 +1522,7 @@ export default function Cabinet() {
       </div>
 
       {/* ══ MOBILE BOTTOM TABBAR ══ */}
-      <nav className="fixed bottom-0 left-0 right-0 z-40 lg:hidden border-t border-white/10" style={{ background: "rgba(8, 11, 22, 0.92)", backdropFilter: "blur(28px) saturate(200%)" }}>
+      <nav className="fixed bottom-0 left-0 right-0 z-40 md:hidden border-t border-white/10" style={{ background: "rgba(8, 11, 22, 0.92)", backdropFilter: "blur(28px) saturate(200%)" }}>
         <div className="flex items-stretch justify-around h-16">
           {tabs.map(tab => (
             <button

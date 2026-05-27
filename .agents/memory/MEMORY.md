@@ -1,1 +1,3 @@
 - [Helmet config](helmet-config.md) — helmet нужен с отключёнными CSP/COEP для корректной работы SPA-статики через Express.
+- [Cabinet breakpoints](cabinet-breakpoints.md) — sidebar/tabbar/mobile-strip используют md: (768px), не lg:; это намеренно.
+- [platform_updates table](platform-updates-schema.md) — новая таблица для новостей платформы (id, date, title, body, published, createdAt); маршрут /api/platform-updates.

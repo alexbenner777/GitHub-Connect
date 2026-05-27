@@ -24,9 +24,9 @@ const loginSchema = z.object({
 });
 
 function setAccessCookie(res: import("express").Response, token: string) {
-  res.cookie("trends_token", token, {
+  res.cookie("trends_session", token, {
     httpOnly: true, secure: true, sameSite: "none",
-    maxAge: 60 * 60 * 1000, // 60 minutes
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     path: "/",
   });
 }
@@ -34,7 +34,7 @@ function setAccessCookie(res: import("express").Response, token: string) {
 function setRefreshCookie(res: import("express").Response, token: string) {
   res.cookie("trends_refresh", token, {
     httpOnly: true, secure: true, sameSite: "none",
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     path: "/api/auth",
   });
 }
@@ -42,7 +42,7 @@ function setRefreshCookie(res: import("express").Response, token: string) {
 function setCsrfCookie(res: import("express").Response, token: string) {
   res.cookie("trends_csrf", token, {
     httpOnly: false, secure: true, sameSite: "none",
-    maxAge: 60 * 60 * 1000,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
     path: "/",
   });
 }
@@ -54,7 +54,7 @@ function getIp(req: import("express").Request): string {
 async function createSession(userId: number, req: import("express").Request): Promise<string> {
   const rawToken = crypto.randomBytes(40).toString("hex");
   const hash = hashToken(rawToken);
-  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+  const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
   await db.insert(sessionsTable).values({
     userId,
     refreshTokenHash: hash,
@@ -211,7 +211,7 @@ router.post("/auth/refresh", async (req, res, next) => {
     // Rotate refresh token
     const newRawToken = crypto.randomBytes(40).toString("hex");
     const newHash = hashToken(newRawToken);
-    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
     await db.update(sessionsTable).set({ revokedAt: now }).where(eq(sessionsTable.id, session.id));
     await db.insert(sessionsTable).values({
       userId: session.userId, refreshTokenHash: newHash,
@@ -233,7 +233,7 @@ router.post("/auth/logout", async (req, res) => {
     const hash = hashToken(rawRefresh);
     await db.update(sessionsTable).set({ revokedAt: new Date() }).where(eq(sessionsTable.refreshTokenHash, hash)).catch(() => {});
   }
-  res.clearCookie("trends_token", { path: "/" });
+  res.clearCookie("trends_session", { path: "/" });
   res.clearCookie("trends_refresh", { path: "/api/auth" });
   res.clearCookie("trends_csrf", { path: "/" });
   res.json({ ok: true });

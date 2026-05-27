@@ -12,11 +12,8 @@ declare global {
 const MUTATION_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
 
 function extractToken(req: Request): string | null {
-  const cookie = (req.cookies as Record<string, string> | undefined)?.["trends_token"];
+  const cookie = (req.cookies as Record<string, string> | undefined)?.["trends_session"];
   if (cookie) return cookie;
-  // Keep Authorization header support during transition period
-  const header = req.headers.authorization;
-  if (header?.startsWith("Bearer ")) return header.slice(7);
   return null;
 }
 
