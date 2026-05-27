@@ -690,25 +690,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* MINIAPP STATS STRIP */}
-      <section className="py-6 relative z-10">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-3 gap-3 section-inner">
-            {[
-              { label: t('stats_users_label'), value: "2 400+", sub: t('stats_users_sub') },
-              { label: t('stats_dau_label'), value: "500+", sub: t('stats_dau_sub') },
-              { label: t('stats_videos_label'), value: "8 000+", sub: t('stats_videos_sub') },
-            ].map((s, i) => (
-              <div key={i} className="glass-card rounded-2xl p-4 border border-white/10 text-center">
-                <div className="text-2xl font-black text-gradient">{s.value}</div>
-                <div className="text-xs font-semibold mt-1">{s.label}</div>
-                <div className="text-[11px] text-muted-foreground mt-0.5">{s.sub}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* PROBLEM → SOLUTION */}
       <section id="problem" className="py-16 md:py-24 lg:py-32 relative z-10 scroll-mt-20">
         <div className="container mx-auto px-4">
