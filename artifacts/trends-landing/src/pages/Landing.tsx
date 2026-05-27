@@ -1823,66 +1823,6 @@ export default function Landing() {
       </section>
 
 
-      {/* TEAM */}
-      <section className="py-12 md:py-20 relative z-10">
-        <div className="container mx-auto px-4">
-          <div className="section-inner">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeUp} className="section-header mb-10">
-              <div className="text-xs font-black tracking-widest uppercase text-primary mb-4">
-                {lang === 'ru' ? 'Команда' : 'Team'}
-              </div>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">
-                {lang === 'ru' ? 'Люди за каждым решением' : 'People behind every decision'}
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl">
-                {lang === 'ru'
-                  ? 'Опытные разработчики и маркетологи с бэкграундом в Telegram-экосистеме и мобильных приложениях'
-                  : 'Experienced developers and marketers with a background in the Telegram ecosystem and mobile apps'}
-              </p>
-            </motion.div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[
-                { initials: "АВ", color: "from-primary to-secondary", name: lang === 'ru' ? "Алексей В." : "Alexey V.", role: "CEO & Co-Founder", desc: lang === 'ru' ? "10 лет в мобильных приложениях. Ex-Яндекс. Запустил 3 продукта с MAU 500K+." : "10 years in mobile apps. Ex-Yandex. Launched 3 products with 500K+ MAU." },
-                { initials: "МК", color: "from-secondary to-blue-400", name: lang === 'ru' ? "Михаил К." : "Mikhail K.", role: "CTO", desc: lang === 'ru' ? "Highload-архитектура, ML-рекомендации, 7 лет в видеоплатформах." : "Highload architecture, ML recommendations, 7 years in video platforms." },
-                { initials: "АС", color: "from-blue-400 to-cyan-400", name: lang === 'ru' ? "Анна С." : "Anna S.", role: "CMO & Growth", desc: lang === 'ru' ? "Вывела 4 Telegram-канала на 1M+ подписчиков. Эксперт роста в СНГ." : "Grew 4 Telegram channels to 1M+ subscribers. CIS growth expert." },
-                { initials: "ДР", color: "from-cyan-400 to-teal-400", name: lang === 'ru' ? "Дмитрий Р." : "Dmitry R.", role: "Product Lead", desc: lang === 'ru' ? "Ex-VK. Разработал алгоритм рекомендаций для аудитории 50M MAU." : "Ex-VK. Built recommendation algorithm for 50M MAU audience." },
-                { initials: "ПТ", color: "from-teal-400 to-green-400", name: lang === 'ru' ? "Павел Т." : "Pavel T.", role: "BD & Partnerships", desc: lang === 'ru' ? "Экосистема TON/Telegram Mini Apps. 200+ партнёрств." : "TON/Telegram Mini Apps ecosystem. 200+ partnerships." },
-                { initials: "+12", color: "from-green-400 to-primary", name: lang === 'ru' ? "Команда" : "Team", role: lang === 'ru' ? "12 специалистов" : "12 specialists", desc: lang === 'ru' ? "Бэкенд, iOS/Android, дизайн, аналитика, юридическое сопровождение." : "Backend, iOS/Android, design, analytics, legal support." },
-              ].map((m, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ delay: i * 0.07 }}
-                  className="glass-card rounded-2xl p-5 border border-white/10 flex items-start gap-4">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${m.color} flex items-center justify-center text-white font-black text-sm shrink-0`}>
-                    {m.initials}
-                  </div>
-                  <div>
-                    <div className="font-black text-base leading-tight">{m.name}</div>
-                    <div className="text-xs text-primary font-semibold mt-0.5">{m.role}</div>
-                    <div className="text-xs text-muted-foreground mt-1.5 leading-relaxed">{m.desc}</div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Social proof quote */}
-            <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ delay: 0.2 }}
-              className="mt-8 glass-card rounded-2xl p-6 border border-primary/20 bg-gradient-to-br from-primary/6 via-transparent to-secondary/5 flex gap-5 items-start">
-              <div className="shrink-0 w-11 h-11 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-black text-sm">АИ</div>
-              <div>
-                <p className="text-sm text-foreground leading-relaxed italic">
-                  {lang === 'ru'
-                    ? '"Инвестировал в Раунде 1 как один из первых. Команда отвечает быстро, MVP уже работает в Telegram, RevShare — честная модель. Вхожу и в Раунд 2."'
-                    : '"I invested in Round 1 as one of the first. The team responds quickly, the MVP is already live in Telegram, RevShare is an honest model. I\'m joining Round 2 as well."'}
-                </p>
-                <div className="mt-2 text-xs text-muted-foreground font-semibold flex items-center gap-2">
-                  <span className="text-yellow-400">★★★★★</span>
-                  {lang === 'ru' ? 'Алексей И. · ранний инвестор' : 'Alexey I. · early investor'}
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
       {/* FAQ */}
       <section className="py-16 md:py-24 relative z-10">
         <div className="container mx-auto px-4">
