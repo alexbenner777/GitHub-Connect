@@ -698,21 +698,6 @@ export default function Landing() {
               </Link>
             </div>
 
-            {/* Trust signals */}
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-1">
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <Lock className="w-3.5 h-3.5 text-green-400 shrink-0" />
-                <span>{lang === 'ru' ? 'Защищённый платёж USDT/TON' : 'Secure payment USDT/TON'}</span>
-              </div>
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <FileText className="w-3.5 h-3.5 text-primary shrink-0" />
-                <span>{lang === 'ru' ? 'Договор-оферта' : 'Investment agreement'}</span>
-              </div>
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <Shield className="w-3.5 h-3.5 text-secondary shrink-0" />
-                <span>{lang === 'ru' ? 'KYC команды пройден' : 'Team KYC verified'}</span>
-              </div>
-            </div>
 
           </motion.div>
 

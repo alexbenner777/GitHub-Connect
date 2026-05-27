@@ -117,6 +117,19 @@ export function DauCalculator({
               </p>
             </div>
 
+            {/* Source disclaimer — visible callout */}
+            <div className="flex items-start gap-3 mb-6 rounded-xl border border-yellow-500/20 bg-yellow-500/5 px-4 py-3">
+              <Info className="w-4 h-4 text-yellow-400 shrink-0 mt-0.5" />
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                <span className="text-yellow-400 font-semibold">Калькулятор считает только 1 источник дохода</span>
+                {" "}— рекламу в ленте (CPM × показы). Доходы от{" "}
+                <span className="text-foreground/80">{REVSHARE_CONFIG.REVENUE_SOURCES_TOTAL - 1} других каналов</span>
+                {" "}(Boost-подписки, спонсорства, донаты, аналитика, баннер, e-commerce) добавляются сверху и в расчёте{" "}
+                <span className="text-foreground/80 font-semibold">не учтены</span>.
+                Реальный RevShare будет выше.
+              </p>
+            </div>
+
             <div className="rounded-2xl border border-white/10 bg-white/3 backdrop-blur-sm p-6 md:p-8 mb-4">
               <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
                 <div className="flex items-center gap-2">
@@ -392,11 +405,11 @@ export function DauCalculator({
                           </div>
 
                           {/* Подсказка */}
-                          <div className="flex items-start gap-1.5 pt-0.5">
-                            <Info className="w-3 h-3 text-muted-foreground/50 shrink-0 mt-0.5" />
-                            <p className="text-[9px] text-muted-foreground/50 leading-relaxed italic">
-                              Расчёт только по рекламной выручке.
-                              Доходы от {REVSHARE_CONFIG.REVENUE_SOURCES_TOTAL - 1} других источников (Boost, спонсорства, донаты, аналитика, баннер, e-commerce) добавляются сверху и не учтены здесь.
+                          <div className="flex items-start gap-1.5 pt-1 border-t border-white/6">
+                            <Info className="w-3 h-3 text-yellow-400/70 shrink-0 mt-0.5" />
+                            <p className="text-[10px] text-muted-foreground/70 leading-relaxed">
+                              <span className="text-yellow-400/80 font-semibold">Только реклама в ленте.</span>
+                              {" "}+{REVSHARE_CONFIG.REVENUE_SOURCES_TOTAL - 1} источника не учтены.
                             </p>
                           </div>
                         </div>
