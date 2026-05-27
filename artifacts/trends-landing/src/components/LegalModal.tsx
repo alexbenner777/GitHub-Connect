@@ -287,8 +287,8 @@ export const DOCS: Doc[] = [
           "Co-Investor — $100 000: максимальный RevShare, участие в токеномике, неограниченное продвижение, ежемесячный звонок с CEO",
         ]} />
         <H>2. RevShare — условия выплат</H>
-        <P>2.1. 20% от совокупной выручки по всем 7 источникам монетизации Платформы ежемесячно направляется в Инвесторский пул (RevShare Pool).</P>
-        <P>2.2. Распределение из пула осуществляется пропорционально доле инвестора в общем объёме привлечённых средств.</P>
+        <P>2.1. 20% от выручки Платформы по каждому из 7 источников монетизации ежемесячно направляется в Инвесторский пул RevShare. Пул распределяется пропорционально между 5 000 долей. В публичном калькуляторе на сайте для консервативности отображается доход только от источника №1 (реклама в ленте); остальные шесть источников формируют дополнительный апсайд и включаются в выплаты по мере их запуска.</P>
+        <P>2.2. Распределение пула осуществляется пропорционально доле инвестора в общем фиксированном объёме 5 000 долей. Доли, не выкупленные инвесторами, остаются у платформы.</P>
         <P>2.3. Выплаты производятся в USDT (TRC-20 или ERC-20) на указанный в личном кабинете кошелёк не позднее 10-го числа месяца, следующего за отчётным.</P>
         <P>2.4. Минимальная сумма вывода: $10 USDT. При меньшем остатке средства накапливаются до следующего периода.</P>
         <H>3. Реферальная программа (MLM)</H>
@@ -337,8 +337,8 @@ export const DOCS: Doc[] = [
           "Co-Investor — $100,000: maximum RevShare, participation in tokenomics, unlimited promotion, monthly CEO call",
         ]} />
         <H>2. RevShare — Payment Terms</H>
-        <P>2.1. 20% of total revenue across all 7 Platform monetization sources is directed monthly to the Investor Pool (RevShare Pool).</P>
-        <P>2.2. Pool distributions are made proportionally to each investor's share of total funds raised.</P>
+        <P>2.1. 20% of Platform revenue from each of the 7 monetization sources is directed monthly to the Investor RevShare Pool. The pool is distributed proportionally among 5,000 shares. The public calculator on the website conservatively displays income only from source #1 (feed advertising); the remaining six sources represent additional upside and are included in payouts as they launch.</P>
+        <P>2.2. Pool distributions are made proportionally to each investor's share of the fixed total of 5,000 shares. Shares not purchased by investors remain with the platform.</P>
         <P>2.3. Payments are made in USDT (TRC-20 or ERC-20) to the wallet specified in the personal cabinet, no later than the 10th of the month following the reporting period.</P>
         <P>2.4. Minimum withdrawal: $10 USDT. Lesser amounts accumulate to the next period.</P>
         <H>3. Referral Program (MLM)</H>

@@ -128,6 +128,7 @@ export const translations = {
 
     mono_title: "7 источников монетизации",
     mono_desc: "Диверсифицированная бизнес-модель — рост любого источника усиливает общую экономику платформы.",
+    mono_calc_note: "В калькуляторе доходности учтён только источник №1 (реклама в ленте). Остальные шесть — потенциальный апсайд.",
     mono1_title: "Реклама в ленте",
     mono1_badge: "Основной",
     mono1_desc: "Проверенная модель монетизации TikTok, Instagram Reels и YouTube Shorts — адаптированная под экосистему Telegram.",
@@ -267,6 +268,12 @@ export const translations = {
     rm5_phase: "2027+", rm5_title: "Global Expansion", rm5_desc: "Выход на мировые рынки, e-commerce, подготовка к Exit или Series A.",
 
     faq_title: "Вопросы и ответы",
+    faqc1_q: "Откуда берутся цифры в калькуляторе?",
+    faqc1_a: "Калькулятор показывает выплаты только от первого источника монетизации — рекламы в ленте (CPM-модель). Формула: DAU × 2 показа × CPM × 30 дней / 1000 = месячная выручка. 20% этой суммы попадает в пул RevShare и распределяется пропорционально между 5 000 долей. Размер доли определяет пакет: Round 1 — цена пакета / $400 × 1.3 долей, Round 2 — цена пакета / $400 долей.",
+    faqc2_q: "А что с другими 6 источниками монетизации?",
+    faqc2_a: "Boost-продвижение, спонсорские интеграции, цифровые донаты, B2B-аналитика, таргет-баннер и e-commerce — это шесть дополнительных источников, которые подключаются по мере роста платформы. Доход от них также делится по правилу 20% / пул из 5 000 долей, но в калькулятор они не включены намеренно — чтобы показать консервативный базовый сценарий. Реальный доход инвестора будет выше по мере запуска каждого нового источника.",
+    faqc3_q: "Почему долей 5 000, а инвестиционный объём $2 000 000?",
+    faqc3_a: "5 000 долей — это бизнес-правило проекта, оно не зависит от объёма привлечённых средств. Цена одной доли в Round 1 — $307 (бонус +30% за раннюю стадию), в Round 2 — $400. Пакеты пересчитываются в доли автоматически: например, Insider $5 000 в Round 1 даёт 16.25 долей, в Round 2 — 12.5 долей.",
     faq1_q: "Как инвестировать?",
     faq1_a: "Выберите подходящий пакет, подключите кошелёк TON или MetaMask в личном кабинете и подтвердите транзакцию. Средства автоматически зачислятся на ваш баланс.",
     faq2_q: "На что идут привлечённые средства?",
@@ -447,6 +454,7 @@ export const translations = {
 
     mono_title: "7 Monetization Sources",
     mono_desc: "Diversified business model — growth in any source strengthens the platform's overall economics.",
+    mono_calc_note: "The earnings calculator accounts for source #1 only (in-feed advertising). The remaining six are potential upside.",
     mono1_title: "In-Feed Ads",
     mono1_badge: "Primary",
     mono1_desc: "Proven monetization model of TikTok, Instagram Reels, and YouTube Shorts — adapted for the Telegram ecosystem.",
@@ -586,6 +594,12 @@ export const translations = {
     rm5_phase: "2027+", rm5_title: "Global Expansion", rm5_desc: "Entry into world markets, e-commerce, preparation for Exit or Series A.",
 
     faq_title: "Questions & Answers",
+    faqc1_q: "Where do the calculator figures come from?",
+    faqc1_a: "The calculator shows payouts from the first monetization source only — in-feed advertising (CPM model). Formula: DAU × 2 impressions × CPM × 30 days / 1000 = monthly revenue. 20% of this sum enters the RevShare pool and is distributed proportionally among 5,000 shares. Your share count is determined by your package: Round 1 — package price / $400 × 1.3 shares, Round 2 — package price / $400 shares.",
+    faqc2_q: "What about the other 6 monetization sources?",
+    faqc2_a: "Boost promotion, sponsored integrations, digital donations, B2B analytics, target banners, and e-commerce are six additional sources that activate as the platform grows. Income from them also follows the 20% / 5,000-share pool rule, but they are intentionally excluded from the calculator to show a conservative base case. The investor's real income will be higher as each new source launches.",
+    faqc3_q: "Why are there 5,000 shares when the investment target is $2,000,000?",
+    faqc3_a: "5,000 shares is a business rule of the project — it does not depend on total funds raised. One share costs $307 in Round 1 (a +30% early-stage bonus) or $400 in Round 2. Packages convert to shares automatically: for example, the Insider $5,000 package in Round 1 yields 16.25 shares; in Round 2 it yields 12.5 shares.",
     faq1_q: "How do I invest?",
     faq1_a: "Choose a suitable package, connect your TON or MetaMask wallet in your cabinet, and confirm the transaction. Funds will be automatically credited to your balance.",
     faq2_q: "What are the raised funds used for?",

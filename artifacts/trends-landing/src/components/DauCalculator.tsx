@@ -2,11 +2,19 @@ import React, { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   TrendingUp, Users, DollarSign, Zap,
-  Star, Shield, Crown, ChevronDown,
+  Star, Shield, Crown, ChevronDown, Info,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { InvestPackage } from "@/lib/packages";
 import { PACKAGE_UI, CATEGORY_ICON } from "@/lib/packages";
+import {
+  REVSHARE_CONFIG,
+  calcPoolUsd,
+  calcPayoutR1,
+  calcPayoutR2,
+  calcSharesR1,
+  calcSharesR2,
+} from "@/config/revshare";
 
 export type FullPackage = InvestPackage & {
   icon: React.ComponentType<{ className?: string }>;
@@ -15,11 +23,8 @@ export type FullPackage = InvestPackage & {
   glow: string;
 };
 
-const CPM_RUB_DEFAULT = 120;
-const SHOWS_PER_DAY   = 2;
-const REVSHARE_PCT    = 0.20;
-const RUB_TO_USD      = 91;
-const TOTAL_SHARES    = 5000;
+const CPM_RUB_DEFAULT = REVSHARE_CONFIG.SHOWS_PER_DAY === 2 ? 120 : 120;
+const RUB_TO_USD      = REVSHARE_CONFIG.USD_RUB;
 
 const DAU_MIN = 5_000_000;
 const DAU_MAX = 50_000_000;
@@ -32,6 +37,9 @@ const PRESETS = [
   { label: "25 млн", dau: 25_000_000 },
   { label: "50 млн", dau: 50_000_000 },
 ];
+
+const CPM_MIN = 50;
+const CPM_MAX = 300;
 
 function fmt(n: number, decimals = 0) {
   return n.toLocaleString("ru-RU", { maximumFractionDigits: decimals });
@@ -49,7 +57,6 @@ function fmtDau(dau: number) {
 function dauFromSlider(v: number) { return Math.round(DAU_MIN + (v / STEPS) * (DAU_MAX - DAU_MIN)); }
 function sliderPosFromDau(dau: number) { return ((dau - DAU_MIN) / (DAU_MAX - DAU_MIN)) * STEPS; }
 
-// ─── Первые 3 хайлайта для свёрнутого вида ──────────────────────
 function getTopHighlights(pkg: InvestPackage): string[] {
   if (!pkg?.categories) return [];
   const out: string[] = [];
@@ -59,9 +66,6 @@ function getTopHighlights(pkg: InvestPackage): string[] {
   }
   return out;
 }
-
-const CPM_MIN = 50;
-const CPM_MAX = 300;
 
 export function DauCalculator({
   onInvest,
@@ -75,22 +79,18 @@ export function DauCalculator({
   const [dau, setDau]             = useState(10_000_000);
   const [cpmRub, setCpmRub]       = useState(CPM_RUB_DEFAULT);
   const [expandedId, setExpanded] = useState<string | null>(null);
+  const [round, setRound]         = useState<"r1" | "r2">("r1");
 
-  const dailyRub               = dau * SHOWS_PER_DAY * cpmRub / 1000;
-  const monthlyRub             = dailyRub * 30;
+  const dailyRub               = dau * REVSHARE_CONFIG.SHOWS_PER_DAY * cpmRub / 1000;
+  const monthlyRub             = dailyRub * REVSHARE_CONFIG.DAYS_IN_MONTH;
   const annualRub              = dailyRub * 365;
-  const revsharePoolMonthlyUsd = (monthlyRub / RUB_TO_USD) * REVSHARE_PCT;
+  const revsharePoolMonthlyUsd = calcPoolUsd(dau, cpmRub);
+  const shareValueMonthlyUsd   = revsharePoolMonthlyUsd / REVSHARE_CONFIG.TOTAL_SHARES;
   const sliderVal              = Math.round(sliderPosFromDau(dau));
 
   const handleSlider = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setDau(dauFromSlider(Number(e.target.value)));
   }, []);
-
-  function calcRevShare(shares: number) {
-    if (!shares) return null;
-    const monthlyUsd = (shares / TOTAL_SHARES) * revsharePoolMonthlyUsd;
-    return { monthlyUsd, annualUsd: monthlyUsd * 12 };
-  }
 
   return (
     <section className="py-16 md:py-24 lg:py-32 relative z-10" id="packages">
@@ -105,6 +105,16 @@ export function DauCalculator({
             </p>
           </div>
 
+          {/* БАЗОВЫЙ СЦЕНАРИЙ — плашка */}
+          <div className="mb-8 rounded-2xl border border-yellow-400/30 bg-yellow-500/6 px-5 py-3.5 flex items-start gap-3">
+            <span className="text-lg shrink-0 mt-0.5">🟡</span>
+            <p className="text-sm text-yellow-200/90 leading-relaxed">
+              <span className="font-bold text-yellow-300">БАЗОВЫЙ СЦЕНАРИЙ</span> — учтён только{" "}
+              <span className="font-semibold">1 из {REVSHARE_CONFIG.REVENUE_SOURCES_TOTAL} источников монетизации</span> (реклама в ленте).
+              Реальный доход будет выше по мере подключения остальных потоков.
+            </p>
+          </div>
+
           {/* Калькулятор DAU */}
           <div className="mb-10">
             <div className="text-center mb-6">
@@ -113,7 +123,7 @@ export function DauCalculator({
                 Рост DAU = прямой рост выручки
               </div>
               <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto mt-3">
-                2 рекламных показа в день. Двигайте ползунки DAU и CPM — суммы в карточках обновляются.
+                {REVSHARE_CONFIG.SHOWS_PER_DAY} рекламных показа в день. Двигайте ползунки DAU и CPM — суммы в карточках обновляются.
               </p>
             </div>
 
@@ -198,32 +208,54 @@ export function DauCalculator({
 
               <div className="mt-4 pt-4 border-t border-white/8 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
                 <span className="font-mono bg-white/5 px-3 py-1.5 rounded-lg border border-white/8">
-                  (DAU × 2 показа × CPM {cpmRub} ₽) ÷ 1000 = выручка в день
+                  (DAU × {REVSHARE_CONFIG.SHOWS_PER_DAY} показа × CPM {cpmRub} ₽) ÷ 1000 = выручка в день
                 </span>
-                <span className="text-green-400 font-semibold">RevShare инвесторов — 20% выручки</span>
+                <span className="text-green-400 font-semibold">RevShare инвесторов — {REVSHARE_CONFIG.REVENUE_SHARE * 100}% рекламной выручки</span>
               </div>
             </div>
 
-            {/* RevShare пул */}
+            {/* RevShare пул — БЛОК 4 */}
             <div className="rounded-2xl border border-green-500/20 bg-green-500/3 backdrop-blur-sm p-5 md:p-6 space-y-3">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <DollarSign className="w-4 h-4 text-green-400" />
-                    <span className="text-sm font-bold text-green-400">Пул RevShare инвесторов — 20% выручки</span>
+                    <span className="text-sm font-bold text-green-400">
+                      Пул RevShare инвесторов — {REVSHARE_CONFIG.REVENUE_SHARE * 100}% рекламной выручки
+                    </span>
                   </div>
                   <motion.div key={Math.round(revsharePoolMonthlyUsd)}
                     initial={{ opacity: 0.5, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.2 }}
                     className="flex flex-wrap items-baseline gap-2">
-                    <span className="text-3xl md:text-4xl font-black tabular-nums">{fmtM(monthlyRub * REVSHARE_PCT)} ₽</span>
+                    <span className="text-3xl md:text-4xl font-black tabular-nums">{fmtM(monthlyRub * REVSHARE_CONFIG.REVENUE_SHARE)} ₽</span>
                     <span className="text-xl md:text-2xl font-bold tabular-nums text-muted-foreground">/ ${fmt(revsharePoolMonthlyUsd, 0)}</span>
                     <span className="text-muted-foreground text-base font-normal">/ мес</span>
                   </motion.div>
+                  <div className="mt-1.5 text-xs text-muted-foreground/70">
+                    Распределяется между{" "}
+                    <span className="text-foreground font-semibold">{REVSHARE_CONFIG.TOTAL_SHARES.toLocaleString()} долей</span>.
+                    {" "}Стоимость одной доли в месяц:{" "}
+                    <motion.span key={Math.round(shareValueMonthlyUsd * 100)} className="text-green-400 font-semibold tabular-nums">
+                      ${fmt(shareValueMonthlyUsd, 2)}
+                    </motion.span>
+                  </div>
                 </div>
                 <p className="text-xs text-muted-foreground max-w-[260px]">
                   Ваша доля из этого пула зависит от пакета. Выплаты ежемесячно в USDT.
                 </p>
               </div>
+
+              {/* Пояснение про 1 из 7 */}
+              <div className="flex items-start gap-2.5 rounded-xl border border-primary/15 bg-primary/4 p-3">
+                <Info className="w-4 h-4 text-primary/70 shrink-0 mt-0.5" />
+                <p className="text-[11px] text-muted-foreground leading-relaxed">
+                  <span className="text-primary font-semibold">Это пул только от 1 источника монетизации</span> (реклама в ленте).
+                  {" "}Платформа имеет ещё {REVSHARE_CONFIG.REVENUE_SOURCES_TOTAL - 1} источников: Boost-продвижение, спонсорские интеграции,
+                  цифровые донаты, B2B-аналитика, таргет-баннер, e-commerce. По мере их подключения пул RevShare
+                  пропорционально увеличится — расчёт ниже это не учитывает (консервативный сценарий).
+                </p>
+              </div>
+
               <div className="flex items-start gap-3 rounded-xl border border-yellow-500/20 bg-yellow-500/5 p-3">
                 <div className="w-7 h-7 rounded-lg bg-yellow-500/15 flex items-center justify-center shrink-0 mt-0.5 text-sm">🐹</div>
                 <p className="text-xs text-muted-foreground leading-relaxed">
@@ -239,22 +271,59 @@ export function DauCalculator({
             </div>
           </div>
 
+          {/* ─── R1 / R2 переключатель — БЛОК 9 ─── */}
+          {fullPackages && fullPackages.length > 0 && (
+            <div className="mb-8">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-2">
+                <p className="text-sm text-muted-foreground">
+                  Выберите раунд — цифры RevShare в карточках пересчитаются:
+                </p>
+                <div className="flex rounded-xl border border-white/12 bg-white/4 p-1 gap-1 shrink-0">
+                  <button
+                    onClick={() => setRound("r1")}
+                    className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
+                      round === "r1"
+                        ? "bg-green-500/20 border border-green-500/40 text-green-400"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    Round 1 (активен) +30% 🔥
+                  </button>
+                  <button
+                    onClick={() => setRound("r2")}
+                    className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
+                      round === "r2"
+                        ? "bg-white/10 border border-white/20 text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    Round 2
+                  </button>
+                </div>
+              </div>
+              <p className="text-center text-xs text-muted-foreground mb-3">
+                Нажмите на карточку — увидите всё, что входит в пакет
+              </p>
+            </div>
+          )}
+
           {/* ─── Карточки пакетов ─── */}
           {fullPackages && fullPackages.length > 0 && (
             <div>
-              <p className="text-center text-xs text-muted-foreground mb-8">
-                Нажмите на карточку — увидите всё, что входит в пакет
-              </p>
               <div className="grid sm:grid-cols-2 gap-4 md:gap-6">
                 {fullPackages.map((pkg, idx) => {
                   const isLast    = idx === fullPackages.length - 1;
                   const isExpanded = expandedId === pkg.id;
-                  const rev       = calcRevShare(pkg.shares);
-                  const monthly   = rev?.monthlyUsd ?? 0;
-                  const annual    = rev?.annualUsd  ?? 0;
-                  const roiPct    = pkg.price > 0 && annual > 0 ? (annual / pkg.price) * 100 : null;
+                  const payR2     = calcPayoutR2(pkg.price, dau, cpmRub);
+                  const payR1     = calcPayoutR1(pkg.price, dau, cpmRub);
+                  const sharesR2  = calcSharesR2(pkg.price);
+                  const sharesR1  = calcSharesR1(pkg.price);
+                  const activeShares = round === "r1" ? sharesR1 : sharesR2;
+                  const annualActive = (round === "r1" ? payR1 : payR2) * 12;
+                  const roiPct    = pkg.price > 0 && annualActive > 0 ? (annualActive / pkg.price) * 100 : null;
                   const topItems  = getTopHighlights(pkg);
                   const totalItems = pkg.categories?.reduce((s, c) => s + c.items.length, 0) ?? 0;
+                  void activeShares; void roiPct;
 
                   return (
                     <motion.div key={pkg.id}
@@ -266,7 +335,6 @@ export function DauCalculator({
                     >
                       <div className="p-6 md:p-7 flex flex-col">
 
-                        {/* Метка рекомендовано */}
                         {pkg.recommended && (
                           <div className="flex justify-center mb-4 -mt-1">
                             <motion.div
@@ -297,32 +365,58 @@ export function DauCalculator({
                         </div>
                         <p className="text-xs text-muted-foreground mb-4 leading-relaxed">{pkg.tagline}</p>
 
-                        {/* RevShare динамика + DAU 50M */}
-                        <div className="grid grid-cols-2 gap-2 mb-4">
-                          <div className="rounded-xl border border-white/8 bg-white/3 p-3">
-                            <div className="text-[10px] text-muted-foreground mb-0.5 leading-tight">
-                              RevShare (калькулятор)
+                        {/* RevShare — новый блок БЛОК 3 */}
+                        <div className="rounded-xl border border-white/10 bg-white/3 p-3.5 mb-4 space-y-2">
+                          <div className="flex items-center justify-between gap-2">
+                            <div className="text-[10px] text-muted-foreground font-medium leading-tight">
+                              RevShare /мес — реклама в ленте
                             </div>
-                            <div className={`text-[9px] font-semibold mb-0.5 tabular-nums ${pkg.color}`}>
-                              {fmtDau(dau)} DAU
-                            </div>
-                            {rev ? (
-                              <motion.div key={Math.round(monthly)} initial={{ opacity: 0.4 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
-                                className={`text-lg font-black tabular-nums ${pkg.color}`}>
-                                ~${fmt(monthly, 0)}
-                                <span className="text-xs font-normal text-muted-foreground">/мес</span>
-                              </motion.div>
-                            ) : (
-                              <div className="text-lg font-black text-muted-foreground">–</div>
-                            )}
+                            <span className="text-[9px] text-muted-foreground/60 font-semibold shrink-0">
+                              1 из {REVSHARE_CONFIG.REVENUE_SOURCES_TOTAL} источников
+                            </span>
                           </div>
-                          <div className="rounded-xl border border-green-500/20 bg-green-500/6 p-3">
-                            <div className="text-[10px] text-green-400/75 font-medium mb-0.5 leading-tight">RevShare при</div>
-                            <div className="text-[9px] font-semibold text-green-400/50 mb-0.5">50 млн DAU</div>
-                            <div className="text-lg font-black tabular-nums text-green-400">
-                              ${pkg.dau50m.toLocaleString("ru-RU")}
-                              <span className="text-xs font-normal text-green-400/70">/мес</span>
-                            </div>
+
+                          {/* Round 1 строка */}
+                          <div className={`flex items-center justify-between transition-opacity ${round === "r1" ? "opacity-100" : "opacity-40"}`}>
+                            <span className={`text-[11px] font-bold ${round === "r1" ? "text-green-400" : "text-muted-foreground"}`}>
+                              Round 1 (сейчас, +30%) {round === "r1" && "🔥"}
+                            </span>
+                            <motion.span
+                              key={"r1-" + Math.round(payR1)}
+                              initial={{ opacity: 0.4 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
+                              className={`text-lg font-black tabular-nums ${round === "r1" ? "text-green-400" : "text-muted-foreground"}`}
+                            >
+                              ${fmt(payR1, 2)}
+                            </motion.span>
+                          </div>
+
+                          {/* Round 2 строка */}
+                          <div className={`flex items-center justify-between transition-opacity ${round === "r2" ? "opacity-100" : "opacity-40"}`}>
+                            <span className={`text-[11px] font-semibold ${round === "r2" ? "text-foreground" : "text-muted-foreground"}`}>
+                              Round 2
+                            </span>
+                            <motion.span
+                              key={"r2-" + Math.round(payR2)}
+                              initial={{ opacity: 0.4 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
+                              className={`text-base font-bold tabular-nums ${round === "r2" ? "text-foreground" : "text-muted-foreground"}`}
+                            >
+                              ${fmt(payR2, 2)}
+                            </motion.span>
+                          </div>
+
+                          {/* Shares info */}
+                          <div className="text-[9px] text-muted-foreground/50 border-t border-white/6 pt-1.5 flex justify-between">
+                            <span>{round === "r1" ? `${fmt(sharesR1, 3)} долей (R1)` : `${fmt(sharesR2, 3)} долей (R2)`}</span>
+                            <span>{fmtDau(dau)} DAU</span>
+                          </div>
+
+                          {/* Подсказка */}
+                          <div className="flex items-start gap-1.5 pt-0.5">
+                            <Info className="w-3 h-3 text-muted-foreground/50 shrink-0 mt-0.5" />
+                            <p className="text-[9px] text-muted-foreground/50 leading-relaxed italic">
+                              Расчёт только по рекламной выручке.
+                              Доходы от {REVSHARE_CONFIG.REVENUE_SOURCES_TOTAL - 1} других источников (Boost, спонсорства, донаты, аналитика, баннер, e-commerce) добавляются сверху и не учтены здесь.
+                            </p>
                           </div>
                         </div>
 

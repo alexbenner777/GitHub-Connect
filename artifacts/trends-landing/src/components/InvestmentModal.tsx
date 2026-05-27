@@ -478,7 +478,7 @@ export function InvestmentModal({
                     </div>
                   ) : (
                     <button
-                      onClick={openTon}
+                      onClick={() => openTon()}
                       className="w-full flex items-center gap-4 p-4 rounded-xl border-2 border-primary/40 bg-primary/8 hover:border-primary/70 hover:bg-primary/12 transition-all text-left group"
                     >
                       <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center shrink-0">

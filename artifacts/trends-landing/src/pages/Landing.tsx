@@ -300,9 +300,10 @@ function MonetizationCards({ t }: { t: (key: string) => string }) {
               <Target className="w-8 h-8" />
             </div>
             <div className="flex-1">
-              <div className="flex items-center gap-3 mb-3">
+              <div className="flex items-center gap-3 mb-3 flex-wrap">
                 <h3 className="text-2xl md:text-3xl font-bold">{t('mono1_title')}</h3>
                 <span className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-bold uppercase tracking-wider">{t('mono1_badge')}</span>
+                <span className="px-2.5 py-1 rounded-full bg-green-500/15 border border-green-500/40 text-green-400 text-[10px] font-black uppercase tracking-wider">В КАЛЬКУЛЯТОРЕ</span>
                 <motion.div animate={{ rotate: mono1Open ? 180 : 0 }} transition={{ duration: 0.3, ease: EASE }} className="ml-auto shrink-0">
                   <ChevronDown className="w-6 h-6 text-primary opacity-60" />
                 </motion.div>
@@ -351,12 +352,13 @@ function MonetizationCards({ t }: { t: (key: string) => string }) {
               <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-5 group-hover:scale-110 transition-transform">
                 <item.icon className="w-6 h-6" />
               </div>
-              <div className="flex items-start justify-between gap-2 mb-2">
+              <div className="flex items-start justify-between gap-2 mb-1.5">
                 <h3 className="text-lg font-bold">{item.title}</h3>
                 <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.3, ease: EASE }} className="shrink-0 mt-0.5">
                   <ChevronDown className="w-6 h-6 text-primary opacity-60" />
                 </motion.div>
               </div>
+              <span className="inline-block px-2 py-0.5 rounded-full bg-white/6 border border-white/15 text-muted-foreground text-[9px] font-bold uppercase tracking-wider mb-2">АПСАЙД СВЕРХУ</span>
               <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
               <AnimatePresence initial={false}>
                 {isOpen && (
@@ -1020,6 +1022,7 @@ export default function Landing() {
           <div className="section-header mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('mono_title')}</h2>
             <p className="text-lg text-muted-foreground">{t('mono_desc')}</p>
+            <p className="text-sm text-primary/80 mt-3 font-medium">{t('mono_calc_note')}</p>
           </div>
           <div className="section-inner">
           <MonetizationCards t={t} />
@@ -1778,6 +1781,9 @@ export default function Landing() {
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-center mb-12">{t('faq_title')}</h2>
           <Accordion type="single" collapsible className="w-full space-y-4">
             {[
+              { q: t('faqc1_q'), a: t('faqc1_a') },
+              { q: t('faqc2_q'), a: t('faqc2_a') },
+              { q: t('faqc3_q'), a: t('faqc3_a') },
               { q: t('faq1_q'), a: t('faq1_a') },
               { q: t('faq2_q'), a: t('faq2_a') },
               { q: t('faq3_q'), a: t('faq3_a') },
