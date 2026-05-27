@@ -15,11 +15,11 @@ export type FullPackage = InvestPackage & {
   glow: string;
 };
 
-const CPM_RUB       = 190;
-const SHOWS_PER_DAY = 2;
-const REVSHARE_PCT  = 0.20;
-const RUB_TO_USD    = 91;
-const TOTAL_SHARES  = 5000;
+const CPM_RUB_DEFAULT = 120;
+const SHOWS_PER_DAY   = 2;
+const REVSHARE_PCT    = 0.20;
+const RUB_TO_USD      = 91;
+const TOTAL_SHARES    = 5000;
 
 const DAU_MIN = 5_000_000;
 const DAU_MAX = 50_000_000;
@@ -60,6 +60,9 @@ function getTopHighlights(pkg: InvestPackage): string[] {
   return out;
 }
 
+const CPM_MIN = 50;
+const CPM_MAX = 500;
+
 export function DauCalculator({
   onInvest,
   onSelectPackage,
@@ -70,9 +73,10 @@ export function DauCalculator({
   fullPackages?: FullPackage[];
 }) {
   const [dau, setDau]             = useState(10_000_000);
+  const [cpmRub, setCpmRub]       = useState(CPM_RUB_DEFAULT);
   const [expandedId, setExpanded] = useState<string | null>(null);
 
-  const dailyRub               = dau * SHOWS_PER_DAY * CPM_RUB / 1000;
+  const dailyRub               = dau * SHOWS_PER_DAY * cpmRub / 1000;
   const monthlyRub             = dailyRub * 30;
   const annualRub              = dailyRub * 365;
   const revsharePoolMonthlyUsd = (monthlyRub / RUB_TO_USD) * REVSHARE_PCT;
@@ -109,7 +113,7 @@ export function DauCalculator({
                 Рост DAU = прямой рост выручки
               </div>
               <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto mt-3">
-                2 рекламных показа в день на пользователя при CPM ≈ 190 ₽. Двигайте ползунок — суммы в карточках обновляются.
+                2 рекламных показа в день. Двигайте ползунки DAU и CPM — суммы в карточках обновляются.
               </p>
             </div>
 
@@ -130,6 +134,35 @@ export function DauCalculator({
                   className="w-full h-2 rounded-full appearance-none cursor-pointer"
                   style={{ background: `linear-gradient(to right, #00D4FF ${(sliderVal / STEPS) * 100}%, rgba(255,255,255,0.1) ${(sliderVal / STEPS) * 100}%)` }}
                 />
+              </div>
+
+              {/* CPM slider */}
+              <div className="mb-5 pt-2 border-t border-white/8">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <DollarSign className="w-4 h-4 text-secondary" />
+                    <span className="text-sm text-muted-foreground font-medium">CPM</span>
+                  </div>
+                  <motion.div key={cpmRub} initial={{ opacity: 0.5, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.15 }}
+                    className="text-lg font-black text-secondary tabular-nums">
+                    {cpmRub} ₽
+                  </motion.div>
+                </div>
+                <input
+                  type="range"
+                  min={CPM_MIN}
+                  max={CPM_MAX}
+                  step={10}
+                  value={cpmRub}
+                  onChange={e => setCpmRub(Number(e.target.value))}
+                  className="w-full h-2 rounded-full appearance-none cursor-pointer mb-1"
+                  style={{ background: `linear-gradient(to right, #7B5EFF ${((cpmRub - CPM_MIN) / (CPM_MAX - CPM_MIN)) * 100}%, rgba(255,255,255,0.1) ${((cpmRub - CPM_MIN) / (CPM_MAX - CPM_MIN)) * 100}%)` }}
+                />
+                <div className="flex justify-between text-[10px] text-muted-foreground/50 font-mono">
+                  <span>{CPM_MIN} ₽</span>
+                  <span className="text-muted-foreground/40">Реальный рынок: 90–250 ₽</span>
+                  <span>{CPM_MAX} ₽</span>
+                </div>
               </div>
 
               <div className="flex justify-between gap-1 mb-6">
@@ -165,7 +198,7 @@ export function DauCalculator({
 
               <div className="mt-4 pt-4 border-t border-white/8 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
                 <span className="font-mono bg-white/5 px-3 py-1.5 rounded-lg border border-white/8">
-                  (DAU × 2 показа × CPM 190 ₽) ÷ 1000 = выручка в день
+                  (DAU × 2 показа × CPM {cpmRub} ₽) ÷ 1000 = выручка в день
                 </span>
                 <span className="text-green-400 font-semibold">RevShare инвесторов — 20% выручки</span>
               </div>
@@ -200,6 +233,9 @@ export function DauCalculator({
                   <span className="text-foreground font-semibold">каждый DAU прямо увеличивает ваш RevShare.</span>
                 </p>
               </div>
+              <p className="text-[11px] text-muted-foreground/50 text-center pt-1">
+                ⚠️ Расчёты являются прогнозными и не гарантируются. RevShare зависит от фактической выручки платформы.
+              </p>
             </div>
           </div>
 

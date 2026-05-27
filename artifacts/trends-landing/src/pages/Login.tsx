@@ -43,13 +43,13 @@ export default function Login() {
             <span className="text-2xl font-black">Trends</span>
           </div>
 
-          <h1 className="text-3xl font-black mb-2">Вход в кабинет</h1>
-          <p className="text-muted-foreground mb-8">Войдите в свой инвесторский аккаунт</p>
+          <h1 className="text-3xl font-black mb-2">Вход в личный кабинет</h1>
+          <p className="text-muted-foreground mb-8">Войдите в личный кабинет инвестора</p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="text-sm font-medium mb-1.5 block">Email</label>
-              <Input type="email" placeholder="investor@email.com" value={email}
+              <Input type="email" name="email" autoComplete="email" placeholder="investor@email.com" value={email}
                 onChange={e => setEmail(e.target.value)}
                 className="bg-background/50 border-white/10 h-12" required />
             </div>
@@ -60,7 +60,7 @@ export default function Login() {
                   Забыли пароль?
                 </Link>
               </div>
-              <Input type="password" placeholder="••••••••" value={password}
+              <Input type="password" name="password" autoComplete="current-password" placeholder="••••••••" value={password}
                 onChange={e => setPassword(e.target.value)}
                 className="bg-background/50 border-white/10 h-12" required />
             </div>

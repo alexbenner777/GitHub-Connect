@@ -1,5 +1,6 @@
 import express, { type Express, type Request, type Response, type NextFunction } from "express";
 import cors from "cors";
+import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
 import pinoHttp from "pino-http";
@@ -13,6 +14,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app: Express = express();
 
 app.set("trust proxy", 1);
+app.disable("x-powered-by");
+
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false,
+}));
 
 const allowedOrigins = [
   "https://trendspartner.space",
@@ -40,7 +47,7 @@ app.use(
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 20,
+  max: 5,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: "Слишком много запросов, попробуйте через 15 минут" },

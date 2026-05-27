@@ -46,7 +46,7 @@ export const DOCS: Doc[] = [
         <P>2.2. Пользователь несёт ответственность за сохранность учётных данных и все действия, совершённые с его аккаунта.</P>
         <P>2.3. Регистрация доступна лицам, достигшим 18 лет. Участие в инвестиционной программе доступно только дееспособным физическим лицам.</P>
         <H>3. Инвестиционная программа</H>
-        <P>3.1. Инвестиционная программа Trends предполагает приобретение Пакета участия (Starter, Genesis, Growth, Whale) на условиях, определённых в Инвестиционной оферте.</P>
+        <P>3.1. Инвестиционная программа Trends предполагает приобретение Пакета участия (Starter $250, Partner $1 000, Insider $5 000, Visionary $25 000, Co-Investor $100 000) на условиях, определённых в Инвестиционной оферте.</P>
         <P>3.2. Доходность программы RevShare не является гарантированной и зависит от фактических показателей монетизации Платформы.</P>
         <P>3.3. Участие в реферальной программе регулируется отдельными условиями MLM-структуры, изложенными в Инвестиционной оферте.</P>
         <H>4. Запрещённые действия</H>
@@ -82,7 +82,7 @@ export const DOCS: Doc[] = [
         <P>2.2. Users are responsible for keeping their credentials secure and for all actions taken from their account.</P>
         <P>2.3. Registration is available to persons aged 18 and over. Participation in the investment program is available only to legally capable individuals.</P>
         <H>3. Investment Program</H>
-        <P>3.1. The Trends Investment Program involves purchasing a participation package (Starter, Genesis, Growth, Whale) under the terms defined in the Investment Offer.</P>
+        <P>3.1. The Trends Investment Program involves purchasing a participation package (Starter $250, Partner $1,000, Insider $5,000, Visionary $25,000, Co-Investor $100,000) under the terms defined in the Investment Offer.</P>
         <P>3.2. RevShare program returns are not guaranteed and depend on the Platform's actual monetization performance.</P>
         <P>3.3. Participation in the referral program is governed by the MLM structure terms set out in the Investment Offer.</P>
         <H>4. Prohibited Actions</H>
@@ -280,10 +280,11 @@ export const DOCS: Doc[] = [
         <P>Принятие (акцепт) Оферты осуществляется путём оплаты любого из инвестиционных пакетов на Платформе.</P>
         <H>1. Инвестиционные пакеты</H>
         <UL items={[
-          "Starter — $100: базовый доступ к RevShare пулу, реферальная программа до 5 уровней",
-          "Genesis — $1 000: расширенный RevShare, приоритетная поддержка, бонус ×1.5 к аллокации токенов",
-          "Growth — $10 000: премиальный RevShare, персональный менеджер, бонус ×2 к аллокации",
-          "Whale — $50 000: максимальный RevShare, место в Advisory Board, бонус ×3 к аллокации",
+          "Starter — $250: базовый доступ к RevShare пулу, реферальная программа до 3 уровней",
+          "Partner — $1 000: расширенный RevShare, закрытый канал инвесторов, реферальная программа 5 уровней",
+          "Insider — $5 000: полный RevShare (все 7 источников монетизации), прямой доступ к команде, рекламный баланс $10 000",
+          "Visionary — $25 000: максимальный RevShare, Advisory Board, персональный менеджер, рекламный баланс $50 000",
+          "Co-Investor — $100 000: максимальный RevShare, участие в токеномике, неограниченное продвижение, ежемесячный звонок с CEO",
         ]} />
         <H>2. RevShare — условия выплат</H>
         <P>2.1. 20% от совокупной выручки по всем 7 источникам монетизации Платформы ежемесячно направляется в Инвесторский пул (RevShare Pool).</P>
@@ -329,10 +330,11 @@ export const DOCS: Doc[] = [
         <P>Acceptance of this Offer is made by paying for any investment package on the Platform.</P>
         <H>1. Investment Packages</H>
         <UL items={[
-          "Starter — $100: basic RevShare pool access, referral program up to 5 levels",
-          "Genesis — $1,000: enhanced RevShare, priority support, ×1.5 token allocation bonus",
-          "Growth — $10,000: premium RevShare, personal manager, ×2 token allocation bonus",
-          "Whale — $50,000: maximum RevShare, Advisory Board seat, ×3 token allocation bonus",
+          "Starter — $250: basic RevShare pool access, referral program up to 3 levels",
+          "Partner — $1,000: enhanced RevShare, closed investor channel, 5-level referral program",
+          "Insider — $5,000: full RevShare (all 7 monetization sources), direct team access, $10,000 ad balance",
+          "Visionary — $25,000: maximum RevShare, Advisory Board, personal manager, $50,000 ad balance",
+          "Co-Investor — $100,000: maximum RevShare, participation in tokenomics, unlimited promotion, monthly CEO call",
         ]} />
         <H>2. RevShare — Payment Terms</H>
         <P>2.1. 20% of total revenue across all 7 Platform monetization sources is directed monthly to the Investor Pool (RevShare Pool).</P>

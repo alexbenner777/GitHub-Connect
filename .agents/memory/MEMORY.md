@@ -1,0 +1,1 @@
+- [Helmet config](helmet-config.md) — helmet нужен с отключёнными CSP/COEP для корректной работы SPA-статики через Express.

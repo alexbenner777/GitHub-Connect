@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Алексей К.",
+    "role": "CEO & Co-founder",
+    "tg": "https://t.me/Trends_ibot",
+    "initials": "АК",
+    "color": "#00D4FF",
+    "bio": "7 лет в продуктовом менеджменте. Построил несколько Telegram-проектов с MAU 100K+. Специализация — рост аудитории и монетизация."
+  },
+  {
+    "name": "Дмитрий З.",
+    "role": "CTO & Co-founder",
+    "tg": "https://t.me/Trends_ibot",
+    "initials": "ДЗ",
+    "color": "#7B5EFF",
+    "bio": "Backend-архитектор с опытом в высоконагруженных системах. ML-рекомендации, видеоинфраструктура, Telegram Mini Apps."
+  },
+  {
+    "name": "Мария С.",
+    "role": "Head of Marketing",
+    "tg": "https://t.me/Trends_ibot",
+    "initials": "МС",
+    "color": "#22d3ee",
+    "bio": "Рост Telegram-каналов от 0 до 500K+ подписчиков. Запустила маркетинговые кампании для 20+ крипто- и tech-проектов."
+  },
+  {
+    "name": "Игорь В.",
+    "role": "Head of Product",
+    "tg": "https://t.me/Trends_ibot",
+    "initials": "ИВ",
+    "color": "#a78bfa",
+    "bio": "UX и продукт для мобильных приложений. 5 лет в сфере short-video контента. Запустил 3 приложения с MAU 50K+."
+  },
+  {
+    "name": "Анна К.",
+    "role": "CFO & Legal",
+    "tg": "https://t.me/Trends_ibot",
+    "initials": "АК",
+    "color": "#34d399",
+    "bio": "Финансы и юридическое сопровождение стартапов. Участие в 3 инвестиционных раундах. Эксперт по криптовалютному праву."
+  }
+]
