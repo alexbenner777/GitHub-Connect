@@ -61,7 +61,7 @@ function getTopHighlights(pkg: InvestPackage): string[] {
 }
 
 const CPM_MIN = 50;
-const CPM_MAX = 500;
+const CPM_MAX = 300;
 
 export function DauCalculator({
   onInvest,
