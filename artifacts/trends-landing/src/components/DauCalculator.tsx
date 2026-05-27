@@ -105,16 +105,6 @@ export function DauCalculator({
             </p>
           </div>
 
-          {/* БАЗОВЫЙ СЦЕНАРИЙ — плашка */}
-          <div className="mb-8 rounded-2xl border border-yellow-400/30 bg-yellow-500/6 px-5 py-3.5 flex items-start gap-3">
-            <span className="text-lg shrink-0 mt-0.5">🟡</span>
-            <p className="text-sm text-yellow-200/90 leading-relaxed">
-              <span className="font-bold text-yellow-300">БАЗОВЫЙ СЦЕНАРИЙ</span> — учтён только{" "}
-              <span className="font-semibold">1 из {REVSHARE_CONFIG.REVENUE_SOURCES_TOTAL} источников монетизации</span> (реклама в ленте).
-              Реальный доход будет выше по мере подключения остальных потоков.
-            </p>
-          </div>
-
           {/* Калькулятор DAU */}
           <div className="mb-10">
             <div className="text-center mb-6">
@@ -245,16 +235,7 @@ export function DauCalculator({
                 </p>
               </div>
 
-              {/* Пояснение про 1 из 7 */}
-              <div className="flex items-start gap-2.5 rounded-xl border border-primary/15 bg-primary/4 p-3">
-                <Info className="w-4 h-4 text-primary/70 shrink-0 mt-0.5" />
-                <p className="text-[11px] text-muted-foreground leading-relaxed">
-                  <span className="text-primary font-semibold">Это пул только от 1 источника монетизации</span> (реклама в ленте).
-                  {" "}Платформа имеет ещё {REVSHARE_CONFIG.REVENUE_SOURCES_TOTAL - 1} источников: Boost-продвижение, спонсорские интеграции,
-                  цифровые донаты, B2B-аналитика, таргет-баннер, e-commerce. По мере их подключения пул RevShare
-                  пропорционально увеличится — расчёт ниже это не учитывает (консервативный сценарий).
-                </p>
-              </div>
+
 
               <div className="flex items-start gap-3 rounded-xl border border-yellow-500/20 bg-yellow-500/5 p-3">
                 <div className="w-7 h-7 rounded-lg bg-yellow-500/15 flex items-center justify-center shrink-0 mt-0.5 text-sm">🐹</div>
