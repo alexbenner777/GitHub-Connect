@@ -17,7 +17,6 @@ import {
   Menu, X, Send, MessageCircle, Star, Shield, Zap, Crown,
   Mail, Globe, FileText, Lock, Code2, Megaphone, Server, Trophy, AlertTriangle
 } from "lucide-react";
-import teamData from "@/data/team.json";
 
 import { api } from "@/lib/api";
 import logoPath from '@assets/logo_trends_1777962710178.png';
@@ -1771,53 +1770,6 @@ export default function Landing() {
         </div>
       </section>
 
-
-      {/* TEAM */}
-      <section className="py-16 md:py-24 relative z-10" id="team">
-        <div className="container mx-auto px-4">
-          <div className="section-inner">
-            <div className="section-header mb-12">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-4">
-                {lang === 'ru' ? 'Команда' : 'Team'}
-              </div>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">
-                {lang === 'ru' ? 'Кто строит Trends' : 'Who builds Trends'}
-              </h2>
-              <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-                {lang === 'ru'
-                  ? 'Команда с опытом в продукте, технологиях и маркетинге внутри экосистемы Telegram.'
-                  : 'A team with expertise in product, technology and marketing inside the Telegram ecosystem.'}
-              </p>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {teamData.map((member, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.5, delay: i * 0.07 }}
-                  className="glass-card border border-white/8 rounded-2xl p-5 flex flex-col gap-4"
-                >
-                  <div className="flex items-center gap-3">
-                    <div
-                      className="w-11 h-11 rounded-xl flex items-center justify-center text-sm font-black shrink-0"
-                      style={{ background: member.color + "22", border: `1px solid ${member.color}55`, color: member.color }}
-                    >
-                      {member.initials}
-                    </div>
-                    <div>
-                      <div className="font-bold text-sm leading-tight">{member.name}</div>
-                      <div className="text-xs font-semibold mt-0.5" style={{ color: member.color }}>{member.role}</div>
-                    </div>
-                  </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed flex-1">{member.bio}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* FAQ */}
       <section className="py-16 md:py-24 relative z-10">
