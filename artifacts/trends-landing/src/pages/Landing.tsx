@@ -1003,7 +1003,6 @@ export default function Landing() {
           <div className="section-header mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('mono_title')}</h2>
             <p className="text-lg text-muted-foreground">{t('mono_desc')}</p>
-            <p className="text-sm text-primary/80 mt-3 font-medium">{t('mono_calc_note')}</p>
           </div>
           <div className="section-inner">
           <MonetizationCards t={t} />

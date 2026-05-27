@@ -643,9 +643,6 @@ export default function Cabinet() {
                         <span className="text-xs text-muted-foreground">При 50M DAU (пик) / в месяц</span>
                         <span className="text-green-400 font-black text-lg">${earnings[5].toLocaleString()}</span>
                       </div>
-                      <p className="text-[10px] text-muted-foreground/60 mt-3 italic">
-                        Базовый сценарий по 1 из 7 источников монетизации. Реальный доход будет выше по мере подключения остальных потоков.
-                      </p>
                     </div>
                   );
                 })()}
