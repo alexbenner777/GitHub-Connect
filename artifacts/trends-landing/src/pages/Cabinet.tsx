@@ -396,11 +396,45 @@ export default function Cabinet() {
         </div>
       </nav>
 
-      <div className="max-w-screen-xl mx-auto px-4 pt-24 pb-16">
+      {/* ══ MOBILE PROFILE STRIP ══ */}
+      <div className="lg:hidden border-b border-white/8 px-4 py-3" style={{ background: "rgba(8, 11, 22, 0.6)", marginTop: "64px" }}>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-sm font-black text-white">
+              {user.name[0].toUpperCase()}
+            </div>
+            <div>
+              <div className="font-bold text-sm leading-tight">{user.name}</div>
+              <div className="text-[11px] text-muted-foreground">{data.user.email}</div>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <button onClick={() => setIsInvestOpen(true)} className="h-8 px-3 rounded-lg btn-grad text-xs font-bold whitespace-nowrap">
+              + Вложить
+            </button>
+            <button onClick={handleLogout} className="p-2 rounded-lg hover:bg-white/10 transition-colors text-muted-foreground">
+              <LogOut className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+        {/* Mini round progress */}
+        <div className="mt-3">
+          <div className="flex justify-between text-[10px] text-muted-foreground mb-1">
+            <span className="font-semibold text-primary">Round 1 · Pre-Seed</span>
+            <span>${totalRaised.toLocaleString()} / $500 000 · {raisedPct}%</span>
+          </div>
+          <div className="h-1.5 bg-white/8 rounded-full overflow-hidden">
+            <motion.div initial={{ width: 0 }} animate={{ width: `${raisedPct}%` }} transition={{ duration: 1 }}
+              className="h-full rounded-full bg-gradient-to-r from-primary to-secondary" />
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-screen-xl mx-auto px-4 pt-4 lg:pt-24 pb-24 lg:pb-16">
         <div className="flex flex-col lg:flex-row gap-6">
 
-          {/* ══ SIDEBAR ══ */}
-          <aside className="lg:w-72 shrink-0 space-y-4">
+          {/* ══ SIDEBAR — desktop only ══ */}
+          <aside className="hidden lg:flex lg:flex-col lg:w-72 shrink-0 space-y-4">
 
             {/* Profile card */}
             <div className="glass-card rounded-2xl p-6 border border-white/10 relative overflow-hidden">
@@ -666,10 +700,31 @@ export default function Cabinet() {
                   </button>
                 </div>
                 {data.investments.length === 0 ? (
-                  <div className="glass-card p-12 rounded-2xl text-center border border-white/10">
-                    <DollarSign className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
-                    <p className="text-muted-foreground mb-4">У вас пока нет инвестиций</p>
-                    <Button onClick={() => setIsInvestOpen(true)} className="btn-grad font-bold rounded-xl">Инвестировать сейчас</Button>
+                  <div className="glass-card rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 to-transparent overflow-hidden">
+                    <div className="p-8 sm:p-12 text-center">
+                      <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-5">
+                        <DollarSign className="w-8 h-8 text-primary" />
+                      </div>
+                      <h3 className="text-lg font-black mb-2">Начните зарабатывать с Trends</h3>
+                      <p className="text-sm text-muted-foreground mb-6 max-w-sm mx-auto leading-relaxed">
+                        Выберите пакет Pre-Seed, получите долю RevShare от рекламной выручки и MLM-бонусы от вашей структуры
+                      </p>
+                      <Button onClick={() => setIsInvestOpen(true)} className="btn-grad btn-3d font-bold rounded-xl h-12 px-8">
+                        Выбрать пакет
+                      </Button>
+                    </div>
+                    <div className="border-t border-white/8 px-8 py-5 grid grid-cols-3 gap-4 text-center">
+                      {[
+                        { label: "Starter", value: "$100", color: "text-primary" },
+                        { label: "Genesis", value: "$1 000", color: "text-secondary" },
+                        { label: "Growth", value: "$10 000", color: "text-yellow-400" },
+                      ].map((pkg, i) => (
+                        <div key={i}>
+                          <div className={`text-base font-black ${pkg.color}`}>{pkg.value}</div>
+                          <div className="text-[11px] text-muted-foreground mt-0.5">{pkg.label}</div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 ) : (
                   <div className="grid gap-4">
@@ -758,35 +813,80 @@ export default function Cabinet() {
             {/* ─── PARTNERS / MLM ─── */}
             {activeTab === "mlm" && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
-                {/* Ref link + invite */}
-                <div className="glass-card rounded-2xl p-6 border border-white/10">
-                  <div className="text-sm font-bold mb-4 flex items-center gap-2">
-                    <Network className="w-4 h-4 text-primary" /> Реферальная ссылка
-                  </div>
-                  <div className="flex items-center gap-3 bg-white/5 p-4 rounded-xl border border-white/10 mb-3">
-                    <span className="text-sm font-mono text-muted-foreground flex-1 truncate">
-                      {window.location.origin}/register?ref=<span className="text-primary font-bold">{data.user.referralCode}</span>
-                    </span>
-                    <button onClick={copyRef} className="shrink-0 p-2 rounded-lg hover:bg-white/10 transition-colors text-muted-foreground hover:text-primary">
-                      <Copy className="w-4 h-4" />
-                    </button>
-                  </div>
-                  <div className="flex gap-2">
-                    <button onClick={copyRef}
-                      className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary text-sm font-semibold transition-colors border border-primary/20">
-                      <Copy className="w-3.5 h-3.5" /> Скопировать
-                    </button>
-                    <button onClick={shareToTelegram}
-                      className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 text-sm font-semibold transition-colors border border-blue-500/20">
-                      <Share2 className="w-3.5 h-3.5" /> Пригласить
-                    </button>
-                  </div>
-                  <div className="text-xs text-muted-foreground mt-3">
-                    Ваш код: <span className="text-primary font-mono font-bold">{data.user.referralCode}</span>
+
+                {/* Ref link card — always shown, styled as hero card */}
+                <div className="glass-card rounded-2xl border border-primary/25 bg-gradient-to-br from-primary/8 via-transparent to-secondary/5 overflow-hidden">
+                  <div className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 rounded-xl bg-primary/15 border border-primary/25 flex items-center justify-center">
+                        <Network className="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <div className="text-sm font-black">Ваша реферальная ссылка</div>
+                        <div className="text-xs text-muted-foreground">Делитесь и получайте до 10% от инвестиций</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 bg-white/5 p-3 rounded-xl border border-white/10 mb-4">
+                      <span className="text-xs font-mono text-muted-foreground flex-1 truncate">
+                        {window.location.origin}/register?ref=<span className="text-primary font-bold">{data.user.referralCode}</span>
+                      </span>
+                      <button onClick={copyRef} className="shrink-0 p-1.5 rounded-lg hover:bg-white/10 transition-colors text-muted-foreground hover:text-primary">
+                        <Copy className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                    <div className="flex gap-2">
+                      <button onClick={copyRef}
+                        className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary text-sm font-semibold transition-colors border border-primary/20">
+                        <Copy className="w-3.5 h-3.5" /> Скопировать
+                      </button>
+                      <button onClick={shareToTelegram}
+                        className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 text-sm font-semibold transition-colors border border-blue-500/20">
+                        <Share2 className="w-3.5 h-3.5" /> В Telegram
+                      </button>
+                    </div>
                   </div>
                 </div>
 
-                {/* Level structure */}
+                {/* Summary tiles */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="glass-card rounded-2xl p-5 border border-white/10 bg-gradient-to-br from-primary/10 to-transparent">
+                    <div className="text-xs text-muted-foreground mb-1">Всего партнёров</div>
+                    <div className="text-3xl font-black text-primary">{totalMLMRefs}</div>
+                    {totalMLMRefs === 0 && <div className="text-[11px] text-muted-foreground mt-1">Пригласите первого →</div>}
+                  </div>
+                  <div className="glass-card rounded-2xl p-5 border border-white/10 bg-gradient-to-br from-green-500/10 to-transparent">
+                    <div className="text-xs text-muted-foreground mb-1">MLM заработок</div>
+                    <div className="text-3xl font-black text-green-400">${totalMLM.toFixed(0)}</div>
+                    {totalMLM === 0 && <div className="text-[11px] text-muted-foreground mt-1">Растёт с сетью</div>}
+                  </div>
+                </div>
+
+                {/* Onboarding steps — shown when no partners yet */}
+                {totalMLMRefs === 0 && (
+                  <div className="glass-card rounded-2xl border border-white/10 p-6">
+                    <div className="text-xs font-black text-muted-foreground uppercase tracking-widest mb-5">Как начать зарабатывать</div>
+                    <div className="space-y-4">
+                      {[
+                        { step: "01", title: "Скопируйте ссылку", desc: "Ваша персональная реферальная ссылка уже готова выше", done: true, color: "text-primary", bg: "bg-primary/15 border-primary/30" },
+                        { step: "02", title: "Поделитесь в Telegram", desc: "Отправьте в чаты, каналы или лично — каждый переход отслеживается", done: false, color: "text-secondary", bg: "bg-secondary/15 border-secondary/30" },
+                        { step: "03", title: "Партнёр инвестирует", desc: "Как только ваш реферал делает вклад, вы получаете 10% мгновенно", done: false, color: "text-green-400", bg: "bg-green-500/15 border-green-500/30" },
+                        { step: "04", title: "Стройте 5 уровней", desc: "Их партнёры — ваш L2 (5%), их партнёры — L3 (3%) и т.д. до 5 уровней", done: false, color: "text-yellow-400", bg: "bg-yellow-500/15 border-yellow-500/30" },
+                      ].map((s, i) => (
+                        <div key={i} className="flex gap-4 items-start">
+                          <div className={`shrink-0 w-9 h-9 rounded-xl border flex items-center justify-center text-xs font-black ${s.bg} ${s.color}`}>
+                            {s.done ? <CheckCircle2 className="w-4 h-4" /> : s.step}
+                          </div>
+                          <div className="flex-1 pt-0.5">
+                            <div className={`text-sm font-bold ${s.done ? "text-foreground" : "text-foreground"}`}>{s.title}</div>
+                            <div className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{s.desc}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Level structure — always shown */}
                 <div className="glass-card rounded-2xl p-6 border border-white/10">
                   <div className="text-sm font-bold mb-5 flex items-center gap-2">
                     <BarChart3 className="w-4 h-4 text-secondary" /> Структура доходов по уровням
@@ -806,9 +906,10 @@ export default function Cabinet() {
                           <div className="flex-1 relative h-2 bg-white/5 rounded-full overflow-hidden">
                             <motion.div
                               initial={{ width: 0 }}
-                              animate={{ width: `${barW}%` }}
+                              animate={{ width: lvl ? `${barW}%` : "0%" }}
                               transition={{ duration: 0.7, delay: (level - 1) * 0.08 }}
-                              className={`absolute left-0 top-0 h-full rounded-full ${c.bar}`}
+                              className={`absolute left-0 top-0 h-full rounded-full ${c.bar} ${!lvl ? "opacity-20" : ""}`}
+                              style={!lvl ? { width: `${barW}%`, opacity: 0.15 } : undefined}
                             />
                           </div>
                           <div className="shrink-0 w-36 text-right">
@@ -828,17 +929,6 @@ export default function Cabinet() {
                   <div className="mt-5 pt-4 border-t border-white/8 flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">Всего MLM бонусов</span>
                     <span className="text-green-400 font-black text-2xl">${totalMLM.toFixed(0)}</span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="glass-card rounded-2xl p-5 border border-white/10 bg-gradient-to-br from-primary/10 to-transparent">
-                    <div className="text-xs text-muted-foreground mb-1">Всего партнёров</div>
-                    <div className="text-3xl font-black text-primary">{totalMLMRefs}</div>
-                  </div>
-                  <div className="glass-card rounded-2xl p-5 border border-white/10 bg-gradient-to-br from-green-500/10 to-transparent">
-                    <div className="text-xs text-muted-foreground mb-1">Ваш заработок</div>
-                    <div className="text-3xl font-black text-green-400">${totalMLM.toFixed(0)}</div>
                   </div>
                 </div>
               </motion.div>
@@ -1272,6 +1362,27 @@ export default function Cabinet() {
           </main>
         </div>
       </div>
+
+      {/* ══ MOBILE BOTTOM TABBAR ══ */}
+      <nav className="fixed bottom-0 left-0 right-0 z-40 lg:hidden border-t border-white/10" style={{ background: "rgba(8, 11, 22, 0.92)", backdropFilter: "blur(28px) saturate(200%)" }}>
+        <div className="flex items-stretch justify-around h-16">
+          {tabs.map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`relative flex flex-col items-center justify-center gap-0.5 flex-1 transition-all ${
+                activeTab === tab.id ? "text-primary" : "text-muted-foreground/70 hover:text-muted-foreground"
+              }`}
+            >
+              {activeTab === tab.id && (
+                <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-primary" />
+              )}
+              <tab.icon className={`w-5 h-5 transition-all ${activeTab === tab.id ? "scale-110" : ""}`} />
+              <span className="text-[10px] font-semibold leading-tight">{tab.label}</span>
+            </button>
+          ))}
+        </div>
+      </nav>
 
       <InvestmentModal isOpen={isInvestOpen} onClose={() => { setIsInvestOpen(false); loadData(); }} />
     </div>

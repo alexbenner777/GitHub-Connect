@@ -161,7 +161,7 @@ function AdvantageCard({ item, index, variants }: { item: AdvantageItem; index: 
   const { Icon } = item;
   const [open, setOpen] = useState(false);
   return (
-    <motion.div initial="visible" animate="visible"
+    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}
       variants={variants}
       className="glass-card rounded-2xl overflow-hidden group relative cursor-pointer"
       onClick={() => setOpen(o => !o)}>
@@ -215,7 +215,7 @@ function AdvantagesGrid({ openInvest: _openInvest, advantages }: { openInvest: (
   return (
     <div className="section-inner space-y-5">
       {/* Item 1 — full width, expandable */}
-      <motion.div initial="visible" animate="visible" variants={slideUp}
+      <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={slideUp}
         className="glass-card rounded-2xl overflow-hidden group cursor-pointer relative"
         onClick={() => setOpen0(o => !o)}>
         <div className={`absolute inset-0 bg-gradient-to-br ${first.gradFrom} ${first.gradTo} transition-opacity duration-500 ${open0 ? "opacity-100" : "opacity-0 group-hover:opacity-60"}`} />
@@ -289,7 +289,7 @@ function MonetizationCards({ t }: { t: (key: string) => string }) {
   return (
     <>
       {/* Card 01 — full width, expandable */}
-      <motion.div initial="visible" animate="visible" variants={fadeScale} className="mb-6">
+      <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={fadeScale} className="mb-6">
         <div
           className="glass-card p-8 md:p-10 rounded-3xl relative overflow-hidden cursor-pointer group"
           onClick={() => setMono1Open(o => !o)}
@@ -693,12 +693,11 @@ export default function Landing() {
       {/* MINIAPP STATS STRIP */}
       <section className="py-6 relative z-10">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 section-inner">
+          <div className="grid grid-cols-3 gap-3 section-inner">
             {[
               { label: t('stats_users_label'), value: "2 400+", sub: t('stats_users_sub') },
               { label: t('stats_dau_label'), value: "500+", sub: t('stats_dau_sub') },
               { label: t('stats_videos_label'), value: "8 000+", sub: t('stats_videos_sub') },
-              { label: t('stats_countries_label'), value: "12", sub: t('stats_countries_sub') },
             ].map((s, i) => (
               <div key={i} className="glass-card rounded-2xl p-4 border border-white/10 text-center">
                 <div className="text-2xl font-black text-gradient">{s.value}</div>
@@ -713,14 +712,14 @@ export default function Landing() {
       {/* PROBLEM → SOLUTION */}
       <section id="problem" className="py-16 md:py-24 lg:py-32 relative z-10 scroll-mt-20">
         <div className="container mx-auto px-4">
-          <motion.div initial="visible" animate="visible" variants={fadeUp}
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={fadeUp}
             className="section-header mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">{t('problem_title')}</h2>
             <p className="text-lg text-muted-foreground">{t('problem_subtitle')}</p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-8 section-inner">
-            <motion.div initial="visible" animate="visible" variants={fadeLeft}
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeLeft}
               className="glass-card p-8 rounded-3xl">
               <h3 className="text-2xl font-bold mb-8">{t('problem_now')}</h3>
               <ul className="space-y-6">
@@ -737,7 +736,7 @@ export default function Landing() {
               </ul>
             </motion.div>
 
-            <motion.div initial="visible" animate="visible" variants={fadeRight}
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeRight}
               className="glass-card p-8 rounded-3xl">
               <h3 className="text-2xl font-bold mb-8 text-primary">{t('solution_title')}</h3>
               <ul className="space-y-6">
@@ -772,7 +771,8 @@ export default function Landing() {
       {/* WHAT IS TRENDS */}
       <section className="py-16 md:py-24 lg:py-32 relative z-10">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center section-inner">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={fadeUp}
+            className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center section-inner">
             <div className="space-y-6 order-2 lg:order-1 lg:pl-10">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-black">
                 {t('what_title')} <span className="text-gradient">Trends</span>?
@@ -842,7 +842,7 @@ export default function Landing() {
                 </div>
               </div>
             </div>
-            <motion.div initial="visible" animate="visible" variants={fadeRight}
+            <div
               className="relative flex justify-center items-center order-1 lg:order-2 mb-6 lg:mb-0">
               {/* Glow behind phone */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -866,19 +866,19 @@ export default function Landing() {
                   className="relative z-10 h-full w-auto object-contain drop-shadow-2xl"
                   style={{ mixBlendMode: 'multiply', transform: 'scaleX(1.06) scaleY(1.078) translateY(-3.6%)', transformOrigin: 'top center' }} />
               </div>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
       {/* MVP */}
       <section className="py-16 md:py-24 lg:py-32 relative z-10 [overflow-x:clip]">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center section-inner">
-            <motion.div initial="visible" animate="visible" variants={fadeLeft}
-              className="relative flex justify-center order-1 lg:order-1">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={fadeUp}
+            className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center section-inner">
+            <div className="relative flex justify-center order-1 lg:order-1">
               <img src={screen3Path} alt="Trends MVP" className="relative z-10 max-h-[480px] lg:max-h-[620px] w-full object-contain drop-shadow-2xl" />
-            </motion.div>
+            </div>
 
             <div className="space-y-6 lg:space-y-8 order-2 lg:order-2">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 text-green-400 border border-green-500/20 font-bold tracking-wide">
@@ -904,7 +904,7 @@ export default function Landing() {
               </div>
 
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -1038,7 +1038,7 @@ export default function Landing() {
             <p className="text-lg text-muted-foreground">{t('product_desc')}</p>
           </div>
           <div className="section-inner">
-          <motion.div initial="visible" animate="visible" variants={fadeScale}>
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={fadeScale}>
             <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_60px_rgba(0,212,255,0.08)]">
               <img src={screen2Path} alt="Продукт Trends" className="w-full object-cover" />
             </div>
