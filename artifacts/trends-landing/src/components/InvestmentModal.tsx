@@ -20,7 +20,7 @@ const ICONS = { Star, Shield, Crown, TrendingUp, Zap } as const;
 // ─── для обратной совместимости с Cabinet / другими местами ─────
 export { PACKAGES };
 export const MONTHLY_PROFIT: Record<string, number> = {
-  founder1: 4, founder2: 15, founder3: 74, founder4: 371, founder5: 1484,
+  founder1: 24, founder2: 96, founder3: 478, founder4: 2390, founder5: 9561,
 };
 
 // ─── helpers ─────────────────────────────────────────────────────
