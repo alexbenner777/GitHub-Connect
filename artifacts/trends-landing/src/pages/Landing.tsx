@@ -1074,60 +1074,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* D.2 — Round Progress above packages */}
-      <section className="pb-4 md:pb-8 relative z-10">
-        <div className="container mx-auto px-4">
-          <div className="section-inner">
-            <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.5 }}
-              className="glass-card rounded-2xl p-5 md:p-6 border border-primary/20 bg-gradient-to-br from-primary/8 via-transparent to-secondary/5">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse inline-block" />
-                    <span className="text-xs font-black text-green-400 uppercase tracking-widest">
-                      {lang === 'ru' ? 'Активен сейчас' : 'Active now'}
-                    </span>
-                    <span className="text-xs font-bold text-muted-foreground px-2 py-0.5 rounded-full bg-white/6 border border-white/10">
-                      Pre-Seed · Round 1
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-semibold text-muted-foreground">
-                      {lang === 'ru' ? 'Сбор' : 'Raised'}
-                    </span>
-                    <span className="text-sm font-black">
-                      <span className="text-primary">${liveRaised.toLocaleString()}</span>
-                      <span className="text-muted-foreground font-normal"> / $500 000</span>
-                    </span>
-                  </div>
-                  <div className="relative h-2 rounded-full bg-white/8 overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${Math.min((liveRaised / 500_000) * 100, 100)}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-                      className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-primary to-secondary"
-                    />
-                  </div>
-                  <div className="flex items-center justify-between mt-1.5">
-                    <span className="text-[11px] text-muted-foreground">
-                      {((liveRaised / 500_000) * 100).toFixed(1)}% {lang === 'ru' ? 'собрано' : 'raised'}
-                    </span>
-                    <span className="text-[11px] text-muted-foreground">
-                      {lang === 'ru' ? 'осталось' : 'remaining'} ${(500_000 - Math.min(liveRaised, 500_000)).toLocaleString()}
-                    </span>
-                  </div>
-                </div>
-                <button onClick={() => openInvest()}
-                  className="shrink-0 btn-grad font-bold rounded-xl h-11 px-6 text-sm whitespace-nowrap">
-                  {lang === 'ru' ? 'Войти в Round 1 →' : 'Join Round 1 →'}
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
       {/* DAU CALCULATOR + INVESTMENT PACKAGES (merged) */}
       <DauCalculator
         onInvest={openInvest}
