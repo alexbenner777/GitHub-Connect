@@ -1,8 +1,8 @@
 export const REVSHARE_CONFIG = {
   TOTAL_SHARES: 5000,
-  SHARE_PRICE_R1: 307,
-  SHARE_PRICE_R2: 400,
-  ROUND1_BONUS: 1.3,
+  SHARE_PRICE_R1: 330.77,
+  SHARE_PRICE_R2: 430,
+  ROUND1_BONUS: 1.3,          // 430/330.77 ≈ 1.300
   REVENUE_SHARE: 0.20,
   SHOWS_PER_DAY: 2,
   DAYS_IN_MONTH: 30,
@@ -41,11 +41,14 @@ export function calcSharesR1(packagePriceUsd: number): number {
   return calcSharesR2(packagePriceUsd) * REVSHARE_CONFIG.ROUND1_BONUS;
 }
 
+// Эталонные значения (DAU=10M, CPM=120 ₽, курс 91 ₽/$):
+// per-share = $31.65 / мес
+// Co-Investor R2 (232.56 долей): ~$7 360   R1 (302.4 долей): ~$9 568
 if (typeof window !== "undefined") {
   console.assert(Math.round(calcPoolUsd(10_000_000, 120)) === 158242, "pool 10M failed");
   console.assert(Math.round(calcPoolUsd(50_000_000, 120)) === 791209, "pool 50M failed");
-  console.assert(Math.round(calcPayoutR2(100000, 10_000_000, 120)) === 7912, "R2 10M failed");
-  console.assert(Math.round(calcPayoutR2(100000, 50_000_000, 120)) === 39560, "R2 50M failed — expected 39560 NOT 62637");
-  console.assert(Math.round(calcPayoutR1(100000, 10_000_000, 120)) === 10286, "R1 10M failed");
-  console.assert(Math.round(calcPayoutR1(100000, 50_000_000, 120)) === 51429, "R1 50M failed");
+  console.assert(Math.round(calcPayoutR2(100000, 10_000_000, 120)) === 7360, "R2 10M failed");
+  console.assert(Math.round(calcPayoutR2(100000, 50_000_000, 120)) === 36800, "R2 50M failed");
+  console.assert(Math.round(calcPayoutR1(100000, 10_000_000, 120)) === 9568, "R1 10M failed");
+  console.assert(Math.round(calcPayoutR1(100000, 50_000_000, 120)) === 47841, "R1 50M failed");
 }
