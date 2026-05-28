@@ -297,7 +297,6 @@ export const PACKAGES: InvestPackage[] = [
           "🔝 Boost x10 + permanent priority в алгоритме",
           "🎯 Премиум-таргет + AI-оптимизация креативов",
           "📣 3 фичеринга + интеграция в push-уведомления",
-          "🌐 Cross-promo с топ-блогерами платформы",
         ],
       },
       {
@@ -308,7 +307,6 @@ export const PACKAGES: InvestPackage[] = [
           "🎨 Badge «Visionary Trends» золотой, анимированный (1 of 50)",
           "🎬 Безлимитные Premium-публикации",
           "🎁 Закрытая alpha новых фич — за 1 мес до релиза",
-          "🏷 Кастомный URL профиля (trends.app/yourname)",
         ],
       },
       {
@@ -335,7 +333,6 @@ export const PACKAGES: InvestPackage[] = [
         items: [
           "🚀 ROFR в Seed Global и Series A",
           "💼 Advisory board observer seat",
-          "🎯 Token boost +10% при следующем раунде",
         ],
       },
     ],
@@ -371,7 +368,6 @@ export const PACKAGES: InvestPackage[] = [
           "🪙 60 422 961 $TRND токенов — Pre-Seed $0,001655, vesting 6+18 мес",
           "🤝 Партнёрская программа — до 20% (5 уровней) + 10% (3 уровня) + Pool 6% + личный партнёрский менеджер + lifetime",
           "🏛 Co-investment во всех проектах Trends Ventures — pre-money цена",
-          "🏦 Pro-rata права — сохранение % доли в следующих раундах",
           "📊 Board-level доступ ко всем метрикам — финансы, P&L, cap table",
         ],
       },
@@ -381,10 +377,7 @@ export const PACKAGES: InvestPackage[] = [
         items: [
           "🎁 Безлимитный рекламный баланс — без лимитов каждый месяц",
           "🔝 Permanent algorithmic priority для всего контента",
-          "🎯 Dedicated growth-менеджер от команды Trends",
           "📣 Безлимитные фичеринги + push + email-кампании",
-          "🌐 Полная cross-promo программа с топ-100 блогеров",
-          "🎬 Совместное продакшн-видео от команды Trends",
         ],
       },
       {
@@ -395,7 +388,6 @@ export const PACKAGES: InvestPackage[] = [
           "🎨 Badge «Co-Investor Trends» (1 of 20, навсегда)",
           "🎬 Безлимит Premium + собственная категория/раздел в приложении",
           "🎁 Co-creation мод — участвуй в дизайне фич",
-          "🏷 Premium-домен профиля + кастомизация",
         ],
       },
       {
@@ -413,8 +405,7 @@ export const PACKAGES: InvestPackage[] = [
         items: [
           "🗳 Полный голос в стратегических решениях (board-level)",
           "🎤 Co-founder branding — упоминание как стратегического партнёра",
-          "📺 PR-кампания совместно (Forbes, TechCrunch, профильные медиа)",
-          "🏛 Влияние на M&A решения и стратегию выхода",
+          "🗣 Участие в публичных активностях Trends по согласованию",
         ],
       },
       {
@@ -423,8 +414,6 @@ export const PACKAGES: InvestPackage[] = [
         items: [
           "🚀 Advisory board seat с правом голоса",
           "💼 Equity-share option в холдинговой компании Trends Inc.",
-          "🎯 Token boost +25% при следующем раунде",
-          "🤝 Lifetime partnership — статус сохраняется при любых корп. изменениях",
         ],
       },
     ],
