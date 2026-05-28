@@ -58,6 +58,7 @@ function dauFromSlider(v: number) { return Math.round(DAU_MIN + (v / STEPS) * (D
 function sliderPosFromDau(dau: number) { return ((dau - DAU_MIN) / (DAU_MAX - DAU_MIN)) * STEPS; }
 
 function getTopHighlights(pkg: InvestPackage): string[] {
+  if (pkg.highlights && pkg.highlights.length > 0) return pkg.highlights;
   if (!pkg?.categories) return [];
   const out: string[] = [];
   for (const cat of pkg.categories) {
@@ -340,6 +341,17 @@ export function DauCalculator({
                             </motion.div>
                           </div>
                         )}
+                        {pkg.slotsBadge && (
+                          <div className="flex justify-center mb-4 -mt-1">
+                            <motion.div
+                              animate={{ boxShadow: ["0 4px 20px rgba(251,191,36,0.35)", "0 4px 30px rgba(251,146,60,0.55)", "0 4px 20px rgba(251,191,36,0.35)"] }}
+                              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                              className="bg-gradient-to-r from-amber-400 to-orange-400 text-background text-xs font-black px-5 py-1.5 rounded-full uppercase tracking-widest"
+                            >
+                              {pkg.slotsBadge}
+                            </motion.div>
+                          </div>
+                        )}
 
                         {/* Шапка */}
                         <div className="flex items-start gap-3 mb-1">
@@ -359,58 +371,57 @@ export function DauCalculator({
                         </div>
                         <p className="text-xs text-muted-foreground mb-4 leading-relaxed">{pkg.tagline}</p>
 
-                        {/* RevShare — новый блок БЛОК 3 */}
+                        {/* 💰 Блок дохода */}
                         <div className="rounded-xl border border-white/10 bg-white/3 p-3.5 mb-4 space-y-2">
-                          <div className="flex items-center justify-between gap-2">
-                            <div className="text-[10px] text-muted-foreground font-medium leading-tight">
-                              RevShare /мес — реклама в ленте
-                            </div>
-                            <span className="text-[9px] text-muted-foreground/60 font-semibold shrink-0">
-                              1 из {REVSHARE_CONFIG.REVENUE_SOURCES_TOTAL} источников
-                            </span>
+                          <div className="text-[11px] font-bold text-foreground/80 mb-1">
+                            💰 Твой ежемесячный доход <span className="font-normal text-muted-foreground">(когда запустим монетизацию)</span>
                           </div>
 
-                          {/* Round 1 строка */}
-                          <div className={`flex items-center justify-between transition-opacity ${round === "r1" ? "opacity-100" : "opacity-40"}`}>
-                            <span className={`text-[11px] font-bold ${round === "r1" ? "text-green-400" : "text-muted-foreground"}`}>
-                              Round 1 (сейчас, +30%) {round === "r1" && "🔥"}
+                          {/* Round 1 строка — всегда видна */}
+                          <div className="flex items-center justify-between">
+                            <span className="text-[11px] font-bold text-green-400">
+                              🔥 Round 1 (сейчас, +30% бонус)
                             </span>
                             <motion.span
                               key={"r1-" + Math.round(payR1)}
                               initial={{ opacity: 0.4 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
-                              className={`text-lg font-black tabular-nums ${round === "r1" ? "text-green-400" : "text-muted-foreground"}`}
+                              className="text-lg font-black tabular-nums text-green-400"
                             >
-                              ${fmt(payR1, 2)}
+                              ${fmt(payR1, 2)}<span className="text-xs font-normal text-green-400/70">/мес</span>
                             </motion.span>
                           </div>
 
-                          {/* Round 2 строка */}
-                          <div className={`flex items-center justify-between transition-opacity ${round === "r2" ? "opacity-100" : "opacity-40"}`}>
-                            <span className={`text-[11px] font-semibold ${round === "r2" ? "text-foreground" : "text-muted-foreground"}`}>
-                              Round 2
+                          {/* Round 2 строка — всегда видна */}
+                          <div className="flex items-center justify-between">
+                            <span className="text-[11px] font-semibold text-muted-foreground">
+                              📅 Round 2 (позже, без бонуса)
                             </span>
                             <motion.span
                               key={"r2-" + Math.round(payR2)}
                               initial={{ opacity: 0.4 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
-                              className={`text-base font-bold tabular-nums ${round === "r2" ? "text-foreground" : "text-muted-foreground"}`}
+                              className="text-base font-bold tabular-nums text-muted-foreground"
                             >
-                              ${fmt(payR2, 2)}
+                              ${fmt(payR2, 2)}<span className="text-xs font-normal">/мес</span>
                             </motion.span>
                           </div>
 
-                          {/* Shares info */}
-                          <div className="text-[9px] text-muted-foreground/50 border-t border-white/6 pt-1.5 flex justify-between">
-                            <span>{round === "r1" ? `${fmt(sharesR1, 3)} долей (R1)` : `${fmt(sharesR2, 3)} долей (R2)`}</span>
-                            <span>{fmtDau(dau)} DAU</span>
-                          </div>
-
-                          {/* Подсказка */}
-                          <div className="flex items-start gap-1.5 pt-1 border-t border-white/6">
-                            <Info className="w-3 h-3 text-yellow-400/70 shrink-0 mt-0.5" />
-                            <p className="text-[10px] text-muted-foreground/70 leading-relaxed">
-                              <span className="text-yellow-400/80 font-semibold">Только реклама в ленте.</span>
-                              {" "}+{REVSHARE_CONFIG.REVENUE_SOURCES_TOTAL - 1} источника не учтены.
+                          {/* Как считается прибыль */}
+                          <div className="border-t border-white/6 pt-2 space-y-1.5">
+                            <p className="text-[10px] text-muted-foreground/80 leading-relaxed">
+                              <span className="text-foreground/60 font-semibold">Как считается: </span>
+                              ты получаешь{" "}
+                              <span className="text-foreground font-bold">{fmt(round === "r1" ? sharesR1 : sharesR2, 3)} {round === "r1" ? "долей (R1)" : "долей (R2)"}</span>{" "}
+                              из 5 000. Чем больше пользователей в Trends — тем больше выплата.
+                              Расчёт для{" "}
+                              <span className="text-foreground font-bold">{fmtDau(dau)} DAU</span>.
                             </p>
+                            <div className="flex items-start gap-1.5">
+                              <Info className="w-3 h-3 text-yellow-400/70 shrink-0 mt-0.5" />
+                              <p className="text-[10px] text-muted-foreground/70 leading-relaxed">
+                                <span className="text-yellow-400/80 font-semibold">Только реклама в ленте.</span>
+                                {" "}💡 {REVSHARE_CONFIG.REVENUE_SOURCES_TOTAL - 1} других источников (boost, спонсорство, донаты, e-commerce и др.) — бонус сверху, не учтены.
+                              </p>
+                            </div>
                           </div>
                         </div>
 
