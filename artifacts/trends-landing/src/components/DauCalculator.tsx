@@ -409,11 +409,11 @@ export function DauCalculator({
                           <div className="border-t border-white/6 pt-2 space-y-1.5">
                             <p className="text-[10px] text-muted-foreground/80 leading-relaxed">
                               <span className="text-foreground/60 font-semibold">Как считается: </span>
-                              ты получаешь{" "}
-                              <span className="text-foreground font-bold">{fmt(round === "r1" ? sharesR1 : sharesR2, 3)} {round === "r1" ? "долей (R1)" : "долей (R2)"}</span>{" "}
-                              из 5 000. Чем больше пользователей в Trends — тем больше выплата.
-                              Расчёт для{" "}
+                              20% рекламной выручки — это 5 000 долей, из которых инвестор получает{" "}
+                              <span className="text-foreground font-bold">{fmt(sharesR1, 3)} долей (R1)</span>.
+                              {" "}Расчёт выполнен при{" "}
                               <span className="text-foreground font-bold">{fmtDau(dau)} DAU</span>.
+                              {" "}Чем больше пользователей в Trends — тем быстрее проект выйдет на монетизацию.
                             </p>
                             <div className="flex items-start gap-1.5">
                               <Info className="w-3 h-3 text-yellow-400/70 shrink-0 mt-0.5" />
