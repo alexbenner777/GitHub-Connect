@@ -119,7 +119,7 @@ export function DauCalculator({
             </div>
 
             {/* Source disclaimer — visible callout */}
-            <div className="flex items-start gap-3 mb-6 rounded-xl border border-yellow-500/20 bg-yellow-500/5 px-4 py-3">
+            <div className="glass-glare flex items-start gap-3 mb-6 rounded-xl border border-yellow-500/20 bg-yellow-500/5 px-4 py-3">
               <Info className="w-4 h-4 text-yellow-400 shrink-0 mt-0.5" />
               <p className="text-xs text-muted-foreground leading-relaxed">
                 <span className="text-yellow-400 font-semibold">Калькулятор считает только 1 источник дохода</span>
@@ -131,7 +131,7 @@ export function DauCalculator({
               </p>
             </div>
 
-            <div className="rounded-2xl border border-white/10 bg-white/3 backdrop-blur-sm p-6 md:p-8 mb-4">
+            <div className="glass-glare rounded-2xl border border-white/10 bg-white/3 backdrop-blur-sm p-6 md:p-8 mb-4">
               <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
                 <div className="flex items-center gap-2">
                   <Users className="w-5 h-5 text-primary" />
@@ -199,7 +199,7 @@ export function DauCalculator({
                   { label: "В месяц", value: fmtM(monthlyRub) + " ₽", sub: "$" + fmtM(monthlyRub / RUB_TO_USD), color: "text-primary"    },
                   { label: "В год",   value: fmtM(annualRub) + " ₽",  sub: "$" + fmtM(annualRub / RUB_TO_USD),  color: "text-secondary"  },
                 ].map(({ label, value, sub, color }) => (
-                  <motion.div key={label} className="rounded-xl bg-white/5 border border-white/8 p-3 md:p-4 text-center">
+                  <motion.div key={label} className="glass-glare rounded-xl bg-white/5 border border-white/8 p-3 md:p-4 text-center">
                     <div className="text-xs text-muted-foreground mb-1 font-medium">{label}</div>
                     <motion.div key={value} initial={{ opacity: 0.4 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
                       className={`text-base md:text-xl lg:text-2xl font-black tabular-nums ${color}`}>
@@ -219,7 +219,7 @@ export function DauCalculator({
             </div>
 
             {/* RevShare пул — БЛОК 4 */}
-            <div className="rounded-2xl border border-green-500/20 bg-green-500/3 backdrop-blur-sm p-5 md:p-6 space-y-3">
+            <div className="glass-glare rounded-2xl border border-green-500/20 bg-green-500/3 backdrop-blur-sm p-5 md:p-6 space-y-3">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
@@ -251,7 +251,7 @@ export function DauCalculator({
 
 
 
-              <div className="flex items-start gap-3 rounded-xl border border-yellow-500/20 bg-yellow-500/5 p-3">
+              <div className="glass-glare flex items-start gap-3 rounded-xl border border-yellow-500/20 bg-yellow-500/5 p-3">
                 <div className="w-7 h-7 rounded-lg bg-yellow-500/15 flex items-center justify-center shrink-0 mt-0.5 text-sm">🐹</div>
                 <p className="text-xs text-muted-foreground leading-relaxed">
                   <span className="text-yellow-400 font-bold">Пример роста:</span> Hamster Combat собрал{" "}

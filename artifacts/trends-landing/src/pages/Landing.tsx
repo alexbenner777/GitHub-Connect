@@ -1520,7 +1520,7 @@ export default function Landing() {
             <div className="grid md:grid-cols-2 gap-5 mb-8">
 
               {/* Round 1 — ACTIVE */}
-              <div className="relative rounded-2xl border border-primary/40 bg-primary/5 backdrop-blur-sm p-6 md:p-8 overflow-hidden">
+              <div className="glass-glare relative rounded-2xl border border-primary/40 bg-primary/5 backdrop-blur-sm p-6 md:p-8 overflow-hidden">
                 <div className="absolute top-4 right-4">
                   <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/20 border border-green-500/30 text-green-400 text-xs font-black uppercase tracking-wider">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse inline-block" />
@@ -1574,7 +1574,7 @@ export default function Landing() {
               </div>
 
               {/* Round 2 — UPCOMING */}
-              <div className="relative rounded-2xl border border-white/10 bg-white/3 backdrop-blur-sm p-6 md:p-8 overflow-hidden">
+              <div className="glass-glare relative rounded-2xl border border-white/10 bg-white/3 backdrop-blur-sm p-6 md:p-8 overflow-hidden">
                 <div className="absolute top-4 right-4">
                   <div className="px-3 py-1 rounded-full bg-white/10 border border-white/15 text-muted-foreground text-xs font-bold uppercase tracking-wider">
                     {t('round2_badge')}
@@ -1621,7 +1621,7 @@ export default function Landing() {
             </div>
 
             {/* Math summary */}
-            <div className="rounded-2xl border border-white/10 bg-white/3 backdrop-blur-sm p-6 md:p-8">
+            <div className="glass-glare rounded-2xl border border-white/10 bg-white/3 backdrop-blur-sm p-6 md:p-8">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center text-primary">
                   <DollarSign className="w-5 h-5" />
@@ -1678,7 +1678,7 @@ export default function Landing() {
                     badgeColor: "bg-yellow-500/20 text-yellow-400",
                   },
                 ].map(({ icon: Icon, label, amount, note, color, bg, iconBg, badge, badgeColor }) => (
-                  <div key={label} className={`rounded-xl border p-5 ${bg}`}>
+                  <div key={label} className={`glass-glare rounded-xl border p-5 ${bg}`}>
                     <div className="flex items-start justify-between mb-3">
                       <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${iconBg}`}>
                         <Icon className="w-4 h-4" />
@@ -1801,7 +1801,7 @@ export default function Landing() {
       <section className="py-10 md:py-14 relative z-10">
         <div className="container mx-auto px-4">
           <div className="section-inner">
-            <div className="rounded-2xl border border-yellow-500/20 bg-yellow-500/4 backdrop-blur-sm p-6 md:p-8">
+            <div className="glass-glare rounded-2xl border border-yellow-500/20 bg-yellow-500/4 backdrop-blur-sm p-6 md:p-8">
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-9 h-9 rounded-xl bg-yellow-500/15 flex items-center justify-center shrink-0">
                   <AlertTriangle className="w-4 h-4 text-yellow-400" />
