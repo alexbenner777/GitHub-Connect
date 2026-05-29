@@ -234,6 +234,35 @@
   }
 }
 
+/* ── Universal static glare (только блик, без других glass-стилей) ── */
+.glass-glare {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.glass-glare::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 52%;
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.11) 0%,
+    rgba(255, 255, 255, 0.05) 35%,
+    transparent 65%
+  );
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .glass-glare::after { display: none; }
+}
+
 /* ── Frosted navbar ────────────────────────────────────────────────── */
 .glass-nav {
   background: rgba(8, 11, 22, 0.45);

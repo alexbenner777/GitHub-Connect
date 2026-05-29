@@ -814,7 +814,7 @@ export default function Landing() {
                   ].map(({ label, icon: Icon, glow, border, iconBg, iconColor, labelColor, num, text }) => (
                     <div
                       key={label}
-                      className="relative flex items-start gap-5 px-5 py-5 rounded-2xl overflow-hidden transition-transform duration-300 hover:-translate-y-0.5"
+                      className="glass-glare flex items-start gap-5 px-5 py-5 rounded-2xl transition-transform duration-300 hover:-translate-y-0.5"
                       style={{
                         background: `linear-gradient(135deg, ${glow} 0%, rgba(255,255,255,0.02) 100%)`,
                         border: `1px solid ${border}`,
