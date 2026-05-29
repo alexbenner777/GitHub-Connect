@@ -168,15 +168,14 @@
 
 /* ── Liquid Glass base ─────────────────────────────────────────────── */
 .glass-card {
-  background: rgba(255, 255, 255, 0.055);
-  backdrop-filter: blur(10px) saturate(140%);
-  -webkit-backdrop-filter: blur(10px) saturate(140%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(4px) saturate(120%);
+  -webkit-backdrop-filter: blur(4px) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.10);
   border-radius: 24px;
   box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.14),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.10);
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -222,15 +221,15 @@
 
 .glass-card:hover {
   box-shadow:
-    0 6px 24px rgba(0,0,0,0.18),
-    0 0 16px rgba(0,212,255,0.08),
-    inset 0 1px 0 rgba(255,255,255,0.16);
+    0 4px 16px rgba(0,0,0,0.12),
+    0 0 12px rgba(0,212,255,0.06),
+    inset 0 1px 0 rgba(255,255,255,0.14);
 }
 
 @media (max-width: 768px) {
   .glass-card {
-    backdrop-filter: blur(12px) saturate(140%);
-    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    backdrop-filter: blur(4px) saturate(120%);
+    -webkit-backdrop-filter: blur(4px) saturate(120%);
   }
 }
 
@@ -287,14 +286,13 @@
 
 /* ── Card / package glass ──────────────────────────────────────────── */
 .glass-pkg {
-  background: rgba(255, 255, 255, 0.055);
-  backdrop-filter: blur(10px) saturate(140%);
-  -webkit-backdrop-filter: blur(10px) saturate(140%);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(4px) saturate(120%);
+  -webkit-backdrop-filter: blur(4px) saturate(120%);
+  border: 1px solid rgba(255,255,255,0.10);
   box-shadow:
-    0 4px 16px rgba(0,0,0,0.12),
-    inset 0 1px 0 rgba(255,255,255,0.14),
-    inset 0 -1px 0 rgba(0,0,0,0.08);
+    0 2px 8px rgba(0,0,0,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.12);
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -340,28 +338,28 @@
 
 .glass-pkg:hover {
   box-shadow:
-    0 6px 24px rgba(0,0,0,0.16),
-    0 0 16px rgba(0,212,255,0.08),
-    inset 0 1px 0 rgba(255,255,255,0.16);
+    0 4px 16px rgba(0,0,0,0.12),
+    0 0 12px rgba(0,212,255,0.06),
+    inset 0 1px 0 rgba(255,255,255,0.14);
 }
 
 @media (max-width: 768px) {
   .glass-pkg {
-    backdrop-filter: blur(12px) saturate(140%);
-    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    backdrop-filter: blur(4px) saturate(120%);
+    -webkit-backdrop-filter: blur(4px) saturate(120%);
   }
 }
 
 /* ── Active / selected package (featured) ──────────────────────────── */
 .glass-pkg-active {
-  background: rgba(0, 212, 255, 0.07);
-  backdrop-filter: blur(10px) saturate(150%);
-  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  background: rgba(0, 212, 255, 0.04);
+  backdrop-filter: blur(4px) saturate(130%);
+  -webkit-backdrop-filter: blur(4px) saturate(130%);
   border: 1px solid rgba(0,212,255,0.28);
   box-shadow:
-    0 4px 20px rgba(0,0,0,0.14),
-    0 0 24px rgba(0,212,255,0.10),
-    inset 0 1px 0 rgba(255,255,255,0.18);
+    0 2px 8px rgba(0,0,0,0.08),
+    0 0 16px rgba(0,212,255,0.07),
+    inset 0 1px 0 rgba(255,255,255,0.15);
   position: relative;
   isolation: isolate;
   overflow: hidden;

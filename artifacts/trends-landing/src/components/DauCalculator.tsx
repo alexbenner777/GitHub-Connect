@@ -219,7 +219,7 @@ export function DauCalculator({
             </div>
 
             {/* RevShare пул — БЛОК 4 */}
-            <div className="glass-card rounded-2xl border border-green-500/20 p-5 md:p-6 space-y-3">
+            <div className="glass-glare rounded-2xl border border-green-500/20 bg-green-500/3 backdrop-blur-sm p-5 md:p-6 space-y-3">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
