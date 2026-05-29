@@ -33,13 +33,13 @@ export function SceneBackground() {
 
   // Reduced from 16 to 7 blobs — large blurs are expensive, fewer elements
   const blobs = useMemo(() => [
-    { id: 0, left: 10, top: 15, size: 420, color: "rgba(0,212,255,0.10)", blur: 90, dur: 18, dx: 30, dy: 20, layer: 0 },
-    { id: 1, left: 80, top: 5, size: 380, color: "rgba(123,94,255,0.12)", blur: 80, dur: 22, dx: -25, dy: 30, layer: 0 },
-    { id: 2, left: 50, top: 70, size: 340, color: "rgba(123,94,255,0.10)", blur: 75, dur: 20, dx: 20, dy: -20, layer: 0 },
-    { id: 3, left: 15, top: 60, size: 260, color: "rgba(0,212,255,0.09)", blur: 60, dur: 16, dx: -20, dy: 15, layer: 1 },
-    { id: 4, left: 75, top: 50, size: 220, color: "rgba(123,94,255,0.11)", blur: 55, dur: 14, dx: 18, dy: -18, layer: 1 },
-    { id: 5, left: 35, top: 30, size: 180, color: "rgba(0,212,255,0.08)", blur: 45, dur: 12, dx: -15, dy: 22, layer: 1 },
-    { id: 6, left: 60, top: 85, size: 300, color: "rgba(0,180,255,0.08)", blur: 70, dur: 24, dx: 22, dy: -12, layer: 0 },
+    { id: 0, left: 10, top: 15, size: 480, color: "rgba(0,212,255,0.18)", blur: 90, dur: 18, dx: 30, dy: 20, layer: 0 },
+    { id: 1, left: 80, top: 5, size: 560, color: "rgba(123,94,255,0.20)", blur: 80, dur: 22, dx: -25, dy: 30, layer: 0 },
+    { id: 2, left: 50, top: 70, size: 400, color: "rgba(123,94,255,0.16)", blur: 75, dur: 20, dx: 20, dy: -20, layer: 0 },
+    { id: 3, left: 15, top: 60, size: 300, color: "rgba(0,212,255,0.15)", blur: 60, dur: 16, dx: -20, dy: 15, layer: 1 },
+    { id: 4, left: 75, top: 50, size: 260, color: "rgba(123,94,255,0.18)", blur: 55, dur: 14, dx: 18, dy: -18, layer: 1 },
+    { id: 5, left: 35, top: 30, size: 220, color: "rgba(0,212,255,0.14)", blur: 45, dur: 12, dx: -15, dy: 22, layer: 1 },
+    { id: 6, left: 60, top: 85, size: 360, color: "rgba(0,180,255,0.14)", blur: 70, dur: 24, dx: 22, dy: -12, layer: 0 },
   ], []);
 
   // Reduced from 50 to 18 particles

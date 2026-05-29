@@ -1,0 +1,137 @@
+Задача: усилить эффект стекла (glassmorphism) и ощущение глубины/3D на сайте. 
+Палитра остаётся: фон #090E1A, акценты #00D4FF (cyan) и #7B5EFF (purple).
+Не менять контент и структуру — только визуальный слой (CSS).
+
+═══════════════════════════════════════════
+1. ГЛАВНОЕ: включить НАСТОЯЩЕЕ стекло
+═══════════════════════════════════════════
+Сейчас .glass-card имеет полупрозрачный фон, но backdrop-filter отсутствует — 
+поэтому стекло «плоское». Добавить реальное размытие фона:
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 24px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.40),          /* внешняя тень — отрыв от фона */
+    inset 0 1px 0 rgba(255, 255, 255, 0.18), /* верхний блик (свет сверху) */
+    inset 0 -1px 0 rgba(0, 0, 0, 0.30);      /* нижняя кромка (толщина) */
+  position: relative;
+  overflow: hidden;
+}
+
+═══════════════════════════════════════════
+2. БЛИК ПО ВЕРХНЕЙ КРОМКЕ (стекло ловит свет)
+═══════════════════════════════════════════
+Тонкая светящаяся линия сверху карточки — даёт ощущение преломления:
+
+.glass-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg,
+    rgba(0,212,255,0.5) 0%,
+    rgba(255,255,255,0.15) 30%,
+    transparent 60%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
+
+═══════════════════════════════════════════
+3. ГЛУБИНА ФОНА: многослойные световые пятна
+═══════════════════════════════════════════
+За карточками — несколько размытых цветных «облаков» на разной глубине.
+Они уже частично есть (rgba cyan/purple круги) — усилить и развести по слоям:
+
+.bg-glow {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.45;
+  pointer-events: none;
+  z-index: 0;
+}
+.bg-glow.cyan   { background: #00D4FF; width: 480px; height: 480px; top: 10%; left: -8%; }
+.bg-glow.purple { background: #7B5EFF; width: 560px; height: 560px; bottom: 5%; right: -10%; }
+/* лёгкое «дыхание» для живости */
+@keyframes float-glow { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-40px)} }
+.bg-glow { animation: float-glow 14s ease-in-out infinite; }
+
+═══════════════════════════════════════════
+4. 3D-НАКЛОН КАРТОЧЕК ПРИ НАВЕДЕНИИ (parallax tilt)
+═══════════════════════════════════════════
+Карточка слегка наклоняется к курсору — самый сильный 3D-эффект.
+Добавить контейнеру perspective, карточке — transform:
+
+.cards-wrap { perspective: 1200px; }
+
+.glass-card {
+  transform-style: preserve-3d;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  will-change: transform;
+}
+.glass-card:hover {
+  transform: translateY(-6px) rotateX(4deg) rotateY(-4deg);
+  box-shadow:
+    0 24px 60px rgba(0,0,0,0.55),
+    0 0 40px rgba(0,212,255,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.22);
+}
+
+JS для слежения за курсором (vanilla, повесить на каждую .glass-card):
+card.addEventListener('mousemove', e => {
+  const r = card.getBoundingClientRect();
+  const x = (e.clientX - r.left) / r.width  - 0.5;
+  const y = (e.clientY - r.top)  / r.height - 0.5;
+  card.style.transform =
+    `translateY(-6px) rotateX(${ -y*8 }deg) rotateY(${ x*8 }deg)`;
+});
+card.addEventListener('mouseleave', () => card.style.transform = '');
+
+═══════════════════════════════════════════
+5. СЛОИ ВНУТРИ КАРТОЧКИ (поднять элементы над стеклом)
+═══════════════════════════════════════════
+Чтобы внутри карточки тоже была глубина — внутренние блоки 
+(блок дохода, кнопка) поднять на translateZ:
+
+.glass-card .income-block { transform: translateZ(30px); }
+.glass-card .cta-button   { transform: translateZ(50px); }
+(работает вместе с transform-style: preserve-3d у карточки)
+
+═══════════════════════════════════════════
+6. РЕКОМЕНДУЕМЫЙ ТИР (Insider ★) — выделить глубиной
+═══════════════════════════════════════════
+Центральная карточка должна «выходить вперёд»:
+
+.glass-card.featured {
+  transform: scale(1.05) translateZ(40px);
+  background: rgba(0,212,255,0.06);
+  box-shadow:
+    0 30px 70px rgba(0,0,0,0.6),
+    0 0 60px rgba(0,212,255,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.25);
+}
+
+═══════════════════════════════════════════
+7. КНОПКА — оставить как есть, она уже хороша
+═══════════════════════════════════════════
+Градиент 135deg #00D4FF→#7B5EFF + «приподнятая» тень (0 6px 0) — 
+это уже даёт 3D-кнопку. Только добавить нажатие:
+.cta-button:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,0.45); }
+
+═══════════════════════════════════════════
+ОБЩИЕ ПРАВИЛА (важно для эффекта)
+═══════════════════════════════════════════
+- backdrop-filter работает только если ЗА карточкой есть что размывать 
+  (световые пятна, сетка, точки) — поэтому пункты 1 и 3 идут в паре.
+- Свет всегда «сверху»: верхние блики светлые, нижние кромки тёмные.
+- Не делать opacity карточки ниже 0.85 — текст должен читаться.
+- На мобильных отключить tilt (пункт 4) и снизить blur до 12px ради FPS:
+  @media (max-width: 768px){ .glass-card{ backdrop-filter: blur(12px);} }
+- z-index: фон-пятна 0, карточки 10, кнопки/featured выше.

@@ -488,6 +488,31 @@ export default function Landing() {
     { href: "#roadmap", label: "Roadmap" },
   ];
 
+  useEffect(() => {
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    if (isMobile) return;
+    const cards = document.querySelectorAll<HTMLElement>(".glass-card, .glass-pkg");
+    const handlers: Array<{ el: HTMLElement; mm: (e: MouseEvent) => void; ml: () => void }> = [];
+    cards.forEach(card => {
+      const mm = (e: MouseEvent) => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = `translateY(-6px) rotateX(${-y * 8}deg) rotateY(${x * 8}deg)`;
+      };
+      const ml = () => { card.style.transform = ""; };
+      card.addEventListener("mousemove", mm);
+      card.addEventListener("mouseleave", ml);
+      handlers.push({ el: card, mm, ml });
+    });
+    return () => {
+      handlers.forEach(({ el, mm, ml }) => {
+        el.removeEventListener("mousemove", mm);
+        el.removeEventListener("mouseleave", ml);
+      });
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground [overflow-x:clip]">
 
