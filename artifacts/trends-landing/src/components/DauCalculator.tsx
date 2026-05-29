@@ -305,7 +305,7 @@ export function DauCalculator({
           {/* ─── Карточки пакетов ─── */}
           {fullPackages && fullPackages.length > 0 && (
             <div>
-              <div className="grid sm:grid-cols-2 gap-4 md:gap-6" style={{ perspective: "1200px" }}>
+              <div className="grid sm:grid-cols-2 gap-4 md:gap-6">
                 {fullPackages.map((pkg, idx) => {
                   const isLast    = idx === fullPackages.length - 1;
                   const isExpanded = expandedId === pkg.id;
@@ -372,7 +372,7 @@ export function DauCalculator({
                         <p className="text-xs text-muted-foreground mb-4 leading-relaxed">{pkg.tagline}</p>
 
                         {/* 💰 Блок дохода */}
-                        <div className="income-block rounded-xl border border-white/10 bg-white/3 p-3.5 mb-4 space-y-2">
+                        <div className="rounded-xl border border-white/10 bg-white/3 p-3.5 mb-4 space-y-2">
                           <div className="text-[11px] font-bold text-foreground/80 mb-1">
                             💰 Твой ежемесячный доход <span className="font-normal text-muted-foreground">(когда запустим монетизацию)</span>
                           </div>
