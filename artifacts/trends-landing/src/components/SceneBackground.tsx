@@ -60,15 +60,21 @@ export function SceneBackground() {
       style={{ zIndex: 0, willChange: "transform" }}
       aria-hidden
     >
-      {/* Base radial gradient — static, no animation */}
+      {/* Base radial gradient — covers full height so backdrop-filter has color to blur */}
       <div
         className="absolute inset-0"
         style={{
           background: [
-            "radial-gradient(ellipse 90% 55% at 20% 10%, rgba(0,212,255,0.08) 0%, transparent 65%)",
-            "radial-gradient(ellipse 70% 55% at 85% 5%, rgba(123,94,255,0.10) 0%, transparent 60%)",
-            "radial-gradient(ellipse 60% 45% at 75% 95%, rgba(123,94,255,0.09) 0%, transparent 60%)",
-            "radial-gradient(ellipse 50% 40% at 10% 90%, rgba(0,212,255,0.07) 0%, transparent 55%)",
+            /* top corners */
+            "radial-gradient(ellipse 90% 55% at 20% 10%, rgba(0,212,255,0.13) 0%, transparent 65%)",
+            "radial-gradient(ellipse 70% 55% at 85% 5%,  rgba(123,94,255,0.15) 0%, transparent 60%)",
+            /* mid-page coverage */
+            "radial-gradient(ellipse 70% 40% at 15% 40%, rgba(0,212,255,0.09) 0%, transparent 60%)",
+            "radial-gradient(ellipse 60% 40% at 85% 55%, rgba(123,94,255,0.11) 0%, transparent 60%)",
+            "radial-gradient(ellipse 55% 35% at 50% 70%, rgba(0,212,255,0.08) 0%, transparent 60%)",
+            /* bottom corners */
+            "radial-gradient(ellipse 60% 45% at 75% 95%, rgba(123,94,255,0.12) 0%, transparent 60%)",
+            "radial-gradient(ellipse 50% 40% at 10% 90%, rgba(0,212,255,0.10) 0%, transparent 55%)",
             "hsl(220,40%,20%)",
           ].join(", "),
         }}
