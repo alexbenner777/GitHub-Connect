@@ -167,31 +167,22 @@
 }
 
 /* ── Liquid Glass base ─────────────────────────────────────────────── */
-/* 1. Тёмный металл: глубокий тёмно-синий фон */
-/* 2. Hover-подъём с depth-тенью */
-/* 3. Кант-рамки по всему периметру */
 .glass-card {
-  background: linear-gradient(
-    145deg,
-    rgba(14, 20, 40, 0.72) 0%,
-    rgba(8, 12, 28, 0.60) 100%
-  );
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.055);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.13);
   border-radius: 24px;
   box-shadow:
-    0 1px 0 rgba(255,255,255,0.07) inset,
-    0 8px 32px rgba(0, 0, 0, 0.40),
-    0 2px 8px rgba(0, 0, 0, 0.28);
+    0 4px 16px rgba(0, 0, 0, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  transition: transform 0.30s cubic-bezier(0.22,1,0.36,1),
-              box-shadow 0.30s cubic-bezier(0.22,1,0.36,1);
+  transition: box-shadow 0.25s ease;
 }
 
-/* Кант по всему периметру: cyan → purple → cyan */
+/* Gradient border highlight — верхний левый угол ловит свет */
 .glass-card::before {
   content: "";
   position: absolute;
@@ -199,10 +190,9 @@
   border-radius: inherit;
   padding: 1px;
   background: linear-gradient(135deg,
-    rgba(0,212,255,0.45) 0%,
-    rgba(123,94,255,0.30) 35%,
-    rgba(0,212,255,0.08) 65%,
-    rgba(123,94,255,0.18) 100%);
+    rgba(0,212,255,0.55) 0%,
+    rgba(255,255,255,0.18) 25%,
+    transparent 55%);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
           mask-composite: exclude;
@@ -210,7 +200,7 @@
   z-index: 1;
 }
 
-/* Static glass glare */
+/* Static glass glare — фиксированный блик в верхней части */
 .glass-card::after {
   content: "";
   position: absolute;
@@ -230,21 +220,17 @@
   z-index: 2;
 }
 
-/* Hover: подъём + глубокая цветная тень */
 .glass-card:hover {
-  transform: translateY(-4px);
   box-shadow:
-    0 1px 0 rgba(255,255,255,0.10) inset,
-    0 20px 56px rgba(0, 0, 0, 0.55),
-    0 8px 20px rgba(0, 0, 0, 0.35),
-    0 0 32px rgba(0,212,255,0.12),
-    0 0 64px rgba(123,94,255,0.08);
+    0 6px 24px rgba(0,0,0,0.18),
+    0 0 20px rgba(0,212,255,0.10),
+    inset 0 1px 0 rgba(255,255,255,0.22);
 }
 
 @media (max-width: 768px) {
   .glass-card {
-    backdrop-filter: blur(14px) saturate(160%);
-    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
   }
 }
 
@@ -280,55 +266,42 @@
 
 /* ── Frosted navbar ────────────────────────────────────────────────── */
 .glass-nav {
-  background: rgba(6, 8, 18, 0.60);
-  backdrop-filter: blur(32px) saturate(200%) brightness(1.04);
-  -webkit-backdrop-filter: blur(32px) saturate(200%) brightness(1.04);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 1px 0 rgba(0,212,255,0.05), 0 8px 32px rgba(0,0,0,0.30);
+  background: rgba(8, 11, 22, 0.45);
+  backdrop-filter: blur(28px) saturate(200%) brightness(1.06);
+  -webkit-backdrop-filter: blur(28px) saturate(200%) brightness(1.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 1px 0 rgba(0,212,255,0.06), 0 6px 24px rgba(0,0,0,0.22);
 }
 
 /* ── Tinted liquid glass (featured blocks) ─────────────────────────── */
 .glass-strong {
-  background: linear-gradient(
-    145deg,
-    rgba(14, 20, 40, 0.65) 0%,
-    rgba(8, 12, 28, 0.52) 100%
-  );
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.045);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(255,255,255,0.10);
   box-shadow:
-    0 1px 0 rgba(255,255,255,0.06) inset,
-    0 8px 32px rgba(0,0,0,0.36);
+    0 4px 16px rgba(0,0,0,0.10),
+    inset 0 1px 0 rgba(255,255,255,0.10);
   position: relative;
   isolation: isolate;
 }
 
 /* ── Card / package glass ──────────────────────────────────────────── */
-/* 1. Тёмный металл с лёгким фиолетовым отливом */
-/* 2. Hover-подъём + depth-тень */
-/* 3. Кант по всему периметру */
 .glass-pkg {
-  background: linear-gradient(
-    145deg,
-    rgba(16, 14, 38, 0.70) 0%,
-    rgba(8, 10, 28, 0.58) 100%
-  );
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.055);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(255,255,255,0.13);
   box-shadow:
-    0 1px 0 rgba(255,255,255,0.07) inset,
-    0 8px 32px rgba(0,0,0,0.40),
-    0 2px 8px rgba(0,0,0,0.28);
+    0 4px 16px rgba(0,0,0,0.14),
+    inset 0 1px 0 rgba(255,255,255,0.18);
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  transition: transform 0.30s cubic-bezier(0.22,1,0.36,1),
-              box-shadow 0.30s cubic-bezier(0.22,1,0.36,1);
+  transition: box-shadow 0.25s ease;
 }
 
-/* Кант по всему периметру */
+/* Gradient border highlight */
 .glass-pkg::before {
   content: "";
   position: absolute;
@@ -337,9 +310,8 @@
   padding: 1px;
   background: linear-gradient(135deg,
     rgba(0,212,255,0.45) 0%,
-    rgba(123,94,255,0.28) 35%,
-    rgba(0,212,255,0.07) 65%,
-    rgba(123,94,255,0.16) 100%);
+    rgba(255,255,255,0.14) 25%,
+    transparent 55%);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
           mask-composite: exclude;
@@ -367,49 +339,38 @@
   z-index: 2;
 }
 
-/* Hover: подъём + глубокая тень */
 .glass-pkg:hover {
-  transform: translateY(-4px);
   box-shadow:
-    0 1px 0 rgba(255,255,255,0.10) inset,
-    0 20px 56px rgba(0, 0, 0, 0.55),
-    0 8px 20px rgba(0, 0, 0, 0.35),
-    0 0 32px rgba(123,94,255,0.14),
-    0 0 64px rgba(0,212,255,0.08);
+    0 6px 24px rgba(0,0,0,0.18),
+    0 0 20px rgba(0,212,255,0.10),
+    inset 0 1px 0 rgba(255,255,255,0.22);
 }
 
 @media (max-width: 768px) {
   .glass-pkg {
-    backdrop-filter: blur(14px) saturate(160%);
-    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
   }
 }
 
 /* ── Active / selected package (featured) ──────────────────────────── */
-/* Тёмный фон с cyan-тонировкой + яркий полный кант */
 .glass-pkg-active {
-  background: linear-gradient(
-    145deg,
-    rgba(0, 28, 42, 0.80) 0%,
-    rgba(8, 10, 32, 0.68) 100%
-  );
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid transparent;
+  background: rgba(0, 212, 255, 0.07);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(0,212,255,0.35);
   box-shadow:
-    0 1px 0 rgba(0,212,255,0.15) inset,
-    0 8px 40px rgba(0,0,0,0.45),
-    0 0 28px rgba(0,212,255,0.14),
-    0 0 56px rgba(123,94,255,0.08);
+    0 2px 8px rgba(0,0,0,0.08),
+    0 0 16px rgba(0,212,255,0.07),
+    inset 0 1px 0 rgba(255,255,255,0.15);
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  transition: transform 0.30s cubic-bezier(0.22,1,0.36,1),
-              box-shadow 0.30s cubic-bezier(0.22,1,0.36,1);
+  transition: box-shadow 0.25s ease;
   z-index: 10;
 }
 
-/* Яркий кант cyan → purple по всему периметру */
+/* Stronger cyan→purple gradient border for featured */
 .glass-pkg-active::before {
   content: "";
   position: absolute;
@@ -417,10 +378,9 @@
   border-radius: inherit;
   padding: 1px;
   background: linear-gradient(135deg,
-    rgba(0,212,255,0.80) 0%,
-    rgba(123,94,255,0.50) 40%,
-    rgba(0,212,255,0.15) 70%,
-    rgba(123,94,255,0.35) 100%);
+    rgba(0,212,255,0.75) 0%,
+    rgba(123,94,255,0.40) 40%,
+    transparent 70%);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
           mask-composite: exclude;
@@ -450,8 +410,8 @@
 
 @media (max-width: 768px) {
   .glass-pkg-active {
-    backdrop-filter: blur(14px) saturate(160%);
-    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
   }
 }
 
