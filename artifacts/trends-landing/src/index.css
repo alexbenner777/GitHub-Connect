@@ -206,21 +206,20 @@
   z-index: 1;
 }
 
-/* Premium glare — sharp thin highlight line at the top edge */
+/* Premium glare — crisp bright edge, fast falloff */
 .glass-card::after {
   content: "";
   position: absolute;
   top: 0;
-  left: 4%;
-  right: 4%;
-  height: 1px;
+  left: 0;
+  right: 0;
+  height: 40%;
   background: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(255, 255, 255, 0.18) 20%,
-    rgba(255, 255, 255, 0.32) 50%,
-    rgba(255, 255, 255, 0.18) 80%,
-    transparent 100%
+    to bottom,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0.10) 5%,
+    rgba(255, 255, 255, 0.02) 18%,
+    transparent 38%
   );
   border-radius: inherit;
   pointer-events: none;
@@ -254,16 +253,15 @@
   content: "";
   position: absolute;
   top: 0;
-  left: 4%;
-  right: 4%;
-  height: 1px;
+  left: 0;
+  right: 0;
+  height: 40%;
   background: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(255, 255, 255, 0.18) 20%,
-    rgba(255, 255, 255, 0.32) 50%,
-    rgba(255, 255, 255, 0.18) 80%,
-    transparent 100%
+    to bottom,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0.10) 5%,
+    rgba(255, 255, 255, 0.02) 18%,
+    transparent 38%
   );
   border-radius: inherit;
   pointer-events: none;
@@ -338,21 +336,20 @@
   z-index: 1;
 }
 
-/* Premium glare — sharp 1px highlight line */
+/* Premium glare — crisp bright edge, fast falloff */
 .glass-pkg::after {
   content: "";
   position: absolute;
   top: 0;
-  left: 4%;
-  right: 4%;
-  height: 1px;
+  left: 0;
+  right: 0;
+  height: 40%;
   background: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(255, 255, 255, 0.18) 20%,
-    rgba(255, 255, 255, 0.32) 50%,
-    rgba(255, 255, 255, 0.18) 80%,
-    transparent 100%
+    to bottom,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0.10) 5%,
+    rgba(255, 255, 255, 0.02) 18%,
+    transparent 38%
   );
   border-radius: inherit;
   pointer-events: none;
@@ -415,21 +412,20 @@
   z-index: 1;
 }
 
-/* Premium glare for featured — sharp 1px cyan-tinted line */
+/* Premium glare for featured — crisp cyan-tinted edge, fast falloff */
 .glass-pkg-active::after {
   content: "";
   position: absolute;
   top: 0;
-  left: 4%;
-  right: 4%;
-  height: 1px;
+  left: 0;
+  right: 0;
+  height: 40%;
   background: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(0, 212, 255, 0.22) 20%,
-    rgba(180, 240, 255, 0.38) 50%,
-    rgba(0, 212, 255, 0.22) 80%,
-    transparent 100%
+    to bottom,
+    rgba(0, 212, 255, 0.20) 0%,
+    rgba(180, 240, 255, 0.09) 5%,
+    rgba(255, 255, 255, 0.02) 18%,
+    transparent 38%
   );
   border-radius: inherit;
   pointer-events: none;
