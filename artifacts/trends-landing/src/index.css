@@ -207,12 +207,13 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 52%;
+  height: 38%;
   background: linear-gradient(
-    160deg,
-    rgba(255, 255, 255, 0.11) 0%,
-    rgba(255, 255, 255, 0.05) 35%,
-    transparent 65%
+    to bottom,
+    rgba(255, 255, 255, 0.28) 0%,
+    rgba(255, 255, 255, 0.14) 35%,
+    rgba(255, 255, 255, 0.04) 70%,
+    transparent 100%
   );
   border-radius: inherit;
   pointer-events: none;
@@ -246,12 +247,13 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 52%;
+  height: 38%;
   background: linear-gradient(
-    160deg,
-    rgba(255, 255, 255, 0.11) 0%,
-    rgba(255, 255, 255, 0.05) 35%,
-    transparent 65%
+    to bottom,
+    rgba(255, 255, 255, 0.28) 0%,
+    rgba(255, 255, 255, 0.14) 35%,
+    rgba(255, 255, 255, 0.04) 70%,
+    transparent 100%
   );
   border-radius: inherit;
   pointer-events: none;
@@ -324,12 +326,13 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 52%;
+  height: 38%;
   background: linear-gradient(
-    160deg,
-    rgba(255, 255, 255, 0.11) 0%,
-    rgba(255, 255, 255, 0.05) 35%,
-    transparent 65%
+    to bottom,
+    rgba(255, 255, 255, 0.28) 0%,
+    rgba(255, 255, 255, 0.14) 35%,
+    rgba(255, 255, 255, 0.04) 70%,
+    transparent 100%
   );
   border-radius: inherit;
   pointer-events: none;
@@ -392,12 +395,13 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 52%;
+  height: 38%;
   background: linear-gradient(
-    160deg,
-    rgba(0, 212, 255, 0.12) 0%,
-    rgba(255, 255, 255, 0.07) 30%,
-    transparent 62%
+    to bottom,
+    rgba(0, 212, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0.18) 20%,
+    rgba(255, 255, 255, 0.06) 60%,
+    transparent 100%
   );
   border-radius: inherit;
   pointer-events: none;
