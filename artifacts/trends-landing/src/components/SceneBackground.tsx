@@ -67,18 +67,6 @@ export function SceneBackground() {
     isCyan: sr(i * 7) > 0.55,
   })), []);
 
-  /* Shooting stars — 6 elements staggered */
-  const shootingStars = useMemo(() => Array.from({ length: 6 }, (_, i) => ({
-    id: i,
-    left: 10 + sr(i * 11) * 60,
-    top:  2  + sr(i * 19) * 30,
-    sx: 400 + sr(i * 29) * 300,
-    sy: 180 + sr(i * 37) * 160,
-    sw: 120 + sr(i * 43) * 100,
-    dur:  1.2 + sr(i * 47) * 0.8,
-    dly: sr(i * 53) * -28,
-    period: 12 + sr(i * 61) * 16,
-  })), []);
 
   return (
     <div
@@ -126,28 +114,6 @@ export function SceneBackground() {
         ))}
       </motion.div>
 
-      {/* ── SHOOTING STARS ── */}
-      {mounted && shootingStars.map(s => (
-        <div
-          key={s.id}
-          className="absolute"
-          style={{
-            left: `${s.left}%`,
-            top:  `${s.top}%`,
-            height: "1px",
-            "--sx": `${s.sx}px`,
-            "--sy": `${s.sy}px`,
-            "--sw": `${s.sw}px`,
-            background: "linear-gradient(90deg, transparent 0%, rgba(0,212,255,0.9) 40%, rgba(180,150,255,0.6) 70%, transparent 100%)",
-            borderRadius: "1px",
-            animation: `shootingStar ${s.dur}s ${s.dly}s ease-in infinite`,
-            animationDuration: `${s.dur}s`,
-            animationDelay:    `${s.dly + s.id * s.period / 6}s`,
-            animationIterationCount: "infinite",
-            animationTimingFunction: "ease-in",
-          } as React.CSSProperties}
-        />
-      ))}
 
       {/* Perspective grid */}
       {mounted && (
