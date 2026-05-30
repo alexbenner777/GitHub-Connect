@@ -826,7 +826,7 @@ export default function Landing() {
               </div>
             </div>
             <div
-              className="relative flex justify-center items-center order-1 lg:order-2 mb-6 lg:mb-0">
+              className="relative flex justify-center items-end order-1 lg:order-2 mb-6 lg:mb-0 self-end">
               {/* Glow behind phone */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div className="w-64 h-64 lg:w-56 lg:h-56 rounded-full bg-secondary/30 blur-[80px]" />
