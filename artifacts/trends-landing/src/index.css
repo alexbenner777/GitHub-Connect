@@ -168,87 +168,47 @@
 
 /* ── Liquid Glass base ─────────────────────────────────────────────── */
 .glass-card {
-  position: relative;
-  overflow: hidden;
+  background: rgba(255, 255, 255, 0.025);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.13);
   border-radius: 24px;
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
-  border: 1px solid rgba(255, 255, 255, 0.10);
   box-shadow:
-    0 8px 30px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.25);
-  isolation: isolate;
-  transition: box-shadow 0.25s ease, border-color 0.25s ease;
-}
-
-/* Layer 2: Static diagonal shine — always visible */
-.glass-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background: linear-gradient(
-    125deg,
-    rgba(255, 255, 255, 0.22) 0%,
-    rgba(255, 255, 255, 0.06) 18%,
-    rgba(255, 255, 255, 0)    38%,
-    rgba(255, 255, 255, 0)    62%,
-    rgba(255, 255, 255, 0.04) 82%,
-    rgba(255, 255, 255, 0.14) 100%
-  );
-  opacity: 1;
-  z-index: 1;
-}
-
-/* Layer 3: Top-corner glare spot — static */
-.glass-card::after {
-  content: "";
-  position: absolute;
-  top: -40%;
-  left: -20%;
-  width: 70%;
-  height: 90%;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(255, 255, 255, 0.20) 0%,
-    rgba(255, 255, 255, 0.05) 40%,
-    rgba(255, 255, 255, 0)    70%
-  );
-  transform: rotate(-18deg);
-  z-index: 1;
-}
-
-/* Ensure content sits above glare pseudo-elements (z-index: 1) */
-.glass-card > * {
+    0 4px 16px rgba(0, 0, 0, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
   position: relative;
-  z-index: 2;
+  isolation: isolate;
+  overflow: hidden;
+  transition: box-shadow 0.25s ease;
+}
+
+/* Gradient border highlight — отключено */
+.glass-card::before {
+  display: none;
+}
+
+/* Static glass glare — отключено */
+.glass-card::after {
+  display: none;
 }
 
 .glass-card-plain {
   border-color: transparent;
 }
-
-/* Hover: subtle enhancement only */
-.glass-card:hover::before {
-  opacity: 1;
-  filter: brightness(1.25);
+.glass-card-plain::before {
+  display: none;
 }
+
 .glass-card:hover {
-  border-color: rgba(0, 212, 255, 0.45);
   box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.25),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.30);
+    0 6px 24px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.22);
 }
 
 @media (max-width: 768px) {
   .glass-card {
-    backdrop-filter: blur(12px) saturate(130%);
-    -webkit-backdrop-filter: blur(12px) saturate(130%);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
   }
 }
 
