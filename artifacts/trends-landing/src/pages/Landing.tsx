@@ -855,7 +855,7 @@ export default function Landing() {
       </section>
 
       {/* МЕХАНИКА ВЗРЫВНОГО РОСТА */}
-      <section className="py-16 md:py-24 lg:py-32 relative z-10 overflow-hidden">
+      <section className="pt-0 pb-16 md:pb-24 lg:pb-32 relative z-10 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full blur-[160px]" style={{ background: "radial-gradient(ellipse, rgba(123,94,255,0.10) 0%, rgba(0,212,255,0.06) 60%, transparent 100%)" }} />
         </div>
