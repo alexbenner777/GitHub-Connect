@@ -30,11 +30,12 @@ export function SceneBackground() {
   const y0 = useTransform(springY, v => v * 6);
   const x1 = useTransform(springX, v => v * 20);
   const y1 = useTransform(springY, v => v * 14);
+  const x2 = useTransform(springX, v => v * 4);
+  const y2 = useTransform(springY, v => v * 3);
 
-  // Reduced from 16 to 7 blobs — large blurs are expensive, fewer elements
   const blobs = useMemo(() => [
     { id: 0, left: 10, top: 15, size: 480, color: "rgba(0,212,255,0.18)", blur: 90, dur: 18, dx: 30, dy: 20, layer: 0 },
-    { id: 1, left: 80, top: 5, size: 560, color: "rgba(123,94,255,0.20)", blur: 80, dur: 22, dx: -25, dy: 30, layer: 0 },
+    { id: 1, left: 80, top: 5,  size: 560, color: "rgba(123,94,255,0.20)", blur: 80, dur: 22, dx: -25, dy: 30, layer: 0 },
     { id: 2, left: 50, top: 70, size: 400, color: "rgba(123,94,255,0.16)", blur: 75, dur: 20, dx: 20, dy: -20, layer: 0 },
     { id: 3, left: 15, top: 60, size: 300, color: "rgba(0,212,255,0.15)", blur: 60, dur: 16, dx: -20, dy: 15, layer: 1 },
     { id: 4, left: 75, top: 50, size: 260, color: "rgba(123,94,255,0.18)", blur: 55, dur: 14, dx: 18, dy: -18, layer: 1 },
@@ -42,7 +43,6 @@ export function SceneBackground() {
     { id: 6, left: 60, top: 85, size: 360, color: "rgba(0,180,255,0.14)", blur: 70, dur: 24, dx: 22, dy: -12, layer: 0 },
   ], []);
 
-  // Reduced from 50 to 18 particles
   const particles = useMemo(() => Array.from({ length: 18 }, (_, i) => ({
     id: i,
     left: sr(i * 41) * 100,
@@ -54,25 +54,48 @@ export function SceneBackground() {
     isCyan: sr(i * 3) > 0.5,
   })), []);
 
+  /* Star field — 60 static dots at random positions with twinkle */
+  const stars = useMemo(() => Array.from({ length: 60 }, (_, i) => ({
+    id: i,
+    left: sr(i * 13) * 100,
+    top:  sr(i * 17) * 80,
+    size: 0.8 + sr(i * 23) * 1.4,
+    minOp: 0.1 + sr(i * 31) * 0.25,
+    maxOp: 0.5 + sr(i * 37) * 0.45,
+    dur:  3 + sr(i * 43) * 7,
+    dly:  sr(i * 53) * -8,
+    isCyan: sr(i * 7) > 0.55,
+  })), []);
+
+  /* Shooting stars — 6 elements staggered */
+  const shootingStars = useMemo(() => Array.from({ length: 6 }, (_, i) => ({
+    id: i,
+    left: 10 + sr(i * 11) * 60,
+    top:  2  + sr(i * 19) * 30,
+    sx: 400 + sr(i * 29) * 300,
+    sy: 180 + sr(i * 37) * 160,
+    sw: 120 + sr(i * 43) * 100,
+    dur:  1.2 + sr(i * 47) * 0.8,
+    dly: sr(i * 53) * -28,
+    period: 12 + sr(i * 61) * 16,
+  })), []);
+
   return (
     <div
       className="fixed inset-0 overflow-hidden pointer-events-none"
       style={{ zIndex: 0, willChange: "transform" }}
       aria-hidden
     >
-      {/* Base radial gradient — covers full height so backdrop-filter has color to blur */}
+      {/* Base radial gradient */}
       <div
         className="absolute inset-0"
         style={{
           background: [
-            /* top corners */
             "radial-gradient(ellipse 90% 55% at 20% 10%, rgba(0,212,255,0.13) 0%, transparent 65%)",
             "radial-gradient(ellipse 70% 55% at 85% 5%,  rgba(123,94,255,0.15) 0%, transparent 60%)",
-            /* mid-page coverage */
             "radial-gradient(ellipse 70% 40% at 15% 40%, rgba(0,212,255,0.09) 0%, transparent 60%)",
             "radial-gradient(ellipse 60% 40% at 85% 55%, rgba(123,94,255,0.11) 0%, transparent 60%)",
             "radial-gradient(ellipse 55% 35% at 50% 70%, rgba(0,212,255,0.08) 0%, transparent 60%)",
-            /* bottom corners */
             "radial-gradient(ellipse 60% 45% at 75% 95%, rgba(123,94,255,0.12) 0%, transparent 60%)",
             "radial-gradient(ellipse 50% 40% at 10% 90%, rgba(0,212,255,0.10) 0%, transparent 55%)",
             "hsl(220,40%,20%)",
@@ -80,7 +103,53 @@ export function SceneBackground() {
         }}
       />
 
-      {/* Perspective grid — rendered only after mount */}
+      {/* ── STAR FIELD — slow parallax layer ── */}
+      <motion.div
+        className="absolute inset-0"
+        style={{ x: x2, y: y2 }}
+      >
+        {stars.map(s => (
+          <div
+            key={s.id}
+            className="absolute rounded-full"
+            style={{
+              left: `${s.left}%`,
+              top:  `${s.top}%`,
+              width:  s.size,
+              height: s.size,
+              background: s.isCyan ? "#00D4FF" : "#b09fff",
+              "--star-min": s.minOp,
+              "--star-max": s.maxOp,
+              animation: `twinkle ${s.dur}s ${s.dly}s ease-in-out infinite`,
+            } as React.CSSProperties}
+          />
+        ))}
+      </motion.div>
+
+      {/* ── SHOOTING STARS ── */}
+      {mounted && shootingStars.map(s => (
+        <div
+          key={s.id}
+          className="absolute"
+          style={{
+            left: `${s.left}%`,
+            top:  `${s.top}%`,
+            height: "1px",
+            "--sx": `${s.sx}px`,
+            "--sy": `${s.sy}px`,
+            "--sw": `${s.sw}px`,
+            background: "linear-gradient(90deg, transparent 0%, rgba(0,212,255,0.9) 40%, rgba(180,150,255,0.6) 70%, transparent 100%)",
+            borderRadius: "1px",
+            animation: `shootingStar ${s.dur}s ${s.dly}s ease-in infinite`,
+            animationDuration: `${s.dur}s`,
+            animationDelay:    `${s.dly + s.id * s.period / 6}s`,
+            animationIterationCount: "infinite",
+            animationTimingFunction: "ease-in",
+          } as React.CSSProperties}
+        />
+      ))}
+
+      {/* Perspective grid */}
       {mounted && (
         <>
           <div
@@ -117,23 +186,16 @@ export function SceneBackground() {
       )}
 
       {/* Blob layer 0 — slow parallax */}
-      <motion.div
-        className="absolute inset-0"
-        style={{ x: x0, y: y0, willChange: "transform" }}
-      >
+      <motion.div className="absolute inset-0" style={{ x: x0, y: y0, willChange: "transform" }}>
         {blobs.filter(b => b.layer === 0).map(b => (
           <motion.div
             key={b.id}
             className="absolute rounded-full"
             style={{
-              left: `${b.left}%`,
-              top: `${b.top}%`,
-              width: b.size,
-              height: b.size,
-              background: b.color,
-              filter: `blur(${b.blur}px)`,
-              transform: "translate(-50%,-50%)",
-              willChange: "transform",
+              left: `${b.left}%`, top: `${b.top}%`,
+              width: b.size, height: b.size,
+              background: b.color, filter: `blur(${b.blur}px)`,
+              transform: "translate(-50%,-50%)", willChange: "transform",
             }}
             animate={{ x: [0, b.dx, 0], y: [0, b.dy, 0] }}
             transition={{ duration: b.dur, repeat: Infinity, ease: "easeInOut", repeatType: "mirror" }}
@@ -142,23 +204,16 @@ export function SceneBackground() {
       </motion.div>
 
       {/* Blob layer 1 — faster parallax */}
-      <motion.div
-        className="absolute inset-0"
-        style={{ x: x1, y: y1, willChange: "transform" }}
-      >
+      <motion.div className="absolute inset-0" style={{ x: x1, y: y1, willChange: "transform" }}>
         {blobs.filter(b => b.layer === 1).map(b => (
           <motion.div
             key={b.id}
             className="absolute rounded-full"
             style={{
-              left: `${b.left}%`,
-              top: `${b.top}%`,
-              width: b.size,
-              height: b.size,
-              background: b.color,
-              filter: `blur(${b.blur}px)`,
-              transform: "translate(-50%,-50%)",
-              willChange: "transform",
+              left: `${b.left}%`, top: `${b.top}%`,
+              width: b.size, height: b.size,
+              background: b.color, filter: `blur(${b.blur}px)`,
+              transform: "translate(-50%,-50%)", willChange: "transform",
             }}
             animate={{ x: [0, b.dx, 0], y: [0, b.dy, 0] }}
             transition={{ duration: b.dur, repeat: Infinity, ease: "easeInOut", repeatType: "mirror" }}
@@ -166,20 +221,16 @@ export function SceneBackground() {
         ))}
       </motion.div>
 
-      {/* Particles — CSS animation only, no Framer Motion per-particle */}
+      {/* Particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {particles.map(p => (
           <div
             key={p.id}
             className="absolute rounded-full"
             style={{
-              left: `${p.left}%`,
-              bottom: "-4px",
-              width: p.size,
-              height: p.size,
-              background: p.isCyan
-                ? `rgba(0,212,255,${p.opacity})`
-                : `rgba(180,150,255,${p.opacity})`,
+              left: `${p.left}%`, bottom: "-4px",
+              width: p.size, height: p.size,
+              background: p.isCyan ? `rgba(0,212,255,${p.opacity})` : `rgba(180,150,255,${p.opacity})`,
               animation: `particleRise ${p.dur}s ${p.dly}s linear infinite`,
               "--sway": `${p.sway}px`,
             } as React.CSSProperties}
@@ -187,33 +238,31 @@ export function SceneBackground() {
         ))}
       </div>
 
-      {/* 2 aurora bands (down from 4) */}
+      {/* 3 aurora bands */}
       {[
-        { top: "20%", color: "rgba(0,212,255,0.11)", dur: 16 },
-        { top: "58%", color: "rgba(123,94,255,0.10)", dur: 20 },
+        { top: "12%", color: "rgba(0,212,255,0.14)", dur: 16, w: "160%" },
+        { top: "45%", color: "rgba(123,94,255,0.13)", dur: 20, w: "140%" },
+        { top: "75%", color: "rgba(0,212,255,0.09)",  dur: 24, w: "120%" },
       ].map((band, i) => (
         <motion.div
           key={`aurora-${i}`}
           className="absolute left-1/2 pointer-events-none"
           style={{
             top: band.top,
-            width: "150%",
-            height: "100px",
+            width: band.w,
+            height: "120px",
             x: "-50%",
             background: `radial-gradient(ellipse 100% 50% at 50% 50%, ${band.color} 0%, transparent 70%)`,
-            filter: "blur(24px)",
+            filter: "blur(30px)",
             mixBlendMode: "screen",
             willChange: "transform, opacity",
           }}
-          animate={{
-            scaleX: [1, 0.88, 1.08, 1],
-            opacity: [0.6, 1, 0.65, 0.6],
-          }}
-          transition={{ duration: band.dur, delay: i * -6, repeat: Infinity, ease: "easeInOut" }}
+          animate={{ scaleX: [1, 0.85, 1.12, 1], opacity: [0.5, 1, 0.6, 0.5] }}
+          transition={{ duration: band.dur, delay: i * -7, repeat: Infinity, ease: "easeInOut" }}
         />
       ))}
 
-      {/* Slow ambient color wash — single animation instead of background interpolation */}
+      {/* Ambient color wash */}
       <motion.div
         className="absolute inset-0 pointer-events-none"
         style={{ zIndex: 0 }}
@@ -227,6 +276,15 @@ export function SceneBackground() {
           }}
         />
       </motion.div>
+
+      {/* ── VIGNETTE — darkens edges, creates depth ── */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse 85% 80% at 50% 40%, transparent 30%, rgba(4,6,20,0.55) 75%, rgba(4,6,20,0.85) 100%)",
+          zIndex: 1,
+        }}
+      />
     </div>
   );
 }

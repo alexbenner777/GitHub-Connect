@@ -545,6 +545,18 @@
   100% { transform: translateY(-900px) translateX(var(--sway, 0px)); opacity: 0; }
 }
 
+@keyframes twinkle {
+  0%, 100% { opacity: var(--star-min, 0.2); }
+  50%       { opacity: var(--star-max, 0.9); }
+}
+
+@keyframes shootingStar {
+  0%   { transform: translateX(0) translateY(0); opacity: 0; width: 0; }
+  5%   { opacity: 1; }
+  60%  { opacity: 0.8; }
+  100% { transform: translateX(var(--sx, 600px)) translateY(var(--sy, 300px)); opacity: 0; width: var(--sw, 180px); }
+}
+
 /* ── Layout tokens ─────────────────────────────────────────────────── */
 :root {
   --section-max: 72rem;   /* = max-w-6xl  */
