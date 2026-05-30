@@ -172,7 +172,7 @@ function AdvantageCard({ item, index, variants }: { item: AdvantageItem; index: 
       </div>
       <div className="relative z-10 p-4 md:p-6 flex flex-col min-h-[160px]">
         {/* Icon top-left */}
-        <div className="w-9 h-9 md:w-11 md:h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 mb-3 shrink-0">
+        <div className="w-9 h-9 md:w-11 md:h-11 rounded-xl bg-white/5 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 mb-3 shrink-0">
           <Icon className={`w-4 h-4 md:w-5 md:h-5 ${item.color}`} />
         </div>
         <h3 className="text-base md:text-lg font-black mb-2">{item.title}</h3>
@@ -225,7 +225,7 @@ function AdvantagesGrid({ openInvest: _openInvest, advantages }: { openInvest: (
         </div>
         <div className="relative z-10 p-4 md:p-7 flex flex-col min-h-[160px] md:min-h-[140px]">
           {/* Icon */}
-          <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300 mb-3">
+          <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300 mb-3">
             <Icon0 className={`w-6 h-6 md:w-7 md:h-7 ${first.color}`} />
           </div>
           <div className={`text-xs font-black tracking-widest uppercase mb-2 ${first.color} hidden md:block`}>{first.label}</div>
