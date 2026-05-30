@@ -669,19 +669,6 @@ export default function Landing() {
               </p>
             </div>
 
-            {/* Live investor counter */}
-            {liveInvestors >= 5 && (
-              <div className="flex items-center gap-2 -mb-2">
-                <span className="flex h-2 w-2 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400" />
-                </span>
-                <span className="text-sm text-muted-foreground">
-                  <span ref={investorsRef} className="font-bold text-foreground">{investorsValue}</span>
-                  {" "}{lang === 'ru' ? 'инвесторов уже в Round 1' : 'investors already in Round 1'}
-                </span>
-              </div>
-            )}
 
             <div className="flex flex-col sm:flex-row gap-4 pt-2">
               <MagneticButton onClick={() => openInvest()} className="w-full sm:w-auto">
