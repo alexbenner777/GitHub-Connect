@@ -605,7 +605,7 @@ export default function Landing() {
       </nav>
 
       {/* HERO */}
-      <section className="pt-20 pb-8 sm:pt-24 sm:pb-10 lg:pt-40 lg:pb-24 px-4 relative z-10">
+      <section className="pt-14 pb-8 sm:pt-16 sm:pb-10 lg:pt-24 lg:pb-24 px-4 relative z-10">
         <div className="container mx-auto relative z-10">
         <div className="section-inner flex flex-col lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
 
