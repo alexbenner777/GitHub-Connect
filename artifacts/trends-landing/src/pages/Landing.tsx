@@ -891,60 +891,13 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* TOKEN ATTENTION ECONOMY */}
+      {/* МЕХАНИКА ВЗРЫВНОГО РОСТА */}
       <section className="py-16 md:py-24 lg:py-32 relative z-10 overflow-hidden">
-        {/* Background glow */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full blur-[160px]" style={{ background: "radial-gradient(ellipse, rgba(123,94,255,0.12) 0%, rgba(0,212,255,0.08) 60%, transparent 100%)" }} />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full blur-[160px]" style={{ background: "radial-gradient(ellipse, rgba(123,94,255,0.10) 0%, rgba(0,212,255,0.06) 60%, transparent 100%)" }} />
         </div>
-
         <div className="container mx-auto px-4 relative z-10">
-
-          {/* Header */}
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={fadeUp} className="section-header mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-secondary/30 bg-secondary/10 text-secondary text-sm font-bold mb-6">
-              <Coins className="w-4 h-4" /> {t('token_section_badge')}
-            </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-5 leading-tight">
-              {t('token_section_title')}
-            </h2>
-            <p className="text-lg text-muted-foreground">{t('token_section_desc')}</p>
-          </motion.div>
-
-          {/* 3 earn cards */}
           <div className="section-inner">
-          <div className="grid md:grid-cols-3 gap-5 mb-10">
-            {[
-              {
-                icon: Users2, color: "text-primary", bg: "bg-primary/10", border: "border-primary/20",
-                title: t('token_viewers_title'), desc: t('token_viewers_desc'), num: "01",
-              },
-              {
-                icon: Star, color: "text-secondary", bg: "bg-secondary/10", border: "border-secondary/20",
-                title: t('token_creators_title'), desc: t('token_creators_desc'), num: "02",
-              },
-              {
-                icon: TrendingUp, color: "text-green-400", bg: "bg-green-400/10", border: "border-green-400/20",
-                title: t('token_investors_title'), desc: t('token_investors_desc'), num: "03",
-              },
-            ].map((card, i) => (
-              <motion.div
-                key={i}
-                initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}
-                variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: i * 0.1, ease: EASE } } }}
-                className={`glass-card p-7 rounded-3xl border ${card.border} relative overflow-hidden`}
-              >
-                <div className="absolute top-4 right-5 text-5xl font-black opacity-5 select-none">{card.num}</div>
-                <div className={`w-12 h-12 rounded-2xl ${card.bg} flex items-center justify-center ${card.color} mb-5`}>
-                  <card.icon className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-black mb-3">{card.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Why $TRND block */}
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeUp}
             className="glass-card rounded-3xl p-8 md:p-10 border border-secondary/15 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 via-transparent to-primary/5 pointer-events-none" />
@@ -995,7 +948,7 @@ export default function Landing() {
               </div>
             </div>
           </motion.div>
-          </div>{/* end section-inner */}
+          </div>
         </div>
       </section>
 
