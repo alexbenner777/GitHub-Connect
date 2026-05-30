@@ -1,0 +1,103 @@
+Добавь стеклянный блик/отражение на все .glass-card, сохранив прозрачный фон.
+
+ВАЖНО — ключевые требования:
+1. Фон блока должен ОСТАТЬСЯ ПРОЗРАЧНЫМ. Не добавляй непрозрачную заливку
+   (никаких сплошных background-color). Стекло создаётся ТОЛЬКО через
+   backdrop-filter (размытие того, что за блоком) + полупрозрачные блики.
+2. Блик должен быть СТАТИЧНЫМ — виден всегда, а не только при hover.
+   Hover может лишь слегка усиливать его, но базовый блик присутствует постоянно.
+
+Палитра: фон #090E1A, акценты cyan #00D4FF, purple #7B5EFF.
+
+================== СЛОЙ 1: База стекла (прозрачный фон) ==================
+.glass-card {
+  position: relative;
+  overflow: hidden;                 /* обязательно, чтобы блики не вылезали */
+  border-radius: 24px;
+  /* НЕ непрозрачный фон — только лёгкая полупрозрачная плёнка */
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow:
+    0 8px 30px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.18),   /* верхний световой кант */
+    inset 0 -1px 0 rgba(0,0,0,0.25);        /* нижняя тень-толщина */
+}
+
+================== СЛОЙ 2: Статичный диагональный блик (отражение) ==================
+/* Постоянная световая полоса по диагонали — имитация отражения окна/света.
+   Виден ВСЕГДА, без hover. */
+.glass-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    125deg,
+    rgba(255,255,255,0.22) 0%,
+    rgba(255,255,255,0.06) 18%,
+    rgba(255,255,255,0)    38%,
+    rgba(255,255,255,0)    62%,
+    rgba(255,255,255,0.04) 82%,
+    rgba(255,255,255,0.14) 100%
+  );
+  opacity: 1;                        /* статично виден */
+  z-index: 1;
+}
+
+================== СЛОЙ 3: Верхний угловой glare (точка отражения) ==================
+/* Мягкое световое пятно в левом-верхнем углу — как блик на глянце. Статично. */
+.glass-card::after {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -20%;
+  width: 70%;
+  height: 90%;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255,255,255,0.20) 0%,
+    rgba(255,255,255,0.05) 40%,
+    rgba(255,255,255,0) 70%
+  );
+  transform: rotate(-18deg);
+  z-index: 1;
+}
+
+================== СЛОЙ 4: Цветной рефракционный кант (опционально) ==================
+/* Тонкая cyan→purple грань по периметру — «жидкое стекло». Прозрачность сохраняется. */
+.glass-card {
+  border-image: linear-gradient(135deg,
+    rgba(0,212,255,0.40),
+    rgba(123,94,255,0.40)) 1;
+}
+/* если border-image мешает radius — используй вместо него mask-обводку:
+.glass-card .glass-edge {
+  position:absolute; inset:0; border-radius:inherit; padding:1px;
+  background:linear-gradient(135deg, rgba(0,212,255,.5), rgba(123,94,255,.5));
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none; z-index:1;
+}
+*/
+
+================== HOVER (только лёгкое усиление) ==================
+.glass-card:hover::before { opacity: 1; filter: brightness(1.25); }
+.glass-card:hover {
+  border-color: rgba(0,212,255,0.45);
+  box-shadow:
+    0 12px 40px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.25),
+    inset 0 -1px 0 rgba(0,0,0,0.30);
+}
+
+================== ВАЖНЫЕ ПРАВИЛА ==================
+- Контент внутри карточки оберни в элемент с position:relative; z-index:2;
+  чтобы текст был НАД бликами.
+- backdrop-filter работает только если ЗА блоком есть фон/контент для размытия
+  (фон страницы #090E1A с сеткой — он и будет размываться сквозь стекло).
+- Все блики — белые полупрозрачные (rgba(255,255,255,...)); рефракция — только
+  cyan/purple из палитры.
+- НИКАКОЙ сплошной непрозрачной заливки фона блоков.
