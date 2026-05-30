@@ -804,7 +804,6 @@ export default function Landing() {
                       className="glass-card relative flex items-start gap-5 px-5 py-5 rounded-2xl transition-transform duration-300 hover:-translate-y-0.5"
                       style={{
                         background: `linear-gradient(135deg, ${glow} 0%, rgba(255,255,255,0.02) 100%)`,
-                        border: `1px solid ${border}`,
                       }}
                     >
                       {/* step number watermark */}
