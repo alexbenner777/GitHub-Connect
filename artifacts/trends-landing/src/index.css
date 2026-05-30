@@ -220,6 +220,13 @@
   z-index: 2;
 }
 
+.glass-card-plain {
+  border-color: transparent;
+}
+.glass-card-plain::before {
+  display: none;
+}
+
 .glass-card:hover {
   box-shadow:
     0 6px 24px rgba(0,0,0,0.18),

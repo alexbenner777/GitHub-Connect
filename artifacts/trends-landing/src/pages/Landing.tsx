@@ -661,7 +661,7 @@ export default function Landing() {
               {t('hero_subtitle')}
             </p>
 
-            <div className="glass-card p-4 rounded-2xl flex items-start gap-3">
+            <div className="glass-card glass-card-plain p-4 rounded-2xl flex items-start gap-3">
               <DollarSign className="w-5 h-5 text-primary mt-0.5 shrink-0" />
               <p className="text-sm text-muted-foreground leading-relaxed">
                 <span className="text-foreground font-semibold">{t('hero_goal_label')}</span>{" "}
