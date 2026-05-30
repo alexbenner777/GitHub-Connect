@@ -753,7 +753,7 @@ export default function Landing() {
       </section>
 
       {/* WHAT IS TRENDS */}
-      <section className="py-16 md:py-24 lg:py-32 relative z-10">
+      <section className="pt-16 md:pt-24 lg:pt-32 pb-6 relative z-10">
         <div className="container mx-auto px-4">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={fadeUp}
             className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center section-inner">
