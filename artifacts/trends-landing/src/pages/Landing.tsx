@@ -628,7 +628,7 @@ export default function Landing() {
           >
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <motion.div
-                animate={{ scale: [1, 1.12, 1], opacity: [0.12, 0.22, 0.12] }}
+                animate={{ scale: [1, 1.12, 1], opacity: [0.3, 0.55, 0.3] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 className="w-48 h-48 lg:w-64 lg:h-64 rounded-full bg-primary blur-[80px]"
               />
@@ -829,7 +829,7 @@ export default function Landing() {
               className="relative flex justify-center items-end order-1 lg:order-2 mb-6 lg:mb-0 self-end">
               {/* Glow behind phone */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-64 h-64 lg:w-56 lg:h-56 rounded-full bg-secondary/12 blur-[80px]" />
+                <div className="w-64 h-64 lg:w-56 lg:h-56 rounded-full bg-secondary/30 blur-[80px]" />
               </div>
               {/* iPhone + video composite */}
               <div className="relative inline-flex justify-center items-center" style={{ height: 'clamp(520px, 95vw, 580px)' }}>
@@ -857,7 +857,7 @@ export default function Landing() {
       {/* МЕХАНИКА ВЗРЫВНОГО РОСТА */}
       <section className="pt-0 pb-16 md:pb-24 lg:pb-32 relative z-10 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full blur-[160px]" style={{ background: "radial-gradient(ellipse, rgba(123,94,255,0.05) 0%, rgba(0,212,255,0.03) 60%, transparent 100%)" }} />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full blur-[160px]" style={{ background: "radial-gradient(ellipse, rgba(123,94,255,0.10) 0%, rgba(0,212,255,0.06) 60%, transparent 100%)" }} />
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="section-inner">

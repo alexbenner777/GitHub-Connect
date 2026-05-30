@@ -31,16 +31,18 @@ export function SceneBackground() {
   const x1 = useTransform(springX, v => v * 20);
   const y1 = useTransform(springY, v => v * 14);
 
+  // Reduced from 16 to 7 blobs — large blurs are expensive, fewer elements
   const blobs = useMemo(() => [
-    { id: 0, left: 10, top: 15, size: 480, color: "rgba(0,212,255,0.07)", blur: 90, dur: 18, dx: 30, dy: 20, layer: 0 },
-    { id: 1, left: 80, top: 5, size: 560, color: "rgba(123,94,255,0.08)", blur: 80, dur: 22, dx: -25, dy: 30, layer: 0 },
-    { id: 2, left: 50, top: 70, size: 400, color: "rgba(123,94,255,0.06)", blur: 75, dur: 20, dx: 20, dy: -20, layer: 0 },
-    { id: 3, left: 15, top: 60, size: 300, color: "rgba(0,212,255,0.06)", blur: 60, dur: 16, dx: -20, dy: 15, layer: 1 },
-    { id: 4, left: 75, top: 50, size: 260, color: "rgba(123,94,255,0.07)", blur: 55, dur: 14, dx: 18, dy: -18, layer: 1 },
-    { id: 5, left: 35, top: 30, size: 220, color: "rgba(0,212,255,0.05)", blur: 45, dur: 12, dx: -15, dy: 22, layer: 1 },
-    { id: 6, left: 60, top: 85, size: 360, color: "rgba(0,180,255,0.05)", blur: 70, dur: 24, dx: 22, dy: -12, layer: 0 },
+    { id: 0, left: 10, top: 15, size: 480, color: "rgba(0,212,255,0.18)", blur: 90, dur: 18, dx: 30, dy: 20, layer: 0 },
+    { id: 1, left: 80, top: 5, size: 560, color: "rgba(123,94,255,0.20)", blur: 80, dur: 22, dx: -25, dy: 30, layer: 0 },
+    { id: 2, left: 50, top: 70, size: 400, color: "rgba(123,94,255,0.16)", blur: 75, dur: 20, dx: 20, dy: -20, layer: 0 },
+    { id: 3, left: 15, top: 60, size: 300, color: "rgba(0,212,255,0.15)", blur: 60, dur: 16, dx: -20, dy: 15, layer: 1 },
+    { id: 4, left: 75, top: 50, size: 260, color: "rgba(123,94,255,0.18)", blur: 55, dur: 14, dx: 18, dy: -18, layer: 1 },
+    { id: 5, left: 35, top: 30, size: 220, color: "rgba(0,212,255,0.14)", blur: 45, dur: 12, dx: -15, dy: 22, layer: 1 },
+    { id: 6, left: 60, top: 85, size: 360, color: "rgba(0,180,255,0.14)", blur: 70, dur: 24, dx: 22, dy: -12, layer: 0 },
   ], []);
 
+  // Reduced from 50 to 18 particles
   const particles = useMemo(() => Array.from({ length: 18 }, (_, i) => ({
     id: i,
     left: sr(i * 41) * 100,
@@ -58,27 +60,27 @@ export function SceneBackground() {
       style={{ zIndex: 0, willChange: "transform" }}
       aria-hidden
     >
-      {/* Base radial gradient — dark background with very subtle color hints */}
+      {/* Base radial gradient — covers full height so backdrop-filter has color to blur */}
       <div
         className="absolute inset-0"
         style={{
           background: [
-            /* top corners — very subtle tint */
-            "radial-gradient(ellipse 90% 55% at 20% 10%, rgba(0,212,255,0.06) 0%, transparent 65%)",
-            "radial-gradient(ellipse 70% 55% at 85% 5%,  rgba(123,94,255,0.07) 0%, transparent 60%)",
+            /* top corners */
+            "radial-gradient(ellipse 90% 55% at 20% 10%, rgba(0,212,255,0.13) 0%, transparent 65%)",
+            "radial-gradient(ellipse 70% 55% at 85% 5%,  rgba(123,94,255,0.15) 0%, transparent 60%)",
             /* mid-page coverage */
-            "radial-gradient(ellipse 70% 40% at 15% 40%, rgba(0,212,255,0.04) 0%, transparent 60%)",
-            "radial-gradient(ellipse 60% 40% at 85% 55%, rgba(123,94,255,0.05) 0%, transparent 60%)",
-            "radial-gradient(ellipse 55% 35% at 50% 70%, rgba(0,212,255,0.03) 0%, transparent 60%)",
+            "radial-gradient(ellipse 70% 40% at 15% 40%, rgba(0,212,255,0.09) 0%, transparent 60%)",
+            "radial-gradient(ellipse 60% 40% at 85% 55%, rgba(123,94,255,0.11) 0%, transparent 60%)",
+            "radial-gradient(ellipse 55% 35% at 50% 70%, rgba(0,212,255,0.08) 0%, transparent 60%)",
             /* bottom corners */
-            "radial-gradient(ellipse 60% 45% at 75% 95%, rgba(123,94,255,0.05) 0%, transparent 60%)",
-            "radial-gradient(ellipse 50% 40% at 10% 90%, rgba(0,212,255,0.04) 0%, transparent 55%)",
-            "hsl(220,8%,6%)",
+            "radial-gradient(ellipse 60% 45% at 75% 95%, rgba(123,94,255,0.12) 0%, transparent 60%)",
+            "radial-gradient(ellipse 50% 40% at 10% 90%, rgba(0,212,255,0.10) 0%, transparent 55%)",
+            "hsl(220,40%,20%)",
           ].join(", "),
         }}
       />
 
-      {/* Perspective grid */}
+      {/* Perspective grid — rendered only after mount */}
       {mounted && (
         <>
           <div
@@ -86,8 +88,8 @@ export function SceneBackground() {
             style={{
               height: "72%",
               backgroundImage: [
-                "linear-gradient(rgba(0,212,255,0.08) 1px, transparent 1px)",
-                "linear-gradient(90deg, rgba(0,212,255,0.05) 1px, transparent 1px)",
+                "linear-gradient(rgba(0,212,255,0.18) 1px, transparent 1px)",
+                "linear-gradient(90deg, rgba(0,212,255,0.10) 1px, transparent 1px)",
               ].join(", "),
               backgroundSize: "70px 70px",
               transform: "perspective(500px) rotateX(60deg)",
@@ -101,8 +103,8 @@ export function SceneBackground() {
             style={{
               height: "28%",
               backgroundImage: [
-                "linear-gradient(rgba(0,212,255,0.14) 1px, transparent 1px)",
-                "linear-gradient(90deg, rgba(0,212,255,0.07) 1px, transparent 1px)",
+                "linear-gradient(rgba(0,212,255,0.32) 1px, transparent 1px)",
+                "linear-gradient(90deg, rgba(0,212,255,0.16) 1px, transparent 1px)",
               ].join(", "),
               backgroundSize: "70px 70px",
               transform: "perspective(500px) rotateX(60deg)",
@@ -164,7 +166,7 @@ export function SceneBackground() {
         ))}
       </motion.div>
 
-      {/* Particles */}
+      {/* Particles — CSS animation only, no Framer Motion per-particle */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {particles.map(p => (
           <div
@@ -185,10 +187,10 @@ export function SceneBackground() {
         ))}
       </div>
 
-      {/* 2 aurora bands */}
+      {/* 2 aurora bands (down from 4) */}
       {[
-        { top: "20%", color: "rgba(0,212,255,0.05)", dur: 16 },
-        { top: "58%", color: "rgba(123,94,255,0.05)", dur: 20 },
+        { top: "20%", color: "rgba(0,212,255,0.11)", dur: 16 },
+        { top: "58%", color: "rgba(123,94,255,0.10)", dur: 20 },
       ].map((band, i) => (
         <motion.div
           key={`aurora-${i}`}
@@ -211,7 +213,7 @@ export function SceneBackground() {
         />
       ))}
 
-      {/* Slow ambient color wash */}
+      {/* Slow ambient color wash — single animation instead of background interpolation */}
       <motion.div
         className="absolute inset-0 pointer-events-none"
         style={{ zIndex: 0 }}
@@ -221,7 +223,7 @@ export function SceneBackground() {
         <div
           className="absolute inset-0"
           style={{
-            background: "radial-gradient(ellipse 120% 60% at 0% 50%, rgba(0,212,255,0.03) 0%, transparent 60%), radial-gradient(ellipse 80% 80% at 100% 20%, rgba(123,94,255,0.04) 0%, transparent 55%)",
+            background: "radial-gradient(ellipse 120% 60% at 0% 50%, rgba(0,212,255,0.06) 0%, transparent 60%), radial-gradient(ellipse 80% 80% at 100% 20%, rgba(123,94,255,0.08) 0%, transparent 55%)",
           }}
         />
       </motion.div>
