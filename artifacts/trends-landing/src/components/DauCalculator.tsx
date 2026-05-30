@@ -398,7 +398,7 @@ export function DauCalculator({
                         </div>
 
                         {/* ── Топ-3 хайлайта (свёрнуто) ── */}
-                        <ul className="space-y-2.5 mb-5">
+                        <ul className="space-y-2.5 mb-4">
                           {topItems.slice(0, 3).map((item, i) => (
                             <li key={i} className="flex items-start gap-2.5">
                               <span className="text-base leading-none mt-0.5 shrink-0">
@@ -410,6 +410,16 @@ export function DauCalculator({
                             </li>
                           ))}
                         </ul>
+
+                        {/* ── Exit потенциал — всегда видно ── */}
+                        <div className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-white/3 px-3.5 py-3 mb-5">
+                          <span className="text-base shrink-0">🚀</span>
+                          <p className="text-xs text-muted-foreground leading-relaxed">
+                            <span className="font-semibold text-foreground/80">Exit потенциал: </span>
+                            <span className="text-green-400 font-bold">${pkg.exit}</span>
+                            <span className="text-muted-foreground/60"> — прибыль с продажи платформы</span>
+                          </p>
+                        </div>
 
                         {/* ── Раскрывающаяся часть ── */}
                         <AnimatePresence initial={false}>
@@ -453,16 +463,6 @@ export function DauCalculator({
                                   </div>
                                 </div>
 
-                                {/* Exit потенциал */}
-                                <div className="flex items-start gap-2 px-1">
-                                  <span className="text-base shrink-0 mt-0.5">🚀</span>
-                                  <p className="text-xs text-muted-foreground leading-relaxed">
-                                    <span className="font-semibold text-foreground/80">Exit потенциал: </span>
-                                    <span className="text-green-400 font-bold">${pkg.exit}</span>
-                                    <span className="text-muted-foreground/60"> — прибыль с продажи платформы фонду или стратегическому инвестору</span>
-                                  </p>
-                                </div>
-
                                 {/* Все категории */}
                                 {pkg.categories?.map(cat => (
                                   <div key={cat.id}>
@@ -497,7 +497,7 @@ export function DauCalculator({
                               : "border-white/12 text-muted-foreground hover:border-white/22 hover:text-foreground bg-white/3"
                           }`}
                         >
-                          {isExpanded ? "Скрыть подробности" : `Подробнее (${totalItems} пункт${totalItems >= 5 ? "ов" : totalItems >= 2 ? "а" : ""})`}
+                          {isExpanded ? "Скрыть состав пакета" : `Что входит в пакет (${totalItems} пункт${totalItems >= 5 ? "ов" : totalItems >= 2 ? "а" : ""})`}
                           <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} transition={{ duration: 0.25 }}>
                             <ChevronDown className="w-3.5 h-3.5" />
                           </motion.div>
