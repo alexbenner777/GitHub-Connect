@@ -202,7 +202,6 @@
 .glass-card:hover {
   box-shadow:
     0 6px 24px rgba(0,0,0,0.18),
-    0 0 20px rgba(0,212,255,0.10),
     inset 0 1px 0 rgba(255,255,255,0.22);
 }
 
@@ -257,48 +256,9 @@
   transition: box-shadow 0.25s ease;
 }
 
-/* Gradient border highlight */
-.glass-pkg::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg,
-    rgba(0,212,255,0.45) 0%,
-    rgba(255,255,255,0.14) 25%,
-    transparent 55%);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-          mask-composite: exclude;
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Static glass glare */
-.glass-pkg::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 38%;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.22) 0%,
-    rgba(255, 255, 255, 0.11) 35%,
-    rgba(255, 255, 255, 0.03) 70%,
-    transparent 100%
-  );
-  border-radius: inherit;
-  pointer-events: none;
-  z-index: 2;
-}
-
 .glass-pkg:hover {
   box-shadow:
     0 6px 24px rgba(0,0,0,0.18),
-    0 0 20px rgba(0,212,255,0.10),
     inset 0 1px 0 rgba(255,255,255,0.22);
 }
 
@@ -317,51 +277,12 @@
   border: 1px solid rgba(0,212,255,0.35);
   box-shadow:
     0 2px 8px rgba(0,0,0,0.08),
-    0 0 16px rgba(0,212,255,0.07),
     inset 0 1px 0 rgba(255,255,255,0.15);
   position: relative;
   isolation: isolate;
   overflow: hidden;
   transition: box-shadow 0.25s ease;
   z-index: 10;
-}
-
-/* Stronger cyan→purple gradient border for featured */
-.glass-pkg-active::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg,
-    rgba(0,212,255,0.75) 0%,
-    rgba(123,94,255,0.40) 40%,
-    transparent 70%);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-          mask-composite: exclude;
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Static glass glare for featured — cyan tint */
-.glass-pkg-active::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 38%;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 212, 255, 0.18) 0%,
-    rgba(255, 255, 255, 0.14) 20%,
-    rgba(255, 255, 255, 0.05) 60%,
-    transparent 100%
-  );
-  border-radius: inherit;
-  pointer-events: none;
-  z-index: 2;
 }
 
 @media (max-width: 768px) {
@@ -388,11 +309,11 @@
 }
 
 .neon-glow {
-  box-shadow: 0 0 20px rgba(0, 212, 255, 0.4), 0 0 40px rgba(123, 94, 255, 0.15);
+  box-shadow: none;
 }
 
 .neon-glow:hover {
-  box-shadow: 0 0 30px rgba(0, 212, 255, 0.55), 0 0 60px rgba(123, 94, 255, 0.2);
+  box-shadow: none;
 }
 
 /* ── Gradient primary button ───────────────────────────────────────── */
