@@ -974,8 +974,8 @@ export default function Landing() {
           </div>
           <div className="section-inner">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={fadeScale}>
-            <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_60px_rgba(0,212,255,0.08)]">
-              <img src={screen2Path} alt="Продукт Trends" className="w-full object-cover" />
+            <div className="glass-card rounded-3xl shadow-[0_0_80px_rgba(0,212,255,0.12)]">
+              <img src={screen2Path} alt="Продукт Trends" className="w-full object-cover rounded-3xl" />
             </div>
             <div className="mt-10 flex justify-center">
               <MagneticButton className="w-auto">
