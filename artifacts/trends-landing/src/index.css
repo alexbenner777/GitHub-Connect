@@ -220,29 +220,6 @@
   overflow: hidden;
 }
 
-.glass-glare::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 38%;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.22) 0%,
-    rgba(255, 255, 255, 0.11) 35%,
-    rgba(255, 255, 255, 0.03) 70%,
-    transparent 100%
-  );
-  border-radius: inherit;
-  pointer-events: none;
-  z-index: 2;
-}
-
-@media (max-width: 768px) {
-  .glass-glare::after { display: none; }
-}
-
 /* ── Frosted navbar ────────────────────────────────────────────────── */
 .glass-nav {
   background: rgba(8, 11, 22, 0.45);
