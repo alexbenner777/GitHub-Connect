@@ -339,7 +339,7 @@ function MonetizationCards({ t }: { t: (key: string) => string }) {
       </motion.div>
 
       {/* Cards 02-07 — grid, expandable */}
-      <div className="grid md:grid-cols-2 gap-5">
+      <div className="grid md:grid-cols-2 gap-7">
         {monoCards.map((item, i) => {
           const isOpen = monoOpenIdx === i;
           return (
