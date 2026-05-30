@@ -349,7 +349,7 @@ function MonetizationCards({ t }: { t: (key: string) => string }) {
               onClick={() => setMonoOpenIdx(isOpen ? null : i)}
             >
               <div className="absolute top-5 right-6 text-6xl font-black text-primary/10 select-none group-hover:text-primary/18 transition-colors leading-none">{item.num}</div>
-              <div className="w-14 h-14 bg-primary/10 rounded-2xl border border-primary/25 flex items-center justify-center text-primary mb-6 group-hover:scale-110 group-hover:border-primary/50 transition-all duration-300 shadow-[0_0_16px_rgba(0,212,255,0.12)]">
+              <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-all duration-300">
                 <item.icon className="w-7 h-7" />
               </div>
               <div className="flex items-start justify-between gap-2 mb-2">
