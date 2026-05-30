@@ -757,7 +757,7 @@ export default function Landing() {
         <div className="container mx-auto px-4">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={fadeUp}
             className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center section-inner">
-            <div className="space-y-6 order-2 lg:order-1 lg:pl-10">
+            <div className="space-y-6 order-2 lg:order-1">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-black">
                 {t('what_title')} <span className="text-gradient">Trends</span>?
               </h2>
