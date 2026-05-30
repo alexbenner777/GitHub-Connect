@@ -168,14 +168,12 @@
 
 /* ── Liquid Glass base ─────────────────────────────────────────────── */
 .glass-card {
-  background: rgba(255, 255, 255, 0.025);
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border: 1px solid rgba(255, 255, 255, 0.13);
   border-radius: 24px;
-  box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  box-shadow: none;
   position: relative;
   isolation: isolate;
   overflow: hidden;
