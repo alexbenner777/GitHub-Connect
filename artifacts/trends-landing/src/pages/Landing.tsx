@@ -339,26 +339,26 @@ function MonetizationCards({ t }: { t: (key: string) => string }) {
       </motion.div>
 
       {/* Cards 02-07 — grid, expandable */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid md:grid-cols-2 gap-5">
         {monoCards.map((item, i) => {
           const isOpen = monoOpenIdx === i;
           return (
             <div
               key={i}
-              className="glass-card p-6 rounded-3xl group relative overflow-hidden cursor-pointer"
+              className="glass-card p-7 rounded-3xl group relative overflow-hidden cursor-pointer"
               onClick={() => setMonoOpenIdx(isOpen ? null : i)}
             >
-              <div className="absolute top-4 right-5 text-5xl font-black text-primary/6 select-none group-hover:text-primary/12 transition-colors">{item.num}</div>
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-5 group-hover:scale-110 transition-transform">
-                <item.icon className="w-6 h-6" />
+              <div className="absolute top-5 right-6 text-6xl font-black text-primary/10 select-none group-hover:text-primary/18 transition-colors leading-none">{item.num}</div>
+              <div className="w-14 h-14 bg-primary/10 rounded-2xl border border-primary/25 flex items-center justify-center text-primary mb-6 group-hover:scale-110 group-hover:border-primary/50 transition-all duration-300 shadow-[0_0_16px_rgba(0,212,255,0.12)]">
+                <item.icon className="w-7 h-7" />
               </div>
-              <div className="flex items-start justify-between gap-2 mb-1.5">
-                <h3 className="text-lg font-bold">{item.title}</h3>
-                <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.3, ease: EASE }} className="shrink-0 mt-0.5">
-                  <ChevronDown className="w-6 h-6 text-primary opacity-60" />
+              <div className="flex items-start justify-between gap-2 mb-2">
+                <h3 className="text-xl font-bold">{item.title}</h3>
+                <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.3, ease: EASE }} className="shrink-0 mt-1">
+                  <ChevronDown className="w-5 h-5 text-primary opacity-70" />
                 </motion.div>
               </div>
-              <span className="inline-block px-2 py-0.5 rounded-full bg-white/6 border border-white/15 text-muted-foreground text-[9px] font-bold uppercase tracking-wider mb-2">АПСАЙД СВЕРХУ</span>
+              <span className="inline-block px-2.5 py-0.5 rounded-full bg-white/5 border border-white/12 text-muted-foreground text-[9px] font-bold uppercase tracking-wider mb-3">АПСАЙД СВЕРХУ</span>
               <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
               <AnimatePresence initial={false}>
                 {isOpen && (
