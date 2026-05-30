@@ -877,8 +877,8 @@ export default function Landing() {
                       t('token_why5'), t('token_why6'),
                     ].map((feat, i) => (
                       <div key={i} className="flex items-start gap-2.5">
-                        <div className="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center shrink-0 mt-0.5">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-secondary" />
+                        <div className="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center shrink-0 mt-0.5">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-green-400" />
                         </div>
                         <span className="text-sm text-muted-foreground leading-relaxed">{feat}</span>
                       </div>
