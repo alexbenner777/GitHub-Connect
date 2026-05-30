@@ -330,6 +330,7 @@ export function DauCalculator({
                     >
                       <div className="p-6 md:p-7 flex flex-col">
 
+                        {/* Badges */}
                         {pkg.recommended && (
                           <div className="flex justify-center mb-4 -mt-1">
                             <motion.div
@@ -353,107 +354,64 @@ export function DauCalculator({
                           </div>
                         )}
 
-                        {/* Шапка */}
-                        <div className="flex items-start gap-3 mb-1">
-                          <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${pkg.recommended ? "bg-primary/20" : "bg-white/5"}`}>
+                        {/* ── Шапка ── */}
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 ${pkg.recommended ? "bg-primary/20" : "bg-white/8"}`}>
                             <pkg.icon className={`w-5 h-5 ${pkg.color}`} />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h3 className="text-xl font-bold leading-tight">{pkg.name}</h3>
-                            <div className={`text-[11px] font-semibold ${pkg.color}`}>Badge «{pkg.badge}»</div>
+                            <h3 className="text-xl font-black leading-tight">{pkg.name}</h3>
+                            <div className={`text-[11px] font-semibold ${pkg.color} opacity-80`}>Badge «{pkg.badge}»</div>
                           </div>
                           <div className="text-right shrink-0">
-                            <div className={`text-2xl font-black ${pkg.recommended ? "text-primary" : ""}`}>
+                            <div className={`text-2xl font-black ${pkg.recommended ? "text-primary" : "text-foreground"}`}>
                               ${pkg.price.toLocaleString()}
                             </div>
                             <div className="text-[10px] text-muted-foreground">единовременно</div>
                           </div>
                         </div>
-                        <p className="text-xs text-muted-foreground mb-4 leading-relaxed">{pkg.tagline}</p>
 
-                        {/* 💰 Блок дохода */}
-                        <div className="rounded-xl border border-white/10 bg-white/3 p-3.5 mb-4 space-y-2">
-                          <div className="text-[11px] font-bold text-foreground/80 mb-1">
-                            💰 Твой ежемесячный доход <span className="font-normal text-muted-foreground">(когда запустим монетизацию)</span>
+                        {/* Tagline */}
+                        <p className="text-sm text-muted-foreground mb-5 leading-relaxed">{pkg.tagline}</p>
+
+                        {/* ── Главный показатель — R1 доход ── */}
+                        <div className={`rounded-2xl p-4 mb-5 flex items-center justify-between gap-3 ${
+                          pkg.recommended
+                            ? "bg-green-500/10 border border-green-500/25"
+                            : "bg-white/4 border border-white/10"
+                        }`}>
+                          <div>
+                            <div className="text-[11px] font-bold text-green-400 mb-0.5">🔥 Round 1 доход / мес</div>
+                            <div className="text-[10px] text-muted-foreground">при {fmtDau(dau)} DAU</div>
                           </div>
-
-                          {/* Round 1 строка — всегда видна */}
-                          <div className="flex items-center justify-between">
-                            <span className="text-[11px] font-bold text-green-400">
-                              🔥 Round 1 (сейчас, +30% бонус)
-                            </span>
-                            <motion.span
-                              key={"r1-" + Math.round(payR1)}
-                              initial={{ opacity: 0.4 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
-                              className="text-lg font-black tabular-nums text-green-400"
-                            >
-                              ${fmt(payR1, 2)}<span className="text-xs font-normal text-green-400/70">/мес</span>
-                            </motion.span>
-                          </div>
-
-                          {/* Round 2 строка — всегда видна */}
-                          <div className="flex items-center justify-between">
-                            <span className="text-[11px] font-semibold text-muted-foreground">
-                              📅 Round 2 (позже, без бонуса)
-                            </span>
-                            <motion.span
-                              key={"r2-" + Math.round(payR2)}
-                              initial={{ opacity: 0.4 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
-                              className="text-base font-bold tabular-nums text-muted-foreground"
-                            >
-                              ${fmt(payR2, 2)}<span className="text-xs font-normal">/мес</span>
-                            </motion.span>
-                          </div>
-
-                          {/* Как считается прибыль */}
-                          <div className="border-t border-white/6 pt-2 space-y-1.5">
-                            <p className="text-[10px] text-muted-foreground/80 leading-relaxed">
-                              <span className="text-foreground/60 font-semibold">Как считается: </span>
-                              20% рекламной выручки — это 5 000 долей, из которых инвестор получает{" "}
-                              <span className="text-foreground font-bold">{fmt(sharesR1, 3)} долей (R1)</span>.
-                              {" "}Расчёт выполнен при{" "}
-                              <span className="text-foreground font-bold">{fmtDau(dau)} DAU</span>.
-                              {" "}Чем больше пользователей в Trends — тем быстрее проект выйдет на монетизацию.
-                            </p>
-                            <div className="flex items-start gap-1.5">
-                              <Info className="w-3 h-3 text-yellow-400/70 shrink-0 mt-0.5" />
-                              <p className="text-[10px] text-muted-foreground/70 leading-relaxed">
-                                <span className="text-yellow-400/80 font-semibold">Только реклама в ленте.</span>
-                                {" "}💡 {REVSHARE_CONFIG.REVENUE_SOURCES_TOTAL - 1} других источников (boost, спонсорство, донаты, e-commerce и др.) — бонус сверху, не учтены.
-                              </p>
+                          <motion.div
+                            key={"r1-" + Math.round(payR1)}
+                            initial={{ opacity: 0.5, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.2 }}
+                            className="text-right"
+                          >
+                            <div className="text-2xl font-black tabular-nums text-green-400 leading-none">
+                              ${fmt(payR1, 2)}
                             </div>
-                          </div>
+                            <div className="text-[10px] text-green-400/60 mt-0.5">+30% бонус инвестора</div>
+                          </motion.div>
                         </div>
 
-                        {/* Exit */}
-                        <div className="flex items-center justify-between text-xs px-1 mb-4">
-                          <span className="text-muted-foreground">Exit потенциал: <span className="text-green-400 font-bold">${pkg.exit}</span> <span className="text-muted-foreground/60">(прибыль с продажи платформы Trends фонду или стратегическому инвестору)</span></span>
-                        </div>
+                        {/* ── Топ-3 хайлайта (свёрнуто) ── */}
+                        <ul className="space-y-2.5 mb-5">
+                          {topItems.slice(0, 3).map((item, i) => (
+                            <li key={i} className="flex items-start gap-2.5">
+                              <span className="text-base leading-none mt-0.5 shrink-0">
+                                {item.match(/^[\u{1F000}-\u{1FFFF}\u{2300}-\u{27BF}\u{2B00}-\u{2BFF}]/u)?.[0] ?? "•"}
+                              </span>
+                              <span className="text-sm text-muted-foreground leading-snug">
+                                {item.replace(/^[\u{1F000}-\u{1FFFF}\u{2300}-\u{27BF}\u{2B00}-\u{2BFF}\s]+/u, "").trim()}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
 
-                        {/* Свёрнутые хайлайты */}
-                        <AnimatePresence initial={false}>
-                          {!isExpanded && (
-                            <motion.ul
-                              key="collapsed"
-                              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                              transition={{ duration: 0.15 }}
-                              className="space-y-1.5 mb-4"
-                            >
-                              {topItems.map((item, i) => (
-                                <li key={i} className="flex items-start gap-2">
-                                  <span className="text-sm leading-none mt-0.5 shrink-0">
-                                    {item.match(/^[\u{1F000}-\u{1FFFF}\u{2300}-\u{27BF}\u{2B00}-\u{2BFF}]/u)?.[0] ?? "•"}
-                                  </span>
-                                  <span className="text-xs text-muted-foreground leading-snug">
-                                    {item.replace(/^[\u{1F000}-\u{1FFFF}\u{2300}-\u{27BF}\u{2B00}-\u{2BFF}\s]+/u, "").trim()}
-                                  </span>
-                                </li>
-                              ))}
-                            </motion.ul>
-                          )}
-                        </AnimatePresence>
-
-                        {/* Развёрнутые категории */}
+                        {/* ── Раскрывающаяся часть ── */}
                         <AnimatePresence initial={false}>
                           {isExpanded && (
                             <motion.div
@@ -461,16 +419,55 @@ export function DauCalculator({
                               initial={{ opacity: 0, height: 0 }}
                               animate={{ opacity: 1, height: "auto" }}
                               exit={{ opacity: 0, height: 0 }}
-                              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                               className="overflow-hidden"
                             >
                               <div className="space-y-4 mb-4">
+
+                                {/* Round 2 + расчёт */}
+                                <div className="rounded-xl border border-white/10 bg-white/3 p-3.5 space-y-2.5">
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-[11px] text-muted-foreground">📅 Round 2 (позже, без бонуса)</span>
+                                    <motion.span
+                                      key={"r2-" + Math.round(payR2)}
+                                      initial={{ opacity: 0.4 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
+                                      className="text-base font-bold tabular-nums text-muted-foreground"
+                                    >
+                                      ${fmt(payR2, 2)}<span className="text-xs font-normal">/мес</span>
+                                    </motion.span>
+                                  </div>
+                                  <div className="border-t border-white/6 pt-2 space-y-1.5">
+                                    <p className="text-[10px] text-muted-foreground/80 leading-relaxed">
+                                      <span className="text-foreground/60 font-semibold">Как считается: </span>
+                                      20% рекламной выручки — 5 000 долей, инвестор получает{" "}
+                                      <span className="text-foreground font-bold">{fmt(sharesR1, 3)} долей (R1)</span>.{" "}
+                                      Расчёт при <span className="text-foreground font-bold">{fmtDau(dau)} DAU</span>.
+                                    </p>
+                                    <div className="flex items-start gap-1.5">
+                                      <Info className="w-3 h-3 text-yellow-400/70 shrink-0 mt-0.5" />
+                                      <p className="text-[10px] text-muted-foreground/70 leading-relaxed">
+                                        <span className="text-yellow-400/80 font-semibold">Только реклама в ленте.</span>
+                                        {" "}{REVSHARE_CONFIG.REVENUE_SOURCES_TOTAL - 1} других источников — бонус сверху, не учтены.
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Exit потенциал */}
+                                <div className="flex items-start gap-2 px-1">
+                                  <span className="text-base shrink-0 mt-0.5">🚀</span>
+                                  <p className="text-xs text-muted-foreground leading-relaxed">
+                                    <span className="font-semibold text-foreground/80">Exit потенциал: </span>
+                                    <span className="text-green-400 font-bold">${pkg.exit}</span>
+                                    <span className="text-muted-foreground/60"> — прибыль с продажи платформы фонду или стратегическому инвестору</span>
+                                  </p>
+                                </div>
+
+                                {/* Все категории */}
                                 {pkg.categories?.map(cat => (
                                   <div key={cat.id}>
-                                    <div className="flex items-center gap-1.5 mb-2">
-                                      <span className="text-[10px] font-black uppercase tracking-widest text-primary">
-                                        {cat.title}
-                                      </span>
+                                    <div className="text-[10px] font-black uppercase tracking-widest text-primary mb-2">
+                                      {cat.title}
                                     </div>
                                     <ul className="space-y-2 pl-1">
                                       {cat.items.map((item, i) => (
@@ -491,26 +488,26 @@ export function DauCalculator({
                           )}
                         </AnimatePresence>
 
-                        {/* Кнопка разворачивания */}
+                        {/* ── Кнопка разворачивания ── */}
                         <button
                           onClick={() => setExpanded(isExpanded ? null : pkg.id)}
-                          className={`w-full flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-semibold transition-all mb-3 border ${
+                          className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-semibold transition-all mb-3 border ${
                             isExpanded
                               ? `${pkg.border} ${pkg.color} bg-white/4`
-                              : "border-white/10 text-muted-foreground hover:border-white/20 hover:text-foreground bg-white/3"
+                              : "border-white/12 text-muted-foreground hover:border-white/22 hover:text-foreground bg-white/3"
                           }`}
                         >
-                          {isExpanded ? "Скрыть" : `Показать всё (${totalItems} пункт${totalItems >= 5 ? "ов" : totalItems >= 2 ? "а" : ""})`}
+                          {isExpanded ? "Скрыть подробности" : `Подробнее (${totalItems} пункт${totalItems >= 5 ? "ов" : totalItems >= 2 ? "а" : ""})`}
                           <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} transition={{ duration: 0.25 }}>
                             <ChevronDown className="w-3.5 h-3.5" />
                           </motion.div>
                         </button>
 
-                        {/* CTA */}
+                        {/* ── CTA ── */}
                         <motion.div whileTap={{ scale: 0.97 }} whileHover={{ scale: 1.01 }}>
                           <Button
                             onClick={() => onSelectPackage ? onSelectPackage(pkg.id) : onInvest()}
-                            className={`w-full h-11 text-sm font-bold rounded-xl btn-3d ${
+                            className={`w-full h-12 text-sm font-bold rounded-xl btn-3d ${
                               pkg.recommended
                                 ? "btn-grad"
                                 : `bg-transparent border-2 ${pkg.border} ${pkg.color} hover:bg-white/5`
