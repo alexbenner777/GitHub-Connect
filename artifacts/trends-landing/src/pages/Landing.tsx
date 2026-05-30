@@ -802,9 +802,6 @@ export default function Landing() {
                     <div
                       key={label}
                       className="glass-card relative flex items-start gap-5 px-5 py-5 rounded-2xl transition-transform duration-300 hover:-translate-y-0.5"
-                      style={{
-                        background: `linear-gradient(135deg, ${glow} 0%, rgba(255,255,255,0.02) 100%)`,
-                      }}
                     >
                       {/* step number watermark */}
                       <span className="absolute top-3 right-4 text-4xl font-black opacity-[0.06] select-none pointer-events-none leading-none" style={{ color: border }}>
