@@ -854,43 +854,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* MVP */}
-      <section className="py-16 md:py-24 lg:py-32 relative z-10 [overflow-x:clip]">
-        <div className="container mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={fadeUp}
-            className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center section-inner">
-            <div className="relative flex justify-center order-1 lg:order-1">
-              <img src={screen3Path} alt="Trends MVP" className="relative z-10 max-h-[480px] lg:max-h-[620px] w-full object-contain drop-shadow-2xl" />
-            </div>
-
-            <div className="space-y-6 lg:space-y-8 order-2 lg:order-2">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 text-green-400 border border-green-500/20 font-bold tracking-wide">
-                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                {t('mvp_badge')}
-              </div>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight">{t('mvp_title1')} <span className="text-gradient">{t('mvp_title2')}</span></h2>
-              <p className="text-base md:text-xl text-muted-foreground">{t('mvp_desc')}</p>
-
-              <div className="space-y-4">
-                {[
-                  t('mvp_f1'),
-                  t('mvp_f2'),
-                  t('mvp_f3'),
-                  t('mvp_f4'),
-                  t('mvp_f5')
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-4 glass-card p-4 rounded-2xl">
-                    <CheckCircle2 className="w-7 h-7 text-green-400 shrink-0" />
-                    <span className="font-medium">{item}</span>
-                  </div>
-                ))}
-              </div>
-
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
       {/* МЕХАНИКА ВЗРЫВНОГО РОСТА */}
       <section className="py-16 md:py-24 lg:py-32 relative z-10 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
@@ -949,6 +912,43 @@ export default function Landing() {
             </div>
           </motion.div>
           </div>
+        </div>
+      </section>
+
+      {/* MVP */}
+      <section className="py-16 md:py-24 lg:py-32 relative z-10 [overflow-x:clip]">
+        <div className="container mx-auto px-4">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={fadeUp}
+            className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center section-inner">
+            <div className="relative flex justify-center order-1 lg:order-1">
+              <img src={screen3Path} alt="Trends MVP" className="relative z-10 max-h-[480px] lg:max-h-[620px] w-full object-contain drop-shadow-2xl" />
+            </div>
+
+            <div className="space-y-6 lg:space-y-8 order-2 lg:order-2">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 text-green-400 border border-green-500/20 font-bold tracking-wide">
+                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                {t('mvp_badge')}
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight">{t('mvp_title1')} <span className="text-gradient">{t('mvp_title2')}</span></h2>
+              <p className="text-base md:text-xl text-muted-foreground">{t('mvp_desc')}</p>
+
+              <div className="space-y-4">
+                {[
+                  t('mvp_f1'),
+                  t('mvp_f2'),
+                  t('mvp_f3'),
+                  t('mvp_f4'),
+                  t('mvp_f5')
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-4 glass-card p-4 rounded-2xl">
+                    <CheckCircle2 className="w-7 h-7 text-green-400 shrink-0" />
+                    <span className="font-medium">{item}</span>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+          </motion.div>
         </div>
       </section>
 
