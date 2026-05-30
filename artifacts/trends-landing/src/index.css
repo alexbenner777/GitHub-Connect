@@ -206,20 +206,20 @@
   z-index: 1;
 }
 
-/* Premium glare — crisp bright edge, fast falloff */
+/* Static glass glare */
 .glass-card::after {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 40%;
+  height: 38%;
   background: linear-gradient(
     to bottom,
-    rgba(255, 255, 255, 0.22) 0%,
-    rgba(255, 255, 255, 0.10) 5%,
-    rgba(255, 255, 255, 0.02) 18%,
-    transparent 38%
+    rgba(255, 255, 255, 0.28) 0%,
+    rgba(255, 255, 255, 0.14) 35%,
+    rgba(255, 255, 255, 0.04) 70%,
+    transparent 100%
   );
   border-radius: inherit;
   pointer-events: none;
@@ -255,13 +255,13 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 40%;
+  height: 38%;
   background: linear-gradient(
     to bottom,
-    rgba(255, 255, 255, 0.22) 0%,
-    rgba(255, 255, 255, 0.10) 5%,
-    rgba(255, 255, 255, 0.02) 18%,
-    transparent 38%
+    rgba(255, 255, 255, 0.28) 0%,
+    rgba(255, 255, 255, 0.14) 35%,
+    rgba(255, 255, 255, 0.04) 70%,
+    transparent 100%
   );
   border-radius: inherit;
   pointer-events: none;
@@ -336,20 +336,20 @@
   z-index: 1;
 }
 
-/* Premium glare — crisp bright edge, fast falloff */
+/* Static glass glare */
 .glass-pkg::after {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 40%;
+  height: 38%;
   background: linear-gradient(
     to bottom,
-    rgba(255, 255, 255, 0.22) 0%,
-    rgba(255, 255, 255, 0.10) 5%,
-    rgba(255, 255, 255, 0.02) 18%,
-    transparent 38%
+    rgba(255, 255, 255, 0.28) 0%,
+    rgba(255, 255, 255, 0.14) 35%,
+    rgba(255, 255, 255, 0.04) 70%,
+    transparent 100%
   );
   border-radius: inherit;
   pointer-events: none;
@@ -412,20 +412,20 @@
   z-index: 1;
 }
 
-/* Premium glare for featured — crisp cyan-tinted edge, fast falloff */
+/* Static glass glare for featured — cyan tint */
 .glass-pkg-active::after {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 40%;
+  height: 38%;
   background: linear-gradient(
     to bottom,
-    rgba(0, 212, 255, 0.20) 0%,
-    rgba(180, 240, 255, 0.09) 5%,
-    rgba(255, 255, 255, 0.02) 18%,
-    transparent 38%
+    rgba(0, 212, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0.18) 20%,
+    rgba(255, 255, 255, 0.06) 60%,
+    transparent 100%
   );
   border-radius: inherit;
   pointer-events: none;
